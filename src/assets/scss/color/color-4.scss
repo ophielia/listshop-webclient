@@ -1,0 +1,465 @@
+  /*-----------------------------------------------------------------------------------
+
+    Template Name:TOVO APP
+    Template URI: http://themes.pixelstrap.com/tovo
+    Description: This is App Landing Page
+    Author: Pixelstrap
+    Author URI: https://themeforest.net/user/pixelstrap
+
+-----------------------------------------------------------------------------------*/
+
+@import '../variable';
+//colors
+$color_main_orange: #E67D21;
+$color_yellow_complement: #e6b321;
+$vanilla: #CDB8A3;
+$color_punch_blue: #279DB1;
+
+//urls
+$url_4_3_0: url(./images/color/color-4/1.png);
+$url_4_3_1: url(./images/color/color-4/Homev2.png);
+$url_4_3_2: url(./images/color/color-4/Homev3.png);
+$url_4_3: url(./images/color/color-4/about-bg.png);
+$url_3_4: url(./images/color/color-4/feature-bg1.png);
+$url_3_5: url(./images/color/color-4/screenshot-bg.png);
+$url_3_6: url(./images/color/color-4/team-bg.png);
+$url_3_7: url(./images/color/color-4/team-img-bg.png);
+$url_3_8: url(./images/color/color-4/price.png);
+$url_3_9: url(./images/color/color-4/price-bg.png);
+$url_4_3_10: url(./images/color/color-4/testimonial-bg.png);
+$url_4_3_11: url(./images/color/color-4/Testimonial.png);
+$url_4_3_12: url(./images/color/color-4/contact.png);
+
+
+.caption-img {
+  filter: hue-rotate(335deg);
+}
+
+.loader {
+  background-color: $color_main_orange;
+}
+
+h1 {
+  color: $color_main_orange;
+}
+
+.price-type {
+  background-image: $url_3_9;
+  h2 {
+    color: $color_main_orange;
+  }
+}
+
+.home {
+  background-image: $url_4_3_0;
+}
+
+.home-two {
+  background-image: $url_4_3_1;
+  .slide-cap-desc {
+    color: $vanilla;
+  }
+}
+
+.home-three {
+  background-image: $url_4_3_2;
+}
+
+.navbar-light {
+  .default-nav {
+    .navbar-nav {
+      .nav-link {
+        &.active {
+          color: $color_main_orange;
+        }
+      }
+    }
+  }
+  &.darkHeader {
+    .navbar-nav {
+      .nav-link {
+        &.active {
+          color: $color_main_orange !important;
+        }
+      }
+    }
+  }
+  &.darkHeader .navbar-nav .nav-item.dropdown .dropdown-menu .nav-link:hover {
+    color: $color_main_orange;
+  }
+}
+
+.slide-cap-desc {
+  color: $vanilla;
+}
+
+.tap-top {
+  background: linear-gradient(to right, $color_yellow_complement, $color_main_orange) !important;
+}
+
+.about {
+  background-image: $url_4_3;
+}
+
+.about-right {
+  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
+}
+
+.address-bar {
+  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
+}
+
+.feature {
+  background-image: $url_3_4;
+}
+
+.screenshot {
+  background-image: $url_3_5;
+}
+
+.team {
+  background-image: $url_3_6;
+}
+
+.team-block {
+  background-image: $url_3_7;
+  .team-social li a {
+    border: 1px solid $color_main_orange;
+    &:hover {
+      background-color: $color_main_orange;
+      border: 1px solid $color_main_orange;
+    }
+  }
+}
+
+.blog-block {
+  background-image: $url_3_7;
+}
+
+.color-picker {
+  .settings-header {
+    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    h3 {
+      color: $white;
+    }
+  }
+  .section {
+    border: 1px solid $color_main_orange;
+  }
+  a.handle {
+    border: 1px solid $color_main_orange;
+    background: $color_main_orange;
+  }
+}
+
+.price {
+  background-image: $url_3_8;
+}
+
+.testimonial {
+  background-image: $url_4_3_10;
+}
+
+.testimonial-avtar {
+  background-image: $url_4_3_11;
+}
+
+.contact {
+  background-image: $url_4_3_12;
+}
+
+.navbar-brand img {
+  filter: hue-rotate(335deg);
+}
+
+.home-circle1 img {
+  filter: hue-rotate(335deg);
+}
+
+.home-circle2 img {
+  filter: hue-rotate(335deg);
+}
+
+.home-circle3 img {
+  filter: hue-rotate(335deg);
+}
+
+.home-right img {
+  filter: hue-rotate(335deg);
+}
+
+.about-phone img {
+  filter: hue-rotate(335deg);
+}
+
+.feature-phone img {
+  filter: hue-rotate(335deg);
+}
+
+.about-circle1 img {
+  filter: hue-rotate(335deg);
+}
+
+.about-circle2 img {
+  filter: hue-rotate(335deg);
+}
+
+.feature-style .feature-icon img {
+  filter: hue-rotate(335deg);
+}
+
+.feature-circle1 img {
+  filter: hue-rotate(335deg);
+}
+
+.feature-circle2 img {
+  filter: hue-rotate(335deg);
+}
+
+.screenshot-circle1 img {
+  filter: hue-rotate(335deg);
+}
+
+.screenshot-circle2 img {
+  filter: hue-rotate(335deg);
+}
+
+.screenshot-circle3 img {
+  filter: hue-rotate(335deg);
+}
+
+.screenshot-carousel img {
+  filter: hue-rotate(335deg);
+}
+
+.team-circle1 img {
+  filter: hue-rotate(335deg);
+}
+
+.team-circle2 img {
+  filter: hue-rotate(335deg);
+}
+
+.team-circle3 img {
+  filter: hue-rotate(335deg);
+}
+
+.testi-circle1 img {
+  filter: hue-rotate(335deg);
+}
+
+.testi-circle2 img {
+  filter: hue-rotate(335deg);
+}
+
+.testi-circle3 img {
+  filter: hue-rotate(335deg);
+}
+
+.contact-right img {
+  filter: hue-rotate(335deg);
+}
+
+.contact-circle1 img {
+  filter: hue-rotate(335deg);
+}
+
+.contact-circle2 img {
+  filter: hue-rotate(335deg);
+}
+
+.animated-circle img {
+  filter: hue-rotate(335deg);
+}
+
+.footer-text img {
+  filter: hue-rotate(335deg);
+}
+
+.testimonial-text h3 {
+  color: $color_main_orange;
+}
+
+.btn-custom.theme-color {
+  background-image: linear-gradient(to right, $color_main_orange, $color_yellow_complement, $color_main_orange, $color_main_orange);
+  &:hover {
+    background-position: 100% 0;
+  }
+}
+
+#fp-nav ul li {
+  a {
+    &.active {
+      border: 1px solid $color_main_orange;
+      span {
+        background: $color_main_orange !important;
+      }
+    }
+    span {
+      background: $color_main_orange !important;
+    }
+  }
+  &:hover a.active span {
+    background: $color_main_orange !important;
+  }
+}
+
+.fp-slidesNav ul li {
+  a {
+    span {
+      background: $color_main_orange !important;
+    }
+    &.active span {
+      background: $color_main_orange !important;
+    }
+  }
+  &:hover a.active span {
+    background: $color_main_orange !important;
+  }
+}
+
+.theme-nav .navbar-nav .active>.nav-link {
+  color: $color_main_orange;
+}
+
+.home-style-two .navbar-nav .dropdown-menu .nav-link:hover {
+  color: $color_main_orange !important;
+}
+
+.three .navbar-nav .dropdown-menu .nav-link:hover {
+  color: $color_main_orange !important;
+}
+
+.abt-hover:hover .icon-hover {
+  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
+}
+
+.icon-hover:hover {
+  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
+  border: 1px solid $color_punch_blue;
+}
+
+.team-carousel.owl-theme .owl-dots .owl-dot {
+  span {
+    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+  }
+  &.active span {
+    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+  }
+}
+
+.blog-carousel.owl-theme .owl-dots .owl-dot {
+  span {
+    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+  }
+  &.active span {
+    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+  }
+}
+
+.testimonial-carousel.owl-theme .owl-dots .owl-dot {
+  span {
+    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+  }
+  &.active span {
+    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+  }
+}
+
+.price-carousel.owl-theme .owl-dots .owl-dot span {
+  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+}
+
+.blog-pagin a.page-link {
+  color: $color_main_orange;
+  border: 1px solid $gray;
+  &:hover {
+    background-color: $color_main_orange;
+  }
+}
+
+.page-item.active .page-link {
+  background-color: $color_main_orange;
+}
+
+.tags .badge-theme {
+  background-color: $color_main_orange;
+  color: $white;
+}
+
+.blog-cat-detail ul li a:hover,
+.manual-down {
+  color: $color_main_orange;
+}
+
+.price-block:hover .mrp h2 {
+  color: $color_main_orange;
+}
+
+.authentication-form {
+  filter: hue-rotate(335deg);
+}
+
+.innerpage-decor {
+  img {
+    filter: hue-rotate(335deg);
+  }
+}
+
+.faq .card-header[aria-expanded="true"] a {
+  color: $color_main_orange;
+}
+
+.review-box h5 {
+  color: $color_main_orange;
+}
+
+@media (max-width: 768px) {
+  .home-two,
+  .home-three {
+    background-color: $color_main_orange;
+  }
+}
+
+.theme-nav {
+  .nav-item {
+    &:hover {
+      .nav-link {
+        color: $color_main_orange;
+      }
+    }
+    &.dropdown {
+      .dropdown-menu {
+        .nav-item {
+          .nav-link {
+            &.active {
+              color: $color_main_orange !important;
+            }
+            &:hover {
+              color: $color_main_orange !important;
+              transition: all 0.3s ease;
+            }
+          }
+        }
+      }
+    }
+  }
+  /*Dropdown css*/
+  &.darkHeader {
+    .dropdown-menu .nav-item {
+      .nav-link {
+        &.active {
+          color: $color_main_orange;
+        }
+      }
+    }
+  }
+  /*dropdown css end*/
+  .navbar-nav {
+    .active {
+      >.nav-link {
+        color: $color_main_orange;
+      }
+    }
+  }
+}
