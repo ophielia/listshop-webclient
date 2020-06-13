@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { DemoComponent } from './demo/demo.component';
 import { BlogComponent } from './blog/blog.component';
+import {UserComponent} from "./user/user.component";
 
 export const rootRouterConfig: Routes = [
   {
@@ -24,6 +25,11 @@ export const rootRouterConfig: Routes = [
   {
     path: 'pages',
     loadChildren:  () => import('./pages/pages.module').then(m => m.PagesModule)
+  },
+  {
+    path: 'user',
+    component: UserComponent,
+    loadChildren:  () => import('./user/user.module').then(m => m.UserModule)
   },
   {
     path: '**',

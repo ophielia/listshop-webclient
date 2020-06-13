@@ -1,4 +1,4 @@
-  /*-----------------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------------
 
     Template Name:TOVO APP
     Template URI: http://themes.pixelstrap.com/tovo
@@ -10,25 +10,26 @@
 
 @import '../variable';
 //colors
-$color_main_orange: #E67D21;
-$color_yellow_complement: #e6b321;
-$vanilla: #CDB8A3;
-$color_punch_blue: #279DB1;
+$color_caribbean_green: $color_bright_yellow;
+$color_spring_green: $color_basic_orange;
+$seashell: $vanilla;
+$color_persian_pink: $color_punch_blue;
+
 
 //urls
-$url_4_3_0: url(./images/color/color-4/1.png);
-$url_4_3_1: url(./images/color/color-4/Homev2.png);
-$url_4_3_2: url(./images/color/color-4/Homev3.png);
-$url_4_3: url(./images/color/color-4/about-bg.png);
+$url_3_3_0: url(./images/color/color-4/1.png);
+$url_3_3_1: url(./images/color/color-4/Homev2.png);
+$url_3_3_2: url(./images/color/color-4/Homev3.png);
+$url_3_3: url(./images/color/color-4/about-bg.png);
 $url_3_4: url(./images/color/color-4/feature-bg1.png);
 $url_3_5: url(./images/color/color-4/screenshot-bg.png);
 $url_3_6: url(./images/color/color-4/team-bg.png);
 $url_3_7: url(./images/color/color-4/team-img-bg.png);
 $url_3_8: url(./images/color/color-4/price.png);
 $url_3_9: url(./images/color/color-4/price-bg.png);
-$url_4_3_10: url(./images/color/color-4/testimonial-bg.png);
-$url_4_3_11: url(./images/color/color-4/Testimonial.png);
-$url_4_3_12: url(./images/color/color-4/contact.png);
+$url_3_3_10: url(./images/color/color-4/testimonial-bg.png);
+$url_3_3_11: url(./images/color/color-4/Testimonial.png);
+$url_3_3_12: url(./images/color/color-4/contact.png);
 
 
 .caption-img {
@@ -36,33 +37,33 @@ $url_4_3_12: url(./images/color/color-4/contact.png);
 }
 
 .loader {
-  background-color: $color_main_orange;
+  background-color: $color_caribbean_green;
 }
 
 h1 {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
 }
 
 .price-type {
   background-image: $url_3_9;
   h2 {
-    color: $color_main_orange;
+    color: $color_caribbean_green;
   }
 }
 
 .home {
-  background-image: $url_4_3_0;
+  background-image: $url_3_3_0;
 }
 
 .home-two {
-  background-image: $url_4_3_1;
+  background-image: $url_3_3_1;
   .slide-cap-desc {
-    color: $vanilla;
+    color: $seashell;
   }
 }
 
 .home-three {
-  background-image: $url_4_3_2;
+  background-image: $url_3_3_2;
 }
 
 .navbar-light {
@@ -70,7 +71,7 @@ h1 {
     .navbar-nav {
       .nav-link {
         &.active {
-          color: $color_main_orange;
+          color: $color_caribbean_green;
         }
       }
     }
@@ -79,34 +80,34 @@ h1 {
     .navbar-nav {
       .nav-link {
         &.active {
-          color: $color_main_orange !important;
+          color: $color_caribbean_green !important;
         }
       }
     }
   }
   &.darkHeader .navbar-nav .nav-item.dropdown .dropdown-menu .nav-link:hover {
-    color: $color_main_orange;
+    color: $color_caribbean_green;
   }
 }
 
 .slide-cap-desc {
-  color: $vanilla;
+  color: $seashell;
 }
 
 .tap-top {
-  background: linear-gradient(to right, $color_yellow_complement, $color_main_orange) !important;
+  background: linear-gradient(to right, $color_spring_green, $color_caribbean_green) !important;
 }
 
 .about {
-  background-image: $url_4_3;
+  background-image: $url_3_3;
 }
 
 .about-right {
-  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
+  background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%);
 }
 
 .address-bar {
-  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
+  background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%);
 }
 
 .feature {
@@ -124,10 +125,10 @@ h1 {
 .team-block {
   background-image: $url_3_7;
   .team-social li a {
-    border: 1px solid $color_main_orange;
+    border: 1px solid $color_caribbean_green;
     &:hover {
-      background-color: $color_main_orange;
-      border: 1px solid $color_main_orange;
+      background-color: $color_caribbean_green;
+      border: 1px solid $color_caribbean_green;
     }
   }
 }
@@ -138,17 +139,17 @@ h1 {
 
 .color-picker {
   .settings-header {
-    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
     h3 {
       color: $white;
     }
   }
   .section {
-    border: 1px solid $color_main_orange;
+    border: 1px solid $color_caribbean_green;
   }
   a.handle {
-    border: 1px solid $color_main_orange;
-    background: $color_main_orange;
+    border: 1px solid $color_caribbean_green;
+    background: $color_caribbean_green;
   }
 }
 
@@ -157,15 +158,15 @@ h1 {
 }
 
 .testimonial {
-  background-image: $url_4_3_10;
+  background-image: $url_3_3_10;
 }
 
 .testimonial-avtar {
-  background-image: $url_4_3_11;
+  background-image: $url_3_3_11;
 }
 
 .contact {
-  background-image: $url_4_3_12;
+  background-image: $url_3_3_12;
 }
 
 .navbar-brand img {
@@ -277,11 +278,11 @@ h1 {
 }
 
 .testimonial-text h3 {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
 }
 
 .btn-custom.theme-color {
-  background-image: linear-gradient(to right, $color_main_orange, $color_yellow_complement, $color_main_orange, $color_main_orange);
+  background-image: linear-gradient(to right, $color_caribbean_green, $color_spring_green, $color_caribbean_green, $color_caribbean_green);
   &:hover {
     background-position: 100% 0;
   }
@@ -290,110 +291,110 @@ h1 {
 #fp-nav ul li {
   a {
     &.active {
-      border: 1px solid $color_main_orange;
+      border: 1px solid $color_caribbean_green;
       span {
-        background: $color_main_orange !important;
+        background: $color_caribbean_green !important;
       }
     }
     span {
-      background: $color_main_orange !important;
+      background: $color_caribbean_green !important;
     }
   }
   &:hover a.active span {
-    background: $color_main_orange !important;
+    background: $color_caribbean_green !important;
   }
 }
 
 .fp-slidesNav ul li {
   a {
     span {
-      background: $color_main_orange !important;
+      background: $color_caribbean_green !important;
     }
     &.active span {
-      background: $color_main_orange !important;
+      background: $color_caribbean_green !important;
     }
   }
   &:hover a.active span {
-    background: $color_main_orange !important;
+    background: $color_caribbean_green !important;
   }
 }
 
 .theme-nav .navbar-nav .active>.nav-link {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
 }
 
 .home-style-two .navbar-nav .dropdown-menu .nav-link:hover {
-  color: $color_main_orange !important;
+  color: $color_caribbean_green !important;
 }
 
 .three .navbar-nav .dropdown-menu .nav-link:hover {
-  color: $color_main_orange !important;
+  color: $color_caribbean_green !important;
 }
 
 .abt-hover:hover .icon-hover {
-  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
+  background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%);
 }
 
 .icon-hover:hover {
-  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%);
-  border: 1px solid $color_punch_blue;
+  background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%);
+  border: 1px solid $color_persian_pink;
 }
 
 .team-carousel.owl-theme .owl-dots .owl-dot {
   span {
-    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
   }
   &.active span {
-    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
   }
 }
 
 .blog-carousel.owl-theme .owl-dots .owl-dot {
   span {
-    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
   }
   &.active span {
-    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
   }
 }
 
 .testimonial-carousel.owl-theme .owl-dots .owl-dot {
   span {
-    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
   }
   &.active span {
-    background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+    background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
   }
 }
 
 .price-carousel.owl-theme .owl-dots .owl-dot span {
-  background: linear-gradient(to bottom, $color_yellow_complement 0, $color_main_orange 99%) !important;
+  background: linear-gradient(to bottom, $color_spring_green 0, $color_caribbean_green 99%) !important;
 }
 
 .blog-pagin a.page-link {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
   border: 1px solid $gray;
   &:hover {
-    background-color: $color_main_orange;
+    background-color: $color_caribbean_green;
   }
 }
 
 .page-item.active .page-link {
-  background-color: $color_main_orange;
+  background-color: $color_caribbean_green;
 }
 
 .tags .badge-theme {
-  background-color: $color_main_orange;
+  background-color: $color_caribbean_green;
   color: $white;
 }
 
 .blog-cat-detail ul li a:hover,
 .manual-down {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
 }
 
 .price-block:hover .mrp h2 {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
 }
 
 .authentication-form {
@@ -407,17 +408,17 @@ h1 {
 }
 
 .faq .card-header[aria-expanded="true"] a {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
 }
 
 .review-box h5 {
-  color: $color_main_orange;
+  color: $color_caribbean_green;
 }
 
 @media (max-width: 768px) {
   .home-two,
   .home-three {
-    background-color: $color_main_orange;
+    background-color: $color_caribbean_green;
   }
 }
 
@@ -425,7 +426,7 @@ h1 {
   .nav-item {
     &:hover {
       .nav-link {
-        color: $color_main_orange;
+        color: $color_caribbean_green;
       }
     }
     &.dropdown {
@@ -433,10 +434,10 @@ h1 {
         .nav-item {
           .nav-link {
             &.active {
-              color: $color_main_orange !important;
+              color: $color_caribbean_green !important;
             }
             &:hover {
-              color: $color_main_orange !important;
+              color: $color_caribbean_green !important;
               transition: all 0.3s ease;
             }
           }
@@ -449,7 +450,7 @@ h1 {
     .dropdown-menu .nav-item {
       .nav-link {
         &.active {
-          color: $color_main_orange;
+          color: $color_caribbean_green;
         }
       }
     }
@@ -458,7 +459,7 @@ h1 {
   .navbar-nav {
     .active {
       >.nav-link {
-        color: $color_main_orange;
+        color: $color_caribbean_green;
       }
     }
   }

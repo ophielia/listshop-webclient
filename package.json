@@ -18,7 +18,7 @@
     "build:ssrr": "ng build && ng run tovo:server",
     "prerender": "ng run tovo:prerender",
     "postinstall": "ngcc",
-    "dev:sass": "node-sass src/assets/scss/ -o src/assets/css",
+    "dev:sass": "node-sass src/assets/scss/color -o src/assets/css/color",
     "ssrbuild": "npm run build:ssr && npm run serve:ssr"
   },
   "private": true,
