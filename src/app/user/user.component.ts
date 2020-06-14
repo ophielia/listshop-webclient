@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+
+import {logger} from "codelyzer/util/logger";
+import { Router, Event, NavigationStart, RoutesRecognized,
+  RouteConfigLoadStart, RouteConfigLoadEnd,
+  NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -7,14 +11,24 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
+    ngOnInit(): void {
+        //throw new Error("Method not implemented.");
+    }
 
   isLogin: boolean = false
   isSignup: boolean = false
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router) {
+    router.events.subscribe( (event: Event) => {
+    if (event instanceof NavigationStart) {
+      // Navigation started.
+    } else if (event instanceof NavigationEnd) {
+      // Navigation Ended Successfully.
+      this.isLogin = event.url.includes("login");
+      this.isSignup = !this.isLogin;
+    }
 
-  ngOnInit() {
-    console.log("path: " + this.route.snapshot.pathFromRoot);
-  }
+  });
+}
 
 }

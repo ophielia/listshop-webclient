@@ -3,7 +3,12 @@
     <div class="container">
         <a class="navbar-brand" [routerLink]="'/demo'"><img src="assets/images/logo.png" alt="logo"></a>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" class="link-button theme-color outline">Sign Up</a></li>
+            <li *ngIf="isLogin"><a class="link-button theme-color outline" [routerLink]="['/user/signup']" >
+                Sign Up
+            </a></li>
+            <li *ngIf="!isLogin"><a class="link-button theme-color outline" [routerLink]="['/user/login']" >
+                Sign In
+            </a></li>
         </ul>
     </div>
     <!-- <button type="submit" class="btn btn-custom fb">Facebook</button> -->
