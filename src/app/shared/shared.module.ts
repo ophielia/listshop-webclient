@@ -13,6 +13,7 @@ import { UserHeaderComponent } from './user-header/user-header.component';
 import { WINDOW_PROVIDERS } from './services/windows.service';
 import { LandingFixService } from '../shared/services/landing-fix.service';
 import { LoaderComponent } from './loader/loader.component';
+import { ListShopHeaderComponent } from './list-shop-header/list-shop-header.component';
 
 @NgModule({
   exports: [
@@ -20,7 +21,8 @@ import { LoaderComponent } from './loader/loader.component';
     HeaderComponent,
     FooterComponent,
     LoaderComponent,
-      UserHeaderComponent
+      UserHeaderComponent,
+      ListShopHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { LoaderComponent } from './loader/loader.component';
     HeaderComponent,
     FooterComponent,
     LoaderComponent,
-      UserHeaderComponent
+      UserHeaderComponent,
+      ListShopHeaderComponent
   ],
   providers: [
     WINDOW_PROVIDERS,

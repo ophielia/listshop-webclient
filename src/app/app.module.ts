@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { DemoComponent } from './landing/demo/demo.component';
 import { BlogComponent } from './landing/blog/blog.component';
 import {UserComponent} from "./user/user.component";
+import {ListsModule} from "./lists/lists.module";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {UserComponent} from "./user/user.component";
     BrowserAnimationsModule,
     SharedModule,
     UserModule,
+    ListsModule,
     // tslint:disable-next-line: max-line-length
     RouterModule.forRoot(rootRouterConfig, { useHash: false, anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled', initialNavigation: 'enabled' })
   ],

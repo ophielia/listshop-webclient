@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DemoComponent } from './landing/demo/demo.component';
 import { BlogComponent } from './landing/blog/blog.component';
 import {UserComponent} from "./user/user.component";
+import {ListsComponent} from "./lists/lists.component";
 
 export const rootRouterConfig: Routes = [
   {
@@ -30,6 +31,11 @@ export const rootRouterConfig: Routes = [
     path: 'user',
     component: UserComponent,
     loadChildren:  () => import('./user/user.module').then(m => m.UserModule)
+  },
+  {
+    path: 'lists',
+    component: ListsComponent,
+    loadChildren:  () => import('./lists/lists.module').then(m => m.ListsModule)
   },
   {
     path: '**',

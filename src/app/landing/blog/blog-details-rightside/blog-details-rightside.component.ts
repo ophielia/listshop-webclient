@@ -11,7 +11,7 @@ import {ActivatedRoute} from '@angular/router';
 export class BlogDetailsRightsideComponent implements OnInit, OnDestroy {
 
   constructor(
-    private fix: LandingFixService,
+      private fix: LandingFixService,
     private route: ActivatedRoute,
     private title: Title,
     private meta: Meta,
