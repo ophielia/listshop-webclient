@@ -3,11 +3,11 @@ import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-sign-up',
+  selector: 'tovo-app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class TovoSignUpComponent implements OnInit {
 
    // variable
   show: boolean;

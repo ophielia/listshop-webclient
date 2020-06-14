@@ -288,6 +288,18 @@ h1 {
   }
 }
 
+.link-button.theme-color {
+  background-image: linear-gradient(to right, $color_caribbean_green, $color_spring_green, $color_caribbean_green, $color_caribbean_green);
+  &:hover {
+    background-position: 100% 0;
+  }
+  &.outline {
+    border-color: $color_spring_green;
+    background-image: none;
+    color: $color_spring_green;
+  }
+}
+
 #fp-nav ul li {
   a {
     &.active {

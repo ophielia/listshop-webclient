@@ -6,6 +6,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { UserHeaderComponent } from './user-header/user-header.component';
+
 
 // Services
 import { WINDOW_PROVIDERS } from './services/windows.service';
@@ -17,7 +19,8 @@ import { LoaderComponent } from './loader/loader.component';
     CommonModule,
     HeaderComponent,
     FooterComponent,
-    LoaderComponent
+    LoaderComponent,
+      UserHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +31,8 @@ import { LoaderComponent } from './loader/loader.component';
   declarations: [
     HeaderComponent,
     FooterComponent,
-    LoaderComponent
+    LoaderComponent,
+      UserHeaderComponent
   ],
   providers: [
     WINDOW_PROVIDERS,

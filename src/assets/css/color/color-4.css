@@ -189,6 +189,15 @@ h1 {
   .btn-custom.theme-color:hover {
     background-position: 100% 0; }
 
+.link-button.theme-color {
+  background-image: linear-gradient(to right, #e6b321, #e67d21, #e6b321, #e6b321); }
+  .link-button.theme-color:hover {
+    background-position: 100% 0; }
+  .link-button.theme-color.outline {
+    background-color: white;
+    border-color: #e67d21;
+    color: #e67d21; }
+
 #fp-nav ul li a.active {
   border: 1px solid #e6b321; }
   #fp-nav ul li a.active span {

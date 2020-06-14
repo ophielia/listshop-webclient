@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { SignInComponent } from './sign-in/sign-in.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
+import { TovoSignUpComponent } from './sign-up/sign-up.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ThankYouComponent } from './thank-you/thank-you.component';
 import { ReviewComponent } from './review/review.component';
@@ -25,7 +25,7 @@ const routes: Routes = [
       },
       {
         path: 'sign-up',
-        component: SignUpComponent,
+        component: TovoSignUpComponent,
         data: {
           title: 'Sign-Up | Tovo Landing Page'
         }
