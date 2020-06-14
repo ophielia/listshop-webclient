@@ -1,6 +1,6 @@
 {
-  "name": "tovo",
-  "version": "0.0.0",
+  "name": "webclient",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,12 +11,12 @@
     "compile:server_bak": "webpack --config webpack.server.config.js --progress --colors",
     "build:ssr_bak": "npm run build:client-and-server-bundles && npm run compile:server",
     "serve:ssr_bak": "node dist/server",
-    "build:client-and-server-bundles_bak": "ng build --prod && ng run tovo:server:production",
-    "dev:ssr": "ng run tovo:serve-ssr",
+    "build:client-and-server-bundles_bak": "ng build --prod && ng run webclient:server:production",
+    "dev:ssr": "ng run webclient:serve-ssr",
     "serve:ssr": "node dist/server/main.js",
-    "build:ssr": "ng build --prod && ng run tovo:server:production",
-    "build:ssrr": "ng build && ng run tovo:server",
-    "prerender": "ng run tovo:prerender",
+    "build:ssr": "ng build --prod && ng run webclient:server:production",
+    "build:ssrr": "ng build && ng run webclient:server",
+    "prerender": "ng run webclient:prerender",
     "postinstall": "ngcc",
     "dev:sass": "node-sass src/assets/scss/color -o src/assets/css/color",
     "ssrbuild": "npm run build:ssr && npm run serve:ssr"

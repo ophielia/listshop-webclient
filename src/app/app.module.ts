@@ -7,8 +7,8 @@ import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 import { rootRouterConfig } from './app.routes';
 import { AppComponent } from './app.component';
-import { DemoComponent } from './demo/demo.component';
-import { BlogComponent } from './blog/blog.component';
+import { DemoComponent } from './landing/demo/demo.component';
+import { BlogComponent } from './landing/blog/blog.component';
 import {UserComponent} from "./user/user.component";
 
 @NgModule({

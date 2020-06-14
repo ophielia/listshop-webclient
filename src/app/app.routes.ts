@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
-import { DemoComponent } from './demo/demo.component';
-import { BlogComponent } from './blog/blog.component';
+import { DemoComponent } from './landing/demo/demo.component';
+import { BlogComponent } from './landing/blog/blog.component';
 import {UserComponent} from "./user/user.component";
 
 export const rootRouterConfig: Routes = [
@@ -15,16 +15,16 @@ export const rootRouterConfig: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+    loadChildren: () => import('./landing/home/home.module').then(m => m.HomeModule)
   },
   {
     path: 'blog',
     component: BlogComponent,
-    loadChildren:  () => import('./blog/blog.module').then(m => m.BlogModule)
+    loadChildren:  () => import('./landing/blog/blog.module').then(m => m.BlogModule)
   },
   {
     path: 'pages',
-    loadChildren:  () => import('./pages/pages.module').then(m => m.PagesModule)
+    loadChildren:  () => import('./landing/pages/pages.module').then(m => m.PagesModule)
   },
   {
     path: 'user',
