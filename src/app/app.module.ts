@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
-import {  HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
@@ -11,6 +11,7 @@ import { DemoComponent } from './landing/demo/demo.component';
 import { BlogComponent } from './landing/blog/blog.component';
 import {UserComponent} from "./user/user.component";
 import {ListsModule} from "./lists/lists.module";
+import {ListShopTokenInterceptor} from "./shared/handlers/list-shop-token-interceptor";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import {ListsModule} from "./lists/lists.module";
     // tslint:disable-next-line: max-line-length
     RouterModule.forRoot(rootRouterConfig, { useHash: false, anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled', initialNavigation: 'enabled' })
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
