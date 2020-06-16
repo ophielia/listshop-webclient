@@ -14,6 +14,9 @@ import { WINDOW_PROVIDERS } from './services/windows.service';
 import { LandingFixService } from '../shared/services/landing-fix.service';
 import { LoaderComponent } from './loader/loader.component';
 import { ListShopHeaderComponent } from './list-shop-header/list-shop-header.component';
+import {AuthenticationService} from "./services/authentication.service";
+import { AlertComponent } from './alert/alert.component';
+import {AlertService} from "./services/alert.service";
 
 @NgModule({
   exports: [
@@ -23,6 +26,7 @@ import { ListShopHeaderComponent } from './list-shop-header/list-shop-header.com
     LoaderComponent,
       UserHeaderComponent,
       ListShopHeaderComponent
+
   ],
   imports: [
     CommonModule,
@@ -39,7 +43,8 @@ import { ListShopHeaderComponent } from './list-shop-header/list-shop-header.com
   ],
   providers: [
     WINDOW_PROVIDERS,
-    LandingFixService
+    LandingFixService,
+      AuthenticationService
   ]
 })
 export class SharedModule { }

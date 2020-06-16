@@ -60,7 +60,16 @@ export class AuthenticationService {
                         return false;
                     }
                 }),
-                catchError((error: any) => throwError(error.json().error || 'Server error')))
-            ;
+                catchError(this.handleError));
+    }
+
+    handleError(error: any) {
+        // log error
+        // could be something more sophisticated
+        let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
+        console.error(errorMsg);
+
+        // throw an application level error
+        return throwError(error);
     }
 }
