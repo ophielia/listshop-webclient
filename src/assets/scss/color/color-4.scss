@@ -411,6 +411,9 @@ h1 {
 
 .authentication-form {
   filter: hue-rotate(335deg);
+  .card {
+    border-top: 3px solid $color_caribbean_green;
+  }
 }
 
 .innerpage-decor {

@@ -37,8 +37,12 @@ export class LoginComponent implements OnInit {
     console.log("email: " + this.email);
     console.log("userPassword: " + this.userPassword);
     this.authenticationService.login(this.email, this.userPassword)
-        .subscribe( u => {
-          console.log("SUCCESS!! user is " + u);
+        .subscribe( success => {
+          if (!success) {
+            var error: Error = Error("BADCREDENTIALS");
+            throw error;
+          }
+          console.log("SUCCESS!! user is " + success);
         })
   }
 

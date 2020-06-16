@@ -27,7 +27,12 @@ export class AlertComponent {
       }
 
       // add alert to array
-      this.alerts.push(alert);
+      console.log(this.alerts);
+      if (this.alerts) {
+        this.alerts = [...this.alerts, alert];
+      } else {
+        this.alerts = [alert];
+      }
       this.cd.detectChanges();
     });
   }
@@ -35,7 +40,6 @@ export class AlertComponent {
   removeAlert(alert: Alert) {
     this.alerts = this.alerts.filter(x => x !== alert);
     this.cd.detectChanges();
-    console.log("beep");
   }
 
   cssClass(alert: Alert) {

@@ -21,6 +21,9 @@ export class ListShopErrorHandler implements ErrorHandler {
       } else if (error.status == 0) {
         console.error('Server error!!: No server - ', `${error.error.status} - ${error.error.message}`);
         return this.notificationService.error("Looks like the site is temporarily down.  Please try again later.");
+      } else if (error.status == 401) {
+        console.error('Server error!!: 401 unauthorized - ', `${error.error.status} - ${error.error.message}`);
+        return this.notificationService.error("That combination didn't work.  Please try again.");
       } else {
         // Handle Http Error (error.status === 403, 404...)
         var errorObject: Object = `${error.error}`;
@@ -34,7 +37,12 @@ export class ListShopErrorHandler implements ErrorHandler {
         return this.notificationService.error("Oh no - something has gone wrong - desperately wrong....");
       }
     }
-    // Log the error anyway
+    else if (error instanceof Error) {
+      if (error.message = 'BADCREDENTIALS') {
+        return this.notificationService.error("That combination didn't work.  Please try again.");
+      }
+    }
+        // Log the error anyway
     console.error('It happens: ', error);
   }
 }

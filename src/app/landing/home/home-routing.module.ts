@@ -8,6 +8,14 @@ import { HomeThreeComponent } from './versions/home-three/home-three.component';
 // Routes
 const routes: Routes = [
   {
+    path: '',
+    component: HomeTwoComponent,
+    data: {
+      title: 'The List Shop',
+      content: 'Your shopping lists - quickly'
+    }
+  },
+  {
     path: 'one',
     component: HomeOneComponent,
     data: {
