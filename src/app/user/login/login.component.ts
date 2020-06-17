@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
 
 @Component({
@@ -15,13 +15,22 @@ export class LoginComponent implements OnInit {
 
   // variable
   show: boolean;
+  private returnUrl: string;
 
   constructor(private route: ActivatedRoute,
               private title: Title,
               private meta: Meta,
+              private router: Router,
               private authenticationService: AuthenticationService) {
     // initialize variable value
     this.show = false;
+  }
+
+  ngOnInit() {
+    this.title.setTitle( this.route.snapshot.data['title']);
+    this.meta.updateTag({name: 'description', content: this.route.snapshot.data['content']});
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
   }
 
   // click event function toggle
@@ -29,20 +38,14 @@ export class LoginComponent implements OnInit {
     this.show = !this.show;
   }
 
-  ngOnInit() {
-    this.title.setTitle( this.route.snapshot.data['title']);
-  }
-
   doLogin() {
-    console.log("email: " + this.email);
-    console.log("userPassword: " + this.userPassword);
     this.authenticationService.login(this.email, this.userPassword)
         .subscribe( success => {
           if (!success) {
             var error: Error = Error("BADCREDENTIALS");
             throw error;
           }
-          console.log("SUCCESS!! user is " + success);
+          this.router.navigateByUrl(this.returnUrl);
         })
   }
 

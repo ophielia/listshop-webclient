@@ -6,16 +6,21 @@ import {AuthorizePost} from "../../model/authorize-post";
 import {Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
+import {User} from "../../model/user";
+import {CreateUserPost} from "../../model/create-user-post";
+import CreateUserStatus from "../../model/create-user-status";
 
 
 @Injectable()
 export class AuthenticationService {
-    private baseUrl;
+    private authUrl;
+    private userUrl;
 
     constructor(
         private httpClient: HttpClient
     ) {
-        this.baseUrl = environment.apiUrl + "auth";
+        this.authUrl = environment.apiUrl + "auth";
+        this.userUrl = environment.apiUrl + "user";
     }
 
 
@@ -26,17 +31,6 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string): Observable<boolean> {
-        /*
-        var httpOptions = {
-            headers: new HttpHeaders({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Expose-Headers': 'Location',
-            })
-        }
-
-         */
         // prepare device info
         var deviceInfo = new UserDeviceInfo();
         deviceInfo.client_type = "Web";
@@ -44,7 +38,7 @@ export class AuthenticationService {
         authorizePost.password = password;
         authorizePost.username = username;
         authorizePost.device_info = deviceInfo
-        return this.httpClient.post(this.baseUrl, JSON.stringify(authorizePost))
+        return this.httpClient.post(this.authUrl, JSON.stringify(authorizePost))
             .pipe(map((response: HttpResponse<any>) => {
                     // login successful if there's a jwt token in the response
                     let user = MappingUtils.toUser(response);
@@ -70,5 +64,39 @@ export class AuthenticationService {
 
         // throw an application level error
         return throwError(error);
+    }
+
+    createUser(username: string, password: string) : Observable<CreateUserStatus> {
+        // prepare device info
+        let deviceInfo = new UserDeviceInfo();
+        deviceInfo.client_type = "Web";
+        // prepare user info
+        let encodedUsername = btoa(username);
+        let encodedPassword = btoa(password);
+        let user = new User();
+        user.email = encodedUsername;
+        user.user_name = encodedUsername;
+        user.password = encodedPassword;
+
+        var createUserPost = new CreateUserPost();
+        createUserPost.user = user;
+        createUserPost.device_info = deviceInfo;
+
+        return this.httpClient.post(this.userUrl, JSON.stringify(createUserPost))
+            .pipe(map((response: HttpResponse<any>) => {
+                    // login successful if there's a jwt token in the response
+                    let user = MappingUtils.toUser(response);
+
+                    if (user) {
+                        // store username and jwt token in local storage to keep user logged in between page refreshes
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+
+                        // return true to indicate successful login
+                        return CreateUserStatus.Success;
+                    } else {
+                        return CreateUserStatus.UnknownError;
+                    }
+                }),
+                catchError(this.handleError));
     }
 }

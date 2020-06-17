@@ -12,7 +12,7 @@ const routes: Routes = [
       title: 'The List Shop | Lists',
       content: 'The List Shop | Lists'
     }
-  },
+  }
 ];
 
 @NgModule({
