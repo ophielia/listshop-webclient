@@ -6,28 +6,51 @@
     </div>
     <div>
         <h2 class="title text-center"><span>Sign Up</span></h2>
-       <!-- <p class="text-center">Welcome to tovo, Please join us with your personal account information.</p> -->
         <div class="card">
-            <form class="theme-form">
-                <div class="form-group">
-                    <input type="email" name="email" [(ngModel)]="email" class="form-control" placeholder="email address" required="required">
+
+            <form [formGroup]="signUpForm" #formDir="ngForm" class="theme-form">
+             <div class="form-group">
+                    <input type="email" placeholder = "email address" class="form-control" formControlName="email" required >
                 </div>
-                <div class="form-group">
-                    <input required="" name="userPassword" [(ngModel)]="userPassword" type="password" class="form-control" placeholder="Password">
-                </div>
-                <div class="form-group">
-                    <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" [type]="show ? 'text' : 'password'" class="form-control" placeholder="Conform password" required="required">
-                    <div class="show-hide" (click)="password()">
-                        <span class="show"></span>
+                <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                     class="alert alert-danger">
+                    <div *ngIf="email.errors.required">
+                        Emails are required, sleepyhead.
+                    </div>
+                    <div *ngIf="email.errors.minlength">
+                        Email must be at least 6 characters long.
+                    </div>
+                    <div *ngIf="email.errors.pattern">
+                        Please enter a valid email.
                     </div>
                 </div>
-               <!-- <div class="form-group row">
-                    <div class="custom-control custom-checkbox col-6">
-                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
-                        <label class="custom-control-label" for="customControlAutosizing">Remember me</label>
+                <div class="form-group">
+                    <input type="password" placeholder = "password" class="form-control" formControlName="userPassword" required >
+                </div>
+                <div *ngIf="userPassword.invalid && (userPassword.dirty || userPassword.touched)"
+                     class="alert alert-danger">
+                    <div *ngIf="userPassword.errors.required">
+                        Password is required
                     </div>
-                    <a [routerLink]="'/forget-password'" class="text-right col-6 theme-link">lost your password</a>
-                </div> -->
+                    <div *ngIf="userPassword.errors.minlength">
+                        Password must be at least 6 characters long.
+                    </div>
+                    <div *ngIf="userPassword.errors.maxlength">
+                        This password is too long.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder = "confirm password" class="form-control" formControlName="confirmPassword" required >
+                </div>
+                <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+                     class="alert alert-danger">
+                    <div *ngIf="confirmPassword.errors.required">
+                        Please confirm your password
+                    </div>
+                    <div *ngIf="confirmPassword.errors.passwordsDontMatch">
+                        The passwords don't match
+                    </div>
+                </div>
                 <div class="form-button text-center">
                     <button type="submit"  (click)="signUp()" class="btn btn-custom theme-color">Sign Up</button>
                 </div>
