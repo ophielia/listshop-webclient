@@ -14,30 +14,6 @@ const routes: Routes = [
       title: 'The List Shop',
       content: 'Your shopping lists - quickly'
     }
-  },
-  {
-    path: 'one',
-    component: HomeOneComponent,
-    data: {
-      title: 'Demo 1 | Angular Universal',
-      content: 'Demo1 | Theme with SSR Integration'
-    }
-  },
-  {
-    path: 'two',
-    component: HomeTwoComponent,
-    data: {
-      title: 'Demo 2 | SSR Integration',
-      content: 'Demo2 | Best Landing Page in Angular using Angular Universal | SSR'
-    }
-  },
-  {
-    path: 'three',
-    component: HomeThreeComponent,
-    data: {
-      title: 'Demo 3 | SEO Friendly',
-      content: 'Demo 3 | SEO Friendly Angular 8 Landing Page '
-    }
   }
 ];
 

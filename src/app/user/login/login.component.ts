@@ -34,11 +34,10 @@ export class LoginComponent implements OnInit {
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
     this.loginForm = this.fb.group({
-      'email': new FormControl('', [
-        Validators.required,
-        Validators.minLength(6)
-      ])},
-        {updateOn: "blur"}  );
+            email: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+            userPassword: ["", [Validators.required,Validators.minLength(4) , Validators.maxLength(50)]],
+          }, {updateOn: 'blur'});
+
   }
 
   // click event function toggle

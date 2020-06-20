@@ -39,7 +39,7 @@ export const rootRouterConfig: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'home/two'
+    redirectTo: 'home'
   }
 ];
 

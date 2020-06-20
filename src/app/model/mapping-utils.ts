@@ -8,11 +8,11 @@ export default class MappingUtils {
 
     static toUser(r: any): User {
         let user = <User>({
-            email: r.email,
-            creation_date: r.creation_date,
-            user_name: r.user_name,
-            roles: r.roles,
-            token: r.token
+            email: r.user.email,
+            creation_date: r.user.creation_date,
+            user_name: r.user.user_name,
+            roles: r.user.roles,
+            token: r.user.token
 
         });
         return user;

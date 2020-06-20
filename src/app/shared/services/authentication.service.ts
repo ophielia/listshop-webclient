@@ -3,8 +3,8 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
-import {Observable, throwError} from "rxjs";
-import {catchError, map} from "rxjs/operators";
+import {Observable, of, throwError} from "rxjs";
+import {catchError, finalize, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {User} from "../../model/user";
 import {CreateUserPost} from "../../model/create-user-post";
@@ -24,7 +24,7 @@ export class AuthenticationService {
     }
 
 
-    getToken(): String {
+    getToken(): string {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
         return token;
@@ -106,6 +106,17 @@ export class AuthenticationService {
                 catchError(this.handleError));
     }
 
+    logout(): Observable<any> {
+        var requestUrl = this.authUrl + '/logout'
+        var returnValue: boolean = true;
+        return this.httpClient.get(requestUrl)
+            .pipe(
+                finalize(() => {
+                        localStorage.removeItem('currentUser');
+                        return of(true);
+                    }
+                ));
+    }
 
     handleError(error: any) {
         // log error
@@ -116,4 +127,6 @@ export class AuthenticationService {
         // throw an application level error
         return throwError(error);
     }
+
+
 }

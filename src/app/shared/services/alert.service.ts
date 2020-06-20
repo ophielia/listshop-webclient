@@ -53,7 +53,7 @@ export class AlertService {
 
   // main alert method
   alert(alert: Alert) {
-    this.keepAfterRouteChange = alert.keepAfterRouteChange;
+    this.keepAfterRouteChange = false;
     this.subject.next(alert);
   }
 

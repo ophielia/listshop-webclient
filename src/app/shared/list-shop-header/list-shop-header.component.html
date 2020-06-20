@@ -1,18 +1,4 @@
 <!-- Nav Start -->
-<!--<nav class="navbar fixed-top ls-theme-nav">
-    <div class="container">
-        <a class="navbar-brand" [routerLink]="'/demo'"><img src="assets/images/logo.png" alt="logo"></a>
-        <ul class="nav navbar-nav ml-auto justify-content-end">
-            <li><a href="#"><img src="images/Logo_B.png" class="img-responsive">List</a></li>
-            <li><a href="#"><img src="images/Logo_B.png" class="img-responsive">Dish</a></li>
-            <li><a href="#"><img src="images/Logo_B.png" class="img-responsive">Plan</a></li>
-            <li><a href="#"><img src="images/Logo_B.png" class="img-responsive">Admin</a></li>
-        </ul>
-    </div>
-</nav>
--->
-
-
 <nav class="navbar navbar-expand-md fixed-top ls-theme-nav">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
@@ -22,14 +8,21 @@
         </ul>
     </div>
 
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2 theme-nav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Right</a>
+                <a class="nav-link" href="#">Plan</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Dish</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">List</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+
         </ul>
     </div>
 </nav>
