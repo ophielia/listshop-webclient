@@ -56,17 +56,8 @@ export class AuthenticationService {
                 catchError(this.handleError));
     }
 
-    handleError(error: any) {
-        // log error
-        // could be something more sophisticated
-        let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
-        console.error(errorMsg);
 
-        // throw an application level error
-        return throwError(error);
-    }
-
-    createUser(username: string, password: string) : Observable<CreateUserStatus> {
+    createUser(username: string, password: string): Observable<CreateUserStatus> {
         // prepare device info
         let deviceInfo = new UserDeviceInfo();
         deviceInfo.client_type = "Web";
@@ -98,5 +89,31 @@ export class AuthenticationService {
                     }
                 }),
                 catchError(this.handleError));
+    }
+
+
+    nameIsTaken(userName: string): Observable<boolean> {
+        var requestUrl = this.userUrl + '/name?name=' + userName
+
+        return this.httpClient.get(requestUrl)
+            .pipe(map((response: HttpResponse<any>) => {
+                    // login successful if there's a jwt token in the response
+                    if (!response) {
+                        return false;
+                    }
+                    return true;
+                }),
+                catchError(this.handleError));
+    }
+
+
+    handleError(error: any) {
+        // log error
+        // could be something more sophisticated
+        let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
+        console.error(errorMsg);
+
+        // throw an application level error
+        return throwError(error);
     }
 }
