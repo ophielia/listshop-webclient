@@ -1,9 +1,6 @@
-import {ErrorHandler, Injectable, Injector} from "@angular/core";
-import {HttpErrorResponse} from "@angular/common/http";
-import {AlertService} from "../services/alert.service";
+import {Injectable} from "@angular/core";
 import {AuthenticationService} from "../services/authentication.service";
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
-import {resolve} from "@angular/compiler-cli/src/ngtsc/file_system";
 
 @Injectable({providedIn: "root"})
 export class AuthGuardHandler implements CanActivate {
