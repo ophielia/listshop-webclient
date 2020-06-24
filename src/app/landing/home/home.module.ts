@@ -9,9 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeOneComponent } from './versions/home-one/home-one.component';
 import { HomeTwoComponent } from './versions/home-two/home-two.component';
 import { HomeThreeComponent } from './versions/home-three/home-three.component';
-import { IntroOneComponent } from './intro-one/intro-one.component';
 import { IntroTwoComponent } from './intro-two/intro-two.component';
-import { IntroThreeComponent } from './intro-three/intro-three.component';
 import { AboutComponent } from './about/about.component';
 import { FeatureComponent } from './feature/feature.component';
 import { ScreenshotComponent } from './screenshot/screenshot.component';
@@ -36,9 +34,7 @@ import { NewsletterComponent } from './newsletter/newsletter.component';
     HomeOneComponent,
     HomeTwoComponent,
     HomeThreeComponent,
-    IntroOneComponent,
     IntroTwoComponent,
-    IntroThreeComponent,
     AboutComponent,
     FeatureComponent,
     ScreenshotComponent,
