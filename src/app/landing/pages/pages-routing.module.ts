@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SignInComponent } from './sign-in/sign-in.component';
-import { TovoSignUpComponent } from './sign-up/sign-up.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ThankYouComponent } from './thank-you/thank-you.component';
 import { ReviewComponent } from './review/review.component';
@@ -17,73 +15,59 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'sign-in',
-        component: SignInComponent,
-        data: {
-          title: 'Sign-In | Tovo Landing Page'
-        }
-      },
-      {
-        path: 'sign-up',
-        component: TovoSignUpComponent,
-        data: {
-          title: 'Sign-Up | Tovo Landing Page'
-        }
-      },
-      {
         path: 'forget-password',
         component: ForgetPasswordComponent,
         data: {
-          title: 'Forget-Password | Tovo Landing Page'
+          title: 'Forget-Password | Template Landing Page'
         }
       },
       {
         path: 'thank-you',
         component: ThankYouComponent,
         data: {
-          title: 'Thank you | Tovo Landing Page'
+          title: 'Thank you | Template Landing Page'
         }
       },
       {
         path: 'review',
         component: ReviewComponent,
         data: {
-          title: 'Review | Tovo Landing Page'
+          title: 'Review | Template Landing Page'
         }
       },
       {
         path: '404',
         component: ErrorPageComponent,
         data: {
-          title: '404 | Tovo Landing Page'
+          title: '404 | Template Landing Page'
         }
       },
       {
         path: 'faq',
         component: FaqComponent,
         data: {
-          title: 'FAQ | Tovo Landing Page'
+          title: 'FAQ | Template Landing Page'
         }
       },
       {
         path: 'download',
         component: DownloadComponent,
         data: {
-          title: 'Download | Tovo Landing Page'
+          title: 'Download | Template Landing Page'
         }
       },
       {
         path: 'coming-soon',
         component: ComingsoonComponent,
         data: {
-          title: 'Comming-Soon | Tovo Landing Page'
+          title: 'Comming-Soon | Template Landing Page'
         }
       },
       {
         path: 'email-template',
         component: EmailTemplateComponent,
         data: {
-          title: 'Email-Template | Tovo Landing Page'
+          title: 'Email-Template | Template Landing Page'
         }
       }
     ]

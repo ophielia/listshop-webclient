@@ -15,6 +15,7 @@ import {ListsModule} from "./lists/lists.module";
 import {ListShopTokenInterceptor} from "./shared/handlers/list-shop-token-interceptor";
 import {ListShopErrorHandler} from "./shared/handlers/list-shop-error-handler";
 import {AlertComponent} from "./shared/alert/alert.component";
+import {AuthGuardHandler} from "./shared/handlers/auth-guard-handler";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {AlertComponent} from "./shared/alert/alert.component";
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true},
-    {provide: ErrorHandler, useClass: ListShopErrorHandler}
+    {provide: ErrorHandler, useClass: ListShopErrorHandler},
+      AuthGuardHandler
   ],
   bootstrap: [AppComponent]
 })

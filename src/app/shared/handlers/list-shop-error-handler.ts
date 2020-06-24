@@ -11,7 +11,7 @@ export class ListShopErrorHandler implements ErrorHandler {
   }
 
   handleError(error: Response | HttpErrorResponse) {
-
+console.log(error);
 
     if (error instanceof HttpErrorResponse) {
       // Server or connection error happened
@@ -38,7 +38,7 @@ export class ListShopErrorHandler implements ErrorHandler {
       }
     }
     else if (error instanceof Error) {
-      if (error.message = 'BADCREDENTIALS') {
+      if (error.message && error.message == 'BADCREDENTIALS') {
         return this.notificationService.error("That combination didn't work.  Please try again.");
       }
     }

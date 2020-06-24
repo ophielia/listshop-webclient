@@ -31,6 +31,7 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string): Observable<boolean> {
+        AuthenticationService.clearToken();
         // prepare device info
         var deviceInfo = new UserDeviceInfo();
         deviceInfo.client_type = "Web";
@@ -58,6 +59,8 @@ export class AuthenticationService {
 
 
     createUser(username: string, password: string): Observable<CreateUserStatus> {
+        // clear any existing token
+        AuthenticationService.clearToken();
         // prepare device info
         let deviceInfo = new UserDeviceInfo();
         deviceInfo.client_type = "Web";
@@ -129,4 +132,16 @@ export class AuthenticationService {
     }
 
 
+    static clearToken() {
+        localStorage.removeItem('currentUser');
+    }
+
+    isAuthenticated() {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var token = currentUser && currentUser.token;
+
+        //MM TODO check authentication on server
+        return token != null
+
+    }
 }

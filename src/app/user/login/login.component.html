@@ -7,7 +7,10 @@
     <div>
         <h2 class="title text-center"><span> Login</span></h2>
         <div class="card">
-            <form [formGroup]="loginForm" #formDir="ngForm" class="theme-form">
+            <form [formGroup]="loginForm"
+                  (keydown)="focuser.focus(); keyPressSubmit($event, loginForm)"
+                  (ngSubmit)="doLogin()"
+                  #formDir="ngForm" class="theme-form">
                 <div class="form-group">
                     <input type="email" class="form-control" formControlName="email" placeholder="email address"
                            required >
@@ -17,7 +20,8 @@
                            required >
                 </div>
                 <div class="form-button text-center">
-                    <button type="submit" class="btn btn-custom btn-lg theme-color" (click)="doLogin()">Login</button>
+                    <button type="submit" class="btn btn-custom btn-lg theme-color" >Login</button>
+                    <input type="hidden" #focuser />
                 </div>
             </form>
         </div>

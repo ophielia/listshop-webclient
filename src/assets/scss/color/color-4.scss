@@ -14,7 +14,7 @@ $color_caribbean_green: $color_bright_yellow;
 $color_spring_green: $color_basic_orange;
 $seashell: $vanilla;
 $color_persian_pink: $color_punch_blue;
-
+$color_bright_turquoise: $color_basic_orange;
 
 //urls
 $url_3_3_0: url(./images/color/color-4/1.png);
@@ -198,11 +198,11 @@ h1 {
 }
 
 .about-circle1 img {
-  filter: hue-rotate(335deg);
+  filter: hue-rotate(0deg);
 }
 
 .about-circle2 img {
-  filter: hue-rotate(335deg);
+  filter: hue-rotate(0deg);
 }
 
 .feature-style .feature-icon img {
@@ -210,11 +210,11 @@ h1 {
 }
 
 .feature-circle1 img {
-  filter: hue-rotate(335deg);
+  filter: hue-rotate(0deg);
 }
 
 .feature-circle2 img {
-  filter: hue-rotate(335deg);
+  filter: hue-rotate(0deg);
 }
 
 .screenshot-circle1 img {

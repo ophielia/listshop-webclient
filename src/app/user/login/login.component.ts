@@ -56,8 +56,16 @@ export class LoginComponent implements OnInit {
             var error: Error = Error("BADCREDENTIALS");
             throw error;
           }
+          console.log(this.returnUrl);
           this.router.navigateByUrl(this.returnUrl);
         })
   }
+
+    keyPressSubmit($event: KeyboardEvent, loginForm: FormGroup) {
+
+      if ($event.key == "U+000D" ) {
+          this.doLogin();
+      }
+    }
 
 }

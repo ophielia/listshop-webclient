@@ -5,8 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { PagesRoutingModule } from './pages-routing.module';
-import { SignInComponent } from './sign-in/sign-in.component';
-import { TovoSignUpComponent } from './sign-up/sign-up.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ThankYouComponent } from './thank-you/thank-you.component';
 import { ReviewComponent } from './review/review.component';
@@ -27,8 +25,6 @@ import { EmailTemplateComponent } from './email-template/email-template.componen
     NgbModule
   ],
   declarations: [
-    SignInComponent,
-    TovoSignUpComponent,
     ForgetPasswordComponent,
     ThankYouComponent,
     ReviewComponent,

@@ -1,7 +1,7 @@
 <!-- Nav Start -->
 <nav class="navbar navbar-expand-lg navbar-light theme-nav fixed-top" [class.darkHeader]="darkHeader">
   <div class="container">
-    <a class="navbar-brand" [routerLink]="'/demo'"><img src="assets/images/logo.png" alt="logo"></a>
+    <a class="navbar-brand" [routerLink]="'/home'"><img src="assets/images/logo.png" alt="logo"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isOpenMobile=!isOpenMobile">
       <span class="navbar-toggler-icon"></span>
@@ -18,40 +18,16 @@
           <a class="nav-link" href="#feature" (click)="active('feature')" [ngClass]="{'active show': activeClass == 'feature' }" [pageScrollOffset]="80" pageScroll>feature</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  href="#screenshot" (click)="active('screenshot')" [ngClass]="{'active show': activeClass == 'screenshot' }" [pageScrollOffset]="80" pageScroll>screenshot</a>
+          <a class="nav-link"  href="#testimonial" (click)="active('testimonial')" [ngClass]="{'active show': activeClass == 'testimonial' }" [pageScrollOffset]="80" pageScroll>testimonial</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link"  href="#team" (click)="active('team')" [ngClass]="{'active show': activeClass == 'team' }" [pageScrollOffset]="80" pageScroll>team</a>
+        <li *ngIf="isLoggedIn" class="nav-item">
+          <a class="nav-link" [routerLink]="'/lists'">my lists</a>
         </li>
-        <div ngbDropdown class="nav-item dropdown">
-          <button class="btn bg-transparent nav-link dropdown-toggle" id="dropdownMenuButton"  (click)="active('blog')" [ngClass]="{'active show': activeClass == 'blog' }" [pageScrollOffset]="80" pageScroll data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-          ngbDropdownToggle>Blog</button>
+        <div *ngIf="!isLoggedIn" ngbDropdown class="nav-item dropdown">
+          <button class="btn bg-transparent nav-link dropdown-toggle" id="dropdownMenuButton" ngbDropdownToggle>Login</button>
         <div ngbDropdownMenu aria-labelledby="dropdownMenuButton" class="dropdown-menu">
-          <a class="nav-link" [routerLink]="'/blog/list'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">blog list</a>
-          <a class="nav-link" [routerLink]="'/blog/details'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">blog details</a>
-          <a class="nav-link" [routerLink]="'/blog/left-sidebar'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">leftsidebar</a>
-          <a class="nav-link" [routerLink]="'/blog/right-sidebar'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">rightsidebar</a>
-          <a class="nav-link" [routerLink]="'/blog/details-left-sidebar'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">details leftsidebar</a>
-          <a class="nav-link" [routerLink]="'/blog/details-right-sidebar'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">details rightsidebar</a>
-          </div>
-        </div>
-        <li class="nav-item">
-          <a class="nav-link" href="#price" data-menuanchor="price" (click)="active('price')" [ngClass]="{'active show': activeClass == 'price' }" [pageScrollOffset]="80" pageScroll>price</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#contact" data-menuanchor="contact" (click)="active('contact')" [ngClass]="{'active show': activeClass == 'contact' }" [pageScrollOffset]="80" pageScroll>contact us</a>
-        </li>
-        <div ngbDropdown class="nav-item dropdown">
-          <button class="btn bg-transparent nav-link dropdown-toggle" id="dropdownMenuButton" ngbDropdownToggle>Other page</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownMenuButton" class="dropdown-menu">
-          <a class="nav-link" [routerLink]="'/pages/sign-in'">sign in</a>
-          <a class="nav-link" [routerLink]="'/pages/sign-up'">sign up</a>
-          <a class="nav-link" [routerLink]="'/pages/forget-password'">Forget Password</a>
-          <a class="nav-link" [routerLink]="'/pages/thank-you'">Thank you</a>
-          <a class="nav-link" [routerLink]="'/pages/review'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Review</a>
-          <a class="nav-link" [routerLink]="'/pages/404'">404</a>
-          <a class="nav-link" [routerLink]="'/pages/faq'" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">FAQ</a>
-          <a class="nav-link" [routerLink]="'/pages/download'">Download</a>
+          <a class="nav-link" [routerLink]="'/user/login'">sign in</a>
+          <a class="nav-link" [routerLink]="'/user/signup'">sign up</a>
           </div>
         </div>
       </ul>
