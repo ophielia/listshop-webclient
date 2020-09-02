@@ -479,3 +479,14 @@ h1 {
     }
   }
 }
+
+ls-theme-functional-nav {
+  .nav-item {
+    .nav-link {
+      a:visited {
+        color: $color_basic_orange;
+      }
+    }
+  }
+
+}
