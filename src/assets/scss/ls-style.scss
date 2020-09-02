@@ -206,6 +206,19 @@ ls-fixed-top.fixed-top {
   }
 }
 
+/* card base */
+.ls-card {
+  border-width: 1.0px;
+  border-style: solid;
+  width: 100%;
+  height: auto;
+  padding: 15px;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 4px 4px 12px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-color: #979797;
+}
+
 /* custom button links */
 .link-button {
   color: $white;
@@ -418,4 +431,11 @@ ls-fixed-top.fixed-top {
     margin: 0;
     padding: 0.75rem 0;
   }
+}
+
+/** list page styles **/
+.ls-list-element-title {
+  color: #616161;
+  font-weight: bold;
+  font-size: large;
 }
