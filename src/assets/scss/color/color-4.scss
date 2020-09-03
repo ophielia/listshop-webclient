@@ -32,6 +32,7 @@ $url_3_3_11: url(./images/color/color-4/Testimonial.png);
 $url_3_3_12: url(./images/color/color-4/contact.png);
 
 
+
 .caption-img {
   filter: hue-rotate(335deg);
 }
@@ -489,4 +490,8 @@ ls-theme-functional-nav {
     }
   }
 
+}
+
+.list-management {
+  background-image: $url_listmanagement_bg;
 }

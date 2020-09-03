@@ -113,13 +113,13 @@ h1 {
   filter: hue-rotate(335deg); }
 
 .home-right img {
-  filter: hue-rotate(335deg); }
+  filter: hue-rotate(0deg); }
 
 .about-phone img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .feature-phone img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .about-circle1 img {
   filter: hue-rotate(0deg); }
@@ -128,7 +128,7 @@ h1 {
   filter: hue-rotate(0deg); }
 
 .feature-style .feature-icon img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .feature-circle1 img {
   filter: hue-rotate(0deg); }
@@ -137,43 +137,43 @@ h1 {
   filter: hue-rotate(0deg); }
 
 .screenshot-circle1 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .screenshot-circle2 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .screenshot-circle3 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .screenshot-carousel img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .team-circle1 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .team-circle2 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .team-circle3 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .testi-circle1 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .testi-circle2 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .testi-circle3 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .contact-right img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .contact-circle1 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .contact-circle2 img {
-  filter: hue-rotate(0deg); }
+  filter: hue-rotate(335deg); }
 
 .animated-circle img {
   filter: hue-rotate(335deg); }
@@ -194,8 +194,8 @@ h1 {
   .link-button.theme-color:hover {
     background-position: 100% 0; }
   .link-button.theme-color.outline {
-    background-color: white;
     border-color: #e67d21;
+    background-image: none;
     color: #e67d21; }
 
 #fp-nav ul li a.active {
@@ -277,6 +277,8 @@ h1 {
 
 .authentication-form {
   filter: hue-rotate(335deg); }
+  .authentication-form .card {
+    border-top: 3px solid #e6b321; }
 
 .innerpage-decor img {
   filter: hue-rotate(335deg); }
@@ -306,3 +308,9 @@ h1 {
     color: #e6b321; }
   .theme-nav .navbar-nav .active > .nav-link {
     color: #e6b321; }
+
+ls-theme-functional-nav .nav-item .nav-link a:visited {
+  color: #e67d21; }
+
+.list-management {
+  background-image: url(./images/backgrounds/list-background.png); }
