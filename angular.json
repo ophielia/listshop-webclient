@@ -30,8 +30,7 @@
             "styles": [
               "node_modules/font-awesome/scss/font-awesome.scss",
               "src/assets/app.scss",
-              "src/styles.scss",
-              "src/ls-styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
