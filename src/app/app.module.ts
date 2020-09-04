@@ -16,6 +16,7 @@ import {ListShopTokenInterceptor} from "./shared/handlers/list-shop-token-interc
 import {ListShopErrorHandler} from "./shared/handlers/list-shop-error-handler";
 import {AlertComponent} from "./shared/alert/alert.component";
 import {AuthGuardHandler} from "./shared/handlers/auth-guard-handler";
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,12 @@ import {AuthGuardHandler} from "./shared/handlers/auth-guard-handler";
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     ReactiveFormsModule,
     HttpClientModule,
+    LoggerModule.forRoot({
+      //serverLoggingUrl: '/api/logs',
+      level: NgxLoggerLevel.TRACE,
+      serverLogLevel: NgxLoggerLevel.ERROR,
+      disableConsoleLogging: false
+    }),
     BrowserAnimationsModule,
     SharedModule,
     UserModule,
