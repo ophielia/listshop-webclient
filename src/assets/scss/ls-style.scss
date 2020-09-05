@@ -225,6 +225,10 @@ ls-fixed-top.fixed-top {
     .ls-card-link {
       display:inline;
       padding-left: 10px;
+      text-transform: uppercase;
+      &:hover {
+        color: $color_basic_orange
+      }
     }
   }
 }
@@ -461,5 +465,7 @@ ls-fixed-top.fixed-top {
   color: #616161;
   font-weight: bold;
   font-size: large;
+  padding-bottom: 5px;
+  text-transform: capitalize;
 }
 

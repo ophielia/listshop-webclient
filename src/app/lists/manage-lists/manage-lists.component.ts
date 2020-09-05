@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
@@ -19,6 +19,7 @@ export class ManageListsComponent implements OnInit, OnDestroy {
     constructor(
         private fix: LandingFixService,
         private route: ActivatedRoute,
+        private router: Router,
         private title: Title,
         private meta: Meta,
         private listService: ListService
@@ -45,6 +46,25 @@ export class ManageListsComponent implements OnInit, OnDestroy {
                     this.lists = p
                 }
             });
+        this.unsubscribe.push(sub$);
+    }
+
+    deleteShoppingList(listId: string) {
+        let sub$ = this.listService
+            .deleteList(listId)
+            .subscribe(l => this.getShoppingLists());
+        this.unsubscribe.push(sub$);
+    }
+
+    editShoppingList(listId: String) {
+        this.router.navigate(["list/edit/", listId]);
+
+    }
+
+    createShoppingList() {
+        let sub$ = this.listService
+            .createList(ListService.DEFAULT_LIST_NAME)
+            .subscribe(l => this.getShoppingLists());
         this.unsubscribe.push(sub$);
     }
 

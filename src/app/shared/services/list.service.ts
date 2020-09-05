@@ -6,6 +6,7 @@ import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {IShoppingList} from "../../model/shoppinglist";
 import {NGXLogger} from "ngx-logger";
+import {CreateListPost} from "../../model/create-list-post";
 
 @Injectable()
 export class ListService {
@@ -13,6 +14,7 @@ export class ListService {
     private userUrl;
     private listUrl;
 
+    public static DEFAULT_LIST_NAME: string = "Shopping List";
 
     constructor(
         private httpClient: HttpClient,
@@ -35,35 +37,20 @@ export class ListService {
                 catchError(this.handleError));
     }
 
-    /*
-      login(username: string, password: string): Observable<boolean> {
-          AuthenticationService.clearToken();
-          // prepare device info
-          var deviceInfo = new UserDeviceInfo();
-          deviceInfo.client_type = "Web";
-          var authorizePost = new AuthorizePost();
-          authorizePost.password = password;
-          authorizePost.username = username;
-          authorizePost.device_info = deviceInfo
-          return this.httpClient.post(this.authUrl, JSON.stringify(authorizePost))
-              .pipe(map((response: HttpResponse<any>) => {
-                      // login successful if there's a jwt token in the response
-                      let user = MappingUtils.toUser(response);
+    deleteList(list_id: string) {
+        var url = this.listUrl + "/" + list_id;
+        return this.httpClient.delete(url);
+    }
 
-                      if (user) {
-                          // store username and jwt token in local storage to keep user logged in between page refreshes
-                          localStorage.setItem('currentUser', JSON.stringify(user));
+    createList(listName: string): Observable<Object> {
 
-                          // return true to indicate successful login
-                          return true;
-                      } else {
-                          return false;
-                      }
-                  }),
-                  catchError(this.handleError));
-      }
 
-     */
+        var createListPost = new CreateListPost();
+        createListPost.is_starter_list = false;
+        createListPost.name = listName;
+
+        return this.httpClient.post(this.listUrl, JSON.stringify(createListPost));
+    }
 
 
     handleError(error: any) {

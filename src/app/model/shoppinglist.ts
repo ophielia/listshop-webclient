@@ -10,8 +10,9 @@ export interface IShoppingList {
   list_type: string;
   layout_type: string;
   item_count: number;
-  dish_sources: IItemSource[];
-  list_sources: IItemSource[];
+  name: string;
+  source_keys: IItemSource[];
+
 }
 
 export class ShoppingList implements IShoppingList {
@@ -26,7 +27,7 @@ export class ShoppingList implements IShoppingList {
   list_type: string;
   layout_type: string;
   item_count: number;
-  dish_sources: IItemSource[];
-  list_sources: IItemSource[];
+  name: string;
+  source_keys: IItemSource[];
 }
 

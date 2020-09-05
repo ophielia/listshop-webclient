@@ -29,14 +29,14 @@ export default class MappingUtils {
     static toShoppingList(jsonResult: any): IShoppingList {
         let shoppinglist = <IShoppingList>({
             list_id: jsonResult.shopping_list.list_id,
+            name: jsonResult.shopping_list.name,
             user_id: jsonResult.shopping_list.user_id,
             created: jsonResult.shopping_list.created,
             list_type: jsonResult.shopping_list.list_type,
             item_count: jsonResult.shopping_list.item_count,
             updated: jsonResult.shopping_list.updated,
             layout_type: jsonResult.shopping_list.list_layout_type,
-            dish_sources: jsonResult.shopping_list.dish_sources != null ? jsonResult.shopping_list.dish_sources.map(MappingUtils._toItemSource) : null,
-            list_sources: jsonResult.shopping_list.list_sources != null ? jsonResult.shopping_list.list_sources.map(MappingUtils._toItemSource) : null,
+            source_keys: jsonResult.shopping_list.source_keys != null ? jsonResult.shopping_list.source_keys.map(MappingUtils._toItemSource) : null,
             categories: jsonResult.shopping_list.categories != null ? jsonResult.shopping_list.categories.map(MappingUtils._toCategory) : null
         });
 
@@ -79,8 +79,7 @@ export default class MappingUtils {
         let item = <Item>({
             list_id: jsonResult.list_id,
             item_id: jsonResult.item_id,
-            dish_sources: jsonResult.dish_sources != null ? jsonResult.dish_sources.map(MappingUtils._toItemSource) : null,
-            list_sources: jsonResult.list_sources != null ? jsonResult.list_sources.map(MappingUtils._toItemSource) : null,
+            source_keys: jsonResult.source_keys != null ? jsonResult.source_keys.map(MappingUtils._toItemSource) : null,
             added: jsonResult.added,
             tag_id: jsonResult.tag_id,
             used_count: jsonResult.used_count,
