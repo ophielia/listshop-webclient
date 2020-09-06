@@ -37,5 +37,7 @@ export class SingleListElementComponent implements OnInit {
     this.delete.emit(this.listId);
   }
 
-
+  editList() {
+    this.edit.emit(this.listId);
+  }
 }
