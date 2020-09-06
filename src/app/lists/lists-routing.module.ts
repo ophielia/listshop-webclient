@@ -25,6 +25,15 @@ const routes: Routes = [
       content: 'The List Shop | Edit List'
     }
   },
+  {
+    path: '',
+    component: ManageListsComponent,
+    data: {
+      title: 'The List Shop | Lists',
+      content: 'The List Shop | Lists'
+    },
+    canActivate: [AuthGuardHandler]
+  },
 ];
 
 @NgModule({

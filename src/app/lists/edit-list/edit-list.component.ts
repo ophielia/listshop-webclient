@@ -19,7 +19,7 @@ export class EditListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fix.addFixBlog();
+
     this.title.setTitle( this.route.snapshot.data['title']);
   }
 
