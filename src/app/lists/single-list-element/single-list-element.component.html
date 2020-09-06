@@ -1,11 +1,11 @@
 
 <!--single list element start-->
 <div class="ls-card">
-    <div class="ls-list-element-title">List Name</div>
-    <div>Item Count</div>
+    <div class="ls-list-element-title">{{listName}}</div>
+    <div>{{itemCount}} Items</div>
     <div class="ls-card-link-block">
-            <div class="ls-card-link">Action1</div>
-            <div class="ls-card-link">Action2</div>
+            <a class="ls-card-link" (click)="deleteList()">delete</a>
+            <a class="ls-card-link">edit</a>
     </div>
     <div class="clearfix"></div>
 </div>

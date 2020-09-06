@@ -17,6 +17,7 @@ import { ListShopHeaderComponent } from './list-shop-header/list-shop-header.com
 import {AuthenticationService} from "./services/authentication.service";
 import { AlertComponent } from './alert/alert.component';
 import {AlertService} from "./services/alert.service";
+import {ListService} from "./services/list.service";
 
 @NgModule({
   exports: [
@@ -44,7 +45,8 @@ import {AlertService} from "./services/alert.service";
   providers: [
     WINDOW_PROVIDERS,
     LandingFixService,
-      AuthenticationService
+      AuthenticationService,
+      ListService
   ]
 })
 export class SharedModule { }

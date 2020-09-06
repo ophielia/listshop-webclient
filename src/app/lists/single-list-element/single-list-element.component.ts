@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
+import {ShoppingList} from "../../model/shoppinglist";
 
 @Component({
   selector: 'app-single-list-element',
@@ -9,6 +10,12 @@ import {Meta, Title} from "@angular/platform-browser";
   styleUrls: ['./single-list-element.component.css']
 })
 export class SingleListElementComponent implements OnInit {
+
+  @Input() listName: string = "List";
+  @Input() itemCount: number;
+  @Input() listId: string;
+  @Output() delete: EventEmitter<String> = new EventEmitter<String>();
+  @Output() edit: EventEmitter<String> = new EventEmitter<String>();
 
   constructor(
       private fix: LandingFixService,
@@ -25,5 +32,10 @@ export class SingleListElementComponent implements OnInit {
   ngOnDestroy() {
    // this.fix.removeFixBlogDetails();
   }
+
+  deleteList() {
+    this.delete.emit(this.listId);
+  }
+
 
 }
