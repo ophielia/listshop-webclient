@@ -785,86 +785,7 @@
       }
     }
 
-    .home-style-two,
-    .three {
-      .navbar-light {
-        .navbar-nav {
-          .nav-link {
-            color: $white;
-            opacity: 0.95;
-            &.active {
-              opacity: 1;
-            }
-          }
-        }
-      }
-      .navbar-brand {
-        filter: brightness(0) invert(1);
-      }
-      .darkHeader {
-        .navbar-brand {
-          filter: none;
-        }
-        &.navbar-light {
-          .navbar-nav {
-            .nav-link {
-              color: $color_tundora;
-            }
-            .active {
-              >.nav-link {
-                color: $white;
-              }
-            }
-          }
-        }
-      }
-      .home-contain {
-        color: $white;
-      }
-      &.navbar-light {
-        .navbar-nav {
-          .nav-link {
-            &:focus {
-              color: $white !important;
-            }
-          }
-        }
-      }
-      .theme-nav {
-        .navbar-nav {
-          .active {
-            >.nav-link {
-              color: $white;
-            }
-          }
-        }
-      }
-      .navbar-nav {
-        .dropdown-menu {
-          .nav-link:hover {
-            color: $color_bright_turquoise !important;
-          }
-        }
-      }
-      .navbar {
-        ul {
-          &.navbar {
-            li {
-              &.nav-item {
-                a {
-                  color: $white;
-                }
-              }
-            }
-          }
-        }
-      }
-      .modal.video-play {
-        //.modal-dialog {
-        //  @extend %extend_3;
-        //}
-      }
-    }
+
 
     .home-style {
       .navbar-brand {
@@ -2503,31 +2424,7 @@
       }
     }
 
-    .home-style-two,
-    .three {
-      .navbar-light {
-        .default-nav {
-          .navbar-nav {
-            .nav-link {
-              &.active {
-                color: $white;
-              }
-            }
-          }
-        }
-        &.darkHeader {
-          .default-nav {
-            .navbar-nav {
-              .nav-link {
-                &.active {
-                  color: $color_bright_turquoise;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+
 
     .three .navbar-nav .dropdown-menu .nav-link:hover {
       color: $color_bright_turquoise !important;

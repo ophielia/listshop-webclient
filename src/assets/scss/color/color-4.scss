@@ -191,7 +191,7 @@ h1 {
 }
 
 .feature-phone img {
-  filter: hue-rotate(335deg);
+  filter: hue-rotate(0deg);
 }
 
 .about-circle1 img {
@@ -203,7 +203,7 @@ h1 {
 }
 
 .feature-style .feature-icon img {
-  filter: hue-rotate(335deg);
+  filter: hue-rotate(0deg);
 }
 
 .feature-circle1 img {
@@ -438,7 +438,7 @@ h1 {
   .nav-item {
     &:hover {
       .nav-link {
-        color: $color_caribbean_green;
+        color: $black;
       }
     }
     &.dropdown {
