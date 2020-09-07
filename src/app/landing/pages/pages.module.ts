@@ -12,7 +12,6 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { FaqComponent } from './faq/faq.component';
 import { DownloadComponent } from './download/download.component';
 import { ComingsoonComponent } from './comingsoon/comingsoon.component';
-import { EmailTemplateComponent } from './email-template/email-template.component';
 
 
 @NgModule({
@@ -31,8 +30,7 @@ import { EmailTemplateComponent } from './email-template/email-template.componen
     ErrorPageComponent,
     FaqComponent,
     DownloadComponent,
-    ComingsoonComponent,
-    EmailTemplateComponent
+    ComingsoonComponent
    ]
 })
 export class PagesModule { }

@@ -8,7 +8,6 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { FaqComponent } from './faq/faq.component';
 import { DownloadComponent } from './download/download.component';
 import { ComingsoonComponent } from './comingsoon/comingsoon.component';
-import { EmailTemplateComponent } from './email-template/email-template.component';
 
 const routes: Routes = [
   {
@@ -61,13 +60,6 @@ const routes: Routes = [
         component: ComingsoonComponent,
         data: {
           title: 'Comming-Soon | Template Landing Page'
-        }
-      },
-      {
-        path: 'email-template',
-        component: EmailTemplateComponent,
-        data: {
-          title: 'Email-Template | Template Landing Page'
         }
       }
     ]
