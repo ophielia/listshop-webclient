@@ -62,7 +62,7 @@ export default class MappingUtils {
         let category = <Category>({
             name: jsonResult.name,
             items: jsonResult.items.map(MappingUtils._toItem),
-            category_type: jsonResult.category_type,
+            //category_type: jsonResult.category_type,
             subcategories: jsonResult.subcategories ? jsonResult.subcategories.map(MappingUtils._toCategory) : null
 
         });

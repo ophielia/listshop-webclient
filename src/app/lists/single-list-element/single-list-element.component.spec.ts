@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {SingleListElementComponent} from "./single-list-element.component";
 
-import { SingleListElementComponent } from './manage-lists.component';
+
 
 describe('ManageListsComponent', () => {
   let component: SingleListElementComponent;

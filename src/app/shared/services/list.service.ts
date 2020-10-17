@@ -7,6 +7,7 @@ import MappingUtils from "../../model/mapping-utils";
 import {IShoppingList} from "../../model/shoppinglist";
 import {NGXLogger} from "ngx-logger";
 import {CreateListPost} from "../../model/create-list-post";
+import {IItem} from "../../model/item";
 
 @Injectable()
 export class ListService {
@@ -37,6 +38,18 @@ export class ListService {
                 catchError(this.handleError));
     }
 
+    getById(shoppingListId: string): Observable<IShoppingList> {
+        this.logger.debug("Retrieving shopping lists for id:" + shoppingListId);
+        var url = this.listUrl + "/" + shoppingListId;
+
+        return this.httpClient.get(url)
+            .pipe(map((response: HttpResponse<any>) => {
+                    // map and return
+                    return this.mapShoppingList(response);
+                }),
+                catchError(this.handleError));
+    }
+
     deleteList(list_id: string) {
         var url = this.listUrl + "/" + list_id;
         return this.httpClient.delete(url);
@@ -52,7 +65,18 @@ export class ListService {
         return this.httpClient.post(this.listUrl, JSON.stringify(createListPost));
     }
 
+    static getCrossedOff(shoppingList: IShoppingList):IItem[] {
+        if (!shoppingList.categories || shoppingList.categories.length == 0) {
+            return [];
+        }
 
+        let allItems = shoppingList.categories
+            .map(c => c.allItems().filter(i => i.crossed_off));
+
+        //return allItems;
+        return allItems
+            .reduce(function(a,b){ return a.concat(b) }, []);
+    }
     handleError(error: any) {
         // log error
         // could be something more sophisticated
@@ -72,5 +96,11 @@ export class ListService {
         return null;
     }
 
+    mapShoppingList(object: Object): IShoppingList {
+        if (object) {
+            return MappingUtils.toShoppingList(object);
+        }
+        return null;
+    }
 
 }
