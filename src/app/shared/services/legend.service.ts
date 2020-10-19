@@ -26,7 +26,9 @@ export class LegendService {
     }
 
     processLegend(sources: Array<LegendSource>): Map<string, LegendPoint> {
-
+        if (!sources) {
+            return new Map();
+        }
         var existingSources: Array<LegendIconSource> = [];
         var existingLegends:LegendPoint[] = [];
         var apiToAdd: Array<LegendSource> = [];

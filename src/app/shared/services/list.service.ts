@@ -70,11 +70,11 @@ export class ListService {
             return [];
         }
 
-        let allItems = shoppingList.categories
-            .map(c => c.allItems().filter(i => i.crossed_off));
+        let allofthem = shoppingList.categories
+            .map(c => c.items.filter(i => i.crossed_off));
 
-        //return allItems;
-        return allItems
+
+        return allofthem
             .reduce(function(a,b){ return a.concat(b) }, []);
     }
     handleError(error: any) {
