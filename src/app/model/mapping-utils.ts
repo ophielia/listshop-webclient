@@ -5,6 +5,7 @@ import {Category} from "./category";
 import {Item} from "./item";
 import {ITag} from "./tag";
 import {Dish} from "./dish";
+import {ILegendSource, LegendSource} from "./legend-source";
 
 
 
@@ -36,8 +37,8 @@ export default class MappingUtils {
             item_count: jsonResult.shopping_list.item_count,
             updated: jsonResult.shopping_list.updated,
             layout_type: jsonResult.shopping_list.list_layout_type,
-            source_keys: jsonResult.shopping_list.source_keys != null ? jsonResult.shopping_list.source_keys.map(MappingUtils._toItemSource) : null,
-            categories: jsonResult.shopping_list.categories != null ? jsonResult.shopping_list.categories.map(MappingUtils._toCategory) : null
+            categories: jsonResult.shopping_list.categories != null ? jsonResult.shopping_list.categories.map(MappingUtils._toCategory) : null,
+            legend: jsonResult.shopping_list.legend != null ? jsonResult.shopping_list.legend.map(MappingUtils._toLegend) : []
         });
 
         if (MappingUtils.showConsoleLogs) {
@@ -45,17 +46,6 @@ export default class MappingUtils {
         }
         return shoppinglist;
 
-    }
-
-    private static _toItemSource(jsonResult: any): ItemSource {
-        let source = <ItemSource>({
-            id: jsonResult.id,
-            display: jsonResult.display,
-            type: jsonResult.type,
-            disp_class: null,
-        });
-
-        return source;
     }
 
     private static _toCategory(jsonResult: any): Category {
@@ -79,7 +69,7 @@ export default class MappingUtils {
         let item = <Item>({
             list_id: jsonResult.list_id,
             item_id: jsonResult.item_id,
-            source_keys: jsonResult.source_keys != null ? jsonResult.source_keys.map(MappingUtils._toItemSource) : null,
+            source_keys: jsonResult.source_keys ,
             added: jsonResult.added,
             tag_id: jsonResult.tag_id,
             used_count: jsonResult.used_count,
@@ -123,5 +113,14 @@ export default class MappingUtils {
             })
         ;
         return dish;
+    }
+
+    private static _toLegend(r: any) : LegendSource {
+
+        let legend = <ILegendSource>({
+            key: r.key,
+            display: r.display
+        });
+        return legend;
     }
 }

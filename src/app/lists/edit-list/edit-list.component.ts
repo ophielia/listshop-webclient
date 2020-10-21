@@ -8,6 +8,7 @@ import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
 import {Category, ICategory} from "../../model/category";
+import {IItem, Item} from "../../model/item";
 
 @Component({
     selector: 'app-edit-list',
@@ -19,13 +20,16 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     private crossedOffExist: boolean;
     private crossedOffHidden: boolean;
-    shoppingList: ShoppingList;
     private showMakeStarter: boolean;
-    private canShowLegend: boolean;
     listLegendMap: Map<string, LegendPoint>;
     legendList: LegendPoint[] = [];
     private highlightSourceId: string;
     private showPantryItems: boolean;
+    private showItemLegends: boolean;
+
+    shoppingList: ShoppingList;
+    removedItems: IItem[] = [];
+
 
     constructor(
         private fix: LandingFixService,
@@ -62,28 +66,44 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
+    removeTagFromList(item: Item) {
+
+        let $sub = this.listService.removeItemFromShoppingList(this.shoppingList.list_id, item.item_id,
+            item.tag.tag_id)
+            .subscribe(() => {
+                this.getShoppingList(this.shoppingList.list_id);
+                this.markItemRemoved(item);
+            });
+        this.unsubscribe.push($sub);
+    }
+
+    markItemRemoved(item: IItem) {
+        this.removedItems.push(item);
+    }
+
+    showLegends(item: Item) {
+        if (!this.showItemLegends) {
+            return false;
+        }
+        return item.source_keys && item.source_keys.length > 0;
+    }
+
+    iconSourceForKey(key: string, withCircle: boolean) : string {
+        let circleOrColor = withCircle ? "circles" : "colors"
+        // assets/images/legend/colors/blue/bowl.png
+        let  point = this.listLegendMap.get(key);
+        if (!point) {
+            return null;
+        }
+        return "assets/images/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
+    }
 
     private processRetrievedShoppingList(p: IShoppingList) {
         this.determineCrossedOff(p);
         this.prepareLegend(p);
         this.shoppingList = this.filterForDisplay(p);
         this.showMakeStarter = !this.shoppingList.is_starter;
-        this.canShowLegend = this.newEvaluateShowLegend();
-
-        // check for starter and pantry
-        /* MM
-               if (this.shoppingList.is_starter && this.showPantryItems) {
-             this.showPantryItems = false;
-             this.getShoppingList(this.shoppingListId);
-           }
-       */
-        /*
-                // sort legend points by display
-          unsortedLegendPoints.sort((a,b) => {
-            return (a.display < b.display) ? -1 : 1;
-          });
-         */
-
+        this.showItemLegends = this.newEvaluateShowLegend();
     }
 
 
@@ -104,6 +124,7 @@ export class EditListComponent implements OnInit, OnDestroy {
             return a.display.toLowerCase().localeCompare(b.display.toLowerCase());
         });
         this.legendList = collectedValue;
+
     }
 
     private filterForDisplay(shoppingList: IShoppingList): IShoppingList {

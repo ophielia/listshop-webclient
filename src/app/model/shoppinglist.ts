@@ -13,7 +13,6 @@ export interface IShoppingList {
   layout_type: string;
   item_count: number;
   name: string;
-  source_keys: IItemSource[];
   legend: ILegendSource[];
 }
 
@@ -30,7 +29,6 @@ export class ShoppingList implements IShoppingList {
   layout_type: string;
   item_count: number;
   name: string;
-  source_keys: IItemSource[];
   legend: ILegendSource[];
 }
 

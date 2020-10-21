@@ -8,6 +8,7 @@ import {IShoppingList} from "../../model/shoppinglist";
 import {NGXLogger} from "ngx-logger";
 import {CreateListPost} from "../../model/create-list-post";
 import {IItem} from "../../model/item";
+import {ItemOperationPut} from "../../model/item-operation-put";
 
 @Injectable()
 export class ListService {
@@ -63,6 +64,23 @@ export class ListService {
         createListPost.name = listName;
 
         return this.httpClient.post(this.listUrl, JSON.stringify(createListPost));
+    }
+
+    removeItemFromShoppingList(shoppingList_id: string,
+                               item_id: string,
+                               tag_id: string): Observable<Object> {
+
+        var tagIds: Array<string> = [tag_id];
+        let itemOperation = <ItemOperationPut>({
+                destination_list_id: '0',
+                operation: 'Remove',
+                tag_ids: tagIds
+            }
+        );
+        var url: string = this.listUrl + "/" + shoppingList_id + "/item"
+        var payload = JSON.stringify(itemOperation);
+
+        return this.httpClient.post(url, payload);
     }
 
     static getCrossedOff(shoppingList: IShoppingList):IItem[] {

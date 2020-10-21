@@ -2,25 +2,50 @@
 <div class="breadcrumb-bg">
     <div class="container">
         <div class="row">
-            <div class="col-md-5 col-sm-12 col-text-center d-align-center">
-                <h2 class="title">{{shoppingList ? shoppingList.name: 'none'}}</h2>
+            <div class="col-sm-12 col-md-8 col-lg-10">
+                <h2 class="title">{{shoppingList ? shoppingList.name : 'none'}}</h2>
             </div>
-            <div class="col-md-7 col-sm-12 col-text-center">
+            <div class="col-md-4 col-lg-2 order-md-last">
                 All Lists
             </div>
         </div>
     </div>
 </div>
 <!--breadcrumb end -->
-<!-- blog Section starts -->
+<!-- list Section starts -->
 <section>
     <div class="container">
         <div class="row">
             <!-- blog details starts -->
             <div class="col-sm-12 col-md-8 col-lg-10">
                 <div *ngIf="shoppingList" class="row">
-                    <div *ngFor="let category of shoppingList.categories, let i = index" class="col-sm-12 col-med-6 col-lg-6">
+                    <div *ngFor="let category of shoppingList.categories, let i = index"
+                         class="col-sm-12 col-med-6 col-lg-6">
                         {{category.name}}
+
+                        <div class="row">
+
+                            <div class="col-sm-12 col-med-12 col-lg-6" *ngFor="let item of category.items"
+                                 (dblclick)="removeTagFromList(item)">
+                                <div class="row">
+                                    <span class="{{item.crossed_off ? 'itemCrossedOff': ''}}">
+                                        {{item.tag.name}}</span>
+                                        <ng-container *ngIf="!(category.is_frequent)">
+                                            <span *ngIf="item.used_count > 1 && !showItemLegends">({{item.used_count}})</span>
+                                            <span *ngIf="showLegends(item)" class="legend-combined-box">
+                                        <ng-container *ngFor="let dishSource of item.source_keys">
+                                            <span *ngIf="iconSourceForKey(dishSource, false)" class="legend-box">
+                                            <img [src]="iconSourceForKey(dishSource, false)" width="15" height="15"/></span>
+                                        </ng-container>
+                                    </span>
+
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -29,96 +54,94 @@
             <div class="col-md-4 col-lg-2 order-md-last list-sidebar">
                 <div class="sidebar">
                     <div class="sidebar-space">
-                        <h4 class="blog-title">blog Category</h4>
+                        <h4 class="blog-title">Add to List</h4>
                         <div class="blog-divider"></div>
-                        <div class="blog-cat-detail">
+                        <div class="blog-cat-detail" style="display:none">
                             <ul>
+
                                 <li class="marg-15">
                                     <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i> Lorem Ipsum is simply
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add from List
+
+
                                     </a>
                                 </li>
                                 <li class="marg-15">
                                     <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i> There Are Many
-                                        Variations
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
                                     </a>
                                 </li>
                                 <li class="marg-15">
                                     <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i> it has survived not
-                                        only five
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add Item
                                     </a>
                                 </li>
                                 <li class="marg-15">
                                     <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i> Lorem Ipsum has been
-                                        the.
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
+
+
                                     </a>
                                 </li>
                                 <li class="marg-15">
                                     <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i> Lorem Ipsum is random.
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Show Frequent
+                                    </a>
+                                </li>
+                                <li class="marg-15">
+                                    <a [routerLink]="'/blog/list'">
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
+                                    </a>
+                                </li>
+                                <li class="marg-15">
+                                    <a [routerLink]="'/blog/list'">
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Clear List
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
+                </div>
+                <!-- legend -->
+                <div class="sidebar">
                     <div class="sidebar-space">
-                        <h4 class="blog-title">Popular Tag</h4>
-                        <div class="blog-divider"></div>
-                        <div class="tags marg-20">
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span class="badge badge-theme">Responsive design</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span class="badge badge-theme">Color options</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span class="badge badge-theme">Multiple demos</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span class="badge badge-theme">Dedicated support</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span class="badge badge-theme">Documentation</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span class="badge badge-theme">PSD is included</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span
-                                    class="badge badge-theme">Text</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span
-                                    class="badge badge-theme">Support</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span
-                                    class="badge badge-theme">Responsive</span></a>
-                            <a [routerLink]="'/blog/details-right-sidebar'"><span
-                                    class="badge badge-theme">Design</span></a>
-                        </div>
-                    </div>
-                    <h4 class="blog-title">Recent Post</h4>
-                    <div class="blog-divider"></div>
-                    <div class="recent-blog marg-20">
-                        <div class="media">
-                            <img class="mr-3" src="../../../../assets/images/blog/1.jpg" alt="blog">
-                            <div class="media-body">
-                                <a [routerLink]="'/blog/list'">
-                                    <h5 class="mt-0">Lorem Ipsum Is Simply Dummy</h5>
-                                </a>
-                                <p class="m-0">05 March 2011</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img class="mr-3" src="../../../../assets/images/blog/2.jpg" alt="blog">
-                            <div class="media-body">
-                                <a [routerLink]="'/blog/list'">
-                                    <h5 class="mt-0">Lorem Ipsum has been the</h5>
-                                </a>
-                                <p class="m-0">14 january 2015</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img class="mr-3" src="../../../../assets/images/blog/3.jpg" alt="blog">
-                            <div class="media-body">
-                                <a [routerLink]="'/blog/list'">
-                                    <h5 class="mt-0">all the Lorem Ipsum</h5>
-                                </a>
-                                <p class="m-0">30 November 2015</p>
-                            </div>
+                        <div class="blog-cat-detail" >
+                            <ul>
+
+                                <li *ngFor="let source of legendList">
+
+                  <span *ngIf="iconSourceForKey(source.key, true)" class="legend-box">
+            <img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></span>
+                                        <span>{{source.display}}</span>
+                                        <span class="fa-trash fa"></span>
+                                </li>
+
+
+
+
+
+
+                                <li class="marg-15">
+                                    <a [routerLink]="'/blog/list'">
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add from List
+
+
+                                    </a>
+                                </li>
+                                <li class="marg-15">
+                                    <a [routerLink]="'/blog/list'">
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
+                                    </a>
+                                </li>
+
+                            </ul>
                         </div>
                     </div>
                 </div>
+                <!-- end legend -->
             </div>
             <!-- sidebar end -->
         </div>
     </div>
 </section>
-<!-- blog Section End -->
+<!-- list Section End -->
