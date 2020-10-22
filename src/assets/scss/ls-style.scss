@@ -107,13 +107,13 @@ ls-fixed-top.fixed-top {
     }
 
     .ls-logo-img {
-        background-image: url("./images/header/logowhite.png");
-        width: 90px;
-        height: 90px;
-        background-repeat: no-repeat;
-        display: inline-block;
-        text-align: justify;
-        vertical-align: center;
+      background-image: url("./images/header/logowhite.png");
+      width: 90px;
+      height: 90px;
+      background-repeat: no-repeat;
+      display: inline-block;
+      text-align: justify;
+      vertical-align: center;
     }
 
     .ls-logo-title {
@@ -125,6 +125,7 @@ ls-fixed-top.fixed-top {
       font-size: 20px;
       letter-spacing: 1px;
     }
+
     a {
 
       text-transform: uppercase;
@@ -538,6 +539,65 @@ ls-fixed-top.fixed-top {
   }
 }
 
+/* list pages */
+.ls-list-column-header {
+  margin-left: 0px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-width: 1px;
+  border-style: solid;
+  background-color: white;
+  width: 100%;
+  height: auto;
+  padding: 15px; /* margin: 15px; */
+  display: block;
+  text-align: center;
+  border-radius: 10px;
+  text-transform: capitalize;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+  border-color: #979797;
+}
+
+.ls-ingredient-block {
+  margin-left: 0px;
+  margin-right: 0px;
+  background-color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #979797;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-shadow: 4px 4px 12px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  span {
+    text-transform: capitalize;
+    margin-right: 3px
+  }
+}
+
+.ls-legend {
+  background-color: $color_basic_orange;
+  border-radius: 10px;
+
+  ul {
+    padding-inline-start: 0px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 5px;
+    padding-left: 10px
+  }
+
+  li {
+    color: white;
+    padding-bottom: 8px
+  }
+
+  span {
+    padding-right:5px
+  }
+}
+
 /* custom button links */
 .link-button {
   color: $white;
@@ -774,6 +834,8 @@ ls-fixed-top.fixed-top {
   width: 100vw;
   background-image: $url_listmanagement_bg;
   background-size: cover;
+  background-position-x: center;
+  background-position-y: top;
   background-repeat: no-repeat;
   position: relative;
   align-items: center;

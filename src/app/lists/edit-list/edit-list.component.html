@@ -6,7 +6,8 @@
                 <h2 class="title">{{shoppingList ? shoppingList.name : 'none'}}</h2>
             </div>
             <div class="col-md-4 col-lg-2 order-md-last">
-                All Lists
+
+                <a class="nav-link" [routerLink]="'/lists'">All Lists</a>
             </div>
         </div>
     </div>
@@ -17,45 +18,47 @@
     <div class="container">
         <div class="row">
             <!-- blog details starts -->
-            <div class="col-sm-12 col-md-8 col-lg-10">
+            <div class="col-sm-12 col-md-8 col-lg-9">
                 <div *ngIf="shoppingList" class="row">
+                    <!-- start category loop -->
                     <div *ngFor="let category of shoppingList.categories, let i = index"
                          class="col-sm-12 col-med-6 col-lg-6">
-                        {{category.name}}
+                        <div class="ls-list-column-header">
+                            {{category.name}}</div>
 
-                        <div class="row">
-
-                            <div class="col-sm-12 col-med-12 col-lg-6" *ngFor="let item of category.items"
+                        <div class="row ls-ingredient-block" >
+                            <div class="col-sm-12 col-med-12 col-lg-6"
+                                 *ngFor="let item of category.items"
                                  (dblclick)="removeTagFromList(item)">
-                                <div class="row">
+                                <div >
                                     <span class="{{item.crossed_off ? 'itemCrossedOff': ''}}">
                                         {{item.tag.name}}</span>
-                                        <ng-container *ngIf="!(category.is_frequent)">
-                                            <span *ngIf="item.used_count > 1 && !showItemLegends">({{item.used_count}})</span>
-                                            <span *ngIf="showLegends(item)" class="legend-combined-box">
+                                    <ng-container *ngIf="!(category.is_frequent)">
+                                        <span *ngIf="item.used_count > 1 && !showItemLegends">({{item.used_count}}
+                                            )</span>
+                                        <span  *ngIf="showLegends(item)" class="legend-combined-box">
                                         <ng-container *ngFor="let dishSource of item.source_keys">
-                                            <span *ngIf="iconSourceForKey(dishSource, false)" class="legend-box">
-                                            <img [src]="iconSourceForKey(dishSource, false)" width="15" height="15"/></span>
+                                            <span  *ngIf="iconSourceForKey(dishSource, false)" class="legend-box">
+                                            <img [src]="iconSourceForKey(dishSource, false)" width="15"
+                                                 height="15"/></span>
                                         </ng-container>
                                     </span>
 
                                     </ng-container>
                                 </div>
                             </div>
-
                         </div>
-
-
                     </div>
+                    <!-- end category loop -->
+
                 </div>
             </div>
             <!-- blog details end -->
             <!-- sidebar starts -->
-            <div class="col-md-4 col-lg-2 order-md-last list-sidebar">
+            <div class="col-md-4 col-lg-3 order-md-last">
                 <div class="sidebar">
                     <div class="sidebar-space">
                         <h4 class="blog-title">Add to List</h4>
-                        <div class="blog-divider"></div>
                         <div class="blog-cat-detail" style="display:none">
                             <ul>
 
@@ -103,40 +106,16 @@
                     </div>
                 </div>
                 <!-- legend -->
-                <div class="sidebar">
-                    <div class="sidebar-space">
-                        <div class="blog-cat-detail" >
-                            <ul>
-
-                                <li *ngFor="let source of legendList">
-
-                  <span *ngIf="iconSourceForKey(source.key, true)" class="legend-box">
+                <div class="ls-legend">
+                    <ul>
+                        <li *ngFor="let source of legendList">
+                            <span *ngIf="iconSourceForKey(source.key, true)" >
             <img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></span>
-                                        <span>{{source.display}}</span>
-                                        <span class="fa-trash fa"></span>
-                                </li>
+                            <span >{{source.display}}</span>
+                            <span  class="fa-trash fa"></span>
 
-
-
-
-
-
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add from List
-
-
-                                    </a>
-                                </li>
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
                 <!-- end legend -->
             </div>
