@@ -25,6 +25,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     private showMakeStarter: boolean;
     listLegendMap: Map<string, LegendPoint>;
     legendList: LegendPoint[] = [];
+    showActions: boolean = true;
     private highlightSourceId: string;
     private showPantryItems: boolean;
     private showItemLegends: boolean;
@@ -89,6 +90,11 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
 
     }
+
+    toggleShowActions() {
+        this.showActions = !this.showActions;
+    }
+
     markItemRemoved(item: IItem) {
         this.removedItems.push(item);
     }

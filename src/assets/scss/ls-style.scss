@@ -571,6 +571,49 @@ ls-fixed-top.fixed-top {
   }
 }
 
+.ls-card-contents {
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 3px;
+
+      a {
+        color: $color_tapa;
+        text-transform: capitalize;
+        font-size: 14px;
+        text-decoration: none;
+        transition: 0.3s ease;
+        font-weight: 500;
+
+        &:hover {
+          color: $color_basic_orange;
+          transition: 0.3s ease;
+        }
+      }
+
+      i {
+        margin-right: 15px;
+      }
+
+    }
+
+    .marg-15 {
+      margin: 15px auto;
+    }
+  }
+
+  .action-button-right {
+    width: 100%;
+    text-align: right;
+
+    img.sm-button {
+      width: 20px;
+    }
+  }
+}
+
 /* list pages */
 .ls-list-column-header {
   margin-left: 0px;
@@ -626,7 +669,7 @@ ls-fixed-top.fixed-top {
   }
 
   span {
-    padding-right:5px
+    padding-right: 5px
   }
 }
 
@@ -840,7 +883,7 @@ ls-fixed-top.fixed-top {
 
 /** functional pages **/
 .ls-theme-functional {
-  margin-top: 125px;
+  margin-top: 138px;
 
   section {
     padding-top: 0px;

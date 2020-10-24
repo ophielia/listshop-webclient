@@ -17,7 +17,7 @@
 <section>
     <div class="container">
         <div class="row">
-            <!-- blog details starts -->
+            <!-- shopping list starts -->
             <div class="col-sm-12 col-md-8 col-lg-9">
                 <div *ngIf="shoppingList" class="row">
                     <!-- start category loop -->
@@ -54,58 +54,56 @@
 
                 </div>
             </div>
-            <!-- blog details end -->
+            <!-- shopping list ends -->
             <!-- sidebar starts -->
             <div class="col-md-4 col-lg-3 order-md-last">
-                <div class="sidebar">
-                    <div class="sidebar-space">
-                        <h4 class="blog-title">Add to List</h4>
-                        <div class="blog-cat-detail" style="display:none">
-                            <ul>
-
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add from List
-
-
-                                    </a>
-                                </li>
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
-                                    </a>
-                                </li>
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Add Item
-                                    </a>
-                                </li>
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
-
-
-                                    </a>
-                                </li>
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Show Frequent
-                                    </a>
-                                </li>
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
-                                    </a>
-                                </li>
-                                <li class="marg-15">
-                                    <a [routerLink]="'/blog/list'">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>Clear List
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                <!-- actions -->
+                <div class="ls-flat-card ls-card-contents">
+                    <ul *ngIf="showActions">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add from List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add Item
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Show Frequent
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Clear List
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="action-button-right">
+                    <a (click)="toggleShowActions()">
+                        <img *ngIf="showActions" class="sm-button" src="assets/images/buttons/chevronsup.png" alt="add">
+                        <img *ngIf="!showActions" class="sm-button" src="assets/images/buttons/chevronsdown.png" alt="add">
+                    </a>
                     </div>
                 </div>
+                <!-- end actions -->
                 <!-- legend -->
                 <div class="ls-legend">
                     <ul>
