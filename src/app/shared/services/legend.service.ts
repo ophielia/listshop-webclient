@@ -10,6 +10,7 @@ export class LegendService {
     static ICON_IMAGES = ["saltandpepper", "skimmer", "spatula2", "grill", "bowl", "cutting board", "fork", "grater", "grill", "ketchup bottle", "knife", "ladle", "measuring cup", "pot", "rollingpin"];
     static instance: LegendService;
     legendLookup = new Map();
+    placeholderSource: LegendIconSource
 
     constructor() {
         // If the static reference doesn't exist
@@ -17,6 +18,9 @@ export class LegendService {
         // set it to the newly instantiated object of this class
         if (!LegendService.instance) {
             LegendService.instance = this;
+            this.placeholderSource =  new LegendIconSource();
+            this.placeholderSource.color = "orange";
+            this.placeholderSource.icon = "placeholder";
         }
 
         // Return the static instance of the class
@@ -134,17 +138,23 @@ export class LegendService {
             }
 
         }
-        // now gather required amount of point sources from the pool
+        while  (pool.length <= count) {
+            pool.push(this.placeholderSource)
+        }
+        // now gather required number of point sources from the pool
         var results: LegendIconSource[] = [];
         var resultsTarget = Math.min(count, pool.length);
+
         var poolIndex = startIndex;
         while (results.length < resultsTarget) {
-            results.push(pool[poolIndex]);
+            let nextSource = pool[poolIndex];
+            results.push(nextSource);
             if (poolIndex == pool.length - 1) {
                 poolIndex = 0;
             } else {
                 poolIndex = poolIndex + 1;
             }
+
 
         }
         return results;

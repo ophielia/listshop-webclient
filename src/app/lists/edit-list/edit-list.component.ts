@@ -9,6 +9,8 @@ import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
 import {Category, ICategory} from "../../model/category";
 import {IItem, Item} from "../../model/item";
+import {Tag} from "../../model/tag";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
     selector: 'app-edit-list',
@@ -38,6 +40,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         private meta: Meta,
         private listService: ListService,
         public legendService: LegendService,
+        private logger: NGXLogger,
     ) {
     }
 
@@ -46,7 +49,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.title.setTitle(this.route.snapshot.data['title']);
         this.route.params.subscribe(params => {
             let id = params['id'];
-            console.log('getting list with id: ', id);
+            this.logger.debug('getting list with id: ', id);
             this.getShoppingList(id);
         });
     }
@@ -77,6 +80,15 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
+    toggleItemCrossedOff(item: Item) {
+        let $sub = this.listService.setItemCrossedOff(this.shoppingList.list_id, item.item_id,
+            !item.crossed_off)
+            .subscribe(() => {
+                this.getShoppingList(this.shoppingList.list_id);
+            });
+        this.unsubscribe.push($sub);
+
+    }
     markItemRemoved(item: IItem) {
         this.removedItems.push(item);
     }
@@ -98,8 +110,29 @@ export class EditListComponent implements OnInit, OnDestroy {
         return "assets/images/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
     }
 
+    reAddItem(item: IItem) {
+        this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id );
+        if (item.tag) {
+            this.addTagToList(item.tag);
+        }
+    }
+
+    clearRemoved() {
+        this.removedItems = []
+    }
+
+
+    addTagToList(tag: Tag) {
+        // add tag to list as item in back end
+        let $sub = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag)
+            .subscribe(() => {
+                this.getShoppingList(this.shoppingList.list_id);
+            });
+        this.unsubscribe.push($sub);
+    }
+
     private processRetrievedShoppingList(p: IShoppingList) {
-        this.determineCrossedOff(p);
+        this.determineCrossedOffPresent(p);
         this.prepareLegend(p);
         this.shoppingList = this.filterForDisplay(p);
         this.showMakeStarter = !this.shoppingList.is_starter;
@@ -107,7 +140,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
 
-    private determineCrossedOff(shoppingList: IShoppingList) {
+    private determineCrossedOffPresent(shoppingList: IShoppingList) {
         let crossedOff = ListService.getCrossedOff(shoppingList);
         this.crossedOffExist = crossedOff.length > 0;
     }

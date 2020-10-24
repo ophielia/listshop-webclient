@@ -70,6 +70,9 @@ ls-fixed-top.fixed-top {
   transition: all 0.3s ease;
 }
 
+.itemCrossedOff {
+  text-decoration: line-through;
+}
 
 /* header */
 .home-style-two,
@@ -510,7 +513,7 @@ ls-fixed-top.fixed-top {
   }
 }
 
-/* card base */
+/* card bases */
 .ls-card {
   border-width: 1.0px;
   border-style: solid;
@@ -535,6 +538,35 @@ ls-fixed-top.fixed-top {
       &:hover {
         color: $color_basic_orange
       }
+    }
+  }
+}
+
+.ls-flat-card {
+  border-width: 1.0px;
+  border-style: solid;
+  background-color: white;
+  width: 100%;
+  height: auto;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: block;
+  border-radius: 10px;
+  border-color: #979797;
+
+  h3 {
+    margin-top: 0px
+  }
+
+  .ls-card-link {
+    padding-left: 10px;
+    text-transform: uppercase;
+    width: 100%;
+    text-align: right;
+
+    &:hover {
+      color: $color_basic_orange
     }
   }
 }

@@ -7,8 +7,9 @@ import MappingUtils from "../../model/mapping-utils";
 import {IShoppingList} from "../../model/shoppinglist";
 import {NGXLogger} from "ngx-logger";
 import {CreateListPost} from "../../model/create-list-post";
-import {IItem} from "../../model/item";
+import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
+import {ITag} from "../../model/tag";
 
 @Injectable()
 export class ListService {
@@ -80,7 +81,23 @@ export class ListService {
         var url: string = this.listUrl + "/" + shoppingList_id + "/item"
         var payload = JSON.stringify(itemOperation);
 
-        return this.httpClient.post(url, payload);
+        return this.httpClient.put(url, payload);
+    }
+
+    setItemCrossedOff(shoppingList_id: string,
+                               item_id: string,
+                               crossedOff: boolean): Observable<Object> {
+
+        var url: string = this.listUrl + "/" + shoppingList_id + "/item/shop/" + item_id + "?crossOff=" + crossedOff
+
+        return this.httpClient.post(url, null);
+    }
+
+    addTagItemToShoppingList(shoppingList_id: string, tag: ITag): Observable<Object> {
+        let item: Item = <Item>{tag_id: tag.tag_id};
+        let url = this.listUrl + "/" + shoppingList_id + "/tag/" + tag.tag_id
+
+        return this.httpClient.post(url, item);
     }
 
     static getCrossedOff(shoppingList: IShoppingList):IItem[] {
