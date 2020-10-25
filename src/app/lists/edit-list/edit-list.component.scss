@@ -1,0 +1,35 @@
+@import '../../../assets/scss/variable';
+
+.action-link {
+  color: $color_tapa;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    color: $color_basic_orange;
+    transition: all 0.2s ease;
+  }
+
+  .fa {
+    margin-right: 5px;
+  }
+}
+
+table {
+  width: 100%;
+
+  tr {
+    td {
+      text-align: left;
+      text-transform: capitalize;
+    }
+
+    td:nth-child(1) {
+      width: 10%;
+    }
+
+    td:nth-child(3) {
+      width: 10%
+    }
+  }
+}

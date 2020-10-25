@@ -1,44 +1,4 @@
-/*-----------------------------------------------------------------------------------
 
-Template Name:TOVO APP
-Template URI: http://themes.pixelstrap.com/tovo
-Description: This is App Landing Page
-Author: Pixelstrap
-Author URI: https://themeforest.net/user/pixelstrap
-
------------------------------------------------------------------------------------
-
-/* 01. General CSS */
-/* 02. Landing Page css */
-/* 03. Menu CSS.about-text
-- 03.1 home style two menu css */
-/* 04. Home CSS
-- 04.1 home style two
-- 04.2 animated css */
-/* 05. About */
-/* 06. Feature */
-/* 07. Screenshot */
-/* 08. Team */
-/* 09. Blog
-- 08.1 blogs page */
-/* 10. Price */
-/* 11. Testimonial
-- 11.1 Testimonial img effact */
-/* 12. Contact-us */
-/* 13. Footer */
-/* 14. Pre-loader */
-/* 15. Animation */
-/* 16. color picker */
-/* 17. Download Page */
-/* 18. Sign In */
-/* 19. Thank You Page */
-/* 20. 404 Page */
-/* 21. Review Page  */
-/* 22. Faq Page  */
-/* 23. Coming soon Page  */
-/*=====================
-01.General CSS start
-==========================*/
 
 @import 'variable';
 /** home page **/
@@ -105,12 +65,12 @@ ls-fixed-top.fixed-top {
 
       .ls-logo-img {
         margin-top: 5px;
-        background-image: url("./images/header/logoorange.png");
+        background-image: url("../images/header/logoorange.png");
       }
     }
 
     .ls-logo-img {
-      background-image: url("./images/header/logowhite.png");
+      background-image: url("../images/header/logowhite.png");
       width: 90px;
       height: 90px;
       background-repeat: no-repeat;
@@ -513,6 +473,33 @@ ls-fixed-top.fixed-top {
   }
 }
 
+/* autocomplete */
+.autocomplete-panel {
+  min-width: 100%;
+  max-width: 150%;
+  background-color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  text-transform: capitalize;
+  border-color: #979797;
+  padding:5px;
+  right: 0px;
+}
+
+
+
+.at-tag-select-style {
+  // width:100px
+}
+.ls-autocomplete{
+  display:block;
+  width: inherit;
+  background-color:purple;
+  .p-autocomplete {
+    display:block
+  }
+}
 /* card bases */
 .ls-card {
   border-width: 1.0px;
@@ -633,6 +620,7 @@ ls-fixed-top.fixed-top {
   border-color: #979797;
 }
 
+
 .ls-ingredient-block {
   margin-left: 0px;
   margin-right: 0px;
@@ -665,7 +653,7 @@ ls-fixed-top.fixed-top {
 
   li {
     color: white;
-    padding-bottom: 8px
+    padding-bottom: 2px
   }
 
   span {
@@ -707,6 +695,12 @@ ls-fixed-top.fixed-top {
 
 }
 
+.title-bar-action {
+  text-transform: uppercase;
+  margin: auto;
+  text-align: right;
+}
+
 /** navigation **/
 .ls-theme-functional-nav {
   background-color: white;
@@ -721,7 +715,7 @@ ls-fixed-top.fixed-top {
     }
 
     .ls-logo-img {
-      background-image: url("./images/header/logoorange.png");
+      background-image: url("../images/header/logoorange.png");
       width: 90px;
       height: 90px;
       background-repeat: no-repeat;

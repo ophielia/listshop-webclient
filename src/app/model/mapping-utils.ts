@@ -48,6 +48,16 @@ export default class MappingUtils {
 
     }
 
+    static toDish(r: any): Dish {
+        let dish = MappingUtils._toDish(r.dish);
+
+        if (MappingUtils.showConsoleLogs) {
+            console.log('Parsed dish:', dish);
+        }
+
+        return dish;
+    }
+
     private static _toCategory(jsonResult: any): Category {
         let category = <Category>({
             name: jsonResult.name,

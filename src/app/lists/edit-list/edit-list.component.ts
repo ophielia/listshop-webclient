@@ -11,11 +11,13 @@ import {Category, ICategory} from "../../model/category";
 import {IItem, Item} from "../../model/item";
 import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
+import {IDish} from "../../model/dish";
+import {DishService} from "../../shared/services/dish.service";
 
 @Component({
     selector: 'app-edit-list',
     templateUrl: './edit-list.component.html',
-    styleUrls: ['./edit-list.component.css']
+    styleUrls: ['./edit-list.component.scss']
 })
 export class EditListComponent implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
@@ -26,6 +28,9 @@ export class EditListComponent implements OnInit, OnDestroy {
     listLegendMap: Map<string, LegendPoint>;
     legendList: LegendPoint[] = [];
     showActions: boolean = true;
+    showAddDish: boolean = false;
+    allDishes: IDish[];
+    errorMessage: any;
     private highlightSourceId: string;
     private showPantryItems: boolean;
     private showItemLegends: boolean;
@@ -40,6 +45,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         private title: Title,
         private meta: Meta,
         private listService: ListService,
+        private dishService: DishService,
         public legendService: LegendService,
         private logger: NGXLogger,
     ) {
@@ -53,6 +59,7 @@ export class EditListComponent implements OnInit, OnDestroy {
             this.logger.debug('getting list with id: ', id);
             this.getShoppingList(id);
         });
+        this.getAllDishes();
     }
 
     ngOnDestroy() {
@@ -95,6 +102,10 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.showActions = !this.showActions;
     }
 
+    toggleAddDish() {
+        this.showAddDish = !this.showAddDish;
+    }
+
     markItemRemoved(item: IItem) {
         this.removedItems.push(item);
     }
@@ -116,17 +127,9 @@ export class EditListComponent implements OnInit, OnDestroy {
         return "assets/images/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
     }
 
-    reAddItem(item: IItem) {
-        this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id );
-        if (item.tag) {
-            this.addTagToList(item.tag);
-        }
-    }
-
     clearRemoved() {
         this.removedItems = []
     }
-
 
     addTagToList(tag: Tag) {
         // add tag to list as item in back end
@@ -136,6 +139,34 @@ export class EditListComponent implements OnInit, OnDestroy {
             });
         this.unsubscribe.push($sub);
     }
+
+    reAddItem(item: IItem) {
+        this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id );
+        if (item.tag) {
+            this.addTagToList(item.tag);
+        }
+    }
+
+    getAllDishes() {
+        this.dishService.getAllDishes()
+            .subscribe(p => {
+                    this.allDishes = p;
+                },
+                e => this.errorMessage = e);
+
+    }
+
+    addDishToList(dish: any) {
+        this.listLegendMap = null;
+        let $sub = this.listService.addDishToShoppingList(this.shoppingList.list_id, dish.dish_id)
+            .subscribe(() => {
+                this.highlightSourceId = this.shoppingList.is_starter ? null : "d" + dish.dish_id;
+                this.getShoppingList(this.shoppingList.list_id);
+                this.showAddDish = false;
+            });
+        this.unsubscribe.push($sub);
+    }
+
 
     private processRetrievedShoppingList(p: IShoppingList) {
         this.determineCrossedOffPresent(p);
@@ -152,6 +183,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     private prepareLegend(list: IShoppingList) {
+
         let legendMap = this.legendService.processLegend(list.legend);
         var collectedValue: LegendPoint[] = [];
         this.listLegendMap = new Map();
@@ -205,8 +237,10 @@ export class EditListComponent implements OnInit, OnDestroy {
                     categoryItems.push(item);
                 }
             }
-            category.items = categoryItems;
-            newCategories.push(category);
+            if (categoryItems.length > 0) {
+                category.items = categoryItems;
+                newCategories.push(category);
+            }
         }
         // now, make new category
         var name;
@@ -240,4 +274,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         }
         return this.shoppingList.legend.length > 0;
     }
+
+
+
 }

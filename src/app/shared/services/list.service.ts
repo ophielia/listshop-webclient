@@ -100,6 +100,13 @@ export class ListService {
         return this.httpClient.post(url, item);
     }
 
+    addDishToShoppingList(shoppingList_id: string, dish_id: string): Observable<Object> {
+        let url = this.listUrl + "/" + shoppingList_id + "/dish/" + dish_id;
+        return this
+            .httpClient
+            .post(url,null);
+    }
+
     static getCrossedOff(shoppingList: IShoppingList):IItem[] {
         if (!shoppingList.categories || shoppingList.categories.length == 0) {
             return [];

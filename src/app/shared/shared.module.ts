@@ -18,6 +18,10 @@ import {AuthenticationService} from "./services/authentication.service";
 import { AlertComponent } from './alert/alert.component';
 import {AlertService} from "./services/alert.service";
 import {ListService} from "./services/list.service";
+import {DishService} from "./services/dish.service";
+import {DishSelectComponent} from "./dish-select/dish-select.component";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   exports: [
@@ -25,28 +29,33 @@ import {ListService} from "./services/list.service";
     HeaderComponent,
     FooterComponent,
     LoaderComponent,
-      UserHeaderComponent,
-      ListShopHeaderComponent
+    UserHeaderComponent,
+    ListShopHeaderComponent,
+    DishSelectComponent
 
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    NgxPageScrollModule,
-    NgbModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        NgxPageScrollModule,
+        NgbModule,
+        AutoCompleteModule,
+        FormsModule
+    ],
   declarations: [
     HeaderComponent,
     FooterComponent,
     LoaderComponent,
       UserHeaderComponent,
-      ListShopHeaderComponent
+      ListShopHeaderComponent,
+      DishSelectComponent
   ],
   providers: [
     WINDOW_PROVIDERS,
     LandingFixService,
       AuthenticationService,
-      ListService
+      ListService,
+      DishService
   ]
 })
 export class SharedModule { }
