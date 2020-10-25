@@ -19,11 +19,7 @@
   color: white;
 }
 
-.cancel-button {
-  text-align: left;
-  width: min-content;
-  padding-left: 3px;
-}
+
 
 .autocomplete-input {
   width: 90%;
@@ -38,11 +34,15 @@ table {
     td.first-column {
     width:90%;
   }
-    td:nth-child(2) {
+    td.cancel-button {
     text-align: center;
     background-color: #e67d21;
     color: white;
   }
+    td.no-cancel-button {
+      color: white;
+      background-color: white;
+    }
   }
 
 }

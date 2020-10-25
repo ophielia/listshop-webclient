@@ -521,6 +521,7 @@ ls-fixed-top.fixed-top {
       display: inline;
       padding-left: 10px;
       text-transform: uppercase;
+        color: $color_tapa;
 
       &:hover {
         color: $color_basic_orange
@@ -738,7 +739,7 @@ ls-fixed-top.fixed-top {
 
     .nav-link {
       transition: all 0.3s ease;
-
+      color: $color_tapa;
       &:visited {
         color: $color_tapa;
       }

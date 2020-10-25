@@ -82,6 +82,7 @@
                                                [showText]="'Select Dish'"
                                                [passedInputStyle]="'menubar-input'"
                                                [dishList]="allDishes"
+
                                                (dishSelected)="addDishToList($event)"
                                                (cancelSelectDish)="toggleAddDish()"></app-dish-select>
                         </div>
