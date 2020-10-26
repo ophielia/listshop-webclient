@@ -7,7 +7,7 @@
             </div>
             <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
                 <a class="nav-link" [routerLink]="'/lists'">All Lists</a>
-</div>
+            </div>
         </div>
     </div>
 </div>
@@ -64,40 +64,37 @@
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add from List
                             </span>
                         </div>
-                        <div>
+                        <div *ngIf="!showAddItem" (click)="toggleAddItem()">
                             <span class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add Item
                             </span>
                         </div>
-                        <app-tag-select class="at-tag-select-style"
-                                       [tagTypes]="'Ingredient,NonEdible'"
-                                       [selectType]="'Assign'"
-                                       [allowAdd]="true"
-                                       [showCancelButton]="true"
-                                       [placeholderText]="'Add Item'"
-                                       (tagSelected)="addTagToList($event)"
-                                       (cancelAddTag)="toggleAddItem()"></app-tag-select>
-                        <!--
-                                       [passedInputStyle]="'menubar-input'"
-                                       [tagList]="alltags"
-
-                        -->
+                        <div *ngIf="showAddItem">
+                            <app-tag-select class="at-tag-select-style"
+                                            [tagTypes]="'Ingredient,NonEdible'"
+                                            [selectType]="'Assign'"
+                                            [allowAdd]="true"
+                                            [showCancelButton]="true"
+                                            [placeholderText]="'Add Item'"
+                                            (tagSelected)="addTagToList($event)"
+                                            (cancelAddTag)="toggleAddItem()"></app-tag-select>
+                        </div>
                         <div *ngIf="!showAddDish" (click)="toggleAddDish()">
                             <span class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
                             </span>
-
-
                         </div>
+
+
                         <div *ngIf="showAddDish">
                             <app-dish-select class="at-tag-select-style"
-                                               [showCancelButton]="true"
-                                               [showText]="'Select Dish'"
-                                               [passedInputStyle]="'menubar-input'"
-                                               [dishList]="allDishes"
+                                             [showCancelButton]="true"
+                                             [showText]="'Select Dish'"
+                                             [passedInputStyle]="'menubar-input'"
+                                             [dishList]="allDishes"
 
-                                               (dishSelected)="addDishToList($event)"
-                                               (cancelSelectDish)="toggleAddDish()"></app-dish-select>
+                                             (dishSelected)="addDishToList($event)"
+                                             (cancelSelectDish)="toggleAddDish()"></app-dish-select>
                         </div>
                         <div>
                             <span class="action-link">
@@ -121,10 +118,12 @@
                         </div>
                     </ng-container>
                     <div class="action-button-right">
-                    <a (click)="toggleShowActions()">
-                        <img *ngIf="showActions" class="sm-button" src="assets/images/buttons/chevronsup.png" alt="add">
-                        <img *ngIf="!showActions" class="sm-button" src="assets/images/buttons/chevronsdown.png" alt="add">
-                    </a>
+                        <a (click)="toggleShowActions()">
+                            <img *ngIf="showActions" class="sm-button" src="assets/images/buttons/chevronsup.png"
+                                 alt="add">
+                            <img *ngIf="!showActions" class="sm-button" src="assets/images/buttons/chevronsdown.png"
+                                 alt="add">
+                        </a>
                     </div>
                 </div>
                 <!-- end actions -->
@@ -135,9 +134,9 @@
 
                             <table>
                                 <tr>
-                                    <td> <img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
+                                    <td><img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
                                     <td>{{source.display}}</td>
-                                    <td>  <span class="fa-trash fa"></span></td>
+                                    <td><span class="fa-trash fa"></span></td>
                                 </tr>
                             </table>
                         </li>
@@ -148,7 +147,7 @@
                 <div *ngIf="removedItems.length > 0" class="ls-flat-card">
                     <h3>Removed Items</h3>
                     <ul>
-                        <li *ngFor="let item of removedItems"  (dblclick)="reAddItem(item)">
+                        <li *ngFor="let item of removedItems" (dblclick)="reAddItem(item)">
                             {{
                             item.tag.name
                             }}

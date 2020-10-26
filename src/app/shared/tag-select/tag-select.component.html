@@ -1,36 +1,45 @@
-<div  style="text-align:right">
-  <span class="ui-inputgroup" style="float:right;">
-  <p-autoComplete
-          [(ngModel)]="autoSelectedTag"
-          [suggestions]="filteredTags"
-          (completeMethod)="filterTags($event)"
-          field="name"
-          [inputStyleClass]="dispClass"
-          [delay]="200"
-          (onSelect)="bingo($event)"
-          (keyup.enter)="checkSearchEnter(focusanchor)"
-          placeholder="{{placeholderText}}" [minLength]="1" #focusanchor></p-autoComplete>
-  <span *ngIf="showCancelButton" class="searchbox-group-button ui-inputgroup-addon searchbox-group-button"
-        style="color: white;
-    background-color: #4a6288;"
-        (click)="cancelSelectTag()"> <span
-          class="fa-times fa"></span></span>
-</span>
-</div>
 
 
-<div *ngIf="showAddTags" class="dropdown-overlay " style="top:30px">
+<table>
+    <tr>
+        <td>
+            <p-autoComplete
+                    [(ngModel)]="autoSelectedTag"
+                    [suggestions]="filteredTags"
+                    (completeMethod)="filterTags($event)"
+                    field="name"
+                    inputStyleClass="autocomplete-input"
+                    panelStyleClass="autocomplete-panel"
+                    styleClass="ls-autocomplete"
+                    [delay]="200"
+                    (onSelect)="bingo($event)"
+                    (keyup.enter)="checkSearchEnter(focusanchor)"
+                    placeholder="{{placeholderText}}" [minLength]="1" #focusanchor></p-autoComplete>
 
-    <ng-container *ngFor="let ttype of allTagTypes">
-        <button *ngIf="isIncluded(ttype)" class="dish-tag-element list-color"
-                (click)="add(ttype)">
-            Add {{ttype}} Tag
-        </button>
-    </ng-container>
+        </td>
+        <ng-container *ngIf="showCancelButton">
+            <td  class="cancel-button" (click)="cancelSelectTag()">X</td>
+        </ng-container>
+        <ng-container *ngIf="!showCancelButton">
+            <td class="no-cancel-button"></td>
+        </ng-container>
+    <tr>
+</table>
 
-    <button class="dish-tag-element main-color"
-            (click)="cancelAdd()">
+
+<div *ngIf="showAddTags" class="add-tag-panel " >
+
+    <div>
+        <ng-container *ngFor="let ttype of allTagTypes">
+            <div *ngIf="isIncluded(ttype)" class="add-link"
+                    (click)="add(ttype)">
+                Add as {{ttype}} Tag
+            </div>
+        </ng-container>
+    </div>
+
+    <div  (click)="cancelAdd()" class="cancel-link">
         Cancel
-    </button>
+    </div>
 </div>
 
