@@ -29,6 +29,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     legendList: LegendPoint[] = [];
     showActions: boolean = true;
     showAddDish: boolean = false;
+    showAddItem: boolean = false;
     allDishes: IDish[];
     errorMessage: any;
     private highlightSourceId: string;
@@ -106,6 +107,10 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.showAddDish = !this.showAddDish;
     }
 
+    toggleAddItem() {
+        this.showAddItem = !this.showAddItem;
+    }
+
     markItemRemoved(item: IItem) {
         this.removedItems.push(item);
     }
@@ -133,11 +138,12 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     addTagToList(tag: Tag) {
         // add tag to list as item in back end
-        let $sub = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag)
+        this.logger.debug("adding tag [" + tag.tag_id + "] to list");
+       /* let $sub = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag)
             .subscribe(() => {
                 this.getShoppingList(this.shoppingList.list_id);
             });
-        this.unsubscribe.push($sub);
+        this.unsubscribe.push($sub);*/
     }
 
     reAddItem(item: IItem) {

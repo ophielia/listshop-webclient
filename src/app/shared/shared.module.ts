@@ -22,6 +22,8 @@ import {DishService} from "./services/dish.service";
 import {DishSelectComponent} from "./dish-select/dish-select.component";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {FormsModule} from "@angular/forms";
+import {TagSelectComponent} from "./tag-select/tag-select.component";
+import {TagService} from "./services/tag.service";
 
 @NgModule({
   exports: [
@@ -31,7 +33,8 @@ import {FormsModule} from "@angular/forms";
     LoaderComponent,
     UserHeaderComponent,
     ListShopHeaderComponent,
-    DishSelectComponent
+    DishSelectComponent,
+    TagSelectComponent
 
   ],
     imports: [
@@ -48,14 +51,17 @@ import {FormsModule} from "@angular/forms";
     LoaderComponent,
       UserHeaderComponent,
       ListShopHeaderComponent,
-      DishSelectComponent
+      DishSelectComponent,
+      TagSelectComponent
   ],
   providers: [
     WINDOW_PROVIDERS,
     LandingFixService,
       AuthenticationService,
       ListService,
-      DishService
+      DishService,
+      TagService
+
   ]
 })
 export class SharedModule { }

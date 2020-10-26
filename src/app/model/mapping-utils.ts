@@ -11,9 +11,7 @@ import {ILegendSource, LegendSource} from "./legend-source";
 
 export default class MappingUtils {
 
-
     static showConsoleLogs: boolean = false;
-
 
     static toUser(r: any): User {
         let user = <User>({
@@ -56,6 +54,10 @@ export default class MappingUtils {
         }
 
         return dish;
+    }
+
+    static toTag(r: any): ITag {
+        return MappingUtils._toTag(r.tag);
     }
 
     private static _toCategory(jsonResult: any): Category {

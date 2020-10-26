@@ -69,6 +69,19 @@
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add Item
                             </span>
                         </div>
+                        <app-tag-select class="at-tag-select-style"
+                                       [tagTypes]="'Ingredient,NonEdible'"
+                                       [selectType]="'Assign'"
+                                       [allowAdd]="true"
+                                       [showCancelButton]="true"
+                                       [placeholderText]="'Add Item'"
+                                       (tagSelected)="addTagToList($event)"
+                                       (cancelAddTag)="toggleAddItem()"></app-tag-select>
+                        <!--
+                                       [passedInputStyle]="'menubar-input'"
+                                       [tagList]="alltags"
+
+                        -->
                         <div *ngIf="!showAddDish" (click)="toggleAddDish()">
                             <span class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
