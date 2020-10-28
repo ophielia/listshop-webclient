@@ -32,6 +32,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     showAddItem: boolean = false;
     showAddList: boolean = false;
     showFrequent: boolean = true;
+    shoppingListIsStarter: boolean = false;
     frequentToggleAvailable: boolean = true;
     allDishes: IDish[];
     errorMessage: any;
@@ -226,7 +227,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.listLegendMap = null;
         let $sub = this.listService.addDishToShoppingList(this.shoppingList.list_id, dish.dish_id)
             .subscribe(() => {
-                this.highlightSourceId = this.shoppingList.is_starter ? null : "d" + dish.dish_id;
+                this.highlightSourceId =  "d" + dish.dish_id;
                 this.getShoppingList(this.shoppingList.list_id);
                 this.showAddDish = false;
             });
@@ -254,6 +255,14 @@ export class EditListComponent implements OnInit, OnDestroy {
         }
     }
 
+    makeStarterList() {
+
+        let promise = this.listService.updateShoppingListStarterStatus(this.shoppingList);
+        promise.then(data => {
+            this.getShoppingList(this.shoppingList.list_id);
+        });
+
+    }
 
     private processRetrievedShoppingList(p: IShoppingList) {
         this.determineCrossedOffPresent(p);
@@ -381,9 +390,10 @@ export class EditListComponent implements OnInit, OnDestroy {
 
 
     private adjustForStarter(list: IShoppingList) {
-        if (list.is_starter) {
+        this.shoppingListIsStarter = list.is_starter;
+        if (this.shoppingListIsStarter) {
             this.showMakeStarter = false;
-            this.frequentToggleAvailable = !this.shoppingList.is_starter;
+            this.frequentToggleAvailable = !this.shoppingListIsStarter;
             // check if currently sorted on frequent - if so, reset to null
             if (this.highlightSourceId == LegendService.FREQUENT) {
                 this.highlightSourceId = null;

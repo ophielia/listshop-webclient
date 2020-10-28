@@ -1,6 +1,12 @@
 
 
 @import 'variable';
+
+// urls
+//urls
+$url_logo_orange: url(../images/listshop/header/logoorange.png);
+$url_logo_white: url(../images/listshop/header/logowhite.png);
+
 /** home page **/
 .feature-style .feature-icon img {
   width: 16px;
@@ -65,12 +71,12 @@ ls-fixed-top.fixed-top {
 
       .ls-logo-img {
         margin-top: 5px;
-        background-image: url("../images/header/logoorange.png");
+        background-image: $url_logo_orange;
       }
     }
 
     .ls-logo-img {
-      background-image: url("../images/header/logowhite.png");
+      background-image: $url_logo_white;
       width: 90px;
       height: 90px;
       background-repeat: no-repeat;
@@ -700,6 +706,14 @@ ls-fixed-top.fixed-top {
   text-align: right;
 }
 
+img.sm-button {
+  width: 20px;
+}
+
+img.lg-button {
+  width: 35px;
+}
+
 /** navigation **/
 .ls-theme-functional-nav {
   background-color: white;
@@ -714,7 +728,7 @@ ls-fixed-top.fixed-top {
     }
 
     .ls-logo-img {
-      background-image: url("../images/header/logoorange.png");
+      background-image: $url_logo_orange;
       width: 90px;
       height: 90px;
       background-repeat: no-repeat;

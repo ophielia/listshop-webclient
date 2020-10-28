@@ -10,6 +10,7 @@ import {CreateListPost} from "../../model/create-list-post";
 import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
 import {ITag} from "../../model/tag";
+import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
 
 @Injectable()
 export class ListService {
@@ -157,7 +158,23 @@ export class ListService {
             .toPromise();
     }
 
+    updateShoppingListStarterStatus(shoppingList: IShoppingList) {
+        // create put object for call
+        var shoppingListPut = new ShoppingListPut();
+        shoppingListPut.name = shoppingList.name;
+        shoppingListPut.is_starter_list = true;
+        return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
+    }
 
+
+    private updateShoppingList(listId: string, shoppingList: IShoppingListPut) {
+        var url = this.listUrl + "/" + listId;
+        return this
+            .httpClient
+            .put(url,
+                JSON.stringify(shoppingList), {observe: 'response'})
+            .toPromise();
+    }
     static getCrossedOff(shoppingList: IShoppingList):IItem[] {
         if (!shoppingList.categories || shoppingList.categories.length == 0) {
             return [];

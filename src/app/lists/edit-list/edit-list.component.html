@@ -3,7 +3,10 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 col-lg-10">
-                <h2 class="title">{{shoppingList ? shoppingList.name : 'none'}}</h2>
+                <h2 class="title">{{shoppingList ? shoppingList.name : 'none'}}
+                <span><img *ngIf="shoppingListIsStarter" class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
+                           alt="add" >
+                </span></h2>
             </div>
             <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
                 <a class="nav-link" [routerLink]="'/lists'">All Lists</a>
@@ -117,8 +120,8 @@
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
                             </span>
                         </div>
-                        <div>
-                            <span class="action-link">
+                        <div *ngIf="!shoppingListIsStarter">
+                            <span class="action-link" (click)="makeStarterList();">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
                             </span>
                         </div>

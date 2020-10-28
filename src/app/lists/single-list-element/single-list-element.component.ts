@@ -13,6 +13,7 @@ export class SingleListElementComponent implements OnInit {
 
   @Input() listName: string = "List";
   @Input() itemCount: number;
+  @Input() listIsStarter: boolean;
   @Input() listId: string;
   @Output() delete: EventEmitter<String> = new EventEmitter<String>();
   @Output() edit: EventEmitter<String> = new EventEmitter<String>();
