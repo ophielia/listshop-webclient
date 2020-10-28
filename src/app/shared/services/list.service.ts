@@ -128,6 +128,36 @@ export class ListService {
             .toPromise();
     }
 
+    removeItemsByDishOrList(list_or_dish_id: string, sourceTag: string) {
+        var type = sourceTag.substr(0, 1);
+        var id = sourceTag.slice(1);
+
+        this.logger.debug("type:" + type);
+        this.logger.debug("id:" + id);
+        if (type == 'd') {
+            return this.removeDishItems(list_or_dish_id, id);
+        } else if (type == 'l') {
+            return this.removeListItems(list_or_dish_id, id);
+        }
+    }
+
+    removeDishItems(list_id: string, id: string) {
+        let url = this.listUrl + "/" + list_id + "/dish/" + id;
+        return this
+            .httpClient
+            .delete(url)
+            .toPromise();
+    }
+
+    removeListItems(list_id: string, fromListId: string) {
+        let url = this.listUrl + "/" + list_id + "/list/" + fromListId;
+        return this
+            .httpClient
+            .delete(url)
+            .toPromise();
+    }
+
+
     static getCrossedOff(shoppingList: IShoppingList):IItem[] {
         if (!shoppingList.categories || shoppingList.categories.length == 0) {
             return [];
@@ -165,5 +195,6 @@ export class ListService {
         }
         return null;
     }
+
 
 }

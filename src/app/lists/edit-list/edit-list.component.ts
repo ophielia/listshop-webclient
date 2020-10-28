@@ -13,7 +13,6 @@ import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {TagTree} from "../../shared/services/tag-tree.object";
 
 @Component({
     selector: 'app-edit-list',
@@ -148,10 +147,10 @@ export class EditListComponent implements OnInit, OnDestroy {
         return item.source_keys && item.source_keys.length > 0;
     }
 
-    iconSourceForKey(key: string, withCircle: boolean) : string {
+    iconSourceForKey(key: string, withCircle: boolean): string {
         let circleOrColor = withCircle ? "circles" : "colors"
         // assets/images/legend/colors/blue/bowl.png
-        let  point = this.listLegendMap.get(key);
+        let point = this.listLegendMap.get(key);
         if (!point) {
             return null;
         }
@@ -162,20 +161,40 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.removedItems = []
     }
 
+    highlightSource(source: string) {
+        this.hideAllAddInputs();
+        if (!source) {
+            return;
+        }
+        var requiresFetchedList = false;
+        if (source == this.highlightSourceId) {
+            this.highlightSourceId = null;
+            requiresFetchedList = true;
+        } else {
+            this.highlightSourceId = source;
+        }
+
+        if (requiresFetchedList) {
+            this.getShoppingList(this.shoppingList.list_id);
+        } else {
+            this.shoppingList = this.filterForDisplay(this.shoppingList);
+        }
+    }
+
     addTagToList(tag: Tag) {
         // add tag to list as item in back end
         this.logger.debug("adding tag [" + tag.tag_id + "] to list");
         let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag);
 
-        promise.then((data)=>{
+        promise.then((data) => {
             this.getShoppingList(this.shoppingList.list_id);
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log("Promise rejected with " + JSON.stringify(error));
         });
     }
 
     reAddItem(item: IItem) {
-        this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id );
+        this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id);
         if (item.tag) {
             this.addTagToList(item.tag);
         }
@@ -202,15 +221,25 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     addListToList(fromList: IShoppingList) {
-            this.listLegendMap = null;
-            let promise = this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id);
-            promise.then(data => {
-                this.highlightSourceId = "l" + fromList.list_id;
-                this.getShoppingList(this.shoppingList.list_id);
-            })
+        this.listLegendMap = null;
+        let promise = this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id);
+        promise.then(data => {
+            this.highlightSourceId = "l" + fromList.list_id;
+            this.getShoppingList(this.shoppingList.list_id);
+        })
     }
 
+    removeDishOrList(sourcekey: string) {
+        this.hideAllAddInputs();
+        let promise = this.listService.removeItemsByDishOrList(this.shoppingList.list_id, sourcekey)
+        promise.then(data => {
+            this.getShoppingList(this.shoppingList.list_id);
+        });
 
+        if (this.highlightSourceId == sourcekey) {
+            this.highlightSourceId = null;
+        }
+    }
 
 
     private processRetrievedShoppingList(p: IShoppingList) {

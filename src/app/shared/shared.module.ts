@@ -19,7 +19,7 @@ import { AlertComponent } from './alert/alert.component';
 import {AlertService} from "./services/alert.service";
 import {ListService} from "./services/list.service";
 import {DishService} from "./services/dish.service";
-import {DishSelectComponent} from "./dish-select/dish-select.component";
+import {DishSelectComponent} from "./components/dish-select/dish-select.component";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {FormsModule} from "@angular/forms";
 import {TagSelectComponent} from "./components/tag-select/tag-select.component";

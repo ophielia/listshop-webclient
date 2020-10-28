@@ -136,12 +136,11 @@
                 <div *ngIf="legendList.length > 0" class="ls-legend">
                     <ul>
                         <li *ngFor="let source of legendList">
-
                             <table>
                                 <tr>
-                                    <td><img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
-                                    <td>{{source.display}}</td>
-                                    <td><span class="fa-trash fa"></span></td>
+                                    <td (click)="highlightSource(source.key)"><img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
+                                    <td (click)="highlightSource(source.key)">{{source.display}}</td>
+                                    <td (click)="removeDishOrList(source.key);"><span class="fa-trash fa" ></span></td>
                                 </tr>
                             </table>
                         </li>
