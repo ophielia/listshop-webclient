@@ -3,7 +3,6 @@ import TagType from "../../model/tag-type";
 import {ITag} from "../../model/tag";
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {filter, map, tap} from "rxjs/operators";
-import 'rxjs/add/observable/of';
 import {ContentType, GroupType, TagTree} from "./tag-tree.object";
 import {TagService} from "./tag.service";
 import {NGXLogger} from "ngx-logger";

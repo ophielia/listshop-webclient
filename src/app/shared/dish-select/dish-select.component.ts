@@ -9,11 +9,8 @@ import {IDish} from "../../model/dish";
 export class DishSelectComponent implements OnInit, OnDestroy {
     @Output() dishSelected: EventEmitter<IDish> = new EventEmitter<IDish>();
     @Output() cancelSelectDish: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Input() tagTypes: string;
     @Input() showText: string;
     @Input() showCancelButton: boolean = false;
-    @Input() passedInputStyle: any;
-    @Input() showAsInputGroup: any = true;
     @Input() dishList: IDish[];
 
 

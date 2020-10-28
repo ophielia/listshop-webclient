@@ -59,10 +59,16 @@
                 <!-- actions -->
                 <div class="ls-flat-card ls-card-contents">
                     <ng-container *ngIf="showActions">
-                        <div>
+                        <div *ngIf="!showAddList" (click)="toggleAddList()">
                             <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add from List
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add List
                             </span>
+                        </div>
+                        <div *ngIf="showAddList">
+                            <app-list-select class="at-tag-select-style"
+                                            [currentListId]="shoppingList.list_id"
+                                            (listSelected)="addListToList($event)"
+                                            (cancelSelectList)="toggleAddList()"></app-list-select>
                         </div>
                         <div *ngIf="!showAddItem" (click)="toggleAddItem()">
                             <span class="action-link">
@@ -90,7 +96,6 @@
                             <app-dish-select class="at-tag-select-style"
                                              [showCancelButton]="true"
                                              [showText]="'Select Dish'"
-                                             [passedInputStyle]="'menubar-input'"
                                              [dishList]="allDishes"
 
                                              (dishSelected)="addDishToList($event)"
@@ -119,9 +124,9 @@
                     </ng-container>
                     <div class="action-button-right">
                         <a (click)="toggleShowActions()">
-                            <img *ngIf="showActions" class="sm-button" src="assets/images/buttons/chevronsup.png"
+                            <img *ngIf="showActions" class="sm-button" src="../../../assets/images/listshop/icons/orangeround/chevronsup.png"
                                  alt="add">
-                            <img *ngIf="!showActions" class="sm-button" src="assets/images/buttons/chevronsdown.png"
+                            <img *ngIf="!showActions" class="sm-button" src="../../../assets/images/listshop/icons/orangeround/chevronsdown.png"
                                  alt="add">
                         </a>
                     </div>

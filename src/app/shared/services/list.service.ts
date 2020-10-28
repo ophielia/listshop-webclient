@@ -40,6 +40,18 @@ export class ListService {
                 catchError(this.handleError));
     }
 
+    getAllListsAsPromise(): Promise<IShoppingList[]> {
+        this.logger.debug("Retrieving all shopping lists for user.");
+
+        return this.httpClient.get(this.listUrl)
+            .pipe(map((response: HttpResponse<any>) => {
+                    // map and return
+                    return this.mapShoppingLists(response);
+                }),
+                catchError(this.handleError))
+            .toPromise();
+    }
+
     getById(shoppingListId: string): Observable<IShoppingList> {
         this.logger.debug("Retrieving shopping lists for id:" + shoppingListId);
         var url = this.listUrl + "/" + shoppingListId;
@@ -105,6 +117,15 @@ export class ListService {
         return this
             .httpClient
             .post(url,null);
+    }
+
+    addListToShoppingList(shoppingList_id: string, list_id: string): Promise<Object> {
+        let url = this.listUrl + "/" + shoppingList_id + "/list/" + list_id;
+        return this
+            .httpClient
+            .post(url,
+                null)
+            .toPromise();
     }
 
     static getCrossedOff(shoppingList: IShoppingList):IItem[] {

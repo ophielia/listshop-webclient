@@ -31,6 +31,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     showActions: boolean = true;
     showAddDish: boolean = false;
     showAddItem: boolean = false;
+    showAddList: boolean = false;
     allDishes: IDish[];
     errorMessage: any;
     private highlightSourceId: string;
@@ -75,6 +76,15 @@ export class EditListComponent implements OnInit, OnDestroy {
             // start with all inputs hidden
             this.hideAllAddInputs();
         }
+    }
+
+    toggleAddList() {
+        // hide other inputs
+        if (!this.showAddList) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddList = !this.showAddList;
     }
 
     toggleAddDish() {
@@ -145,7 +155,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         if (!point) {
             return null;
         }
-        return "assets/images/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
+        return "assets/images/listshop/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
     }
 
     clearRemoved() {
@@ -191,6 +201,14 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
+    addListToList(fromList: IShoppingList) {
+            this.listLegendMap = null;
+            let promise = this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id);
+            promise.then(data => {
+                this.highlightSourceId = "l" + fromList.list_id;
+                this.getShoppingList(this.shoppingList.list_id);
+            })
+    }
 
 
 
@@ -306,6 +324,8 @@ export class EditListComponent implements OnInit, OnDestroy {
     private hideAllAddInputs() {
         this.showAddItem = false;
         this.showAddDish = false;
+        this.showAddList = false;
     }
+
 
 }

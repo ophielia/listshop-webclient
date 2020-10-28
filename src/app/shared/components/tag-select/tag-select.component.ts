@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ITag} from "../../model/tag";
-import TagSelectType from "../../model/tag-select-type";
-import {Dish} from "../../model/dish";
-import TagType from "../../model/tag-type";
+import {ITag} from "../../../model/tag";
+import TagSelectType from "../../../model/tag-select-type";
+import {Dish} from "../../../model/dish";
+import TagType from "../../../model/tag-type";
 import {Subscription} from "rxjs";
-import {TagService} from "../services/tag.service";
-import {TagTreeService} from "../services/tag-tree.service";
-import {ContentType, GroupType, TagTree} from "../services/tag-tree.object";
+import {TagService} from "../../services/tag.service";
+import {TagTreeService} from "../../services/tag-tree.service";
+import {ContentType, GroupType, TagTree} from "../../services/tag-tree.object";
 import {NGXLogger} from "ngx-logger";
 
 
