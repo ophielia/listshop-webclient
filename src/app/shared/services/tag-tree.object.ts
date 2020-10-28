@@ -217,9 +217,6 @@ export class TagTree {
 
     }
 
-    reveal() {
-        return "this tag tree has - displays: " + this._lookupDisplay.size;
-    }
 }
 
 export class TagTreeNode {

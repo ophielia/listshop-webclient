@@ -93,11 +93,11 @@ export class ListService {
         return this.httpClient.post(url, null);
     }
 
-    addTagItemToShoppingList(shoppingList_id: string, tag: ITag): Observable<Object> {
+    addTagItemToShoppingList(shoppingList_id: string, tag: ITag): Promise<Object> {
         let item: Item = <Item>{tag_id: tag.tag_id};
         let url = this.listUrl + "/" + shoppingList_id + "/tag/" + tag.tag_id
 
-        return this.httpClient.post(url, item);
+        return this.httpClient.post(url, item).toPromise();
     }
 
     addDishToShoppingList(shoppingList_id: string, dish_id: string): Observable<Object> {

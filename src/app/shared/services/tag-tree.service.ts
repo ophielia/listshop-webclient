@@ -1,22 +1,20 @@
-import {EventEmitter, Injectable, OnDestroy} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import TagType from "../../model/tag-type";
 import {ITag} from "../../model/tag";
-import {BehaviorSubject, Observable, of, pipe, Subject, Subscription} from "rxjs";
-import {catchError, filter, map, tap} from "rxjs/operators";
+import {BehaviorSubject, Observable, Subscription} from "rxjs";
+import {filter, map, tap} from "rxjs/operators";
 import 'rxjs/add/observable/of';
 import {ContentType, GroupType, TagTree} from "./tag-tree.object";
 import {TagService} from "./tag.service";
 import {NGXLogger} from "ngx-logger";
-import {HttpResponse} from "@angular/common/http";
 
 @Injectable({providedIn: 'root'})
 export class TagTreeService implements OnDestroy {
     static instance: TagTreeService;
     static refreshPeriod = 5 * 60 * 1000;
 
-    loadingEvent: EventEmitter<Boolean> = new EventEmitter<Boolean>();
     isLoadingSubject: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(true);
-    private isLoading: boolean = false;
+
     unsubscribe: Subscription[] = [];
     private _tagTree: TagTree;
     private _lastLoaded: number;
@@ -42,84 +40,65 @@ export class TagTreeService implements OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    async navigationList(tagId: string): Promise<ITag[]> {
-        await this.finishedLoading();
-
-        return this._tagTree.navigationList(tagId);
-    }
-
-    // MM make into async, which awaits tag tree
-     allContentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType,
-                   tagTypes: TagType[]): Observable<ITag[]> {
-        this.logger.debug("in all contentlist - before loading gateway");
-        let observable =   this.isLoadingSubject.asObservable()
-             .pipe(tap( result => this.logger.debug("in observable, finishedLoading: " + result)))
-             .pipe(filter( value => value == false))
-             .pipe(tap( result => this.logger.debug("after filter:" + result)));
+    navigationList(tagId: string): Observable<ITag[]> {
+        let observable = this.finishedLoadingObservable();
 
         return observable.pipe(map((response: boolean) => {
-            this.logger.debug("loaded, now returning." + this._tagTree.reveal());
+            this.logger.debug("tag tree loaded, now returning." );
+            return this._tagTree.navigationList(tagId);
+        }));
+
+
+    }
+
+
+    allContentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType,
+                   tagTypes: TagType[]): Observable<ITag[]> {
+
+
+        this.refreshTagTreeIfNeeded();
+        let observable = this.finishedLoadingObservable();
+
+        return observable.pipe(map((response: boolean) => {
+            this.logger.debug("loaded, now returning." );
             return this._tagTree.contentList(id, contentType, isAbbreviated, groupType, tagTypes);
-            }));
-
-
+        }));
 
 
     }
 
-    //MM make into promise - which awaits loading event
-    async tagTree(): Promise<TagTree> {
-        await this.finishedLoading()
 
-        return this._tagTree;
-
-    }
-
-    finishedLoading() {
-        if (this.isLoadingSubject.getValue()) {
-
-
-        this.logger.debug("about to check the loading subject");
-        this.logger.debug(" value of isLoadingSubject" + this.isLoadingSubject.getValue());
+    finishedLoadingObservable() {
         return this.isLoadingSubject.asObservable()
-            .pipe(tap( result => this.logger.debug("in observable, finishedLoading: " + result)))
-            .pipe(filter( value => value == false))
-            .pipe(tap( result => this.logger.debug("after filter:" + result)))
-            .toPromise();
-        }
-
-        return Observable.of(false).toPromise();
-
+            .pipe(filter(value => value == false));
     }
 
     private createOrRefreshTagTree() {
-        // MM the isLoading / loadingEvent will need to be made into a subject
         this.isLoadingSubject.next(true);
-        this.isLoading = true;
 
-        const promise = this.tagService.getAllExtendedAsPromise();
+
+        const promise = this.tagService.getAllExtendedTags();
         console.log(promise);
-        promise.then((data)=>{
-            this.logger.debug("in createOrRefreshTagTree: promise completed. data:" + data.length)
+        promise.then((data) => {
+            this.logger.debug("tag data retrieved, building TagTree");
             this._tagTree = new TagTree(data);
             this._lastLoaded = new Date().getTime();
-            this.isLoading = false;
             this.isLoadingSubject.next(false);
-            this.logger.debug("just updated loading subject to false")
-            this.loadingEvent.emit(false);
-        }).catch((error)=>{
+
+        }).catch((error) => {
             console.log("Promise rejected with " + JSON.stringify(error));
         });
 
 
     }
 
-    private tagTreeNeedsRefresh() {
-        var limit = this._lastLoaded + TagTreeService.refreshPeriod;
-        return (new Date().getTime()) > limit;
+     refreshTagTreeIfNeeded() {
+         var limit = this._lastLoaded + TagTreeService.refreshPeriod;
+         if ((new Date().getTime()) > limit) {
+             this.logger.debug("refreshing TagTree");
+             this.createOrRefreshTagTree();
+         };
     }
 
-    refreshTagTree() {
-        this.createOrRefreshTagTree();
-    }
+
 }

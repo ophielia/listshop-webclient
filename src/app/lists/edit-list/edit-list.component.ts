@@ -13,6 +13,7 @@ import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
+import {TagTree} from "../../shared/services/tag-tree.object";
 
 @Component({
     selector: 'app-edit-list',
@@ -68,6 +69,32 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe())
     }
 
+    toggleShowActions() {
+        this.showActions = !this.showActions;
+        if (this.showActions) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+    }
+
+    toggleAddDish() {
+        // hide other inputs
+        if (!this.showAddDish) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddDish = !this.showAddDish;
+    }
+
+    toggleAddItem() {
+        // hide other inputs
+        if (!this.showAddItem) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddItem = !this.showAddItem;
+    }
+
 
     getShoppingList(id: string) {
         let $sub = this.listService
@@ -99,17 +126,6 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    toggleShowActions() {
-        this.showActions = !this.showActions;
-    }
-
-    toggleAddDish() {
-        this.showAddDish = !this.showAddDish;
-    }
-
-    toggleAddItem() {
-        this.showAddItem = !this.showAddItem;
-    }
 
     markItemRemoved(item: IItem) {
         this.removedItems.push(item);
@@ -139,11 +155,13 @@ export class EditListComponent implements OnInit, OnDestroy {
     addTagToList(tag: Tag) {
         // add tag to list as item in back end
         this.logger.debug("adding tag [" + tag.tag_id + "] to list");
-       /* let $sub = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag)
-            .subscribe(() => {
-                this.getShoppingList(this.shoppingList.list_id);
-            });
-        this.unsubscribe.push($sub);*/
+        let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag);
+
+        promise.then((data)=>{
+            this.getShoppingList(this.shoppingList.list_id);
+        }).catch((error)=>{
+            console.log("Promise rejected with " + JSON.stringify(error));
+        });
     }
 
     reAddItem(item: IItem) {
@@ -172,6 +190,9 @@ export class EditListComponent implements OnInit, OnDestroy {
             });
         this.unsubscribe.push($sub);
     }
+
+
+
 
 
     private processRetrievedShoppingList(p: IShoppingList) {
@@ -282,5 +303,9 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
 
+    private hideAllAddInputs() {
+        this.showAddItem = false;
+        this.showAddDish = false;
+    }
 
 }

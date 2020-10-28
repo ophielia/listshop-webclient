@@ -35,13 +35,11 @@ export class TagSelectComponent implements OnInit, OnDestroy {
 
     autoSelectedTag: any;
     filteredTags: ITag[];
-    dispClass: string = 'atinput-dish';
 
     name: string;
     loaded: boolean = false;
 
     dish: Dish = <Dish>{dish_id: "", name: "", description: ""};
-    private errorMessage: string;
     currentSelect: string;
     showAddTags: boolean;
 
@@ -127,23 +125,21 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     }
 
     add(tagtype: string) {
-        /* var $sub = this.tagService.addTag(this.autoSelectedTag, tagtype)
+        var $sub = this.tagService.addTag(this.autoSelectedTag, tagtype)
              .subscribe(r => {
                  this.autoSelectedTag = null;
                  var headers = r.headers;
                  var location = headers.get("Location");
                  var splitlocation = location.split("/");
                  var id = splitlocation[splitlocation.length - 1];
-                 this.tagService.getById(id)
-                     .subscribe(t => {
-                         this.showAddTags = false;
-                         this.autoSelectedTag = null;
-                         this.tagSelected.emit(t);
-                     });
-
-
+                 let promise = this.tagService.getById(id);
+                 promise.then(data => {
+                     this.showAddTags = false;
+                     this.autoSelectedTag = null;
+                     this.tagSelected.emit(data);
+                 })
              });
-         this.unsubscribe.push($sub);*/
+         this.unsubscribe.push($sub);
     }
 
     ngOnDestroy() {

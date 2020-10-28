@@ -24,21 +24,18 @@ export class TagService {
         this.tagUrl = environment.apiUrl + "tag";
     }
 
-    getAllExtended(): Observable<ITag[]> {
-        this.logger.debug("Retrieving all tags");
-        var url = this.tagUrl + "?extended=true";
-
-
+    getById(tag_id: string): Promise<ITag> {
+        let url = this.tagUrl + "/" + tag_id;
         return this.httpClient
-            .get(`${url}`)
+            .get(url)
             .pipe(map((response: HttpResponse<any>) => {
-                    return TagService.mapTagsClient(response);
-                }),
-                catchError(TagService.handleError));
-
+                return TagService.mapTagClient(response);
+            }),
+                catchError(TagService.handleError))
+            .toPromise();
     }
 
-    getAllExtendedAsPromise(): Promise<ITag[]> {
+    getAllExtendedTags(): Promise<ITag[]> {
         this.logger.debug("Retrieving all tags");
         var url = this.tagUrl + "?extended=true";
 
@@ -50,6 +47,19 @@ export class TagService {
                 }),
                 catchError(TagService.handleError))
             .toPromise();
+
+    }
+
+    addTag(newTagName: string, tagType: string): Observable<HttpResponse<Object>> {
+        var newTag: ITag = <ITag>({
+            name: newTagName,
+            tag_type: tagType
+        });
+
+        return this
+            .httpClient
+            .post(this.tagUrl,
+                JSON.stringify(newTag), {observe: 'response'});
 
     }
 
