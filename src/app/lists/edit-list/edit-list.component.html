@@ -3,10 +3,28 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 col-lg-10">
-                <h2 class="title">{{shoppingList ? shoppingList.name : 'none'}}
-                <span><img *ngIf="shoppingListIsStarter" class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
-                           alt="add" >
-                </span></h2>
+                <h2 class="title">
+                        <div *ngIf="showChangeName" class="change-name">
+                            <input type="text" class=""
+                                   placeholder="{{shoppingList.name}}"
+                                   [(ngModel)]="shoppingListName"
+                                   (keyup.enter)="saveListName()"
+                            />
+                            <span (click)="saveListName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/check.png"
+                                        alt="add" ></span>
+                            <span (click)="toggleShowChangeName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
+                                        alt="add" ></span>
+
+
+                        </div>
+                    <ngContainer *ngIf="!showChangeName">
+                        {{shoppingList ? shoppingList.name : 'none'}}
+                        <span><img *ngIf="shoppingListIsStarter" class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
+                                   alt="add" >
+                </span>
+                    </ngContainer>
+
+                </h2>
             </div>
             <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
                 <a class="nav-link" [routerLink]="'/lists'">All Lists</a>
@@ -116,8 +134,8 @@
                                              (cancelSelectDish)="toggleAddDish()"></app-dish-select>
                         </div>
                         <div>
-                            <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
+                            <span class="action-link" (click)="toggleShowChangeName()">
+                                <i class="fa fa-angle-right"  aria-hidden="true"></i>Change Name
                             </span>
                         </div>
                         <div *ngIf="!shoppingListIsStarter">
@@ -143,7 +161,7 @@
                 </div>
                 <!-- end actions -->
                 <!-- legend -->
-                <div *ngIf="legendList.length > 0" class="ls-legend">
+                <div *ngIf="!shoppingListIsStarter && legendList.length > 0" class="ls-legend">
                     <ul>
                         <li *ngFor="let source of legendList">
                             <table class="legend-table">

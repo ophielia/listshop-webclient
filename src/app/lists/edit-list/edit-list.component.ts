@@ -32,7 +32,10 @@ export class EditListComponent implements OnInit, OnDestroy {
     showAddItem: boolean = false;
     showAddList: boolean = false;
     showFrequent: boolean = true;
+    showChangeName: boolean = false;
     shoppingListIsStarter: boolean = false;
+    private originalName: string = null;
+    shoppingListName: string = "";
     frequentToggleAvailable: boolean = true;
     allDishes: IDish[];
     errorMessage: any;
@@ -109,7 +112,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     toggleShowFrequent() {
-       // this.showFrequent = !this.showFrequent;
+        // this.showFrequent = !this.showFrequent;
         if (this.showFrequent) {
             this.highlightSource(LegendService.FREQUENT);
         } else {
@@ -119,6 +122,18 @@ export class EditListComponent implements OnInit, OnDestroy {
             this.getShoppingList(this.shoppingList.list_id);
         }
     }
+
+    toggleShowChangeName() {
+        this.showChangeName = !this.showChangeName;
+        if (this.showChangeName) {
+            // save original value
+            this.originalName = this.shoppingList.name;
+            this.shoppingListName = this.shoppingList.name;
+        } else if (this.originalName != null) {
+            this.originalName = null;
+        }
+    }
+
 
     getShoppingList(id: string) {
         let $sub = this.listService
@@ -227,7 +242,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.listLegendMap = null;
         let $sub = this.listService.addDishToShoppingList(this.shoppingList.list_id, dish.dish_id)
             .subscribe(() => {
-                this.highlightSourceId =  "d" + dish.dish_id;
+                this.highlightSourceId = "d" + dish.dish_id;
                 this.getShoppingList(this.shoppingList.list_id);
                 this.showAddDish = false;
             });
@@ -258,6 +273,17 @@ export class EditListComponent implements OnInit, OnDestroy {
     makeStarterList() {
 
         let promise = this.listService.updateShoppingListStarterStatus(this.shoppingList);
+        promise.then(data => {
+            this.getShoppingList(this.shoppingList.list_id);
+        });
+
+    }
+
+    saveListName() {
+        this.showChangeName = false;
+        this.originalName = null;
+        this.shoppingList.name = this.shoppingListName;
+        let promise = this.listService.updateShoppingListName(this.shoppingList)
         promise.then(data => {
             this.getShoppingList(this.shoppingList.list_id);
         });
@@ -373,6 +399,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         return null;
 
     }
+
     private newEvaluateShowLegend() {
         let thisListIsTheStarter = this.shoppingList.is_starter;
         if (thisListIsTheStarter) {
@@ -403,8 +430,8 @@ export class EditListComponent implements OnInit, OnDestroy {
             this.frequentToggleAvailable = true;
 
             // check showFrequent toggle, and set source id if on.
-            if (this.showFrequent && this.highlightSourceId == null ) {
-                this.highlightSourceId =  LegendService.FREQUENT;
+            if (this.showFrequent && this.highlightSourceId == null) {
+                this.highlightSourceId = LegendService.FREQUENT;
             }
 
         }

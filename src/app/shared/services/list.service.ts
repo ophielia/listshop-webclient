@@ -160,15 +160,22 @@ export class ListService {
 
     updateShoppingListStarterStatus(shoppingList: IShoppingList) {
         // create put object for call
-        var shoppingListPut = new ShoppingListPut();
+        let shoppingListPut = new ShoppingListPut();
         shoppingListPut.name = shoppingList.name;
         shoppingListPut.is_starter_list = true;
         return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
     }
 
+    updateShoppingListName(shoppingList: IShoppingList) {
+        // create put object for call
+        let shoppingListPut = new ShoppingListPut();
+        shoppingListPut.name = shoppingList.name;
+        shoppingListPut.is_starter_list = shoppingList.is_starter;
+        return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
+    }
 
     private updateShoppingList(listId: string, shoppingList: IShoppingListPut) {
-        var url = this.listUrl + "/" + listId;
+        let url = this.listUrl + "/" + listId;
         return this
             .httpClient
             .put(url,
