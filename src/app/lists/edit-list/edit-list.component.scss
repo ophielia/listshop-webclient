@@ -9,76 +9,129 @@
   &:not(.p-disabled):hover .p-inputswitch-slider {
     background: $color_basic_orange;
   }
+  &:enabled:focus {
+    box-shadow: unset;
+    border-color: unset;
+  }
+
+}
+
+:host ::ng-deep .p-inputtext {
+  padding: 1px;
+  border: 1px solid $color_tapa;
+  text-indent: 2px;
+  &:enabled:focus {
+    box-shadow: unset;
+ border-color: $color_tapa;
+}
+  &:enabled:hover {
+    border-color: $color_tapa;
+  }
 
 }
 
 
+:host ::ng-deep .p-focus {
+&:hover .p-inputswitch-slider {
+outline: 0 none;
+outline-offset: 0;
+box-shadow: unset;
+}
+&:active .p-inputswitch-slider {
+outline: 0 none;
+outline-offset: 0;
+box-shadow: unset;
+}
+&:hover  {
+outline: 0 none;
+outline-offset: 0;
+box-shadow: unset;
+}
+&:active {
+outline: 0 none;
+outline-offset: 0;
+box-shadow: unset;
+}
+outline: 0 none;
+outline-offset: 0;
+box-shadow: unset;
+
+}
+
 .action-link {
-  color: $color_tapa;
-  transition: all 0.2s ease;
+color: $color_tapa;
+transition: all 0.2s ease;
 
-  &:hover,
-  &:focus {
-    color: $color_basic_orange;
-    transition: all 0.2s ease;
-  }
+&:hover,
+&:focus {
+color: $color_basic_orange;
+transition: all 0.2s ease;
+}
 
-  .fa {
-    margin-right: 5px;
-  }
+.fa {
+margin-right: 5px;
+}
 }
 
 table.legend-table {
-  width: 100%;
+width: 100%;
 
-  tr {
-    td {
-      text-align: left;
-      text-transform: capitalize;
-    }
+tr {
+td {
+  text-align: left;
+  text-transform: capitalize;
+}
 
-    td:nth-child(1) {
-      width: 10%;
-    }
+td:nth-child(1) {
+  width: 10%;
+}
 
-    td:nth-child(3) {
-      width: 10%
-    }
-  }
+td:nth-child(3) {
+  width: 10%
+}
+}
 }
 
 
 .change-name {
-  input {
-    text-indent: 5px;
+input {
+text-indent: 5px;
 
-    &:focus {
-      outline: none;
-    }
-  }
+&:focus {
+  outline: none;
+}
+}
 
-    span {
-      padding-left: 10px;
-    }
-  }
+span {
+padding-left: 10px;
+}
+}
 
-  table.display-frequent {
-    width: 100%;
+.empty-list {
+width: 100%;
+padding-top: 100px;
+padding-bottom: 100px;
+text-align: center;
+color: $color_tapa;
+}
 
-    td {
-      text-align: left;
-      text-transform: capitalize;
-      color: $color_tapa;
-    }
+table.display-frequent {
+width: 100%;
 
-    td:nth-child(2) {
-      width: 30%;
-    }
-  }
+td {
+text-align: left;
+text-transform: capitalize;
+color: $color_tapa;
+}
 
-  .ls-list-column-header-special {
-    box-shadow: 1px 1px 4px #e67d21b5;
-    border-color: #e67d21;
-  }
+td:nth-child(2) {
+width: 30%;
+}
+}
+
+.ls-list-column-header-special {
+box-shadow: 1px 1px 4px #e67d21b5;
+border-color: #e67d21;
+}
 
 

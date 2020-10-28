@@ -158,6 +158,14 @@ export class ListService {
             .toPromise();
     }
 
+    removeAllItemsFromList(shoppinglist_id: string) {
+        let url = this.listUrl + "/" + shoppinglist_id + "/item";
+        return this
+            .httpClient
+            .delete(url)
+            .toPromise();
+    }
+
     updateShoppingListStarterStatus(shoppingList: IShoppingList) {
         // create put object for call
         let shoppingListPut = new ShoppingListPut();

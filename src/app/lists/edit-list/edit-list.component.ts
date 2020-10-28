@@ -23,10 +23,10 @@ export class EditListComponent implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
 
     private crossedOffExist: boolean;
-    private crossedOffHidden: boolean;
     private showMakeStarter: boolean;
     listLegendMap: Map<string, LegendPoint>;
     legendList: LegendPoint[] = [];
+    showCrossedOff: boolean = true;
     showActions: boolean = true;
     showAddDish: boolean = false;
     showAddItem: boolean = false;
@@ -121,6 +121,10 @@ export class EditListComponent implements OnInit, OnDestroy {
             }
             this.getShoppingList(this.shoppingList.list_id);
         }
+    }
+
+    toggleShowCrossedOff() {
+        this.getShoppingList(this.shoppingList.list_id);
     }
 
     toggleShowChangeName() {
@@ -251,10 +255,12 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     addListToList(fromList: IShoppingList) {
         this.listLegendMap = null;
+        this.showAddList = false;
         let promise = this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id);
         promise.then(data => {
             this.highlightSourceId = "l" + fromList.list_id;
             this.getShoppingList(this.shoppingList.list_id);
+            this.showAddList = false;
         })
     }
 
@@ -271,7 +277,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     makeStarterList() {
-
+        this.hideAllAddInputs()
         let promise = this.listService.updateShoppingListStarterStatus(this.shoppingList);
         promise.then(data => {
             this.getShoppingList(this.shoppingList.list_id);
@@ -288,6 +294,15 @@ export class EditListComponent implements OnInit, OnDestroy {
             this.getShoppingList(this.shoppingList.list_id);
         });
 
+    }
+
+    clearList() {
+        this.highlightSourceId = null;
+        this.showFrequent = false;
+        let promise = this.listService.removeAllItemsFromList(this.shoppingList.list_id);
+        promise.then(data => {
+            this.getShoppingList(this.shoppingList.list_id)
+        });
     }
 
     private processRetrievedShoppingList(p: IShoppingList) {
@@ -321,8 +336,12 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     private filterForDisplay(shoppingList: IShoppingList): IShoppingList {
+        if (shoppingList.categories.length == 0) {
+            this.showFrequent = false;
+            return shoppingList;
+        }
 
-        if (this.crossedOffHidden) {
+        if (!this.showCrossedOff) {
             for (let category of shoppingList.categories) {
                 this.hideCrossedOff(category);
             }
@@ -363,6 +382,15 @@ export class EditListComponent implements OnInit, OnDestroy {
                 category.items = categoryItems;
                 newCategories.push(category);
             }
+        }
+
+        if (pulledItems.length == 0) {
+            // nothing to pull out
+            // if pull is frequent, "unset" and return
+            if (highlightId == LegendService.FREQUENT) {
+                this.showFrequent = false;
+            }
+            return newCategories;
         }
         // now, make new category
         var name;
@@ -413,6 +441,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.showAddItem = false;
         this.showAddDish = false;
         this.showAddList = false;
+        this.showChangeName = false;
     }
 
 

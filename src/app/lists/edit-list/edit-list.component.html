@@ -40,6 +40,8 @@
             <!-- shopping list starts -->
             <div class="col-sm-12 col-md-8 col-lg-9">
                 <div *ngIf="shoppingList" class="row">
+                    <div *ngIf="shoppingList.categories.length == 0"
+                    class="ls-flat-card empty-list">This list is (currently) empty.</div>
                     <!-- start category loop -->
                     <div *ngFor="let category of shoppingList.categories, let i = index"
                          class="col-sm-12 col-med-6 col-lg-6">
@@ -90,6 +92,12 @@
                             </tr>
                         </table>
 
+                        <table  *ngIf="crossedOffExist" class="display-frequent">
+                            <tr>
+                                <td class="display-frequent">Show Crossed Off</td>
+                                <td class="display-frequent"><p-inputSwitch [(ngModel)]="showCrossedOff" (onChange)="toggleShowCrossedOff()"></p-inputSwitch></td>
+                            </tr>
+                        </table>
 
                         <div *ngIf="!showAddList" (click)="toggleAddList()">
                             <span class="action-link">
@@ -145,7 +153,7 @@
                         </div>
 
                         <div>
-                            <span class="action-link">
+                            <span class="action-link" (click)="clearList()">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Clear List
                             </span>
                         </div>
