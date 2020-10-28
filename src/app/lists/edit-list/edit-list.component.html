@@ -61,6 +61,15 @@
                 <!-- actions -->
                 <div class="ls-flat-card ls-card-contents">
                     <ng-container *ngIf="showActions">
+
+                        <table  *ngIf="frequentToggleAvailable" class="display-frequent">
+                            <tr>
+                                <td class="display-frequent">Display Frequent</td>
+                                <td class="display-frequent"><p-inputSwitch [(ngModel)]="showFrequent" (onChange)="toggleShowFrequent()"></p-inputSwitch></td>
+                            </tr>
+                        </table>
+
+
                         <div *ngIf="!showAddList" (click)="toggleAddList()">
                             <span class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add List
@@ -113,14 +122,7 @@
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
                             </span>
                         </div>
-                        <div *ngIf="frequentToggleAvailable">
-                            <span *ngIf="!showFrequent" (click)="toggleShowFrequent()" class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Show Frequent
-                            </span>
-                            <span *ngIf="showFrequent" (click)="toggleShowFrequent()" class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Hide Frequent
-                            </span>
-                        </div>
+
                         <div>
                             <span class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Clear List
@@ -141,7 +143,7 @@
                 <div *ngIf="legendList.length > 0" class="ls-legend">
                     <ul>
                         <li *ngFor="let source of legendList">
-                            <table>
+                            <table class="legend-table">
                                 <tr>
                                     <td (click)="highlightSource(source.key)"><img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
                                     <td (click)="highlightSource(source.key)">{{source.display}}</td>

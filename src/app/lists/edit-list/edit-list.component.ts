@@ -36,7 +36,6 @@ export class EditListComponent implements OnInit, OnDestroy {
     allDishes: IDish[];
     errorMessage: any;
     private highlightSourceId: string;
-    private showPantryItems: boolean;
     private showItemLegends: boolean;
 
     shoppingList: ShoppingList;
@@ -109,7 +108,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     toggleShowFrequent() {
-        this.showFrequent = !this.showFrequent;
+       // this.showFrequent = !this.showFrequent;
         if (this.showFrequent) {
             this.highlightSource(LegendService.FREQUENT);
         } else {
@@ -181,10 +180,9 @@ export class EditListComponent implements OnInit, OnDestroy {
         if (!source) {
             return;
         }
-        var requiresFetchedList = false;
+        var requiresFetchedList = this.highlightSourceId != null;
         if (source == this.highlightSourceId) {
             this.highlightSourceId = this.defaultEmptySourceId();
-            requiresFetchedList = true;
         } else {
             this.highlightSourceId = source;
         }

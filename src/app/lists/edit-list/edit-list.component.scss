@@ -1,5 +1,18 @@
 @import '../../../assets/scss/variable';
 
+
+:host ::ng-deep .p-inputswitch-checked {
+  .p-inputswitch-slider {
+    background: $color_basic_orange;
+  }
+
+  &:not(.p-disabled):hover .p-inputswitch-slider {
+  background: $color_basic_orange;}
+
+}
+
+
+
 .action-link {
   color: $color_tapa;
   transition: all 0.2s ease;
@@ -15,7 +28,7 @@
   }
 }
 
-table {
+table.legend-table {
   width: 100%;
 
   tr {
@@ -34,8 +47,22 @@ table {
   }
 }
 
+table.display-frequent {
+    width: 100%;
 
+    td {
+      text-align: left;
+      text-transform: capitalize;
+      color: $color_tapa;
+    }
+
+    td:nth-child(2) {
+      width: 30%;
+    }
+}
 .ls-list-column-header-special {
     box-shadow: 1px 1px 4px #e67d21b5;
     border-color: #e67d21;
   }
+
+

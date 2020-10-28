@@ -7,6 +7,8 @@ import {ListsComponent} from "./lists.component";
 import {SharedModule} from "../shared/shared.module";
 import {SingleListElementComponent} from "./single-list-element/single-list-element.component";
 import { EditListComponent } from './edit-list/edit-list.component';
+import {InputSwitchModule} from "primeng/inputswitch";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -14,10 +16,12 @@ import { EditListComponent } from './edit-list/edit-list.component';
       SingleListElementComponent,
   ListsComponent,
   EditListComponent],
-  imports: [
-    CommonModule,
-    ListsRoutingModule,
-      SharedModule
-  ]
+    imports: [
+        CommonModule,
+        ListsRoutingModule,
+        SharedModule,
+        InputSwitchModule,
+        FormsModule
+    ]
 })
 export class ListsModule { }
