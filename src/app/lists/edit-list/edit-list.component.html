@@ -22,9 +22,11 @@
                     <!-- start category loop -->
                     <div *ngFor="let category of shoppingList.categories, let i = index"
                          class="col-sm-12 col-med-6 col-lg-6">
-                        <div class="ls-list-column-header">
-                            {{category.name}}</div>
 
+                        <div *ngIf="category.is_highlighted" class="ls-list-column-header ls-list-column-header-special" >
+                            {{category.name}}</div>
+                        <div *ngIf="!category.is_highlighted" class="ls-list-column-header" >
+                            {{category.name}}</div>
                         <div class="row ls-ingredient-block">
                             <div class="col-sm-12 col-med-12 col-lg-6"
                                  *ngFor="let item of category.items"
@@ -111,9 +113,12 @@
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
                             </span>
                         </div>
-                        <div>
-                            <span class="action-link">
+                        <div *ngIf="frequentToggleAvailable">
+                            <span *ngIf="!showFrequent" (click)="toggleShowFrequent()" class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Show Frequent
+                            </span>
+                            <span *ngIf="showFrequent" (click)="toggleShowFrequent()" class="action-link">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Hide Frequent
                             </span>
                         </div>
                         <div>

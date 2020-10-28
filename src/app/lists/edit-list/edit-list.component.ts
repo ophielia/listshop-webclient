@@ -31,6 +31,8 @@ export class EditListComponent implements OnInit, OnDestroy {
     showAddDish: boolean = false;
     showAddItem: boolean = false;
     showAddList: boolean = false;
+    showFrequent: boolean = true;
+    frequentToggleAvailable: boolean = true;
     allDishes: IDish[];
     errorMessage: any;
     private highlightSourceId: string;
@@ -39,6 +41,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     shoppingList: ShoppingList;
     removedItems: IItem[] = [];
+
 
 
     constructor(
@@ -62,6 +65,7 @@ export class EditListComponent implements OnInit, OnDestroy {
             this.getShoppingList(id);
         });
         this.getAllDishes();
+        this.highlightSourceId = this.defaultEmptySourceId();
     }
 
     ngOnDestroy() {
@@ -104,6 +108,17 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.showAddItem = !this.showAddItem;
     }
 
+    toggleShowFrequent() {
+        this.showFrequent = !this.showFrequent;
+        if (this.showFrequent) {
+            this.highlightSource(LegendService.FREQUENT);
+        } else {
+            if (this.highlightSourceId == LegendService.FREQUENT) {
+                this.highlightSourceId = null;
+            }
+            this.getShoppingList(this.shoppingList.list_id);
+        }
+    }
 
     getShoppingList(id: string) {
         let $sub = this.listService
@@ -168,7 +183,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         }
         var requiresFetchedList = false;
         if (source == this.highlightSourceId) {
-            this.highlightSourceId = null;
+            this.highlightSourceId = this.defaultEmptySourceId();
             requiresFetchedList = true;
         } else {
             this.highlightSourceId = source;
@@ -237,7 +252,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         });
 
         if (this.highlightSourceId == sourcekey) {
-            this.highlightSourceId = null;
+            this.highlightSourceId = this.defaultEmptySourceId();
         }
     }
 
@@ -245,8 +260,8 @@ export class EditListComponent implements OnInit, OnDestroy {
     private processRetrievedShoppingList(p: IShoppingList) {
         this.determineCrossedOffPresent(p);
         this.prepareLegend(p);
+        this.adjustForStarter(p);
         this.shoppingList = this.filterForDisplay(p);
-        this.showMakeStarter = !this.shoppingList.is_starter;
         this.showItemLegends = this.newEvaluateShowLegend();
     }
 
@@ -279,7 +294,7 @@ export class EditListComponent implements OnInit, OnDestroy {
                 this.hideCrossedOff(category);
             }
         }
-        if (this.highlightSourceId || (this.showPantryItems && this.showMakeStarter)) {
+        if (this.highlightSourceId) {
             shoppingList.categories = this.pullCategoryByTag(this.highlightSourceId, shoppingList);
         }
         return shoppingList;
@@ -295,7 +310,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     private pullCategoryByTag(sourceId: string, shoppingList: IShoppingList) {
-        if (!sourceId && !this.showPantryItems) {
+        if (!sourceId) {
             return;
         }
         var highlightId = sourceId ? sourceId : LegendService.FREQUENT;
@@ -333,7 +348,8 @@ export class EditListComponent implements OnInit, OnDestroy {
             pulledItems,
             null,
             "yes",
-            is_frequent
+            is_frequent,
+            true
         )
 
         // put pulledItems at the front of the list
@@ -341,6 +357,15 @@ export class EditListComponent implements OnInit, OnDestroy {
         return newCategories;
     }
 
+    private defaultEmptySourceId() {
+        // will be either null or frequent, depending upon frequent availabilty
+        // and current frequent toggle state
+        if (this.frequentToggleAvailable && this.showFrequent) {
+            return LegendService.FREQUENT;
+        }
+        return null;
+
+    }
     private newEvaluateShowLegend() {
         let thisListIsTheStarter = this.shoppingList.is_starter;
         if (thisListIsTheStarter) {
@@ -354,6 +379,28 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.showAddItem = false;
         this.showAddDish = false;
         this.showAddList = false;
+    }
+
+
+    private adjustForStarter(list: IShoppingList) {
+        if (list.is_starter) {
+            this.showMakeStarter = false;
+            this.frequentToggleAvailable = !this.shoppingList.is_starter;
+            // check if currently sorted on frequent - if so, reset to null
+            if (this.highlightSourceId == LegendService.FREQUENT) {
+                this.highlightSourceId = null;
+            }
+        } else {
+            this.showMakeStarter = true;
+            this.frequentToggleAvailable = true;
+
+            // check showFrequent toggle, and set source id if on.
+            if (this.showFrequent && this.highlightSourceId == null ) {
+                this.highlightSourceId =  LegendService.FREQUENT;
+            }
+
+        }
+
     }
 
 

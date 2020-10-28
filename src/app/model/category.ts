@@ -6,6 +6,7 @@ export interface ICategory {
   items: Item[];
   subcategories: ICategory[];
   is_frequent: boolean;
+  is_highlighted: boolean;
   dish_id: string;
   allItems(): IItem[]
 }
@@ -18,6 +19,7 @@ export class Category implements ICategory {
       public  subcategories: Category[],
       public  override_class: string,
       public  is_frequent: boolean,
+      public  is_highlighted: boolean,
   ) {}
 
   dish_id: string;
