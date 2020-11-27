@@ -3,16 +3,13 @@ import { DemoComponent } from './landing/demo/demo.component';
 import { BlogComponent } from './landing/blog/blog.component';
 import {UserComponent} from "./user/user.component";
 import {ListsComponent} from "./lists/lists.component";
+import {DishesComponent} from "./dishes/dishes.component";
 
 export const rootRouterConfig: Routes = [
   {
     path: '',
-    redirectTo: 'home/two',
+    redirectTo: 'home',
     pathMatch: 'full'
-  },
-  {
-    path: 'demo',
-    component: DemoComponent
   },
   {
     path: 'home',
@@ -36,6 +33,11 @@ export const rootRouterConfig: Routes = [
     path: 'lists',
     component: ListsComponent,
     loadChildren:  () => import('./lists/lists.module').then(m => m.ListsModule)
+  },
+  {
+    path: 'dishes',
+    component: DishesComponent,
+    loadChildren:  () => import('./dishes/dishes.module').then(m => m.DishesModule)
   },
   {
     path: '**',
