@@ -3,33 +3,42 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-6 col-text-center d-align-left">
-                <h2 class="title"><span>Shopping Lists</span></h2>
+                <h2 class="title"><span>Dishes</span></h2>
             </div>
             <div class="col-md-6 col-sm-6 col-text-end">
-                <a (click)="createShoppingList()">
-                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a>
             </div>
         </div>
     </div>
 </div>
 <!--title end -->
+<!--breadcrumb start-->
+<div class="breadcrumb-bg">
+    <div class="container">
+        <div class="row col-sm-12 col-md-12 col-lg-12">
+            <span class="button-icon">
+                <input type="text" class="form-control searchbox"
+                       placeholder="Search By Dishname"
+                       [(ngModel)]="searchValue"
+                       (keyup)="filterByDishname()"
+                       (keyup.enter)="clearSearchValue()"
+                /><img src="../../../assets/images/listshop/icons/orangeround/search.png" alt="add" />
+            </span>
+
+        </div>
+    </div>
+</div>
+<!--breadcrumb end -->
+
 <!--content start-->
 <section>
     <div class="container">
         <div class="row">
             <div class="col-md-12 ">
                 <div class="row ">
-                    <div *ngFor="let list of lists"
-                         class="col-lg-4 col-md-6">
-                        <!-- single list element -->
-                        <app-single-list-element
-                                [itemCount]="list.item_count"
-                                [listName]="list.name"
-                                [listId]="list.list_id"
-                                [listIsStarter]="list.is_starter"
-                                (delete)="deleteShoppingList($event)"
-                                (edit)="editShoppingList($event)"></app-single-list-element>
-                        <!-- single list element -->
+                    <div >
+                        <!-- single dish element -->
+CONTENT HERE
+                        <!-- single dish element -->
                     </div>
 
 

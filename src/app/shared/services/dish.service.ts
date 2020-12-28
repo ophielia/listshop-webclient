@@ -30,6 +30,33 @@ export class DishService {
                 catchError(DishService.handleError));
     }
 
+    findByTags(inclList: string[], exclList: string[]) {
+        var inclString = "";
+        if (inclList) {
+            inclString = inclList.join(",");
+
+        }
+        var exclString = "";
+        if (exclList) {
+            exclString = exclList.join(",");
+
+        }
+
+        var url = this.dishUrl;
+        if (inclString.length > 0) {
+            url = url + "?includedTags=" + inclString;
+        }
+        if (exclString.length > 0) {
+            url = url +
+                (inclString.length > 0 ? "&" : "?") + "excludedTags=" + exclString;
+        }
+        return this.httpClient.get(url)
+            .pipe(map((response: HttpResponse<any>) => {
+                    // map and return
+                    return DishService.mapDishes(response);
+                }),
+                catchError(DishService.handleError));
+    }
 
     private static handleError(error: any) {
         // log error

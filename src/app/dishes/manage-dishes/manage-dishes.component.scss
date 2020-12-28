@@ -1,0 +1,10 @@
+.button-icon {
+  & input {
+    float: left;
+    width: 80%;
+  }
+  & img {
+    padding-top: 2px;
+    padding-left: 2px;
+  }
+}
