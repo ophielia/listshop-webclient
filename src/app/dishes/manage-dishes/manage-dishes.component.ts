@@ -140,5 +140,14 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         });
     }
 
+    addTagToFilter(tag: ITag) {
+        tag.is_inverted = false;
+        if (!this.filterTags) {
+            this.filterTags = [];
+        }
 
+        this.filterTags.push(tag);
+
+        this.getAllDishes();
+    }
 }

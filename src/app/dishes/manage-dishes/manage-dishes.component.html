@@ -23,6 +23,17 @@
                        (keyup.enter)="clearSearchValue()"
                 /><img src="../../../assets/images/listshop/icons/orangeround/search.png" alt="add" />
             </span>
+            <span class="button-icon">
+                                   <app-tag-select class="at-tag-select-style"
+                                                   [tagTypes]="'Ingredient,Rating,DishType,TagType'"
+                                                   [selectType]="'Search'"
+                                                   [allowAdd]="false"
+                                                   [showCancelButton]="false"
+                                                   [placeholderText]="'Filter Results'"
+                                                   (tagSelected)="addTagToFilter($event)"></app-tag-select>
+
+                <img src="../../../assets/images/listshop/icons/orangeround/filter.png" alt="add" />
+            </span>
 
         </div>
     </div>

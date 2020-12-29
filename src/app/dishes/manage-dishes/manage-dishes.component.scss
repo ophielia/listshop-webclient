@@ -1,10 +1,21 @@
+@import '../../../assets/scss/variable';
+
 .button-icon {
-  & input {
+  input {
     float: left;
     width: 80%;
   }
-  & img {
+
+
+  img {
     padding-top: 2px;
     padding-left: 2px;
   }
+}
+
+.autocomplete-override:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem rgba(230, 125, 33, 0.25);
+  border-color: $color_basic_orange;
 }

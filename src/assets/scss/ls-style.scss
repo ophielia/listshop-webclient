@@ -40,6 +40,14 @@ ls-fixed-top.fixed-top {
   text-decoration: line-through;
 }
 
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: $color_basic_orange;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(230, 125, 33, 0.25);
+}
+
 /* header */
 .home-style-two,
 .three {
