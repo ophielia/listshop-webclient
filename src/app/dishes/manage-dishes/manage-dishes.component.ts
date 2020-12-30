@@ -12,6 +12,7 @@ import {DishSort} from "../../model/dish-sort";
 import {SortDirection} from "../../model/sort-direction";
 import {SortKey} from "../../model/sort-key";
 
+
 @Component({
     selector: 'app-manage-dishes',
     templateUrl: './manage-dishes.component.html',
@@ -31,6 +32,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     sortDirection: SortDirection = SortDirection.Up;
 
     private errorMessage: string;
+    isSingleClick: Boolean = true;
+    showOrderBy: boolean = false;
 
     constructor(
         private fix: LandingFixService,
@@ -150,4 +153,52 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
         this.getAllDishes();
     }
+
+    removeTagFromFilter(tag: ITag) {
+        this.isSingleClick = false;
+        this.filterTags = this.filterTags.filter(t => t.tag_id != tag.tag_id);
+        this.getAllDishes();
+    }
+
+    toggleInvert(tag: ITag) {
+
+            this.isSingleClick = true;
+            setTimeout(()=>{
+                if(this.isSingleClick){
+                    for (var i: number = 0; i < this.filterTags.length; i++) {
+                        if (this.filterTags[i].tag_id == tag.tag_id) {
+                            this.filterTags[i].is_inverted = !this.filterTags[i].is_inverted;
+                        }
+                    }
+                    this.getAllDishes();
+                }
+            },250)
+        }
+
+    toggleShowOrderBy() {
+        this.showOrderBy = !this.showOrderBy;
+    }
+
+    changeSortDirection() {
+        if (this.sortDirection == SortDirection.Up) {
+            this.sortDirection = SortDirection.Down;
+        } else {
+            this.sortDirection = SortDirection.Up;
+        }
+        this.changeSort();
+    }
+
+    changeSort() {
+        this.sortDishes(this.allDishes);
+        if (this.filteredDishes.length == this.allDishes.length) {
+            this.filteredDishes = this.allDishes
+        } else {
+            this.sortDishes(this.filteredDishes);
+        }
+    }
+
+    isSortUp() {
+        return this.sortDirection == SortDirection.Up;
+    }
+
 }

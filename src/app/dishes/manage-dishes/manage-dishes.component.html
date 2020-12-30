@@ -12,18 +12,19 @@
 </div>
 <!--title end -->
 <!--breadcrumb start-->
-<div class="breadcrumb-bg">
-    <div class="container">
-        <div class="row col-sm-12 col-md-12 col-lg-12">
+<div class="breadcrumb-bg breadcrumb-for-bar">
+    <div class="container dish-toolbar">
+        <div class="row">
+            <div class=" col-sm-6 col-md-8 col-lg-8">
             <span class="button-icon">
                 <input type="text" class="form-control searchbox"
                        placeholder="Search By Dishname"
                        [(ngModel)]="searchValue"
                        (keyup)="filterByDishname()"
                        (keyup.enter)="clearSearchValue()"
-                /><img src="../../../assets/images/listshop/icons/orangeround/search.png" alt="add" />
+                /><!--<img src="../../../assets/images/listshop/icons/orangeround/search.png" alt="add" />-->
             </span>
-            <span class="button-icon">
+                <span class="button-icon" style="margin-left: 10px">
                                    <app-tag-select class="at-tag-select-style"
                                                    [tagTypes]="'Ingredient,Rating,DishType,TagType'"
                                                    [selectType]="'Search'"
@@ -32,11 +33,57 @@
                                                    [placeholderText]="'Filter Results'"
                                                    (tagSelected)="addTagToFilter($event)"></app-tag-select>
 
-                <img src="../../../assets/images/listshop/icons/orangeround/filter.png" alt="add" />
             </span>
+
+            </div>
+            <div class="col-md-4 col-sm-6 col-text-end">
+                <div class="sort-display">
+                    <!--    Name <img src="../../../assets/images/listshop/icons/white/arrowup.png" alt="add"> -->
+                    <span *ngIf="showOrderBy">
+                    <select name="sortkey" [(ngModel)]="sortKey" class="sort-select" (change)="changeSort()">
+                       <option *ngFor="let sortkey of sortOptions" [value]="sortkey">{{sortkey}}</option>
+                    </select>
+
+                    <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png" (click)="changeSortDirection()" alt="sort-ascending">
+                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png" (click)="changeSortDirection()" alt="sort-ascending">
+                    <img class="check" (click)="toggleShowOrderBy()"
+                         src="../../../assets/images/listshop/icons/orangeround/check.png" alt="sort-done">
+                    </span>
+
+                    <span *ngIf="!showOrderBy" (click)="toggleShowOrderBy()" style="padding-left:5px">
+                    {{sortKey}}
+                        <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png"  alt="sort-ascending">
+                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png"  alt="sort-ascending">
+                        </span>
+                </div>
+
+
+                <span><a [routerLink]="'/home'" class="add-button">
+                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
+            </div>
 
         </div>
     </div>
+    <!-- active filter display -->
+    <div class="container active-filter-container">
+        <div class="row">
+            <div class=" col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div *ngFor="let tag of filterTags" atTagBrowseStyle [tag]="tag"
+                         class="col active-filter-block"
+                         (dblclick)="removeTagFromFilter(tag)"
+                         (click)="toggleInvert(tag)"
+                    >{{tag.name}}
+                        <img *ngIf="tag.is_inverted"
+                             src="../../../assets/images/listshop/icons/orangeplain/circleminus.png" alt="add">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- active filter display -->
 </div>
 <!--breadcrumb end -->
 
@@ -46,9 +93,17 @@
         <div class="row">
             <div class="col-md-12 ">
                 <div class="row ">
-                    <div >
+                    <div class="col-md-12 ">
                         <!-- single dish element -->
-CONTENT HERE
+                        <div *ngFor="let dish of filteredDishes, let i = index" style="margin:5px">
+                            <div class="clearfix" *ngIf="i % 3 == 0"></div>
+                            <div>
+                                <!-- ngClass=" {{getElementClass('dish-tag-element dish-tag-element-spaced ')}}"
+                                 (dblclick)="selectDish(dish)"> -->
+                                {{dish.name}}
+
+                            </div>
+                        </div>
                         <!-- single dish element -->
                     </div>
 

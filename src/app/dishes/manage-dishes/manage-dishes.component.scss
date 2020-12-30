@@ -1,9 +1,53 @@
 @import '../../../assets/scss/variable';
 
+.add-button {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.sort-display {
+  display: inline-block;
+  background-color: $color_tapa;
+  color: white;
+  padding: 5px 10px;
+  border: 1px solid $color_tapa;
+  border-radius: 0.25rem;
+    margin-right: 15px;
+
+  img {
+    padding-bottom: 5px;
+    margin-left: 5px;
+
+  }
+
+}
+
+.check  {
+  width:24px;
+}
+
+.sort-select  {
+  border: 1px solid #999;
+
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem rgba(230, 125, 33, 0.25);
+    border-color: $color_basic_orange;
+  }
+}
 .button-icon {
+  display: inline-block;
+
   input {
     float: left;
-    width: 80%;
+    width: 100%;
+    background: url("../../../assets/images/listshop/icons/orangeplain/search.png");
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: center;
+    background-color: white;
   }
 
 
@@ -13,6 +57,53 @@
   }
 }
 
+.active-filter-container {
+  max-width: 3000px;
+  background-color:white;
+}
+.active-filter-block {
+  display:inline-block;
+  width:100%;
+  text-align: center;
+  border-color: #e67d21;
+  padding: 10px;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width:0px;
+  border-style: solid;
+  text-transform: capitalize;
+}
+
+.active-filter-block:first-of-type {
+
+  border-left-width: 1px;
+}
+
+.breadcrumb-for-bar {
+  padding-bottom: 0px;
+}
+
+.dish-toolbar {
+  padding-bottom: 15px;
+}
+:host ::ng-deep input.p-inputtext {
+  background: url("../../../assets/images/listshop/icons/orangeplain/filter.png");
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position-x: 98%;
+  background-position-y: center;
+  background-color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  font-family: Poppins, sans-serif;
+}
 .autocomplete-override:enabled:focus {
   outline: 0 none;
   outline-offset: 0;
