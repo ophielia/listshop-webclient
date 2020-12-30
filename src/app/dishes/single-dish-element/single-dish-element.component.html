@@ -1,0 +1,14 @@
+
+<!--single list element start-->
+<div class="ls-card">
+    <div class="ls-dish-element-title">{{dish.name}}
+        </div>
+    <div *ngIf="fullDisplay && hasDescription()" class="ls-dish-description">{{dish.description}}</div>
+    <div *ngIf="hasReference()">Ref: {{dish.reference}}</div>
+    <div class="ls-card-link-block">
+            <a class="ls-card-link" (click)="editList()">edit</a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<!--single list element end-->
+

@@ -44,16 +44,20 @@
                        <option *ngFor="let sortkey of sortOptions" [value]="sortkey">{{sortkey}}</option>
                     </select>
 
-                    <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png" (click)="changeSortDirection()" alt="sort-ascending">
-                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png" (click)="changeSortDirection()" alt="sort-ascending">
+                    <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png"
+                         (click)="changeSortDirection()" alt="sort-ascending">
+                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png"
+                         (click)="changeSortDirection()" alt="sort-ascending">
                     <img class="check" (click)="toggleShowOrderBy()"
                          src="../../../assets/images/listshop/icons/orangeround/check.png" alt="sort-done">
                     </span>
 
                     <span *ngIf="!showOrderBy" (click)="toggleShowOrderBy()" style="padding-left:5px">
                     {{sortKey}}
-                        <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png"  alt="sort-ascending">
-                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png"  alt="sort-ascending">
+                        <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png"
+                             alt="sort-ascending">
+                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png"
+                         alt="sort-ascending">
                         </span>
                 </div>
 
@@ -93,21 +97,20 @@
         <div class="row">
             <div class="col-md-12 ">
                 <div class="row ">
-                    <div class="col-md-12 ">
-                        <!-- single dish element -->
-                        <div *ngFor="let dish of filteredDishes, let i = index" style="margin:5px">
-                            <div class="clearfix" *ngIf="i % 3 == 0"></div>
-                            <div>
-                                <!-- ngClass=" {{getElementClass('dish-tag-element dish-tag-element-spaced ')}}"
-                                 (dblclick)="selectDish(dish)"> -->
-                                {{dish.name}}
+                    <!-- single dish element -->
+                    <div *ngFor="let dish of filteredDishes, let i = index"
+                         class="col-lg-3 col-md-6">
 
-                            </div>
-                        </div>
-                        <!-- single dish element -->
+                        <!-- single list element -->
+                        <app-single-dish-element
+                                [dish]=dish
+                                [fullDisplay]="true"
+                                (edit)="editDish($event)"></app-single-dish-element>
+                        <!-- single list element -->
+
+
                     </div>
-
-
+                    <!-- single dish element -->
                 </div>
             </div>
         </div>

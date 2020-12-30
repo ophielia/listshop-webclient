@@ -201,4 +201,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         return this.sortDirection == SortDirection.Up;
     }
 
+    editDish(dishId: String) {
+        //var url = "dishes/edit/" +  dishId;
+        this.router.navigateByUrl("home");
+    }
 }

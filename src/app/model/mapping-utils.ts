@@ -120,6 +120,7 @@ export default class MappingUtils {
                 dish_id: jsonResult.dish_id,
                 name: jsonResult.name,
                 description: jsonResult.description,
+                reference: jsonResult.reference,
                 user_id: jsonResult.user_id,
                 last_added: jsonResult.last_added,
                 tags: jsonResult.tags.map(MappingUtils._toTag)

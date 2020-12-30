@@ -1,0 +1,45 @@
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {LandingFixService} from "../../shared/services/landing-fix.service";
+import {ActivatedRoute} from "@angular/router";
+import {Title} from "@angular/platform-browser";
+import {IDish} from "../../model/dish";
+
+@Component({
+    selector: 'app-single-dish-element',
+    templateUrl: './single-dish-element.component.html',
+    styleUrls: ['./single-dish-element.component.scss']
+})
+export class SingleDishElementComponent implements OnInit {
+
+    @Input() dish: IDish;
+    @Input() fullDisplay: boolean;
+    @Output() edit: EventEmitter<String> = new EventEmitter<String>();
+
+    constructor(
+        private fix: LandingFixService,
+        private route: ActivatedRoute,
+        private title: Title,
+    ) {
+    }
+
+    ngOnInit() {
+        // this.fix.addFixBlogDetails();
+        this.title.setTitle(this.route.snapshot.data['title']);
+    }
+
+    ngOnDestroy() {
+        // this.fix.removeFixBlogDetails();
+    }
+
+    editList() {
+        this.edit.emit(this.dish.dish_id);
+    }
+
+    hasReference() {
+        return this.dish.reference && this.dish.reference.length > 0;
+    }
+
+    hasDescription() {
+        return this.dish.description && this.dish.description.length > 0;
+    }
+}

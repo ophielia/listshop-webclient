@@ -7,11 +7,13 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import {FormsModule} from "@angular/forms";
 import {ManageDishesComponent} from "./manage-dishes/manage-dishes.component";
 import {DishesComponent} from "./dishes.component";
+import {SingleDishElementComponent} from "./single-dish-element/single-dish-element.component";
 
 
 @NgModule({
     declarations: [DishesComponent,
-        ManageDishesComponent],
+        ManageDishesComponent,
+        SingleDishElementComponent],
     imports: [
         CommonModule,
         DishesRoutingModule,
