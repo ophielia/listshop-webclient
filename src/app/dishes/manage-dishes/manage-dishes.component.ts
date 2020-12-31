@@ -4,13 +4,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
-import {ShoppingList} from "../../model/shoppinglist";
+import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
 import {SortDirection} from "../../model/sort-direction";
 import {SortKey} from "../../model/sort-key";
+import {NGXLogger} from "ngx-logger";
 
 
 @Component({
@@ -21,19 +22,27 @@ import {SortKey} from "../../model/sort-key";
 export class ManageDishesComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
     searchValue: string;
+    lastSearchLength: number = 0;
 
     filteredDishes: Dish[];
     allDishes: Dish[];
 
     filterTags: ITag[];
 
+    showAddTag: boolean = false;
+     showAddToList: boolean = false;
+
     sortOptions: SortKey[] = DishSort.getKeys();
     sortKey: SortKey = SortKey.LastUsed;
     sortDirection: SortDirection = SortDirection.Up;
 
+    hasSelected: boolean = false;
+    selectedDishes: Dish[] = [];
+
     private errorMessage: string;
     isSingleClick: Boolean = true;
     showOrderBy: boolean = false;
+
 
     constructor(
         private fix: LandingFixService,
@@ -42,7 +51,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         private title: Title,
         private meta: Meta,
         private dishService: DishService,
-        private listService: ListService
+        private logger: NGXLogger
     ) {
     }
 
@@ -62,11 +71,16 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
         if (this.searchValue.length == 0) {
             this.filteredDishes = this.allDishes;
-        } else if (this.filteredDishes) {
+        } else if ( this.filteredDishes && this.lastSearchLength < this.searchValue.length ) {
             let filterBy = this.searchValue.toLocaleLowerCase();
             this.filteredDishes = this.filteredDishes.filter((dish: Dish) =>
                 dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
+        } else {
+            let filterBy = this.searchValue.toLocaleLowerCase();
+            this.filteredDishes = this.allDishes.filter((dish: Dish) =>
+                dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
         }
+        this.lastSearchLength = this.searchValue.length;
     }
 
     clearSearchValue() {
@@ -204,5 +218,40 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     editDish(dishId: String) {
         //var url = "dishes/edit/" +  dishId;
         this.router.navigateByUrl("home");
+    }
+
+    selectDish(dish: Dish) {
+        var alreadySelected = this.selectedDishes.filter(t => dish.dish_id == t.dish_id);
+        if (alreadySelected.length > 0) {
+            return;
+        }
+        this.selectedDishes.push(dish);
+        this.hasSelected = this.selectedDishes.length > 0;
+    }
+
+    unSelectDish(dishId: string) {
+        this.selectedDishes = this.selectedDishes.filter(t => dishId != t.dish_id);
+        this.hasSelected = this.selectedDishes.length > 0;
+    }
+
+    toggleAddTag() {
+        this.showAddTag = !this.showAddTag;
+    }
+
+    toggleAddToList() {
+        this.showAddToList = !this.showAddToList;
+    }
+
+
+
+    addTagToDishes(tag: ITag) {
+        this.logger.debug("add tag to dishes");
+        this.showAddTag = false;
+    }
+
+
+    addDishesToList(list: IShoppingList) {
+        this.logger.debug("add dishes to list");
+        this.showAddToList = false;
     }
 }

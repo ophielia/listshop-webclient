@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {IDish} from "../../model/dish";
+import {Dish, IDish} from "../../model/dish";
 
 @Component({
     selector: 'app-single-dish-element',
@@ -14,6 +14,7 @@ export class SingleDishElementComponent implements OnInit {
     @Input() dish: IDish;
     @Input() fullDisplay: boolean;
     @Output() edit: EventEmitter<String> = new EventEmitter<String>();
+    @Output() select: EventEmitter<Dish> = new EventEmitter<Dish>();
 
     constructor(
         private fix: LandingFixService,
@@ -31,8 +32,18 @@ export class SingleDishElementComponent implements OnInit {
         // this.fix.removeFixBlogDetails();
     }
 
-    editList() {
+    editDish() {
         this.edit.emit(this.dish.dish_id);
+    }
+
+    selectADish() {
+        console.log("beep");
+        this.select.emit(this.dish);
+    }
+
+    selectDishFromLink() {
+        console.log("beep");
+        this.select.emit(this.dish);
     }
 
     hasReference() {

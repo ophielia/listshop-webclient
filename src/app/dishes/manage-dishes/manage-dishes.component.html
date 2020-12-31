@@ -95,17 +95,19 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-md-12 ">
+
+            <div class="col-md-{{hasSelected ? 9 : 12}} ">
                 <div class="row ">
                     <!-- single dish element -->
                     <div *ngFor="let dish of filteredDishes, let i = index"
-                         class="col-lg-3 col-md-6">
+                         class="col-lg-{{hasSelected ? 4 : 3}} col-md-6">
 
                         <!-- single list element -->
                         <app-single-dish-element
                                 [dish]=dish
                                 [fullDisplay]="true"
-                                (edit)="editDish($event)"></app-single-dish-element>
+                                (edit)="editDish($event)"
+                                (select)="selectDish($event)"></app-single-dish-element>
                         <!-- single list element -->
 
 
@@ -113,6 +115,61 @@
                     <!-- single dish element -->
                 </div>
             </div>
+            <div *ngIf="hasSelected" class="col-md-3 sticky-top">
+
+
+                <!-- selected dishes -->
+                <div class="ls-dish-management-legend">
+                    <div class="selected-title">Selected Dishes</div>
+                    <div *ngFor="let selectedDish of selectedDishes"
+                         class="selected-dish"
+                         (click)="unSelectDish(selectedDish.dish_id)">
+                        {{selectedDish.name}}
+                    </div>
+                </div>
+                <!-- selected dishes -->
+
+                <!-- commands -->
+                <div class="ls-dish-flat-card ls-card-contents">
+
+                    <div *ngIf="!showAddTag" (click)="toggleAddTag()"><span class="action-link">
+                        <i aria-hidden="true" class="fa fa-angle-right"></i>
+                        Add Tag to Selected</span>
+                    </div>
+                    <div *ngIf="showAddTag">
+                        <app-tag-select class="at-tag-select-style"
+                                        [tagTypes]="'Ingredient,Rating,DishType,TagType'"
+                                        [selectType]="'Search'"
+                                        [allowAdd]="true"
+                                        [showCancelButton]="true"
+                                        [placeholderText]="'Add Tag'"
+                                        (tagSelected)="addTagToDishes($event)"
+                                        (cancelAddTag)="toggleAddTag()"></app-tag-select>
+                    </div>
+                    <div><span class="action-link">
+                        <i aria-hidden="true" class="fa fa-angle-right"></i>
+                        Add Selected To Meal Plan </span>
+                    </div>
+                    <div *ngIf="!showAddToList" (click)="toggleAddToList()"><span class="action-link">
+                        <i aria-hidden="true" class="fa fa-angle-right"></i>
+                        Add Selected To List </span>
+                    </div>
+                    <div *ngIf="showAddToList">
+                        <app-list-select class="at-tag-select-style"
+                                         [currentListId]="0"
+                                         [title] = "'Add to List'"
+                                         (listSelected)="addDishesToList($event)"
+                                         (cancelSelectList)="toggleAddToList()"></app-list-select>
+                    </div>
+                    <div><span class="action-link">
+                        <i aria-hidden="true" class="fa fa-angle-right"></i>
+                        Generate List </span>
+                    </div>
+                </div>
+                <!-- commands -->
+
+            </div>
+
         </div>
     </div>
 </section>

@@ -12,6 +12,7 @@ export class ListSelectComponent implements OnInit, OnDestroy {
     @Output() listSelected: EventEmitter<IShoppingList> = new EventEmitter<IShoppingList>();
     @Output() cancelSelectList: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() currentListId: string;
+    @Input() title: string = "Add From List";
 
 
     listOfLists: IShoppingList[] = [];
