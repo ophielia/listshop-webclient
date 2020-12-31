@@ -1,9 +1,10 @@
 import TagType from "../../model/tag-type";
 import {ITag, Tag} from "../../model/tag";
+import TagSelectType from "../../model/tag-select-type";
 
 
 export class TagTree {
-    public static  BASE_GROUP = "0";
+    public static BASE_GROUP = "0";
     private _lookupDisplay = new Map<string, ITag>();
     private _lookupRelations = new Map<string, TagTreeNode>();
 
@@ -31,7 +32,7 @@ export class TagTree {
         // fill in base tag display
         var baseDisplay = this._lookupDisplay.get(TagTree.BASE_GROUP);
         if (!baseDisplay) {
-            baseDisplay =new Tag();
+            baseDisplay = new Tag();
         }
         baseDisplay.name = "All";
     }
@@ -95,14 +96,14 @@ export class TagTree {
     }
 
 
-    contentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType, tagTypes: TagType[]): ITag[] {
+    contentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType, tagTypes: TagType[], tagSelectType: TagSelectType): ITag[] {
         let requestedNode = this._lookupRelations.get(id);
         if (!requestedNode) {
             return [];
         }
 
         if (id == TagTree.BASE_GROUP) {
-            return this.baseContentList(isAbbreviated, contentType, groupType, tagTypes);
+            return this.baseContentList(isAbbreviated, contentType, groupType, tagTypes, tagSelectType);
         }
 
         // gather all tags belonging to id
@@ -113,7 +114,7 @@ export class TagTree {
             allChildrenTags = this.directTags(requestedNode, groupType);
         }
 
-        return this.nodesToDisplays(allChildrenTags, groupType);
+        return this.nodesToDisplays(allChildrenTags, groupType, tagSelectType);
     }
 
     private allTags(node: TagTreeNode, groupType: GroupType): TagTreeNode[] {
@@ -151,7 +152,7 @@ export class TagTree {
         return allOfThem;
     }
 
-    private baseContentList(isAbbreviated: boolean, contentType: ContentType, groupType: GroupType, tagTypes: TagType[]): ITag[] {
+    private baseContentList(isAbbreviated: boolean, contentType: ContentType, groupType: GroupType, tagTypes: TagType[], tagSelectType: TagSelectType): ITag[] {
         var baseNode = this._lookupRelations.get(TagTree.BASE_GROUP);
         if (!baseNode) {
             return [];
@@ -169,7 +170,7 @@ export class TagTree {
 
             if (childNodeMatch) {
                 if (childNode.isGroup()) {
-                    filteredChildren = filteredChildren.concat(this.allTags(childNode, groupType ));
+                    filteredChildren = filteredChildren.concat(this.allTags(childNode, groupType));
                 } else {
                     filteredChildren.push(childNode);
                 }
@@ -177,16 +178,21 @@ export class TagTree {
             }
         }
 
-        return this.nodesToDisplays(filteredChildren, groupType);
+        return this.nodesToDisplays(filteredChildren, groupType, tagSelectType);
     }
 
 
-    private nodesToDisplays(nodes: TagTreeNode[], groupType: GroupType) {
+    private nodesToDisplays(nodes: TagTreeNode[], groupType: GroupType, tagSelectType: TagSelectType) {
+        var isSearchOnly = tagSelectType == TagSelectType.Search;
+        var isAssignOnly = tagSelectType == TagSelectType.Assign;
+
         // put into set
         var allTagSet = new Set<TagTreeNode>();
-        nodes.forEach(tagNode => {
-            allTagSet.add(tagNode);
-        });
+        nodes.filter(tN => !isSearchOnly || (isSearchOnly && tN.search_select))
+            .filter(tN => !isAssignOnly || (isAssignOnly && tN.assign_select))
+            .forEach(tagNode => {
+                allTagSet.add(tagNode);
+            });
 
         // separate into childTags and childGroups (displays)
         var childTags: ITag[] = [];

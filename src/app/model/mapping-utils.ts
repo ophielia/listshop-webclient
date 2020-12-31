@@ -6,6 +6,8 @@ import {Item} from "./item";
 import {ITag} from "./tag";
 import {Dish} from "./dish";
 import {ILegendSource, LegendSource} from "./legend-source";
+import {MealPlan} from "./mealplan";
+import {Slot} from "./slot";
 
 
 
@@ -59,6 +61,24 @@ export default class MappingUtils {
 
     static toTag(r: any): ITag {
         return MappingUtils._toTag(r.tag);
+    }
+
+    static toMealPlan(r: any): MealPlan {
+        let mealplan = <MealPlan>({
+                meal_plan_id: r.meal_plan.meal_plan_id,
+                user_id: r.meal_plan.user_id,
+                name: r.meal_plan.name,
+                created: r.meal_plan.created,
+                meal_plan_type: r.meal_plan.meal_plan_type,
+                slots: r.meal_plan.slots.map(MappingUtils._toSlot)
+            })
+        ;
+
+        if (MappingUtils.showConsoleLogs) {
+            console.log('Parsed mealplan:', mealplan);
+        }
+
+        return mealplan;
     }
 
     private static _toCategory(jsonResult: any): Category {
@@ -136,5 +156,18 @@ export default class MappingUtils {
             display: r.display
         });
         return legend;
+    }
+
+    private static _toSlot(r: any): Slot {
+        let slot = <Slot>({
+            slot_id: r.slot_id,
+            dish: MappingUtils._toDish(r.dish)
+        });
+
+        if (MappingUtils.showConsoleLogs) {
+            console.log('Parsed slot:', slot);
+        }
+
+        return slot;
     }
 }

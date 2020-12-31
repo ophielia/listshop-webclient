@@ -27,7 +27,8 @@
                 <span class="button-icon" style="margin-left: 10px">
                                    <app-tag-select class="at-tag-select-style"
                                                    [tagTypes]="'Ingredient,Rating,DishType,TagType'"
-                                                   [selectType]="'Search'"
+                                                   [selectType]="'All'"
+                                                   [groupType]="groupType"
                                                    [allowAdd]="false"
                                                    [showCancelButton]="false"
                                                    [placeholderText]="'Filter Results'"
@@ -73,7 +74,7 @@
         <div class="row">
             <div class=" col-sm-12 col-md-12 col-lg-12">
                 <div class="row">
-                    <div *ngFor="let tag of filterTags" atTagBrowseStyle [tag]="tag"
+                    <div *ngFor="let tag of filterTags"
                          class="col active-filter-block"
                          (dblclick)="removeTagFromFilter(tag)"
                          (click)="toggleInvert(tag)"
@@ -139,25 +140,33 @@
                     <div *ngIf="showAddTag">
                         <app-tag-select class="at-tag-select-style"
                                         [tagTypes]="'Ingredient,Rating,DishType,TagType'"
-                                        [selectType]="'Search'"
+                                        [selectType]="'Assign'"
                                         [allowAdd]="true"
                                         [showCancelButton]="true"
                                         [placeholderText]="'Add Tag'"
                                         (tagSelected)="addTagToDishes($event)"
                                         (cancelAddTag)="toggleAddTag()"></app-tag-select>
                     </div>
-                    <div><span class="action-link">
+                    <div (click)="toggleAddToMealplan()"><span class="action-link">
                         <i aria-hidden="true" class="fa fa-angle-right"></i>
                         Add Selected To Meal Plan </span>
                     </div>
-                    <div *ngIf="!showAddToList" (click)="toggleAddToList()"><span class="action-link">
+                    <div *ngIf="showAddToMealplan" (click)="toggleAddToMealplan()">
+                        <app-mealplan-select class="at-tag-select-style"
+                                         [title] = "'Select Mealplan'"
+                                         [showNewOption] = "true"
+                                         (mealplanSelected)="addDishesToMealplan($event)"
+                                         (addToNewMealplan)="addDishesToNewMealplan()"
+                                         (cancelSelectMealplan)="toggleAddToMealplan()"></app-mealplan-select>
+                    </div>
+                    <div  (click)="toggleAddToList()"><span class="action-link">
                         <i aria-hidden="true" class="fa fa-angle-right"></i>
                         Add Selected To List </span>
                     </div>
                     <div *ngIf="showAddToList">
                         <app-list-select class="at-tag-select-style"
                                          [currentListId]="0"
-                                         [title] = "'Add to List'"
+                                         [title] = "'Select List'"
                                          (listSelected)="addDishesToList($event)"
                                          (cancelSelectList)="toggleAddToList()"></app-list-select>
                     </div>

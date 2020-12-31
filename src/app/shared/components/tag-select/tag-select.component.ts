@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ITag} from "../../../model/tag";
-import TagSelectType from "../../../model/tag-select-type";
 import {Dish} from "../../../model/dish";
 import TagType from "../../../model/tag-type";
 import {Subscription} from "rxjs";
@@ -8,6 +7,7 @@ import {TagService} from "../../services/tag.service";
 import {TagTreeService} from "../../services/tag-tree.service";
 import {ContentType, GroupType, TagTree} from "../../services/tag-tree.object";
 import {NGXLogger} from "ngx-logger";
+import TagSelectType from "../../../model/tag-select-type";
 
 
 @Component({
@@ -20,7 +20,8 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     @Output() tagSelected: EventEmitter<ITag> = new EventEmitter<ITag>();
     @Output() cancelAddTag: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() tagTypes: string;
-    @Input() selectType: string = TagSelectType.Assign;
+    @Input() selectType: string = TagSelectType.All;
+    @Input() groupType: GroupType = GroupType.All;
 
     @Input() showCancelButton: boolean = false;
     @Input() allowAdd: boolean = false;
@@ -61,7 +62,7 @@ export class TagSelectComponent implements OnInit, OnDestroy {
         let tagTypesAsArray = this.tagTypes.split(",")
 
         let $sub = this.tagTreeService.allContentList(TagTree.BASE_GROUP,
-            ContentType.All, false, GroupType.ExcludeGroups, tagTypesAsArray)
+            ContentType.All, false, this.groupType, tagTypesAsArray, this.selectType)
             .subscribe(data => {
                 this.logger.debug("in subscribe in tag-select. data: " + data.length)
                 this.tagList = data;
@@ -126,20 +127,20 @@ export class TagSelectComponent implements OnInit, OnDestroy {
 
     add(tagtype: string) {
         var $sub = this.tagService.addTag(this.autoSelectedTag, tagtype)
-             .subscribe(r => {
-                 this.autoSelectedTag = null;
-                 var headers = r.headers;
-                 var location = headers.get("Location");
-                 var splitlocation = location.split("/");
-                 var id = splitlocation[splitlocation.length - 1];
-                 let promise = this.tagService.getById(id);
-                 promise.then(data => {
-                     this.showAddTags = false;
-                     this.autoSelectedTag = null;
-                     this.tagSelected.emit(data);
-                 })
-             });
-         this.unsubscribe.push($sub);
+            .subscribe(r => {
+                this.autoSelectedTag = null;
+                var headers = r.headers;
+                var location = headers.get("Location");
+                var splitlocation = location.split("/");
+                var id = splitlocation[splitlocation.length - 1];
+                let promise = this.tagService.getById(id);
+                promise.then(data => {
+                    this.showAddTags = false;
+                    this.autoSelectedTag = null;
+                    this.tagSelected.emit(data);
+                })
+            });
+        this.unsubscribe.push($sub);
     }
 
     ngOnDestroy() {

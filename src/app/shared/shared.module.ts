@@ -25,6 +25,7 @@ import {FormsModule} from "@angular/forms";
 import {TagSelectComponent} from "./components/tag-select/tag-select.component";
 import {TagService} from "./services/tag.service";
 import {ListSelectComponent} from "./components/list-select/list-select.component";
+import {MealPlanService} from "./services/meal-plan.service";
 
 @NgModule({
   exports: [
@@ -63,7 +64,8 @@ import {ListSelectComponent} from "./components/list-select/list-select.componen
       AuthenticationService,
       ListService,
       DishService,
-      TagService
+      TagService,
+      MealPlanService
 
   ]
 })

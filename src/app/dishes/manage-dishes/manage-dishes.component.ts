@@ -2,9 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
-import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
-import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
+import {IShoppingList} from "../../model/shoppinglist";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag} from "../../model/tag";
@@ -12,6 +11,7 @@ import {DishSort} from "../../model/dish-sort";
 import {SortDirection} from "../../model/sort-direction";
 import {SortKey} from "../../model/sort-key";
 import {NGXLogger} from "ngx-logger";
+import {GroupType} from "../../shared/services/tag-tree.object";
 
 
 @Component({
@@ -30,7 +30,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     filterTags: ITag[];
 
     showAddTag: boolean = false;
-     showAddToList: boolean = false;
+    showAddToList: boolean = false;
+    showAddToMealplan  : boolean = false;
 
     sortOptions: SortKey[] = DishSort.getKeys();
     sortKey: SortKey = SortKey.LastUsed;
@@ -39,9 +40,12 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     hasSelected: boolean = false;
     selectedDishes: Dish[] = [];
 
+    groupType: GroupType = GroupType.All;
+
     private errorMessage: string;
     isSingleClick: Boolean = true;
     showOrderBy: boolean = false;
+
 
 
     constructor(
@@ -243,6 +247,9 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
 
+    toggleAddToMealplan() {
+        this.showAddToMealplan = !this.showAddToMealplan;
+    }
 
     addTagToDishes(tag: ITag) {
         this.logger.debug("add tag to dishes");
@@ -253,5 +260,15 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     addDishesToList(list: IShoppingList) {
         this.logger.debug("add dishes to list");
         this.showAddToList = false;
+    }
+
+    addDishesToMealplan(mealplanId: string) {
+        this.logger.debug("add dishes to mealplan");
+        this.showAddToMealplan = false;
+    }
+
+    addDishesToNewMealplan() {
+        this.logger.debug("add dishes to new mealplan");
+        this.showAddToMealplan = false;
     }
 }
