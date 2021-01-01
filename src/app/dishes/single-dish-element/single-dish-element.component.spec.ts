@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {SingleDishElementComponent} from "./single-list-element.component";
+import {SingleDishElementComponent} from "./single-dish-element.component";
 
 
 

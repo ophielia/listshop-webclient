@@ -12,6 +12,7 @@ import {SortDirection} from "../../model/sort-direction";
 import {SortKey} from "../../model/sort-key";
 import {NGXLogger} from "ngx-logger";
 import {GroupType} from "../../shared/services/tag-tree.object";
+import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
 
 
 @Component({
@@ -45,6 +46,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     private errorMessage: string;
     isSingleClick: Boolean = true;
     showOrderBy: boolean = false;
+    showAddToNewList: boolean;
+    isLoading: boolean = true;
 
 
 
@@ -103,6 +106,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                 .subscribe(p => {
                         this.sortDishes(p);
                         this.allDishes = p;
+                        this.isLoading = false;
                         this.resetFilter()
                     },
                     e => this.errorMessage = e);
@@ -240,15 +244,39 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     toggleAddTag() {
         this.showAddTag = !this.showAddTag;
+
+        this.showAddToNewList = false;
+        this.showAddToList = false;
+        this.showAddToMealplan = false;
+
     }
 
     toggleAddToList() {
         this.showAddToList = !this.showAddToList;
+
+        this.showAddTag = false;
+        this.showAddToNewList = false;
+        this.showAddToMealplan = false;
+
     }
 
 
     toggleAddToMealplan() {
         this.showAddToMealplan = !this.showAddToMealplan;
+
+        this.showAddTag = false;
+        this.showAddToList = false;
+        this.showAddToNewList = false;
+
+    }
+
+
+    toggleAddToNewList() {
+        this.showAddToNewList = !this.showAddToNewList;
+
+        this.showAddTag = false;
+        this.showAddToList = false;
+        this.showAddToMealplan = false;
     }
 
     addTagToDishes(tag: ITag) {
@@ -270,5 +298,12 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     addDishesToNewMealplan() {
         this.logger.debug("add dishes to new mealplan");
         this.showAddToMealplan = false;
+    }
+
+    generateFromOptions(options: Map<string, boolean>) {
+        var includeStarter = options.get(GenerateListComponent.includeStarter);
+        var createMealplan = options.get(GenerateListComponent.createMealPlan);
+        this.logger.debug("create new list with options: includeStarter=" + includeStarter + ", createMealPlan=" + createMealplan + ".");
+        this.showAddToNewList = false;
     }
 }

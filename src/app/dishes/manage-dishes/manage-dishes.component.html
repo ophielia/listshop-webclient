@@ -97,88 +97,103 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-{{hasSelected ? 9 : 12}} ">
-                <div class="row ">
-                    <!-- single dish element -->
-                    <div *ngFor="let dish of filteredDishes, let i = index"
-                         class="col-lg-{{hasSelected ? 4 : 3}} col-md-6">
-
-                        <!-- single list element -->
-                        <app-single-dish-element
-                                [dish]=dish
-                                [fullDisplay]="true"
-                                (edit)="editDish($event)"
-                                (select)="selectDish($event)"></app-single-dish-element>
-                        <!-- single list element -->
-
-
-                    </div>
-                    <!-- single dish element -->
-                </div>
+            <div *ngIf="isLoading" class="col-md-12 " class="loading-box">
+                <div class="loading-text">loading dishes...</div>
             </div>
-            <div *ngIf="hasSelected" class="col-md-3 sticky-top">
+            <ng-container *ngIf="!isLoading">
+                <div class="col-md-{{hasSelected ? 9 : 12}} ">
+                    <div class="row ">
+                        <!-- single dish element -->
+                        <div *ngFor="let dish of filteredDishes, let i = index"
+                             class="col-lg-{{hasSelected ? 4 : 3}} col-md-6">
+
+                            <!-- single list element -->
+                            <app-single-dish-element
+                                    [dish]=dish
+                                    [fullDisplay]="true"
+                                    (edit)="editDish($event)"
+                                    (select)="selectDish($event)"></app-single-dish-element>
+                            <!-- single list element -->
 
 
-                <!-- selected dishes -->
-                <div class="ls-dish-management-legend">
-                    <div class="selected-title">Selected Dishes</div>
-                    <div *ngFor="let selectedDish of selectedDishes"
-                         class="selected-dish"
-                         (click)="unSelectDish(selectedDish.dish_id)">
-                        {{selectedDish.name}}
+                        </div>
+                        <!-- single dish element -->
                     </div>
                 </div>
-                <!-- selected dishes -->
+                <div *ngIf="hasSelected" class="col-md-3 sticky-top">
 
-                <!-- commands -->
-                <div class="ls-dish-flat-card ls-card-contents">
+                    <!-- selected dishes -->
+                    <div class="ls-dish-management-legend">
+                        <div class="selected-title">Selected Dishes</div>
+                        <div *ngFor="let selectedDish of selectedDishes"
+                             class="selected-dish"
+                             (click)="unSelectDish(selectedDish.dish_id)">
+                            {{selectedDish.name}}
+                        </div>
+                    </div>
+                    <!-- selected dishes -->
 
-                    <div *ngIf="!showAddTag" (click)="toggleAddTag()"><span class="action-link">
+                    <!-- commands -->
+                    <div class="ls-dish-flat-card ls-card-contents">
+
+                        <div *ngIf="!showAddTag" (click)="toggleAddTag()"><span class="action-link">
                         <i aria-hidden="true" class="fa fa-angle-right"></i>
                         Add Tag to Selected</span>
-                    </div>
-                    <div *ngIf="showAddTag">
-                        <app-tag-select class="at-tag-select-style"
-                                        [tagTypes]="'Ingredient,Rating,DishType,TagType'"
-                                        [selectType]="'Assign'"
-                                        [allowAdd]="true"
-                                        [showCancelButton]="true"
-                                        [placeholderText]="'Add Tag'"
-                                        (tagSelected)="addTagToDishes($event)"
-                                        (cancelAddTag)="toggleAddTag()"></app-tag-select>
-                    </div>
-                    <div (click)="toggleAddToMealplan()"><span class="action-link">
+                        </div>
+                        <div *ngIf="showAddTag">
+                            <app-tag-select class="at-tag-select-style"
+                                            [tagTypes]="'Ingredient,Rating,DishType,TagType'"
+                                            [selectType]="'Assign'"
+                                            [allowAdd]="true"
+                                            [showCancelButton]="true"
+                                            [placeholderText]="'Add Tag'"
+                                            (tagSelected)="addTagToDishes($event)"
+                                            (cancelAddTag)="toggleAddTag()"></app-tag-select>
+                        </div>
+                        <div (click)="toggleAddToMealplan()"><span class="action-link">
                         <i aria-hidden="true" class="fa fa-angle-right"></i>
                         Add Selected To Meal Plan </span>
-                    </div>
-                    <div *ngIf="showAddToMealplan" (click)="toggleAddToMealplan()">
-                        <app-mealplan-select class="at-tag-select-style"
-                                         [title] = "'Select Mealplan'"
-                                         [showNewOption] = "true"
-                                         (mealplanSelected)="addDishesToMealplan($event)"
-                                         (addToNewMealplan)="addDishesToNewMealplan()"
-                                         (cancelSelectMealplan)="toggleAddToMealplan()"></app-mealplan-select>
-                    </div>
-                    <div  (click)="toggleAddToList()"><span class="action-link">
+                        </div>
+                        <div *ngIf="showAddToMealplan" (click)="toggleAddToMealplan()">
+                            <app-mealplan-select class="at-tag-select-style"
+                                                 [title]="'Select Mealplan'"
+                                                 [showNewOption]="true"
+                                                 (mealplanSelected)="addDishesToMealplan($event)"
+                                                 (addToNewMealplan)="addDishesToNewMealplan()"
+                                                 (cancelSelectMealplan)="toggleAddToMealplan()"></app-mealplan-select>
+                        </div>
+                        <div (click)="toggleAddToList()"><span class="action-link">
                         <i aria-hidden="true" class="fa fa-angle-right"></i>
                         Add Selected To List </span>
-                    </div>
-                    <div *ngIf="showAddToList">
-                        <app-list-select class="at-tag-select-style"
-                                         [currentListId]="0"
-                                         [title] = "'Select List'"
-                                         (listSelected)="addDishesToList($event)"
-                                         (cancelSelectList)="toggleAddToList()"></app-list-select>
-                    </div>
-                    <div><span class="action-link">
+                        </div>
+                        <div *ngIf="showAddToList">
+                            <app-list-select
+                                             [currentListId]="notused"
+                                             [title]="'Select List'"
+                                             (listSelected)="addDishesToList($event)"
+                                             (cancelSelectList)="toggleAddToList()"></app-list-select>
+                        </div>
+                        <div *ngIf="!showAddToNewList" (click)="toggleAddToNewList()">
+                        <span class="action-link">
                         <i aria-hidden="true" class="fa fa-angle-right"></i>
-                        Generate List </span>
+                        New List from Selected</span>
+                        </div>
+                        <div *ngIf="showAddToNewList">
+                            <app-generate-list
+                                    [title]="'Generate List'"
+                                    (optionsSelected)="generateFromOptions($event)"
+                                    (cancelGenerateList)="toggleAddToNewList()">
+
+                            </app-generate-list>
+
+                        </div>
+
+
                     </div>
+                    <!-- commands -->
+
                 </div>
-                <!-- commands -->
-
-            </div>
-
+            </ng-container>
         </div>
     </div>
 </section>

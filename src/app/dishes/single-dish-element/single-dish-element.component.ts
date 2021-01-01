@@ -37,12 +37,10 @@ export class SingleDishElementComponent implements OnInit {
     }
 
     selectADish() {
-        console.log("beep");
         this.select.emit(this.dish);
     }
 
     selectDishFromLink() {
-        console.log("beep");
         this.select.emit(this.dish);
     }
 

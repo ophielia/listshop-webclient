@@ -22,7 +22,7 @@ import {DishService} from "../../shared/services/dish.service";
 export class EditListComponent implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
 
-    private crossedOffExist: boolean;
+    crossedOffExist: boolean;
     private showMakeStarter: boolean;
     listLegendMap: Map<string, LegendPoint>;
     legendList: LegendPoint[] = [];
@@ -40,7 +40,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     allDishes: IDish[];
     errorMessage: any;
     private highlightSourceId: string;
-    private showItemLegends: boolean;
+    showItemLegends: boolean;
 
     shoppingList: ShoppingList;
     removedItems: IItem[] = [];

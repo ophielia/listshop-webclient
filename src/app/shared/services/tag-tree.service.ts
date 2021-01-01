@@ -2,7 +2,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import TagType from "../../model/tag-type";
 import {ITag} from "../../model/tag";
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
-import {filter, map, tap} from "rxjs/operators";
+import {filter, map} from "rxjs/operators";
 import {ContentType, GroupType, TagTree} from "./tag-tree.object";
 import {TagService} from "./tag.service";
 import {NGXLogger} from "ngx-logger";
@@ -44,13 +44,12 @@ export class TagTreeService implements OnDestroy {
         let observable = this.finishedLoadingObservable();
 
         return observable.pipe(map((response: boolean) => {
-            this.logger.debug("tag tree loaded, now returning." );
+            this.logger.debug("tag tree loaded, now returning.");
             return this._tagTree.navigationList(tagId);
         }));
 
 
     }
-
 
 
     allContentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType,
@@ -61,7 +60,7 @@ export class TagTreeService implements OnDestroy {
         let observable = this.finishedLoadingObservable();
 
         return observable.pipe(map((response: boolean) => {
-            this.logger.debug("loaded, now returning." );
+            this.logger.debug("loaded, now returning.");
             return this._tagTree.contentList(id, contentType, isAbbreviated, groupType, tagTypes, tagSelectType);
         }));
 
@@ -93,12 +92,13 @@ export class TagTreeService implements OnDestroy {
 
     }
 
-     refreshTagTreeIfNeeded() {
-         var limit = this._lastLoaded + TagTreeService.refreshPeriod;
-         if ((new Date().getTime()) > limit) {
-             this.logger.debug("refreshing TagTree");
-             this.createOrRefreshTagTree();
-         };
+    refreshTagTreeIfNeeded() {
+        var limit = this._lastLoaded + TagTreeService.refreshPeriod;
+        if ((new Date().getTime()) > limit) {
+            this.logger.debug("refreshing TagTree");
+            this.createOrRefreshTagTree();
+        }
+        ;
     }
 
 

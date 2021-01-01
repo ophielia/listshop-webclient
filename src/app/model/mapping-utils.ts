@@ -1,6 +1,5 @@
 import {User} from "./user";
 import {IShoppingList} from "./shoppinglist";
-import {ItemSource} from "./item-source";
 import {Category} from "./category";
 import {Item} from "./item";
 import {ITag} from "./tag";
@@ -10,13 +9,12 @@ import {MealPlan} from "./mealplan";
 import {Slot} from "./slot";
 
 
-
 export default class MappingUtils {
 
     static showConsoleLogs: boolean = false;
 
     static toUser(r: any): User {
-        let user = <User>({
+        return <User>({
             email: r.user.email,
             creation_date: r.user.creation_date,
             user_name: r.user.user_name,
@@ -24,7 +22,6 @@ export default class MappingUtils {
             token: r.user.token
 
         });
-        return user;
     }
 
     static toShoppingList(jsonResult: any): IShoppingList {
@@ -102,7 +99,7 @@ export default class MappingUtils {
         let item = <Item>({
             list_id: jsonResult.list_id,
             item_id: jsonResult.item_id,
-            source_keys: jsonResult.source_keys ,
+            source_keys: jsonResult.source_keys,
             added: jsonResult.added,
             tag_id: jsonResult.tag_id,
             used_count: jsonResult.used_count,
@@ -120,7 +117,7 @@ export default class MappingUtils {
     }
 
     private static _toTag(jsonResult: any): ITag {
-        let tag = <ITag>({
+        return <ITag>({
             tag_id: jsonResult.tag_id,
             name: jsonResult.name,
             description: jsonResult.description,
@@ -131,31 +128,28 @@ export default class MappingUtils {
             dishes: jsonResult.dishes ? jsonResult.dishes.map(MappingUtils._toDish) : null,
             is_inverted: false,
             tag_type: jsonResult.tag_type
-        });
-        return tag
+        })
     }
 
     private static _toDish(jsonResult: any): Dish {
-        let dish = <Dish>({
-                dish_id: jsonResult.dish_id,
-                name: jsonResult.name,
-                description: jsonResult.description,
-                reference: jsonResult.reference,
-                user_id: jsonResult.user_id,
-                last_added: jsonResult.last_added,
-                tags: jsonResult.tags.map(MappingUtils._toTag)
-            })
-        ;
-        return dish;
+
+        return <Dish>({
+            dish_id: jsonResult.dish_id,
+            name: jsonResult.name,
+            description: jsonResult.description,
+            reference: jsonResult.reference,
+            user_id: jsonResult.user_id,
+            last_added: jsonResult.last_added,
+            tags: jsonResult.tags.map(MappingUtils._toTag)
+        });
     }
 
-    private static _toLegend(r: any) : LegendSource {
+    private static _toLegend(r: any): LegendSource {
 
-        let legend = <ILegendSource>({
+        return <ILegendSource>({
             key: r.key,
             display: r.display
         });
-        return legend;
     }
 
     private static _toSlot(r: any): Slot {
