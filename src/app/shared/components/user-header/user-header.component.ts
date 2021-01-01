@@ -7,7 +7,7 @@ import {DOCUMENT} from "@angular/common";
 @Component({
   selector: 'user-header',
   templateUrl: './user-header.component.html',
-  styleUrls: ['./user-header.component.css']
+  styleUrls: ['./user-header.component.scss']
 })
 export class UserHeaderComponent implements OnInit {
 

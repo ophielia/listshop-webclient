@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {ManageListsComponent} from "./manage-lists/manage-lists.component";
 import {AuthGuardHandler} from "../shared/handlers/auth-guard-handler";
-import {SignUpComponent} from "../user/sign-up/sign-up.component";
 import {EditListComponent} from "./edit-list/edit-list.component";
 
 

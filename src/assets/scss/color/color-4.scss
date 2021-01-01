@@ -279,7 +279,8 @@ h1 {
 }
 
 .btn-custom.theme-color {
-  background-image: linear-gradient(to right, $color_caribbean_green, $color_spring_green, $color_caribbean_green, $color_caribbean_green);
+  background-color: $color_basic_orange;
+  background-image: linear-gradient(to right, $color_basic_orange, $color_basic_orange, $color_basic_orange, $color_basic_orange);
   &:hover {
     background-position: 100% 0;
   }
@@ -407,7 +408,7 @@ h1 {
 }
 
 .authentication-form {
-  filter: hue-rotate(335deg);
+
   .card {
     border-top: 3px solid $color_caribbean_green;
   }
@@ -415,7 +416,7 @@ h1 {
 
 .innerpage-decor {
   img {
-    filter: hue-rotate(335deg);
+    filter: none;
   }
 }
 

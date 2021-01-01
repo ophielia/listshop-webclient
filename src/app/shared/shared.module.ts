@@ -6,12 +6,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
-import {UserHeaderComponent} from './user-header/user-header.component';
 // Services
 import {WINDOW_PROVIDERS} from './services/windows.service';
 import {LandingFixService} from '../shared/services/landing-fix.service';
 import {LoaderComponent} from './loader/loader.component';
-import {ListShopHeaderComponent} from './list-shop-header/list-shop-header.component';
 import {AuthenticationService} from "./services/authentication.service";
 import {ListService} from "./services/list.service";
 import {DishService} from "./services/dish.service";
@@ -24,6 +22,8 @@ import {ListSelectComponent} from "./components/list-select/list-select.componen
 import {MealPlanService} from "./services/meal-plan.service";
 import {GenerateListComponent} from "./components/generate-list/generate-list.component";
 import {ModalComponent} from "./components/modal/modal";
+import {UserHeaderComponent} from "./components/user-header/user-header.component";
+import {ListShopHeaderComponent} from "./components/list-shop-header/list-shop-header.component";
 
 @NgModule({
     exports: [

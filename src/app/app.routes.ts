@@ -1,8 +1,8 @@
 import {Routes} from '@angular/router';
 import {BlogComponent} from './landing/blog/blog.component';
-import {UserComponent} from "./user/user.component";
 import {ListsComponent} from "./lists/lists.component";
 import {DishesComponent} from "./dishes/dishes.component";
+import {UserComponent} from "./user/user.component";
 
 export const rootRouterConfig: Routes = [
     {
