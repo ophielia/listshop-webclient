@@ -23,6 +23,7 @@ import {TagService} from "./services/tag.service";
 import {ListSelectComponent} from "./components/list-select/list-select.component";
 import {MealPlanService} from "./services/meal-plan.service";
 import {GenerateListComponent} from "./components/generate-list/generate-list.component";
+import {ModalComponent} from "./components/modal/modal";
 
 @NgModule({
     exports: [
@@ -35,7 +36,8 @@ import {GenerateListComponent} from "./components/generate-list/generate-list.co
         DishSelectComponent,
         TagSelectComponent,
         ListSelectComponent,
-        GenerateListComponent
+        GenerateListComponent,
+        ModalComponent
 
     ],
     imports: [
@@ -55,7 +57,8 @@ import {GenerateListComponent} from "./components/generate-list/generate-list.co
         DishSelectComponent,
         TagSelectComponent,
         GenerateListComponent,
-        ListSelectComponent
+        ListSelectComponent,
+        ModalComponent
     ],
     providers: [
         WINDOW_PROVIDERS,

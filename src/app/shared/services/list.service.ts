@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {Observable, throwError} from "rxjs";
+import { Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {IShoppingList} from "../../model/shoppinglist";
@@ -11,6 +11,8 @@ import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
 import {ITag} from "../../model/tag";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import {IListAddProperties} from "../../model/listaddproperties";
 
 @Injectable()
 export class ListService {
@@ -118,6 +120,22 @@ export class ListService {
         return this
             .httpClient
             .post(url,null);
+    }
+
+    addDishesToList(listId: string, dishIds: string[]) : Promise<Object> {
+        let url = this.listUrl + "/" + listId + "/dish"
+
+        if (dishIds.length > 0) {
+
+            var properties: IListAddProperties = <IListAddProperties>({
+                dish_sources: dishIds,
+            });
+            return this
+                .httpClient
+                .post(url,
+                    JSON.stringify(properties)).toPromise();
+        }
+
     }
 
     addListToShoppingList(shoppingList_id: string, list_id: string): Promise<Object> {

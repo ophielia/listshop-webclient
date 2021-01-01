@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
@@ -13,6 +13,7 @@ import {SortKey} from "../../model/sort-key";
 import {NGXLogger} from "ngx-logger";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
+import {ListService} from "../../shared/services/list.service";
 
 
 @Component({
@@ -21,6 +22,8 @@ import {GenerateListComponent} from "../../shared/components/generate-list/gener
     styleUrls: ['./manage-dishes.component.scss']
 })
 export class ManageDishesComponent implements OnInit, OnDestroy {
+    @ViewChild('dishesaddedtolist') addToListModal;
+
     unsubscribe: Subscription[] = [];
     searchValue: string;
     lastSearchLength: number = 0;
@@ -32,7 +35,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     showAddTag: boolean = false;
     showAddToList: boolean = false;
-    showAddToMealplan  : boolean = false;
+    showAddToMealplan: boolean = false;
 
     sortOptions: SortKey[] = DishSort.getKeys();
     sortKey: SortKey = SortKey.LastUsed;
@@ -49,7 +52,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     showAddToNewList: boolean;
     isLoading: boolean = true;
 
-
+    displayId: string ;
 
     constructor(
         private fix: LandingFixService,
@@ -58,6 +61,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         private title: Title,
         private meta: Meta,
         private dishService: DishService,
+        private listService: ListService,
         private logger: NGXLogger
     ) {
     }
@@ -78,7 +82,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
         if (this.searchValue.length == 0) {
             this.filteredDishes = this.allDishes;
-        } else if ( this.filteredDishes && this.lastSearchLength < this.searchValue.length ) {
+        } else if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
             let filterBy = this.searchValue.toLocaleLowerCase();
             this.filteredDishes = this.filteredDishes.filter((dish: Dish) =>
                 dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
@@ -107,7 +111,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                         this.sortDishes(p);
                         this.allDishes = p;
                         this.isLoading = false;
-                        this.resetFilter()
+                        this.resetFilter();
                     },
                     e => this.errorMessage = e);
         } else {
@@ -118,6 +122,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                 .subscribe(p => {
                         this.sortDishes(p);
                         this.allDishes = p;
+                        this.isLoading = false;
                         this.filteredDishes = p;
                     },
                     e => this.errorMessage = e);
@@ -184,18 +189,18 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     toggleInvert(tag: ITag) {
 
-            this.isSingleClick = true;
-            setTimeout(()=>{
-                if(this.isSingleClick){
-                    for (var i: number = 0; i < this.filterTags.length; i++) {
-                        if (this.filterTags[i].tag_id == tag.tag_id) {
-                            this.filterTags[i].is_inverted = !this.filterTags[i].is_inverted;
-                        }
+        this.isSingleClick = true;
+        setTimeout(() => {
+            if (this.isSingleClick) {
+                for (var i: number = 0; i < this.filterTags.length; i++) {
+                    if (this.filterTags[i].tag_id == tag.tag_id) {
+                        this.filterTags[i].is_inverted = !this.filterTags[i].is_inverted;
                     }
-                    this.getAllDishes();
                 }
-            },250)
-        }
+                this.getAllDishes();
+            }
+        }, 250)
+    }
 
     toggleShowOrderBy() {
         this.showOrderBy = !this.showOrderBy;
@@ -224,7 +229,6 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
     editDish(dishId: String) {
-        //var url = "dishes/edit/" +  dishId;
         this.router.navigateByUrl("home");
     }
 
@@ -287,6 +291,28 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     addDishesToList(list: IShoppingList) {
         this.logger.debug("add dishes to list");
+        this.displayId = null;
+        var listId = list.list_id;
+        var dishIds = this.selectedDishIds();
+
+        if (dishIds.length == 0) {
+            return;
+        }
+
+        // add tag to list as item in back end
+        this.logger.debug("adding dishes [" + dishIds + "] to list [" + listId + "]");
+        let promise = this.listService.addDishesToList(listId, dishIds);
+
+        promise.then(s => {
+                this.logger.debug("made it here");
+                this.displayId = listId;
+                this.addToListModal.show();
+            }
+        )
+            .catch((error) => {
+                console.log("Promise rejected with " + JSON.stringify(error));
+            });
+
         this.showAddToList = false;
     }
 
@@ -305,5 +331,12 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         var createMealplan = options.get(GenerateListComponent.createMealPlan);
         this.logger.debug("create new list with options: includeStarter=" + includeStarter + ", createMealPlan=" + createMealplan + ".");
         this.showAddToNewList = false;
+    }
+
+    private selectedDishIds(): string[] {
+        if (!this.selectedDishes || this.selectedDishes.length == 0) {
+            return [];
+        }
+        return this.selectedDishes.map(d => d.dish_id);
     }
 }

@@ -198,3 +198,17 @@
     </div>
 </section>
 <!--content End-->
+
+<!-- modal -->
+<app-modal #tagaddedmodal [autoHide]="2500">
+    <div class="app-modal-body">
+        Tag added to Dishes
+    </div>
+</app-modal>
+<app-modal #dishesaddedtolist [autoHide]="2500">
+    <div class="app-modal-body">
+        Dishes added to list
+        <div *ngIf="displayId != null" style="float:right"><a class="modal-link" [routerLink]="'/lists/edit/' + displayId" >Go To List</a></div>
+    </div>
+</app-modal>
+
