@@ -13,6 +13,7 @@ import {ITag} from "../../model/tag";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import {IListAddProperties} from "../../model/listaddproperties";
+import {IListGenerateProperties} from "../../model/listgenerateproperties";
 
 @Injectable()
 export class ListService {
@@ -80,6 +81,29 @@ export class ListService {
         createListPost.name = listName;
 
         return this.httpClient.post(this.listUrl, JSON.stringify(createListPost));
+    }
+
+    createListFromParameters(dishIds: string[], mealPlanId: string,
+                    addBase: boolean,
+                    generatePlan: boolean, listName: string = ""): Observable<HttpResponse<Object>> {
+
+        if (listName = "") {
+            listName = ListService.DEFAULT_LIST_NAME;
+        }
+        var properties: IListGenerateProperties = <IListGenerateProperties>({
+            dish_sources: dishIds,
+            meal_plan_source: mealPlanId,
+            add_from_starter: addBase,
+            generate_mealplan: generatePlan,
+            list_name: listName
+
+        });
+        var url = this.listUrl;
+        return this
+            .httpClient
+            .post(url,
+                JSON.stringify(properties), {observe: 'response'});
+
     }
 
     removeItemFromShoppingList(shoppingList_id: string,

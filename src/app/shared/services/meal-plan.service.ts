@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {Observable, throwError} from "rxjs";
+import {Observable, forkJoin, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {IShoppingList} from "../../model/shoppinglist";
@@ -43,6 +43,27 @@ export class MealPlanService {
             }),
             catchError(this.handleError))
         .toPromise();
+  }
+
+  addDishesToMealPlan(dish_ids: string[], meal_plan_id: string)  {
+    if (dish_ids.length == 1) {
+      return this.addDishToMealPlan(dish_ids[0], meal_plan_id).toPromise();
+    }
+
+    var observablesForDishes = dish_ids.map(id => {
+      return this.addDishToMealPlan(id, meal_plan_id)
+    })
+
+    return forkJoin(observablesForDishes).toPromise();
+
+  }
+
+  addDishToMealPlan(dish_id: string, meal_plan_id: string): Observable<any> {
+    var url: string = this.mealplanUrl + '/' + meal_plan_id + "/dish/" + dish_id;
+
+    return this
+        .httpClient
+        .post(url, null);
   }
 
   private mapMealPlans(object: Object): MealPlan[] {

@@ -181,7 +181,7 @@
                         <div *ngIf="showAddToNewList">
                             <app-generate-list
                                     [title]="'Generate List'"
-                                    (optionsSelected)="generateFromOptions($event)"
+                                    (optionsSelected)="generateListFromOptions($event)"
                                     (cancelGenerateList)="toggleAddToNewList()">
 
                             </app-generate-list>
@@ -205,10 +205,12 @@
         Tag added to Dishes
     </div>
 </app-modal>
-<app-modal #dishesaddedtolist [autoHide]="2500">
+<app-modal #dishesaddedtomealplan [autoHide]="2500">
     <div class="app-modal-body">
-        Dishes added to list
-        <div *ngIf="displayId != null" style="float:right"><a class="modal-link" [routerLink]="'/lists/edit/' + displayId" >Go To List</a></div>
+        Dishes added to meal plan
+        <div *ngIf="displayId != null" style="float:right"><a class="modal-link" href="#">
+        <!--[routerLink]="'/lists/edit/' + displayId"-->
+            Go To Meal Plan</a></div>
     </div>
 </app-modal>
 

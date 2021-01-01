@@ -14,6 +14,7 @@ import {NGXLogger} from "ngx-logger";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
 import {ListService} from "../../shared/services/list.service";
+import {MealPlanService} from "../../shared/services/meal-plan.service";
 
 
 @Component({
@@ -23,6 +24,7 @@ import {ListService} from "../../shared/services/list.service";
 })
 export class ManageDishesComponent implements OnInit, OnDestroy {
     @ViewChild('dishesaddedtolist') addToListModal;
+    @ViewChild('dishesaddedtomealplan') addToMealPlanModal;
 
     unsubscribe: Subscription[] = [];
     searchValue: string;
@@ -61,6 +63,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         private title: Title,
         private meta: Meta,
         private dishService: DishService,
+        private mealPlanService: MealPlanService,
         private listService: ListService,
         private logger: NGXLogger
     ) {
@@ -317,8 +320,26 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
     addDishesToMealplan(mealplanId: string) {
-        this.logger.debug("add dishes to mealplan");
+        this.logger.debug("add dishes to mealplan [" + mealplanId + "]");
+        var dishIds = this.selectedDishIds();
         this.showAddToMealplan = false;
+
+        if (dishIds.length == 0) {
+            return;
+        }
+
+        let promise = this.mealPlanService.addDishesToMealPlan(dishIds, mealplanId);
+
+        promise.then(s => {
+                this.logger.debug("made it here");
+                this.displayId = mealplanId;
+                this.addToMealPlanModal.show();
+            }
+        )
+            .catch((error) => {
+                console.log("Promise rejected with " + JSON.stringify(error));
+            });
+
     }
 
     addDishesToNewMealplan() {
@@ -326,11 +347,28 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.showAddToMealplan = false;
     }
 
-    generateFromOptions(options: Map<string, boolean>) {
+    generateListFromOptions(options: Map<string, boolean>) {
         var includeStarter = options.get(GenerateListComponent.includeStarter);
         var createMealplan = options.get(GenerateListComponent.createMealPlan);
         this.logger.debug("create new list with options: includeStarter=" + includeStarter + ", createMealPlan=" + createMealplan + ".");
+
+        var dishIds = this.selectedDishIds();
+
+        this.listService.createListFromParameters(dishIds,
+            null,
+            includeStarter,
+            createMealplan)
+            .subscribe(r => {
+                var headers = r.headers;
+                var location = headers.get("Location");
+                var splitlocation = location.split("/");
+                var id = splitlocation[splitlocation.length - 1];
+                this.displayId = id;
+                this.addToListModal.show();
+            });
+
         this.showAddToNewList = false;
+
     }
 
     private selectedDishIds(): string[] {
