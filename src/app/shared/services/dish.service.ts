@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {throwError} from "rxjs";
+import {forkJoin, Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
@@ -56,6 +56,24 @@ export class DishService {
                     return DishService.mapDishes(response);
                 }),
                 catchError(DishService.handleError));
+    }
+
+    addTagToDishes(dish_ids: string[], tag_id: string) : Promise<Object> {
+        if (dish_ids.length == 1) {
+            return this.addTagToDish(dish_ids[0], tag_id).toPromise();
+        }
+
+        const observablesForDishes = dish_ids.map(id => {
+            return this.addTagToDish(id, tag_id)
+        });
+
+        return forkJoin(observablesForDishes).toPromise();
+    }
+
+    addTagToDish(dish_id: string, tag_id: string): Observable<Object> {
+        return this
+            .httpClient
+            .post(`${this.dishUrl}/${dish_id}/tag/${tag_id}`, null);
     }
 
     private static handleError(error: any) {

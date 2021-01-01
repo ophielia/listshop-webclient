@@ -25,6 +25,7 @@ import {MealPlanService} from "../../shared/services/meal-plan.service";
 export class ManageDishesComponent implements OnInit, OnDestroy {
     @ViewChild('dishesaddedtolist') addToListModal;
     @ViewChild('dishesaddedtomealplan') addToMealPlanModal;
+    @ViewChild('addtagstodishesmodal') addTagsToDishesModal;
 
     unsubscribe: Subscription[] = [];
     searchValue: string;
@@ -289,8 +290,22 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     addTagToDishes(tag: ITag) {
         this.logger.debug("add tag to dishes");
         this.showAddTag = false;
-    }
+        this.displayId = null;
 
+        let dishIds = this.selectedDishIds();
+        let promise = this.dishService.addTagToDishes(dishIds, tag.tag_id);
+
+        promise.then(s => {
+                this.logger.debug("made it here");
+                this.displayId = tag.name;
+                this.addTagsToDishesModal.show();
+            }
+        )
+            .catch((error) => {
+                console.log("Promise rejected with " + JSON.stringify(error));
+            });
+
+    }
 
     addDishesToList(list: IShoppingList) {
         this.logger.debug("add dishes to list");
@@ -306,7 +321,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.logger.debug("adding dishes [" + dishIds + "] to list [" + listId + "]");
         let promise = this.listService.addDishesToList(listId, dishIds);
 
-        promise.then(s => {
+        promise.then( s => {
                 this.logger.debug("made it here");
                 this.displayId = listId;
                 this.addToListModal.show();
