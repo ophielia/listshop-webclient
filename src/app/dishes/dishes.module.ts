@@ -9,11 +9,13 @@ import {ManageDishesComponent} from "./manage-dishes/manage-dishes.component";
 import {DishesComponent} from "./dishes.component";
 import {SingleDishElementComponent} from "./single-dish-element/single-dish-element.component";
 import {MealplanSelectComponent} from "./mealplan-select/mealplan-select.component";
+import {EditDishComponent} from "./edit-dish/edit-dish.component";
 
 
 @NgModule({
     declarations: [DishesComponent,
         ManageDishesComponent,
+        EditDishComponent,
         MealplanSelectComponent,
         SingleDishElementComponent],
     imports: [

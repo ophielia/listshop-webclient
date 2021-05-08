@@ -233,7 +233,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
     editDish(dishId: String) {
-        this.router.navigateByUrl("home");
+        var url = "dishes/edit/" +  dishId;
+        this.router.navigateByUrl(url);
     }
 
     selectDish(dish: Dish) {

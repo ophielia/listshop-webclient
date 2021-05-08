@@ -20,12 +20,24 @@ export class DishService {
 
 
     getAllDishes() {
-        this.logger.debug("Retrieving all shopping lists for user.");
+        this.logger.debug("Retrieving all dishes for user.");
 
         return this.httpClient.get(this.dishUrl)
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return
                     return DishService.mapDishes(response);
+                }),
+                catchError(DishService.handleError));
+    }
+
+    getDish(dishId: string) {
+        this.logger.debug("Retrieving dish [" + dishId + "] for user.");
+
+        let url = this.dishUrl + "/" + dishId
+        return this.httpClient.get(this.dishUrl)
+            .pipe(map((response: HttpResponse<any>) => {
+                    // map and return
+                    return DishService.mapDish(response);
                 }),
                 catchError(DishService.handleError));
     }
