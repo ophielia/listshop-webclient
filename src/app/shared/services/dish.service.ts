@@ -34,7 +34,7 @@ export class DishService {
         this.logger.debug("Retrieving dish [" + dishId + "] for user.");
 
         let url = this.dishUrl + "/" + dishId
-        return this.httpClient.get(this.dishUrl)
+        return this.httpClient.get(url)
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return
                     return DishService.mapDish(response);
