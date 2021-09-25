@@ -35,8 +35,8 @@
     <div class="container">
         <div class="row">
 
-            <div *ngIf="isLoading" class="col-md-12 " class="loading-box">
-                <div class="loading-text">loading dishes...</div>
+            <div *ngIf="isLoading" class="col-md-12 " class="loading-box"  >
+                <div class="loading-text">loading dish...</div>
             </div>
             <ng-container *ngIf="!isLoading">
                 <div class="col-md-12 ">
@@ -47,13 +47,21 @@
                             <div  class="ls-card">
                                 <div >
                                     <span  class="ls-tag-group-subtitle">Description:
-                                    </span> the description here</div>
+                                    </span>
+                                    <span *ngIf="stringFieldEmpty(dish.description)" class="ls-empty-info-span">empty</span>
+                                    <span>{{dish.description}}</span>
+                                </div>
                                 <div >
                                     <span  class="ls-tag-group-subtitle">Reference:
-                                    </span> the reference here</div>
+                                    </span>
+                                    <span *ngIf="stringFieldEmpty(dish.reference)" class="ls-empty-info-span">empty</span>
+                                    {{dish.reference}}
+                                </div>
                                 <div >
                                     <span  class="ls-tag-group-subtitle">Dish Type:
-                                    </span> Main Dish, Side Dish</div>
+                                    </span>
+                                    <span *ngFor="let tag of dishTypeTags" class="ls-list-comma">{{tag.name}}</span>
+                                    </div>
                                 <div  class="ls-card-link-block"><a
                                          class="ls-card-link">edit</a></div>
                                 <div  class="clearfix"></div>
@@ -62,16 +70,33 @@
                             <div  class="ls-card">
                                 <div  class="ls-tag-group-subtitle">Ingredients:
                                 </div>
-                                <ul>
-                                    <li>onions</li>
-                                    <li>chicken</li>
-                                    <li>rice</li>
-                                    <li>lemon</li>
-                                </ul>
-                                <div  class="ls-card-link-block">
-                                    <span><a  class="add-button">
-                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span></div>
-                                <div  class="clearfix"></div>
+                                <span *ngFor="let tag of ingredientTags" class="ls-list-span">{{tag.name}}</span>
+
+                                <div>
+                                    <div *ngIf="this.showAddIngredient" class="ls-add-tag">
+
+                                        <app-tag-select class="at-tag-select-style"
+                                                        [tagTypes]="'Ingredient'"
+                                                        [selectType]="'Assign'"
+                                                        [allowAdd]="true"
+                                                        [showCancelButton]="true"
+                                                        [placeholderText]="'Add Ingredient'"
+                                                        (tagSelected)="addTagToDish($event)"
+                                                        (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
+
+                                    </div>
+                                    <div  *ngIf="!this.showAddIngredient" class="ls-card-link-block">
+                                    <span><a  class="add-button" (click)="toggleAddIngredient()">
+                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
+
+
+
+                                    </div>
+                                    <div  class="clearfix"></div>
+                                </div>
+
+
+
                             </div>
 
                         </div>
@@ -83,11 +108,14 @@
                                 <div  class="ls-tag-group-subtitle">Tags:
                                 </div>
                                 <div >
+                                    <span *ngFor="let tag of plainOldTags" class="ls-list-span">{{tag.name}}</span>
+                                    <!--
                                     <ul>
                                         <li>Kids like it</li>
                                         <li>Picnic</li>
                                         <li>Easy to Make</li>
                                     </ul>
+                                    -->
                                 </div>
                                 <div  class="ls-card-link-block">
                                     <span><a  class="add-button">
@@ -98,12 +126,16 @@
                                 <div  class="ls-tag-group-subtitle">Ratings:
                                 </div>
                                 <div >
+                                    <span *ngFor="let tag of ratingTags" class="ls-list-span">
+                                        {{tag.name}}</span>
+<!--
                                     <ul>
                                         <li>Yum factor</li>
                                         <li>Ease of Prep</li>
                                         <li>Prep Speed</li>
                                         <li>Elegance</li>
                                     </ul>
+ -->
                                 </div>
                                 <div  class="ls-card-link-block">
                                     <span><a  class="add-button">

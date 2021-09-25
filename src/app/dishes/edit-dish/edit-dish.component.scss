@@ -1,8 +1,8 @@
 @import '../../../assets/scss/variable';
 
 .add-button {
-    display: inline-block;
-    margin-top: 5px;
+  display: inline-block;
+  margin-top: 5px;
 }
 
 .ls-tag-group-subtitle {
@@ -13,3 +13,28 @@
   text-transform: capitalize;
   margin-bottom: 5px;
 }
+.ls-empty-info-span {
+  letter-spacing: 3px;
+  color: #777777;
+  padding-left: 10px;
+  font-size: small;
+}
+.ls-list-span {
+  display: block;
+  padding-left: 28px;
+}
+.ls-list-comma {
+  &:after {
+    content: ', ';
+  }
+  &:last-of-type {
+    &:after {
+      content: ' ';
+    }
+  }
+}
+.ls-add-tag {
+  padding-top: 5px;
+}
+
+

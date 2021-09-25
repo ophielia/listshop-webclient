@@ -6,15 +6,16 @@ import {Subscription} from "rxjs";
 import {IShoppingList} from "../../model/shoppinglist";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {ITag} from "../../model/tag";
+import {ITag, Tag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
 import {SortDirection} from "../../model/sort-direction";
 import {SortKey} from "../../model/sort-key";
 import {NGXLogger} from "ngx-logger";
-import {GroupType} from "../../shared/services/tag-tree.object";
+import {GroupType, TagTree} from "../../shared/services/tag-tree.object";
 import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
+import TagType from "../../model/tag-type";
 
 
 @Component({
@@ -29,7 +30,12 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     unsubscribe: Subscription[] = [];
     dish: Dish;
+    dishTypeTags: Tag[] = [];
+    ingredientTags: Tag[]= [];
+    ratingTags: Tag[]= [];
+    plainOldTags: Tag[]= [];
 
+    showAddIngredient: boolean = false;
 
     searchValue: string;
     lastSearchLength: number = 0;
@@ -93,16 +99,61 @@ export class EditDishComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                     this.dish = p;
                     this.isLoading = false;
+                    this.harvestTagTypesForDish();
                 },
                 e => this.errorMessage = e);
     }
 
 
+    harvestTagTypesForDish() {
+        this.ingredientTags = [];
+        this.dishTypeTags = [];
+        this.ratingTags = [];
+        this.plainOldTags = [];
 
+        for (let tag of this.dish.tags) {
+            var tagType = tag.tag_type;
+            switch (tagType) {
+                case TagType.Ingredient:
+                    this.ingredientTags.push(tag);
+                    break;
+                case TagType.DishType:
+                    this.dishTypeTags.push(tag);
+                    break;
+                case TagType.Rating:
+                    this.ratingTags.push(tag);
+                    break;
+                case TagType.TagType:
+                    this.plainOldTags.push(tag);
+                    break;
+            }
+        }
+    }
 
+    stringFieldEmpty(testField) {
+        if (testField == null) {
+            return true
+        }
+        return testField.trim().length == 0;
+    }
 
+    toggleAddIngredient() {
+        this.showAddIngredient = !this.showAddIngredient;
+    }
 
+    addTagToDish(tag: Tag) {
+        // add tag to list as item in back end
+        this.logger.debug("adding tag [" + tag.tag_id + "] to dish");
 
+        let $sub = this.dishService
+            .addTagToDish(this.dish.dish_id, tag.tag_id)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);
+            });
+        this.unsubscribe.push($sub);
+
+        this.showAddIngredient = false;
+    }
 
 
 
