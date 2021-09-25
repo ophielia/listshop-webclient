@@ -27,11 +27,6 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     @Input() allowAdd: boolean = false;
     @Input() placeholderText: string;
 
-    /*
-
-        @Input() passedInputStyle: any;
-        @Input() showAsInputGroup: any = true;
-    */
     tagList: ITag[];
 
     autoSelectedTag: any;
@@ -58,6 +53,8 @@ export class TagSelectComponent implements OnInit, OnDestroy {
         this.showAddTags = false;
 
         this.currentSelect = this.selectType;
+
+        this.groupType = this.selectType == 'Assign' ? GroupType.ExcludeGroups : GroupType.All;
 
         let tagTypesAsArray = this.tagTypes.split(",")
 
@@ -124,6 +121,8 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     cancelSelectTag() {
         this.cancelAddTag.emit(true);
     }
+
+
 
     add(tagtype: string) {
         var $sub = this.tagService.addTag(this.autoSelectedTag, tagtype)
