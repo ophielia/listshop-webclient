@@ -19,20 +19,57 @@
   padding-left: 10px;
   font-size: small;
 }
+
 .ls-list-span {
   display: block;
   padding-left: 28px;
+  &:hover {
+    font-weight: bolder;
+    &:after {
+      font-weight: bolder;
+      content: ' X ';
+      color: $color_basic_orange;
+    }
+  }
 }
+
+
+
 .ls-list-comma {
   &:after {
     content: ', ';
+  }
+  &:hover {
+    font-weight: bolder;
+    padding-left: 5px;
+    &:after {
+      content: ' X ';
+      color: $color_basic_orange;
+      font-weight: bolder;
+      padding-right: 5px;
+    }
   }
   &:last-of-type {
     &:after {
       content: ' ';
     }
+    &:hover {
+      &:after {
+        content: ' X ';
+        color: $color_basic_orange;
+        font-weight: bolder;
+        padding-right: 5px;
+      }
+    }
   }
 }
+
+
+
+
+
+
+
 .ls-add-tag {
   padding-top: 5px;
 }

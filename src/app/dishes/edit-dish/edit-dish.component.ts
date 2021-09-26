@@ -29,6 +29,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     @ViewChild('addtagstodishesmodal') addTagsToDishesModal;
 
     unsubscribe: Subscription[] = [];
+    isLoading: boolean = true;
+
     dish: Dish;
     dishTypeTags: Tag[] = [];
     ingredientTags: Tag[]= [];
@@ -36,33 +38,11 @@ export class EditDishComponent implements OnInit, OnDestroy {
     plainOldTags: Tag[]= [];
 
     showAddIngredient: boolean = false;
+    showPlainTag: boolean = false;
 
-    searchValue: string;
-    lastSearchLength: number = 0;
 
-    filteredDishes: Dish[];
-    allDishes: Dish[];
-
-    filterTags: ITag[];
-
-    showAddTag: boolean = false;
-    showAddToList: boolean = false;
-    showAddToMealplan: boolean = false;
-
-    sortOptions: SortKey[] = DishSort.getKeys();
-    sortKey: SortKey = SortKey.LastUsed;
-    sortDirection: SortDirection = SortDirection.Up;
-
-    hasSelected: boolean = false;
-    selectedDishes: Dish[] = [];
-
-    groupType: GroupType = GroupType.All;
 
     private errorMessage: string;
-    isSingleClick: Boolean = true;
-    showOrderBy: boolean = false;
-    showAddToNewList: boolean;
-    isLoading: boolean = true;
 
     displayId: string;
 
@@ -139,6 +119,16 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     toggleAddIngredient() {
         this.showAddIngredient = !this.showAddIngredient;
+        if (this.showAddIngredient) {
+            this.showPlainTag = false;
+        }
+    }
+
+    toggleShowPlainTag() {
+        this.showPlainTag = !this.showPlainTag;
+        if (this.showPlainTag) {
+            this.showAddIngredient = false;
+        }
     }
 
     addTagToDish(tag: Tag) {
@@ -153,6 +143,21 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
 
         this.showAddIngredient = false;
+        this.showPlainTag = false
+    }
+
+    removeTagFromDish(tag: Tag) {
+        // add tag to list as item in back end
+        this.logger.debug("removing tag [" + tag.tag_id + "] to dish");
+
+        let $sub = this.dishService
+            .removeTagFromDish(this.dish.dish_id, tag.tag_id)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);
+            });
+        this.unsubscribe.push($sub);
+
+
     }
 
 
@@ -161,108 +166,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
 
 
-    filterByDishname() {
-        console.log("filter by dishname" + this.searchValue);
-
-        if (this.searchValue.length == 0) {
-            this.filteredDishes = this.allDishes;
-        } else if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
-            let filterBy = this.searchValue.toLocaleLowerCase();
-            this.filteredDishes = this.filteredDishes.filter((dish: Dish) =>
-                dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
-        } else {
-            let filterBy = this.searchValue.toLocaleLowerCase();
-            this.filteredDishes = this.allDishes.filter((dish: Dish) =>
-                dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
-        }
-        this.lastSearchLength = this.searchValue.length;
-    }
-
-    clearSearchValue() {
-        this.searchValue = "";
-        this.resetFilter();
-    }
-
-    resetFilter() {
-        this.filteredDishes = this.allDishes;
-    }
 
 
 
 
-
-
-    toggleShowOrderBy() {
-        this.showOrderBy = !this.showOrderBy;
-    }
-
-    isSortUp() {
-        return this.sortDirection == SortDirection.Up;
-    }
-
-    editDish(dishId
-                 :
-                 String
-    ) {
-        this.router.navigateByUrl("home");
-    }
-
-    selectDish(dish
-                   :
-                   Dish
-    ) {
-        var alreadySelected = this.selectedDishes.filter(t => dish.dish_id == t.dish_id);
-        if (alreadySelected.length > 0) {
-            return;
-        }
-        this.selectedDishes.push(dish);
-        this.hasSelected = this.selectedDishes.length > 0;
-    }
-
-    unSelectDish(dishId
-                     :
-                     string
-    ) {
-        this.selectedDishes = this.selectedDishes.filter(t => dishId != t.dish_id);
-        this.hasSelected = this.selectedDishes.length > 0;
-    }
-
-    toggleAddTag() {
-        this.showAddTag = !this.showAddTag;
-
-        this.showAddToNewList = false;
-        this.showAddToList = false;
-        this.showAddToMealplan = false;
-
-    }
-
-    toggleAddToList() {
-        this.showAddToList = !this.showAddToList;
-
-        this.showAddTag = false;
-        this.showAddToNewList = false;
-        this.showAddToMealplan = false;
-
-    }
-
-
-    toggleAddToMealplan() {
-        this.showAddToMealplan = !this.showAddToMealplan;
-
-        this.showAddTag = false;
-        this.showAddToList = false;
-        this.showAddToNewList = false;
-
-    }
-
-
-    toggleAddToNewList() {
-        this.showAddToNewList = !this.showAddToNewList;
-
-        this.showAddTag = false;
-        this.showAddToList = false;
-        this.showAddToMealplan = false;
-    }
 
 
 

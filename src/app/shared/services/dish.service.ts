@@ -88,6 +88,12 @@ export class DishService {
             .post(`${this.dishUrl}/${dish_id}/tag/${tag_id}`, null);
     }
 
+    removeTagFromDish(dish_id: string, tag_id: string): Observable<Object> {
+        return this
+            .httpClient
+            .delete(`${this.dishUrl}/${dish_id}/tag/${tag_id}`);
+    }
+
     private static handleError(error: any) {
         // log error
         // could be something more sophisticated

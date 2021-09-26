@@ -70,7 +70,8 @@
                             <div  class="ls-card">
                                 <div  class="ls-tag-group-subtitle">Ingredients:
                                 </div>
-                                <span *ngFor="let tag of ingredientTags" class="ls-list-span">{{tag.name}}</span>
+                                <span *ngFor="let tag of ingredientTags" class="ls-list-span"
+                                      (click)="removeTagFromDish(tag)" >{{tag.name}}</span>
 
                                 <div>
                                     <div *ngIf="this.showAddIngredient" class="ls-add-tag">
@@ -108,19 +109,30 @@
                                 <div  class="ls-tag-group-subtitle">Tags:
                                 </div>
                                 <div >
-                                    <span *ngFor="let tag of plainOldTags" class="ls-list-span">{{tag.name}}</span>
-                                    <!--
-                                    <ul>
-                                        <li>Kids like it</li>
-                                        <li>Picnic</li>
-                                        <li>Easy to Make</li>
-                                    </ul>
-                                    -->
+                                    <span *ngFor="let tag of plainOldTags" class="ls-list-span"
+                                          (click)="removeTagFromDish(tag)" >{{tag.name}}</span>
+
+                                    <div>
+                                        <div *ngIf="this.showPlainTag" class="ls-add-tag">
+
+                                            <app-tag-select class="at-tag-select-style"
+                                                            [tagTypes]="'TagType'"
+                                                            [selectType]="'Assign'"
+                                                            [allowAdd]="true"
+                                                            [showCancelButton]="true"
+                                                            [placeholderText]="'Add Tag'"
+                                                            (tagSelected)="addTagToDish($event)"
+                                                            (cancelAddTag)="toggleShowPlainTag()"></app-tag-select>
+
+                                        </div>
+                                        <div  *ngIf="!this.showPlainTag" class="ls-card-link-block">
+                                    <span><a  class="add-button" (click)="toggleShowPlainTag()">
+                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
+                                        </div>
+                                        <div  class="clearfix"></div>
+                                    </div>
                                 </div>
-                                <div  class="ls-card-link-block">
-                                    <span><a  class="add-button">
-                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span></div>
-                                <div  class="clearfix"></div>
+
                             </div>
                             <div  class="ls-card">
                                 <div  class="ls-tag-group-subtitle">Ratings:
@@ -128,41 +140,9 @@
                                 <div >
                                     <span *ngFor="let tag of ratingTags" class="ls-list-span">
                                         {{tag.name}}</span>
-<!--
-                                    <ul>
-                                        <li>Yum factor</li>
-                                        <li>Ease of Prep</li>
-                                        <li>Prep Speed</li>
-                                        <li>Elegance</li>
-                                    </ul>
- -->
+
                                 </div>
-                                <div  class="ls-card-link-block">
-                                    <span><a  class="add-button">
-                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span></div>
-                                <div  class="clearfix"></div>
                             </div>
-                            <!-- description -->
-
-
-                        </div>
-                        <!-- right top row element, tags -->
-                    </div>
-                    <div class="row ">
-                        <!-- left top row element, eckdaten -->
-                        <div class="col-lg-8 col-md-6">
-                            <!-- ingredients-->
-
-
-                            <!-- ingredients -->
-
-
-                        </div>
-                        <!-- left top row element, eckdaten -->
-                        <!-- right top row element, tags -->
-                        <div class="col-lg-4 col-md-6">
-
-
                             <!-- description -->
 
 
