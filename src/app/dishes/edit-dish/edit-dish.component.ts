@@ -37,11 +37,14 @@ export class EditDishComponent implements OnInit, OnDestroy {
     showAddIngredient: boolean = false;
     showPlainTag: boolean = false;
     showAddDishType: boolean = false;
+    showEditMainInfo: boolean = false;
+
+    dishName: string ;
+    dishDescription : string;
+    dishReference : string;
 
     thisRating = 2;
 
-    private ratingInfo: RatingUpdateInfo;
-    private headers: IRatingInfo[];
     private dishRatingInfo: DishRatingInfo;
     private ratingHeaders: IRatingInfo[];
     private ratingsMap = new Map<number, RatingInfo>();
@@ -85,6 +88,9 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.dish = p;
                     this.isLoading = false;
                     this.harvestTagTypesForDish();
+                    this.dishName = this.dish.name;
+                    this.dishReference = this.dish.reference;
+                    this.dishDescription = this.dish.description;
                 },
                 e => this.errorMessage = e);
     }
@@ -147,9 +153,19 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
     }
 
+    toggleEditMainInfo() {
+        this.showEditMainInfo = !this.showEditMainInfo;
+        if (this.showEditMainInfo) {
+            this.showAddIngredient = false;
+            this.showPlainTag = false;
+            this.showAddDishType = false;
+        }
+    }
+
     toggleShowAddDishTypeTag() {
         this.showAddDishType = !this.showAddDishType;
         if (this.showAddDishType) {
+            this.showEditMainInfo = false;
             this.showPlainTag = false;
             this.showAddIngredient = false;
         }
@@ -158,6 +174,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     toggleShowPlainTag() {
         this.showPlainTag = !this.showPlainTag;
         if (this.showPlainTag) {
+            this.showEditMainInfo = false;
             this.showAddIngredient = false;
             this.showAddDishType = false;
         }
@@ -217,6 +234,13 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
 
     }
+
+    saveAllEdits() {
+        console.log("bibblety-bobbity-boo")
+        this.showEditMainInfo = false;
+    }
+
+
 
 
 }
