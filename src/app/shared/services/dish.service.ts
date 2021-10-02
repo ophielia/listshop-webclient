@@ -6,6 +6,7 @@ import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
 import {Dish} from "../../model/dish";
+import {RatingUpdateInfo} from "../../model/rating-update-info";
 
 @Injectable()
 export class DishService {
@@ -38,6 +39,18 @@ export class DishService {
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return
                     return DishService.mapDish(response);
+                }),
+                catchError(DishService.handleError));
+    }
+
+    getDishRatings(dishId: string) {
+        this.logger.debug("Retrieving ratings for dish [" + dishId + "].");
+
+        let url = this.dishUrl + "/" + dishId + "/ratings"
+        return this.httpClient.get(url)
+            .pipe(map((response: HttpResponse<any>) => {
+                    // map and return
+                    return DishService.mapRatingUpdateInfo(response);
                 }),
                 catchError(DishService.handleError));
     }
@@ -94,6 +107,14 @@ export class DishService {
             .delete(`${this.dishUrl}/${dish_id}/tag/${tag_id}`);
     }
 
+    setDishRating(dish_id: string, rating_tag_id: number, power: number) {
+        var url = this.dishUrl + "/" + dish_id + "/rating/" + rating_tag_id + "/" + power;
+        return this
+            .httpClient
+            .put(url, null);
+    }
+
+
     private static handleError(error: any) {
         // log error
         // could be something more sophisticated
@@ -116,5 +137,7 @@ export class DishService {
         return MappingUtils.toDish(object);
     }
 
-
+    private static mapRatingUpdateInfo(object: Object): RatingUpdateInfo {
+        return MappingUtils.toRatingUpdateInfo(object);
+    }
 }

@@ -5,6 +5,15 @@
   margin-top: 5px;
 }
 
+.inline-add-button {
+  display: inline-block;
+  margin-top: 5px;
+  img {
+    max-height: 15px;
+  }
+  margin-right: 5px;
+}
+
 .ls-tag-group-subtitle {
   color: $color_dark_grey;
   font-weight: bold;
@@ -22,6 +31,7 @@
 
 .ls-list-span {
   display: block;
+  text-transform: capitalize;
   padding-left: 28px;
   &:hover {
     font-weight: bolder;
@@ -36,6 +46,7 @@
 
 
 .ls-list-comma {
+  text-transform: capitalize;
   &:after {
     content: ', ';
   }
@@ -64,7 +75,10 @@
   }
 }
 
-
+.ls-rating {
+  text-transform: capitalize;
+  padding-bottom: 5px;
+}
 
 
 
@@ -72,6 +86,16 @@
 
 .ls-add-tag {
   padding-top: 5px;
+}
+
+.filled{
+  color: $color_basic_orange;
+  font-size: x-large;
+}
+
+.notfilled{
+  color:#6e6a6a;
+  font-size: x-large;
 }
 
 

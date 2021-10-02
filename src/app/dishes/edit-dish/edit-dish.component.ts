@@ -3,19 +3,16 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {IShoppingList} from "../../model/shoppinglist";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {ITag, Tag} from "../../model/tag";
-import {DishSort} from "../../model/dish-sort";
-import {SortDirection} from "../../model/sort-direction";
-import {SortKey} from "../../model/sort-key";
+import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
-import {GroupType, TagTree} from "../../shared/services/tag-tree.object";
-import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import TagType from "../../model/tag-type";
+import {RatingUpdateInfo} from "../../model/rating-update-info";
+import {IRatingInfo, RatingInfo} from "../../model/rating-info";
+import {DishRatingInfo} from "../../model/dish-rating-info";
 
 
 @Component({
@@ -33,14 +30,21 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     dish: Dish;
     dishTypeTags: Tag[] = [];
-    ingredientTags: Tag[]= [];
-    ratingTags: Tag[]= [];
-    plainOldTags: Tag[]= [];
+    ingredientTags: Tag[] = [];
+    ratingTags: Tag[] = [];
+    plainOldTags: Tag[] = [];
 
     showAddIngredient: boolean = false;
     showPlainTag: boolean = false;
+    showAddDishType: boolean = false;
 
+    thisRating = 2;
 
+    private ratingInfo: RatingUpdateInfo;
+    private headers: IRatingInfo[];
+    private dishRatingInfo: DishRatingInfo;
+    private ratingHeaders: IRatingInfo[];
+    private ratingsMap = new Map<number, RatingInfo>();
 
     private errorMessage: string;
 
@@ -66,6 +70,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
             let id = params['id'];
             this.logger.debug('getting list with id: ', id);
             this.getDish(id);
+            this.getDishRatings(id);
         });
     }
 
@@ -80,6 +85,24 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.dish = p;
                     this.isLoading = false;
                     this.harvestTagTypesForDish();
+                },
+                e => this.errorMessage = e);
+    }
+
+    getDishRatings(dishId: string) {
+        this.dishService
+            .getDishRatings(dishId)
+            .subscribe(p => {
+                    if (p.headers != null) {
+                        this.ratingHeaders = p.headers;
+                    }
+                    if (p.dish_ratings != null) {
+                        this.dishRatingInfo = p.dish_ratings[0];
+                        this.dishRatingInfo.ratings.forEach(r => {
+                            r.orig_power = r.power;
+                            this.ratingsMap.set(r.rating_tag_id, r);
+                        });
+                    }
                 },
                 e => this.errorMessage = e);
     }
@@ -101,7 +124,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.dishTypeTags.push(tag);
                     break;
                 case TagType.Rating:
-                    this.ratingTags.push(tag);
                     break;
                 case TagType.TagType:
                     this.plainOldTags.push(tag);
@@ -121,6 +143,15 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.showAddIngredient = !this.showAddIngredient;
         if (this.showAddIngredient) {
             this.showPlainTag = false;
+            this.showAddDishType = false;
+        }
+    }
+
+    toggleShowAddDishTypeTag() {
+        this.showAddDishType = !this.showAddDishType;
+        if (this.showAddDishType) {
+            this.showPlainTag = false;
+            this.showAddIngredient = false;
         }
     }
 
@@ -128,6 +159,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.showPlainTag = !this.showPlainTag;
         if (this.showPlainTag) {
             this.showAddIngredient = false;
+            this.showAddDishType = false;
         }
     }
 
@@ -144,6 +176,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
         this.showAddIngredient = false;
         this.showPlainTag = false
+        this.showAddDishType = false
     }
 
     removeTagFromDish(tag: Tag) {
@@ -160,17 +193,30 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     }
 
+    displayTheRating() {
+        console.log("the rating is raging: " + this.thisRating);
+    }
 
+    changeTheRating(ratingInfo: RatingInfo) {
+        if (ratingInfo) {
+            console.log("the rating is still raging: " + ratingInfo.power);
+            console.log("but this time with a tag" + ratingInfo.rating_tag_id);
 
+            if (ratingInfo.orig_power < ratingInfo.power) {
+                console.log("going up");
+            } else if (ratingInfo.orig_power > ratingInfo.power) {
+                console.log("going down");
 
+            } else {
+                console.log("no change.");
 
+            }
 
+            this.dishService.setDishRating(this.dish.dish_id, ratingInfo.rating_tag_id, ratingInfo.power).subscribe();
+            ratingInfo.orig_power = ratingInfo.power;
+        }
 
-
-
-
-
-
+    }
 
 
 }

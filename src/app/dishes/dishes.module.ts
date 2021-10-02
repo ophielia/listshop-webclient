@@ -10,6 +10,7 @@ import {DishesComponent} from "./dishes.component";
 import {SingleDishElementComponent} from "./single-dish-element/single-dish-element.component";
 import {MealplanSelectComponent} from "./mealplan-select/mealplan-select.component";
 import {EditDishComponent} from "./edit-dish/edit-dish.component";
+import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {EditDishComponent} from "./edit-dish/edit-dish.component";
         DishesRoutingModule,
         SharedModule,
         InputSwitchModule,
-        FormsModule
+        FormsModule,
+        NgbRatingModule
     ]
 })
 export class DishesModule {

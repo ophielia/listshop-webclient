@@ -35,7 +35,7 @@
     <div class="container">
         <div class="row">
 
-            <div *ngIf="isLoading" class="col-md-12 " class="loading-box"  >
+            <div *ngIf="isLoading" class="col-md-12 " class="loading-box">
                 <div class="loading-text">loading dish...</div>
             </div>
             <ng-container *ngIf="!isLoading">
@@ -44,34 +44,54 @@
                         <!-- left top row element, eckdaten -->
                         <div class="col-lg-8 col-md-6">
                             <!-- description and reference-->
-                            <div  class="ls-card">
-                                <div >
-                                    <span  class="ls-tag-group-subtitle">Description:
+                            <div class="ls-card">
+                                <div>
+                                    <span class="ls-tag-group-subtitle">Description:
                                     </span>
-                                    <span *ngIf="stringFieldEmpty(dish.description)" class="ls-empty-info-span">empty</span>
+                                    <span *ngIf="stringFieldEmpty(dish.description)"
+                                          class="ls-empty-info-span">empty</span>
                                     <span>{{dish.description}}</span>
                                 </div>
-                                <div >
-                                    <span  class="ls-tag-group-subtitle">Reference:
+                                <div>
+                                    <span class="ls-tag-group-subtitle">Reference:
                                     </span>
-                                    <span *ngIf="stringFieldEmpty(dish.reference)" class="ls-empty-info-span">empty</span>
+                                    <span *ngIf="stringFieldEmpty(dish.reference)"
+                                          class="ls-empty-info-span">empty</span>
                                     {{dish.reference}}
                                 </div>
-                                <div >
-                                    <span  class="ls-tag-group-subtitle">Dish Type:
+                                <div>
+                                    <span class="ls-tag-group-subtitle">Dish Type:
                                     </span>
-                                    <span *ngFor="let tag of dishTypeTags" class="ls-list-comma">{{tag.name}}</span>
-                                    </div>
-                                <div  class="ls-card-link-block"><a
-                                         class="ls-card-link">edit</a></div>
-                                <div  class="clearfix"></div>
+                                    <span *ngIf="!showAddDishType"><a class="inline-add-button"
+                                                                      (click)="toggleShowAddDishTypeTag()">
+                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
+
+                                    <span *ngFor="let tag of dishTypeTags"
+                                          (click)="removeTagFromDish(tag)" class="ls-list-comma">{{tag.name}}</span>
+                                    <ng-container *ngIf="showAddDishType">
+                                        <div style="display:inline-block; width: 100%">
+                                            <app-tag-select class="at-tag-select-style"
+                                                            [tagTypes]="'DishType'"
+                                                            [selectType]="'Assign'"
+                                                            [allowAdd]="true"
+                                                            [showCancelButton]="true"
+                                                            [placeholderText]="'Add Dish Type'"
+                                                            (tagSelected)="addTagToDish($event)"
+                                                            (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
+                                        </div>
+                                    </ng-container>
+
+                                </div>
+                                <div class="ls-card-link-block"><a
+                                        class="ls-card-link">edit</a></div>
+                                <div class="clearfix"></div>
                             </div>
                             <!-- description -->
-                            <div  class="ls-card">
-                                <div  class="ls-tag-group-subtitle">Ingredients:
+                            <div class="ls-card">
+                                <div class="ls-tag-group-subtitle">Ingredients:
                                 </div>
                                 <span *ngFor="let tag of ingredientTags" class="ls-list-span"
-                                      (click)="removeTagFromDish(tag)" >{{tag.name}}</span>
+                                      (click)="removeTagFromDish(tag)">{{tag.name}}</span>
 
                                 <div>
                                     <div *ngIf="this.showAddIngredient" class="ls-add-tag">
@@ -86,16 +106,14 @@
                                                         (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
 
                                     </div>
-                                    <div  *ngIf="!this.showAddIngredient" class="ls-card-link-block">
-                                    <span><a  class="add-button" (click)="toggleAddIngredient()">
+                                    <div *ngIf="!this.showAddIngredient" class="ls-card-link-block">
+                                    <span><a class="add-button" (click)="toggleAddIngredient()">
                     <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
 
 
-
                                     </div>
-                                    <div  class="clearfix"></div>
+                                    <div class="clearfix"></div>
                                 </div>
-
 
 
                             </div>
@@ -105,12 +123,12 @@
                         <!-- right top row element, tags -->
                         <div class="col-lg-4 col-md-6">
 
-                            <div  class="ls-card">
-                                <div  class="ls-tag-group-subtitle">Tags:
+                            <div class="ls-card">
+                                <div class="ls-tag-group-subtitle">Tags:
                                 </div>
-                                <div >
+                                <div>
                                     <span *ngFor="let tag of plainOldTags" class="ls-list-span"
-                                          (click)="removeTagFromDish(tag)" >{{tag.name}}</span>
+                                          (click)="removeTagFromDish(tag)">{{tag.name}}</span>
 
                                     <div>
                                         <div *ngIf="this.showPlainTag" class="ls-add-tag">
@@ -125,21 +143,34 @@
                                                             (cancelAddTag)="toggleShowPlainTag()"></app-tag-select>
 
                                         </div>
-                                        <div  *ngIf="!this.showPlainTag" class="ls-card-link-block">
-                                    <span><a  class="add-button" (click)="toggleShowPlainTag()">
+                                        <div *ngIf="!this.showPlainTag" class="ls-card-link-block">
+                                    <span><a class="add-button" (click)="toggleShowPlainTag()">
                     <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
                                         </div>
-                                        <div  class="clearfix"></div>
+                                        <div class="clearfix"></div>
                                     </div>
                                 </div>
 
                             </div>
-                            <div  class="ls-card">
-                                <div  class="ls-tag-group-subtitle">Ratings:
+                            <div class="ls-card">
+                                <div class="ls-tag-group-subtitle">Ratings:
                                 </div>
-                                <div >
-                                    <span *ngFor="let tag of ratingTags" class="ls-list-span">
-                                        {{tag.name}}</span>
+                                <div>
+                                    <ng-container *ngFor="let rating of dishRatingInfo.ratings, let i = index">
+                                        <div class="ls-rating">
+                                            {{rating.label}} : <ngb-rating  [max]="5" [readonly]="false" [(rate)]="rating.power"
+                                                                            (rateChange)="changeTheRating(rating)">
+                                            <ng-template let-fill="fill">
+    <span [class.filled]="fill === 100" [class.notfilled]="fill === 0">
+      ★
+    </span>
+                                            </ng-template>
+
+                                        </ngb-rating>
+                                        </div>
+
+
+                                    </ng-container>
 
                                 </div>
                             </div>
@@ -155,26 +186,9 @@
         </div>
     </div>
 </section>
+
 <!--content End-->
 
-<!-- modal -->
-<app-modal #tagaddedmodal [autoHide]="2500">
-    <div class="app-modal-body">
-        Tag added to Dishes
-    </div>
-</app-modal>
-<app-modal #dishesaddedtomealplan [autoHide]="2500">
-    <div class="app-modal-body">
-        Dishes added to meal plan
-        <div *ngIf="displayId != null" style="float:right"><a class="modal-link" href="#">
-            <!--[routerLink]="'/lists/edit/' + displayId"-->
-            Go To Meal Plan</a></div>
-    </div>
-</app-modal>
-<app-modal #addtagstodishesmodal [autoHide]="2500">
-    <div class="app-modal-body">
-        "{{displayId}}" tag added to dishes
-    </div>
-</app-modal>
+
 
 
