@@ -43,6 +43,13 @@ export class DishService {
                 catchError(DishService.handleError));
     }
 
+    saveDish(dish: Dish): Observable<Object> {
+        return this
+            .httpClient
+            .put(`${this.dishUrl}/${dish.dish_id}`,
+                JSON.stringify(dish));
+    }
+
     getDishRatings(dishId: string) {
         this.logger.debug("Retrieving ratings for dish [" + dishId + "].");
 
@@ -114,6 +121,13 @@ export class DishService {
             .put(url, null);
     }
 
+    saveDishChanges(dish: Dish, dishDescription: string, dishReference: string, dishName: string) : Observable<Object>{
+        // clip values to 255 characters
+        dish.name = dishName.length > 255 ?  dishName.substr(0,255) : dishName;
+        dish.reference = dishReference.length > 255 ?  dishReference.substr(0,255) : dishReference;
+        dish.description = dishDescription.length > 255 ?  dishDescription.substr(0,255) : dishDescription;
+        return this.saveDish(dish);
+    }
 
     private static handleError(error: any) {
         // log error
@@ -140,4 +154,6 @@ export class DishService {
     private static mapRatingUpdateInfo(object: Object): RatingUpdateInfo {
         return MappingUtils.toRatingUpdateInfo(object);
     }
+
+
 }

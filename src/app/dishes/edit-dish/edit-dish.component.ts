@@ -236,8 +236,13 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
     saveAllEdits() {
-        console.log("bibblety-bobbity-boo")
         this.showEditMainInfo = false;
+        this.dishService.saveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
+            .subscribe( x => {
+                this.getDish(this.dish.dish_id);
+            }
+
+        )
     }
 
 
