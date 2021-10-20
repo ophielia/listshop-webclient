@@ -1,0 +1,133 @@
+<!--title start-->
+<div class="titlebar-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-text-center d-align-left">
+
+            </div>
+            <div class="col-md-6 col-sm-6 col-text-end">
+            </div>
+        </div>
+    </div>
+</div>
+<!--title end -->
+<!--breadcrumb start-->
+<div class="breadcrumb-bg breadcrumb-for-bar">
+    <div class="container dish-toolbar">
+        <div class="row">
+            <div class=" col-sm-6 col-md-8 col-lg-8">
+                <h2 class="title"><span>New Dish</span></h2>
+            </div>
+            <div class="col-md-4 col-sm-6 col-text-end">
+                <div class="title-bar-action">
+                    <a class="nav-link" [routerLink]="'/dishes'">All Dishes</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--breadcrumb end -->
+
+<!--content start-->
+<section>
+    <div class="container">
+        <div class="row">
+
+            <div *ngIf="isLoading" class="col-md-12 " class="loading-box">
+                <div class="loading-text">loading dish...</div>
+            </div>
+            <ng-container *ngIf="!isLoading">
+                <div class="col-md-12 ">
+                    <div class="row ">
+                        <!-- left top row element, eckdaten -->
+                        <div class="col-lg-8 col-md-6">
+                            <!-- description and reference-->
+                            <div class="ls-card">
+                                <div>
+                                        <span class="ls-tag-group-subtitle">Name:
+                                        </span>
+                                    <span>
+                                            <input type="text" class="form-control searchbox ls-inline-input"
+                                                   aria-describedby="search-query"
+                                                   [(ngModel)]="dishName"
+                                                   (keyup.enter)="saveAllEdits()"
+                                            />
+                                        </span>
+                                </div>
+                                <div>
+                                        <span class="ls-tag-group-subtitle">Description:
+                                        </span>
+                                    <span>
+                                            <input type="text" class="form-control searchbox ls-inline-input"
+                                                   aria-describedby="search-query"
+                                                   [(ngModel)]="dishDescription"
+                                                   (keyup.enter)="saveAllEdits()"
+                                            />
+                                            </span>
+                                </div>
+                                <div>
+                                        <span class="ls-tag-group-subtitle">Reference:
+                                        </span>
+                                    <span>
+                                            <input type="text" class="form-control searchbox ls-inline-input"
+                                                   aria-describedby="search-query"
+                                                   [(ngModel)]="dishReference"
+                                                   (keyup.enter)="saveAllEdits()"
+                                            />
+                                            </span>
+                                </div>
+
+                                <div class="ls-tag-group-subtitle">Add Dish As:
+                                </div>
+                                <div>
+<span *ngFor="let tag of dishTypeList" class="ls-list-span-buttons"
+>{{tag.name}}</span>
+
+
+                                </div>
+
+                                <div class="ls-card-link-block"><a
+                                        class="ls-card-link" (click)="saveAllEdits()">done</a></div>
+                                <div class="clearfix"></div>
+
+
+                            </div>
+                            <!-- ingredients -->
+
+
+                        </div>
+                        <!-- left top row element, eckdaten -->
+                        <!-- right top row element, tags -->
+                        <div class="col-lg-4 col-md-6">
+                            <!-- tag tags -->
+                            <div class="ls-card">
+                                <div class="ls-tag-group-subtitle">Add Dish As:
+                                </div>
+                                <div>
+<span *ngFor="let tag of dishTypeList" class="ls-list-span"
+      >{{tag.name}}</span>
+
+
+                                </div>
+
+                            </div>
+                            <!-- ratings -->
+
+
+                        </div>
+                        <!-- right top row element, tags -->
+                    </div>
+                </div>
+
+            </ng-container>
+        </div>
+    </div>
+</section>
+
+<!--content End-->
+
+
+
+

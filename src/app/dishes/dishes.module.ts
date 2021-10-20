@@ -11,12 +11,14 @@ import {SingleDishElementComponent} from "./single-dish-element/single-dish-elem
 import {MealplanSelectComponent} from "./mealplan-select/mealplan-select.component";
 import {EditDishComponent} from "./edit-dish/edit-dish.component";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
+import {AddDishComponent} from "./add-dish/add-dish.component";
 
 
 @NgModule({
     declarations: [DishesComponent,
         ManageDishesComponent,
         EditDishComponent,
+        AddDishComponent,
         MealplanSelectComponent,
         SingleDishElementComponent],
     imports: [
