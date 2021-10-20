@@ -35,20 +35,11 @@ export class AddDishComponent implements OnInit, OnDestroy {
 
     dish: Dish;
     dishTypeTags: Tag[] = [];
-    ingredientTags: Tag[] = [];
-    ratingTags: Tag[] = [];
-    plainOldTags: Tag[] = [];
 
-    showAddIngredient: boolean = false;
-    showPlainTag: boolean = false;
-    showAddDishType: boolean = false;
-    showEditMainInfo: boolean = false;
 
     dishName: string ;
     dishDescription : string;
     dishReference : string;
-
-    thisRating = 2;
 
     private dishRatingInfo: DishRatingInfo;
     private ratingHeaders: IRatingInfo[];
@@ -65,7 +56,7 @@ export class AddDishComponent implements OnInit, OnDestroy {
         private title: Title,
         private meta: Meta,
         private tagTreeService: TagTreeService ,
-        private DishService: DishService ,
+        private dishService: DishService ,
         private logger: NGXLogger
     ) {
     }
@@ -88,132 +79,11 @@ export class AddDishComponent implements OnInit, OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    getDish(dishId: string) {
-        this.dishService
-            .getDish(dishId)
-            .subscribe(p => {
-                    this.dish = p;
-                    this.isLoading = false;
-                    this.harvestTagTypesForDish();
-                    this.dishName = this.dish.name;
-                    this.dishReference = this.dish.reference;
-                    this.dishDescription = this.dish.description;
-                },
-                e => this.errorMessage = e);
-    }
-
-    getDishRatings(dishId: string) {
-        this.dishService
-            .getDishRatings(dishId)
-            .subscribe(p => {
-                    if (p.headers != null) {
-                        this.ratingHeaders = p.headers;
-                    }
-                    if (p.dish_ratings != null) {
-                        this.dishRatingInfo = p.dish_ratings[0];
-                        this.dishRatingInfo.ratings.forEach(r => {
-                            r.orig_power = r.power;
-                            this.ratingsMap.set(r.rating_tag_id, r);
-                        });
-                    }
-                },
-                e => this.errorMessage = e);
-    }
-
-
-    harvestTagTypesForDish() {
-        this.ingredientTags = [];
-        this.dishTypeTags = [];
-        this.ratingTags = [];
-        this.plainOldTags = [];
-
-        for (let tag of this.dish.tags) {
-            var tagType = tag.tag_type;
-            switch (tagType) {
-                case TagType.Ingredient:
-                    this.ingredientTags.push(tag);
-                    break;
-                case TagType.DishType:
-                    this.dishTypeTags.push(tag);
-                    break;
-                case TagType.Rating:
-                    break;
-                case TagType.TagType:
-                    this.plainOldTags.push(tag);
-                    break;
-            }
-        }
-    }
-
     stringFieldEmpty(testField) {
         if (testField == null) {
             return true
         }
         return testField.trim().length == 0;
-    }
-
-    toggleAddIngredient() {
-        this.showAddIngredient = !this.showAddIngredient;
-        if (this.showAddIngredient) {
-            this.showPlainTag = false;
-            this.showAddDishType = false;
-        }
-    }
-
-    toggleEditMainInfo() {
-        this.showEditMainInfo = !this.showEditMainInfo;
-        if (this.showEditMainInfo) {
-            this.showAddIngredient = false;
-            this.showPlainTag = false;
-            this.showAddDishType = false;
-        }
-    }
-
-    toggleShowAddDishTypeTag() {
-        this.showAddDishType = !this.showAddDishType;
-        if (this.showAddDishType) {
-            this.showEditMainInfo = false;
-            this.showPlainTag = false;
-            this.showAddIngredient = false;
-        }
-    }
-
-    toggleShowPlainTag() {
-        this.showPlainTag = !this.showPlainTag;
-        if (this.showPlainTag) {
-            this.showEditMainInfo = false;
-            this.showAddIngredient = false;
-            this.showAddDishType = false;
-        }
-    }
-
-    addTagToDish(tag: Tag) {
-        // add tag to list as item in back end
-        this.logger.debug("adding tag [" + tag.tag_id + "] to dish");
-
-
-
-        this.showAddIngredient = false;
-        this.showPlainTag = false
-        this.showAddDishType = false
-    }
-
-    removeTagFromDish(tag: Tag) {
-        // add tag to list as item in back end
-        this.logger.debug("removing tag [" + tag.tag_id + "] to dish");
-
-        let $sub = this.dishService
-            .removeTagFromDish(this.dish.dish_id, tag.tag_id)
-            .subscribe(p => {
-                this.getDish(this.dish.dish_id);
-            });
-        this.unsubscribe.push($sub);
-
-
-    }
-
-    displayTheRating() {
-        console.log("the rating is raging: " + this.thisRating);
     }
 
     changeTheRating(ratingInfo: RatingInfo) {
@@ -237,15 +107,6 @@ export class AddDishComponent implements OnInit, OnDestroy {
 
     }
 
-    saveAllEdits() {
-        this.showEditMainInfo = false;
-        this.dishService.saveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
-            .subscribe( x => {
-                    this.getDish(this.dish.dish_id);
-                }
-
-            )
-    }
 
 
 

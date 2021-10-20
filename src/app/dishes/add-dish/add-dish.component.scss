@@ -14,13 +14,28 @@
   margin-right: 5px;
 }
 
+.ls-group-of-buttons {
+  text-align: right;
+}
+
+
 .ls-tag-group-subtitle {
   color: $color_dark_grey;
   font-weight: bold;
   font-size: large;
-  padding-bottom: 5px;
+  padding: 10px;
   text-transform: capitalize;
   margin-bottom: 5px;
+  border-radius: 0.25rem;
+  margin: 10px;
+}
+
+.ls-add-dish-as {
+  padding-top: 10px;
+  text-align: right;
+  padding-right: 0px;
+  margin-right: 0px;
+
 }
 .ls-empty-info-span {
   letter-spacing: 3px;
@@ -32,9 +47,14 @@
 .ls-list-span-buttons {
   display: inline;
   text-transform: capitalize;
-  padding-left: 28px;
+  padding-left: 8px;
+  padding-right: 8px;
   color: white;
-  background-color: $color_basic_orange
+  background-color: #e67d21;
+  border: 1px solid #e67d21;
+  border-radius: 10px;
+  text-align: center;
+  margin-left: 16px;
   }
 
 

@@ -40,9 +40,9 @@
             </div>
             <ng-container *ngIf="!isLoading">
                 <div class="col-md-12 ">
-                    <div class="row ">
+                    <div class="row" >
                         <!-- left top row element, eckdaten -->
-                        <div class="col-lg-8 col-md-6">
+                        <div class="col-lg-12 col-md-12">
                             <!-- description and reference-->
                             <div class="ls-card">
                                 <div>
@@ -79,18 +79,13 @@
                                             </span>
                                 </div>
 
-                                <div class="ls-tag-group-subtitle">Add Dish As:
+                                <div class="ls-tag-group-subtitle ls-add-dish-as">Add Dish As:
                                 </div>
-                                <div>
-<span *ngFor="let tag of dishTypeList" class="ls-list-span-buttons"
+                                <div class=" ls-group-of-buttons">
+                                    <span *ngFor="let tag of dishTypeList" class="ls-list-span-buttons"
 >{{tag.name}}</span>
-
-
                                 </div>
 
-                                <div class="ls-card-link-block"><a
-                                        class="ls-card-link" (click)="saveAllEdits()">done</a></div>
-                                <div class="clearfix"></div>
 
 
                             </div>
@@ -99,25 +94,6 @@
 
                         </div>
                         <!-- left top row element, eckdaten -->
-                        <!-- right top row element, tags -->
-                        <div class="col-lg-4 col-md-6">
-                            <!-- tag tags -->
-                            <div class="ls-card">
-                                <div class="ls-tag-group-subtitle">Add Dish As:
-                                </div>
-                                <div>
-<span *ngFor="let tag of dishTypeList" class="ls-list-span"
-      >{{tag.name}}</span>
-
-
-                                </div>
-
-                            </div>
-                            <!-- ratings -->
-
-
-                        </div>
-                        <!-- right top row element, tags -->
                     </div>
                 </div>
 
