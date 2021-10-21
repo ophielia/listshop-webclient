@@ -52,7 +52,6 @@
                                             <input type="text" class="form-control searchbox ls-inline-input"
                                                    aria-describedby="search-query"
                                                    [(ngModel)]="dishName"
-                                                   (keyup.enter)="saveAllEdits()"
                                             />
                                         </span>
                                 </div>
@@ -63,7 +62,6 @@
                                             <input type="text" class="form-control searchbox ls-inline-input"
                                                    aria-describedby="search-query"
                                                    [(ngModel)]="dishDescription"
-                                                   (keyup.enter)="saveAllEdits()"
                                             />
                                             </span>
                                 </div>
@@ -74,7 +72,6 @@
                                             <input type="text" class="form-control searchbox ls-inline-input"
                                                    aria-describedby="search-query"
                                                    [(ngModel)]="dishReference"
-                                                   (keyup.enter)="saveAllEdits()"
                                             />
                                             </span>
                                 </div>
@@ -83,7 +80,7 @@
                                 </div>
                                 <div class=" ls-group-of-buttons">
                                     <span *ngFor="let tag of dishTypeList" class="ls-list-span-buttons"
->{{tag.name}}</span>
+ (click)="createDish(tag)">{{tag.name}}</span>
                                 </div>
 
 

@@ -33,6 +33,14 @@ const routes: Routes = [
         }
     },
     {
+        path: 'add/ingredients/:id',
+        component: AddDishComponent,
+        data: {
+            title: 'The List Shop | Add Dish',
+            content: 'The List Shop | Edit Dish'
+        }
+    },
+    {
         path: '',
         component: ManageDishesComponent,
         data: {

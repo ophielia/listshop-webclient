@@ -32,18 +32,12 @@ export class AddDishComponent implements OnInit, OnDestroy {
 
     dishTypeList: ITag[];
 
-
     dish: Dish;
     dishTypeTags: Tag[] = [];
-
 
     dishName: string ;
     dishDescription : string;
     dishReference : string;
-
-    private dishRatingInfo: DishRatingInfo;
-    private ratingHeaders: IRatingInfo[];
-    private ratingsMap = new Map<number, RatingInfo>();
 
     private errorMessage: string;
 
@@ -86,27 +80,31 @@ export class AddDishComponent implements OnInit, OnDestroy {
         return testField.trim().length == 0;
     }
 
-    changeTheRating(ratingInfo: RatingInfo) {
-        if (ratingInfo) {
-            console.log("the rating is still raging: " + ratingInfo.power);
-            console.log("but this time with a tag" + ratingInfo.rating_tag_id);
-
-            if (ratingInfo.orig_power < ratingInfo.power) {
-                console.log("going up");
-            } else if (ratingInfo.orig_power > ratingInfo.power) {
-                console.log("going down");
-
-            } else {
-                console.log("no change.");
-
-            }
-
-            this.dishService.setDishRating(this.dish.dish_id, ratingInfo.rating_tag_id, ratingInfo.power).subscribe();
-            ratingInfo.orig_power = ratingInfo.power;
+    createDish(dishTypeTag: ITag) {
+        if (this.dishName == null || (this.dishName.trim())=="") {
+            this.logger.debug("Invalid - no name for the dish");
+            return;
         }
+        this.logger.debug("Creating new dish [" + this.dishName + "] with tag [" + dishTypeTag + "]");
+        // put tags in dish
+        let tags: ITag[] = [];
+        tags.push(dishTypeTag);
 
+        this.dishService.addDish(this.dishName, this.dishDescription, this.dishReference, tags)
+            .subscribe(r => {
+                    var headers = r.headers;
+                    var location = headers.get("Location");
+                    var splitlocation = location.split("/");
+                    var id = splitlocation[splitlocation.length - 1];
+                    //    this.getAllDishes();
+                    this.router.navigate(['/dishes/edit/', id]);
+                }, e => {
+                    // an error occurred....
+
+                }
+            )
+        ;
     }
-
 
 
 

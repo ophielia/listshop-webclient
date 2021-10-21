@@ -7,6 +7,7 @@ import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
 import {Dish} from "../../model/dish";
 import {RatingUpdateInfo} from "../../model/rating-update-info";
+import {ITag} from "../../model/tag";
 
 @Injectable()
 export class DishService {
@@ -48,6 +49,29 @@ export class DishService {
             .httpClient
             .put(`${this.dishUrl}/${dish.dish_id}`,
                 JSON.stringify(dish));
+    }
+
+    addDish(newDishName: string,
+            description: string,
+            reference: string,
+            tags?: ITag[]): Observable<HttpResponse<Object>> {
+
+        var newDish: Dish = <Dish>({
+            name: newDishName,
+            description: description,
+            reference: reference
+        });
+
+        if (tags) {
+            newDish.tags = tags;
+        }
+
+        return this
+            .httpClient
+            .post(`${this.dishUrl}`,
+                JSON.stringify(newDish),
+                {observe: 'response'});
+
     }
 
     getDishRatings(dishId: string) {
