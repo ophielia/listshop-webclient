@@ -18,10 +18,14 @@
   color: $color_dark_grey;
   font-weight: bold;
   font-size: large;
-  padding-bottom: 5px;
+  padding: 10px;
   text-transform: capitalize;
   margin-bottom: 5px;
+  border-radius: 0.25rem;
+  margin: 10px;
+  vertical-align: top;
 }
+
 .ls-empty-info-span {
   letter-spacing: 3px;
   color: #777777;
@@ -107,6 +111,12 @@
 .notfilled{
   color:#6e6a6a;
   font-size: x-large;
+}
+
+.ls-input-error {
+  display: inline-block;
+  width: 80%;
+  div {color: red;}
 }
 
 

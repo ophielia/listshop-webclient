@@ -7,11 +7,7 @@ import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
-import {ListService} from "../../shared/services/list.service";
-import {MealPlanService} from "../../shared/services/meal-plan.service";
 import TagType from "../../model/tag-type";
-import {IRatingInfo, RatingInfo} from "../../model/rating-info";
-import {DishRatingInfo} from "../../model/dish-rating-info";
 import {ContentType, GroupType, TagTree} from "../../shared/services/tag-tree.object";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import TagSelectType from "../../model/tag-select-type";
@@ -42,6 +38,9 @@ export class AddDishComponent implements OnInit, OnDestroy {
     private errorMessage: string;
 
     displayId: string;
+    private dishReferenceError: string;
+    private dishNameError: string;
+    private dishDescriptionError: string;
 
     constructor(
         private fix: LandingFixService,
@@ -81,10 +80,11 @@ export class AddDishComponent implements OnInit, OnDestroy {
     }
 
     createDish(dishTypeTag: ITag) {
-        if (this.dishName == null || (this.dishName.trim())=="") {
-            this.logger.debug("Invalid - no name for the dish");
-            return;
-        }
+        this.validateEntry();
+       if (this.hasErrors()) {
+           return;
+       }
+
         this.logger.debug("Creating new dish [" + this.dishName + "] with tag [" + dishTypeTag + "]");
         // put tags in dish
         let tags: ITag[] = [];
@@ -97,7 +97,7 @@ export class AddDishComponent implements OnInit, OnDestroy {
                     var splitlocation = location.split("/");
                     var id = splitlocation[splitlocation.length - 1];
                     //    this.getAllDishes();
-                    this.router.navigate(['/dishes/edit/', id]);
+                    this.router.navigate(['/dishes/add/ingredients', id]);
                 }, e => {
                     // an error occurred....
 
@@ -106,7 +106,33 @@ export class AddDishComponent implements OnInit, OnDestroy {
         ;
     }
 
+    validateEntry() {
+        this.dishReferenceError = null;
+        this.dishDescriptionError = null;
+        this.dishNameError = null;
+
+        if (this.dishName == null || (this.dishName.trim())=="") {
+            this.logger.debug("Invalid - no name for the dish");
+            this.dishNameError = "Disn name is required.";
+        } else if (this.dishName != null && this.dishName.length > 255)  {
+            this.logger.debug("Invalid - dish name too long");
+            this.dishNameError = "This dish name is too long";
+        }
+        if (this.dishDescription != null && this.dishDescription.length > 255)  {
+            this.logger.debug("Invalid - dish description is too long");
+            this.dishDescriptionError = "This dish description is too long";
+        }
+        if (this.dishReference != null && this.dishReference.length > 255)  {
+            this.logger.debug("Invalid - dish reference is too long");
+            this.dishReferenceError = "The dish reference is too long";
+        }
+
+    }
 
 
-
+    private hasErrors() {
+        return this.dishNameError != null ||
+            this.dishDescriptionError != null ||
+            this.dishReferenceError != null;
+    }
 }

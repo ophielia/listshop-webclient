@@ -12,6 +12,7 @@ import {MealplanSelectComponent} from "./mealplan-select/mealplan-select.compone
 import {EditDishComponent} from "./edit-dish/edit-dish.component";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {AddDishComponent} from "./add-dish/add-dish.component";
+import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {AddDishComponent} from "./add-dish/add-dish.component";
         ManageDishesComponent,
         EditDishComponent,
         AddDishComponent,
+        AddDishIngredientComponent,
         MealplanSelectComponent,
         SingleDishElementComponent],
     imports: [

@@ -15,11 +15,11 @@ import {DishRatingInfo} from "../../model/dish-rating-info";
 
 
 @Component({
-    selector: 'app-edit-dish',
-    templateUrl: './edit-dish.component.html',
-    styleUrls: ['./edit-dish.component.scss']
+    selector: 'app-add-dish-ingredient',
+    templateUrl: './add-dish-ingredient.component.html',
+    styleUrls: ['./add-dish-ingredient.component.scss']
 })
-export class EditDishComponent implements OnInit, OnDestroy {
+export class AddDishIngredientComponent implements OnInit, OnDestroy {
     @ViewChild('dishesaddedtolist') addToListModal;
     @ViewChild('dishesaddedtomealplan') addToMealPlanModal;
     @ViewChild('addtagstodishesmodal') addTagsToDishesModal;
@@ -246,10 +246,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.showEditMainInfo = false;
         this.dishService.saveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
             .subscribe( x => {
-                this.getDish(this.dish.dish_id);
-            }
+                    this.getDish(this.dish.dish_id);
+                }
 
-        )
+            )
     }
 
     validateEntry() {

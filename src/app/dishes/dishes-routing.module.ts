@@ -4,6 +4,7 @@ import {AuthGuardHandler} from "../shared/handlers/auth-guard-handler";
 import {ManageDishesComponent} from "./manage-dishes/manage-dishes.component";
 import {EditDishComponent} from "./edit-dish/edit-dish.component";
 import {AddDishComponent} from "./add-dish/add-dish.component";
+import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
 
 
 const routes: Routes = [
@@ -34,7 +35,7 @@ const routes: Routes = [
     },
     {
         path: 'add/ingredients/:id',
-        component: AddDishComponent,
+        component: AddDishIngredientComponent,
         data: {
             title: 'The List Shop | Add Dish',
             content: 'The List Shop | Edit Dish'
