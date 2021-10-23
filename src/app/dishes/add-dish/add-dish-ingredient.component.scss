@@ -23,11 +23,11 @@
   color: $color_dark_grey;
   font-weight: bold;
   font-size: large;
-  padding: 10px;
   text-transform: capitalize;
+  padding: 0px;
+  margin: 0px;
   margin-bottom: 5px;
   border-radius: 0.25rem;
-  margin: 10px;
   vertical-align: top;
 }
 
@@ -60,7 +60,19 @@
   margin-left: 16px;
   }
 
-
+.ls-list-span {
+  display: block;
+  text-transform: capitalize;
+  padding-left: 5px;
+  &:hover {
+    font-weight: bolder;
+    &:after {
+      font-weight: bolder;
+      content: ' X ';
+      color: $color_basic_orange;
+    }
+  }
+}
 
 
 .ls-list-comma {
@@ -115,6 +127,7 @@
 
 .ls-add-tag {
   padding-top: 5px;
+  padding-bottom: 10px;
 }
 
 .filled{
@@ -132,6 +145,12 @@
   width: 80%;
   div {color: red;}
 }
+
+.spacer50 {
+  min-height: 50px;
+   }
+
+
 
 
 
