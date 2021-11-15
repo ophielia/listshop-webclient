@@ -35,6 +35,8 @@ export class AuthenticationService {
         // prepare device info
         var deviceInfo = new UserDeviceInfo();
         deviceInfo.client_type = "Web";
+        deviceInfo.model = this.getBrowserName();
+        deviceInfo.os_version = this.getBrowserVersion();
         var authorizePost = new AuthorizePost();
         authorizePost.password = password;
         authorizePost.username = username;
@@ -64,6 +66,8 @@ export class AuthenticationService {
         // prepare device info
         let deviceInfo = new UserDeviceInfo();
         deviceInfo.client_type = "Web";
+        deviceInfo.model = this.getBrowserName();
+        deviceInfo.os_version = this.getBrowserVersion();
         // prepare user info
         let encodedUsername = btoa(username);
         let encodedPassword = btoa(password);
@@ -143,5 +147,46 @@ export class AuthenticationService {
         //MM TODO check authentication on server
         return token != null
 
+    }
+
+    getBrowserName() {
+        const agent = window.navigator.userAgent.toLowerCase()
+        switch (true) {
+            case agent.indexOf('edge') > -1:
+                return 'edge';
+            case agent.indexOf('opr') > -1 && !!(<any>window).opr:
+                return 'opera';
+            case agent.indexOf('chrome') > -1 && !!(<any>window).chrome:
+                return 'chrome';
+            case agent.indexOf('trident') > -1:
+                return 'ie';
+            case agent.indexOf('firefox') > -1:
+                return 'firefox';
+            case agent.indexOf('safari') > -1:
+                return 'safari';
+            default:
+                return 'other';
+        }
+    }
+
+
+    getBrowserVersion(){
+        var userAgent = navigator.userAgent, tem,
+            matchTest = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+
+        if(/trident/i.test(matchTest[1])){
+            tem =  /\brv[ :]+(\d+)/g.exec(userAgent) || [];
+            return 'IE '+(tem[1] || '');
+        }
+
+        if(matchTest[1]=== 'Chrome'){
+            tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
+            if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+        }
+
+        matchTest= matchTest[2]? [matchTest[1], matchTest[2]]: [navigator.appName, navigator.appVersion, '-?'];
+
+        if((tem= userAgent.match(/version\/(\d+)/i))!= null) matchTest.splice(1, 1, tem[1]);
+        return matchTest.join(' ');
     }
 }
