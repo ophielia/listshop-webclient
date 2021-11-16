@@ -3,6 +3,8 @@ import {BlogComponent} from './landing/blog/blog.component';
 import {ListsComponent} from "./lists/lists.component";
 import {DishesComponent} from "./dishes/dishes.component";
 import {UserComponent} from "./user/user.component";
+import {MealPlansComponent} from "./meal-plans/meal-plans.component";
+import {MealPlansModule} from "./meal-plans/meal-plans.module";
 
 export const rootRouterConfig: Routes = [
     {
@@ -37,6 +39,11 @@ export const rootRouterConfig: Routes = [
         path: 'dishes',
         component: DishesComponent,
         loadChildren: () => import('./dishes/dishes.module').then(m => m.DishesModule)
+    },
+    {
+        path: 'mealplans',
+        component: MealPlansComponent,
+        loadChildren: () => import('./meal-plans/meal-plans.module').then(m => m.MealPlansModule)
     },
     {
         path: '**',
