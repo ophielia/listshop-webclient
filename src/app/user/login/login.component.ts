@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+//import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 export class LoginComponent implements OnInit {
 
   loginInfo = {email: '', userPassword: ''}
-  loginForm: FormGroup;
+
+  username : string = "";
+  password : string = "";
 
   // variable
   show: boolean;
@@ -22,7 +24,6 @@ export class LoginComponent implements OnInit {
               private title: Title,
               private meta: Meta,
               private router: Router,
-              private fb: FormBuilder,
               private authenticationService: AuthenticationService) {
     // initialize variable value
     this.show = false;
@@ -33,24 +34,19 @@ export class LoginComponent implements OnInit {
     this.meta.updateTag({name: 'description', content: this.route.snapshot.data['content']});
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
-    this.loginForm = this.fb.group({
-            email: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-            userPassword: ["", [Validators.required,Validators.minLength(4) , Validators.maxLength(50)]],
-          }, {updateOn: 'blur'});
+
 
   }
 
   // click event function toggle
-  password() {
+  showPassword() {
     this.show = !this.show;
   }
 
-  get email() { return this.loginForm.get('email'); }
-  get userPassword() { return this.loginForm.get('userPassword'); }
 
   doLogin() {
-    this.authenticationService.login(this.loginForm.get('email').value.trim(),
-        this.loginForm.get('userPassword').value.trim())
+    this.authenticationService.login(this.username,
+        this.password)
         .subscribe( success => {
           if (!success) {
             var error: Error = Error("BADCREDENTIALS");
@@ -61,11 +57,13 @@ export class LoginComponent implements OnInit {
         })
   }
 
+    /*
     keyPressSubmit($event: KeyboardEvent, loginForm: FormGroup) {
 
       if ($event.key == "U+000D" ) {
           this.doLogin();
       }
     }
+     */
 
 }
