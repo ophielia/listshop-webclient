@@ -3,10 +3,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-6 col-text-center d-align-left">
-                <h2 class="title"><span>Shopping Lists</span></h2>
+                <h2 class="title"><span>Meal Plans</span></h2>
             </div>
             <div class="col-md-6 col-sm-6 col-text-end">
-                <a (click)="createShoppingList()">
+                <a (click)="createMealPlan()">
                     <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a>
             </div>
         </div>
@@ -19,16 +19,14 @@
         <div class="row">
             <div class="col-md-12 ">
                 <div class="row ">
-                    <div *ngFor="let list of lists"
+                    <div *ngFor="let plan of mealPlans"
                          class="col-lg-4 col-md-6">
                         <!-- single list element -->
-                        <app-single-list-element
-                                [itemCount]="list.item_count"
-                                [listName]="list.name"
-                                [listId]="list.list_id"
-                                [listIsStarter]="list.is_starter"
-                                (delete)="deleteShoppingList($event)"
-                                (edit)="editShoppingList($event)"></app-single-list-element>
+                        <app-single-plan-element
+                                [planName]="plan.name"
+                                [planId]="plan.meal_plan_id"
+                                (delete)="deleteMealPlan($event)"
+                                (edit)="editMealPlan($event)"></app-single-plan-element>
                         <!-- single list element -->
                     </div>
 

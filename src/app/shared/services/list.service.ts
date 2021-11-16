@@ -45,7 +45,7 @@ export class ListService {
     }
 
     getAllListsAsPromise(): Promise<IShoppingList[]> {
-        this.logger.debug("Retrieving all shopping lists for user.");
+        this.logger.debug("Retrieving all shopping mealPlans for user.");
 
         return this.httpClient.get(this.listUrl)
             .pipe(map((response: HttpResponse<any>) => {
@@ -57,7 +57,7 @@ export class ListService {
     }
 
     getById(shoppingListId: string): Observable<IShoppingList> {
-        this.logger.debug("Retrieving shopping lists for id:" + shoppingListId);
+        this.logger.debug("Retrieving shopping mealPlans for id:" + shoppingListId);
         var url = this.listUrl + "/" + shoppingListId;
 
         return this.httpClient.get(url)

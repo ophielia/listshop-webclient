@@ -24,7 +24,7 @@ export class MealPlanService {
         this.mealplanUrl = environment.apiUrl + "mealplan";
     }
 
-    getAllMealplans(): Promise<IMealPlan[]> {
+    getAllMealplans(): Observable<IMealPlan[]> {
         this.logger.debug("Retrieving all mealplans for user.");
 
         return this.httpClient.get(this.mealplanUrl)
@@ -32,10 +32,16 @@ export class MealPlanService {
                     // map and return
                     return MealPlanService.mapMealPlans(response);
                 }),
-                catchError(this.handleError))
-            .toPromise();
+                catchError(this.handleError));
     }
 
+    deleteMealPlan(mealPlanId: string) {
+        var url: string = this.mealplanUrl + '/' + mealPlanId;
+
+        return this
+            .httpClient
+            .delete(`${url}`);
+    }
 
     addMealPlan(mealPlanName: string): Observable<HttpResponse<Object>> {
         const newMealPlan: MealPlan = <MealPlan>({

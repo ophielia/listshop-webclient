@@ -10,7 +10,7 @@ const routes: Routes = [
     component: HomeTwoComponent,
     data: {
       title: 'The List Shop',
-      content: 'Your shopping lists - quickly'
+      content: 'Your shopping mealPlans - quickly'
     }
   }
 ];

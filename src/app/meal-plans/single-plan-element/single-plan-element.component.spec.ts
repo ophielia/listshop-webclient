@@ -1,20 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {SinglePlanElementComponent} from "./single-list-element.component";
 
-import { ManageMealPlansComponent } from './manage-mealPlans.component';
+
 
 describe('ManageListsComponent', () => {
-  let component: ManageMealPlansComponent;
-  let fixture: ComponentFixture<ManageMealPlansComponent>;
+  let component: SinglePlanElementComponent;
+  let fixture: ComponentFixture<SinglePlanElementComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManageMealPlansComponent ]
+      declarations: [ SinglePlanElementComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageMealPlansComponent);
+    fixture = TestBed.createComponent(SinglePlanElementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

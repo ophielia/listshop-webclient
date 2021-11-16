@@ -5,6 +5,8 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
 import {ShoppingList} from "../../model/shoppinglist";
+import {MealPlan} from "../../model/mealplan";
+import {MealPlanService} from "../../shared/services/meal-plan.service";
 
 @Component({
     selector: 'app-manage-meal-plans',
@@ -14,7 +16,7 @@ import {ShoppingList} from "../../model/shoppinglist";
 export class ManageMealPlansComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
 
-    lists: ShoppingList[];
+    mealPlans: MealPlan[];
 
     constructor(
         private fix: LandingFixService,
@@ -22,14 +24,14 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
         private router: Router,
         private title: Title,
         private meta: Meta,
-        private listService: ListService
+        private mealPlanService: MealPlanService
     ) {
     }
 
     ngOnInit() {
         // this.fix.addFixBlogDetails();
         this.title.setTitle(this.route.snapshot.data['title']);
-        this.getShoppingLists()
+        this.getMealPlans()
     }
 
     ngOnDestroy() {
@@ -37,36 +39,36 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
     }
 
 
-    getShoppingLists() {
+    getMealPlans() {
 
-        let sub$ = this.listService
-            .getAllLists()
+        let sub$ = this.mealPlanService
+            .getAllMealplans()
             .subscribe(p => {
                 if (p) {
-                    this.lists = p
+                    this.mealPlans = p
                 }
             });
         this.unsubscribe.push(sub$);
     }
 
-    deleteShoppingList(listId: string) {
-        let sub$ = this.listService
-            .deleteList(listId)
-            .subscribe(l => this.getShoppingLists());
+    deleteMealPlan(mealPlanId: string) {
+        let sub$ = this.mealPlanService
+            .deleteMealPlan(mealPlanId)
+            .subscribe(l => this.getMealPlans());
         this.unsubscribe.push(sub$);
     }
 
-    editShoppingList(listId: String) {
-       // console.log("listId + " + listId)
-        var url = "lists/edit/" +  listId;
-        this.router.navigateByUrl(url);
+    editMealPlan(listId: String) {
+       // console.log("planId + " + planId)
+        var url = "mealplans/edit/" +  listId;
+        console.log("to this url" +this.router.navigateByUrl(url));
 
     }
 
-    createShoppingList() {
-        let sub$ = this.listService
-            .createList(ListService.DEFAULT_LIST_NAME)
-            .subscribe(l => this.getShoppingLists());
+    createMealPlan() {
+        let sub$ = this.mealPlanService
+            .addMealPlan("")
+            .subscribe(l => this.getMealPlans());
         this.unsubscribe.push(sub$);
     }
 

@@ -34,7 +34,7 @@ export class SignUpComponent implements OnInit {
     ngOnInit() {
         this.title.setTitle(this.route.snapshot.data['title']);
         this.meta.updateTag({name: 'description', content: this.route.snapshot.data['content']});
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/mealPlans/manage';
         this.signUpForm = this.fb.group({
             email: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(50), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validateEmailNotTaken.bind(this)],
             userPassword: ["", [Validators.required,Validators.minLength(4) , Validators.maxLength(50)]],
