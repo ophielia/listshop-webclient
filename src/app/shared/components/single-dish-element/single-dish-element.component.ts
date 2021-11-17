@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {LandingFixService} from "../../shared/services/landing-fix.service";
+import {LandingFixService} from "../../../shared/services/landing-fix.service";
 import {ActivatedRoute} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {Dish, IDish} from "../../model/dish";
+import {Dish, IDish} from "../../../model/dish";
 
 @Component({
     selector: 'app-single-dish-element',

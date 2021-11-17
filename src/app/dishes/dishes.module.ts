@@ -7,7 +7,6 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import {FormsModule} from "@angular/forms";
 import {ManageDishesComponent} from "./manage-dishes/manage-dishes.component";
 import {DishesComponent} from "./dishes.component";
-import {SingleDishElementComponent} from "./single-dish-element/single-dish-element.component";
 import {MealplanSelectComponent} from "./mealplan-select/mealplan-select.component";
 import {EditDishComponent} from "./edit-dish/edit-dish.component";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
@@ -21,8 +20,7 @@ import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.compone
         EditDishComponent,
         AddDishComponent,
         AddDishIngredientComponent,
-        MealplanSelectComponent,
-        SingleDishElementComponent],
+        MealplanSelectComponent],
     imports: [
         CommonModule,
         DishesRoutingModule,
