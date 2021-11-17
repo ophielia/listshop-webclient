@@ -23,7 +23,7 @@
           <a class="nav-link"  href="#testimonial" (click)="active('testimonial')" [ngClass]="{'active show': activeClass == 'testimonial' }" [pageScrollOffset]="80" pageScroll>testimonial</a>
         </li>
         <li *ngIf="isLoggedIn" class="nav-item">
-          <a class="nav-link" [routerLink]="'/mealPlans'">my lists</a>
+          <a class="nav-link" [routerLink]="'/lists'">my lists</a>
         </li>
         <div *ngIf="!isLoggedIn" ngbDropdown class="nav-item dropdown">
           <button class="btn bg-transparent nav-link dropdown-toggle" id="dropdownMenuButton" ngbDropdownToggle>Login</button>

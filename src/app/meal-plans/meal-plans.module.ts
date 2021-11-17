@@ -9,12 +9,14 @@ import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {MealPlansComponent} from "./meal-plans.component";
 import {ManageMealPlansComponent} from "./manage-mealplans/manage-meal-plans.component";
 import {SinglePlanElementComponent} from "./single-plan-element/single-plan-element.component";
+import {EditPlanComponent} from "./edit-plan/edit-plan.component";
 
 
 @NgModule({
     declarations: [MealPlansComponent,
         ManageMealPlansComponent,
-        SinglePlanElementComponent
+        SinglePlanElementComponent,
+        EditPlanComponent
         ],
     imports: [
         CommonModule,

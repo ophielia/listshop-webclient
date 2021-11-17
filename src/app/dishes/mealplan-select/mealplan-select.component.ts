@@ -25,8 +25,8 @@ export class MealplanSelectComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedMealplan = null;
-        let promise = this.mealplanService.getAllMealplans();
-        promise.then(data => {
+        this.mealplanService.getAllMealplans()
+            .subscribe(data => {
             this.listOfMealplans = data;
         })
     }

@@ -58,7 +58,7 @@ export class ManageListsComponent implements OnInit, OnDestroy {
 
     editShoppingList(listId: String) {
        // console.log("planId + " + planId)
-        var url = "mealPlans/edit/" +  listId;
+        var url = "lists/edit/" +  listId;
         this.router.navigateByUrl(url);
 
     }
