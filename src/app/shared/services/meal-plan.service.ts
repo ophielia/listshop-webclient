@@ -35,6 +35,17 @@ export class MealPlanService {
                 catchError(this.handleError));
     }
 
+    getMealPlan(planId: String): Observable<IMealPlan> {
+        this.logger.debug("Retrieving  mealplans  " +  planId + " for user.");
+
+        return this.httpClient.get(this.mealplanUrl + "/" + planId)
+            .pipe(map((response: HttpResponse<any>) => {
+                    // map and return
+                    return MealPlanService.mapMealPlan(response);
+                }),
+                catchError(this.handleError));
+    }
+
     deleteMealPlan(mealPlanId: string) {
         var url: string = this.mealplanUrl + '/' + mealPlanId;
 
@@ -84,6 +95,10 @@ export class MealPlanService {
     private static mapMealPlans(object: Object): MealPlan[] {
         let embeddedObj = object["_embedded"];
         return embeddedObj["mealPlanResourceList"].map(MappingUtils.toMealPlan);
+    }
+
+    private static mapMealPlan(object: Object): MealPlan {
+        return MappingUtils.toMealPlan(object);
     }
 
     handleError(error: any) {

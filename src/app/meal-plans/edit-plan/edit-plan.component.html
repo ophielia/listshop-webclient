@@ -1,232 +1,123 @@
-<!--title start-->
+<!-- title start -->
 <div class="titlebar-bg">
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-6 col-text-center d-align-left">
-                <h2 class="title"><span>meal plan</span></h2>
+                <h2 class="title"><span>Meal Plan</span></h2>
             </div>
             <div class="col-md-6 col-sm-6 col-text-end">
             </div>
         </div>
     </div>
 </div>
-<!--title end -->
+<!-- title end -->
 <!--breadcrumb start-->
-<div class="breadcrumb-bg breadcrumb-for-bar">
-    <div class="container dish-toolbar">
+<div class="breadcrumb-bg">
+    <div class="container">
         <div class="row">
-            <div class=" col-sm-6 col-md-8 col-lg-8">
+            <div class="col-sm-12 col-md-8 col-lg-10">
+                <h2 class="title">
+                    <div *ngIf="showChangeName" class="change-name">
+                        <input type="text" class=""
+                               placeholder="{{shoppingList.name}}"
+                               [(ngModel)]="shoppingListName"
+                               (keyup.enter)="saveListName()"
+                        />
+                        <span (click)="saveListName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/check.png"
+                                                             alt="add" ></span>
+                        <span (click)="toggleShowChangeName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
+                                                                     alt="add" ></span>
 
 
-                <div *ngIf="showChangeName" class="change-name">
-                    <input type="text" class=""
-                           placeholder="{{mealPlan.name}}"
-                           [(ngModel)]="mealPlanName"
-                           (keyup.enter)="savePlanName()"
-                    />
-                    <span (click)="savePlanName()"><img class="lg-button"
-                                                        src="../../../assets/images/listshop/icons/orangeround/large/check.png"
-                                                        alt="add"></span>
-                    <span (click)="toggleShowChangeName()"><img class="lg-button"
-                                                                src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
-                                                                alt="add"></span>
+                    </div>
+                    <ng-container *ngIf="!showChangeName">
+                        {{mealPlan ? mealPlan.name : 'none'}}
+                        <span><img *ngIf="shoppingListIsStarter" class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
+                                   alt="add" >
+                </span>
+                    </ng-container>
 
-
-                </div>
-                <ng-container *ngIf="!showChangeName">
-                    <h2 class="title-plan"><span>Name of plan</span></h2>
-                </ng-container>
-
+                </h2>
             </div>
-            <div class="col-md-4 col-sm-6 col-text-end">
-                <div class="title-bar-action">
-                    <a class="nav-link" [routerLink]="'/mealplans'">All Meal Plans</a>
-                </div>
+            <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
+                <a class="nav-link" [routerLink]="'/mealplans'">All Plans</a>
             </div>
-
         </div>
     </div>
-
 </div>
 <!--breadcrumb end -->
-<!--filter add dishes start-->
-<div class="breadcrumb-bg breadcrumb-for-bar">
-    <div class="container dish-toolbar">
-        <div class="row">
-            <div class=" col-sm-6 col-md-8 col-lg-8">
-            <span class="button-icon">
-                <input type="text" class="form-control searchbox"
-                       placeholder="Search By Dishname"
-                       [(ngModel)]="dishSearchValue"
-                       (keyup)="filterByDishname()"
-                       (keyup.enter)="clearSearchValue()"/>
-            </span>
-                <span class="button-icon" style="margin-left: 10px">
-                                  <!-- <app-tag-select class="at-tag-select-style"
-                                                   [tagTypes]="'Ingredient,Rating,DishType,TagType'"
-                                                   [selectType]="'All'"
-                                                   [groupType]="groupType"
-                                                   [allowAdd]="false"
-                                                   [showCancelButton]="false"
-                                                   [placeholderText]="'Filter Results'"
-                                                   (tagSelected)="addTagToFilter($event)"></app-tag-select>--->
-
-            </span>
-
-            </div>
-            <div class="col-md-4 col-sm-6 col-text-end">
-                <!--<div class="sort-display">
-                    <span *ngIf="showOrderBy">
-                    <select name="sortkey" [(ngModel)]="sortKey" class="sort-select" (change)="changeSort()">
-                       <option *ngFor="let sortkey of sortOptions" [value]="sortkey">{{sortkey}}</option>
-                    </select>
-
-                    <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png"
-                         (click)="changeSortDirection()" alt="sort-ascending">
-                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png"
-                         (click)="changeSortDirection()" alt="sort-ascending">
-                    <img class="check" (click)="toggleShowOrderBy()"
-                         src="../../../assets/images/listshop/icons/orangeround/check.png" alt="sort-done">
-                    </span>
-
-                    <span *ngIf="!showOrderBy" (click)="toggleShowOrderBy()" style="padding-left:5px">
-                    {{sortKey}}
-                        <img *ngIf="isSortUp()" src="../../../assets/images/listshop/icons/white/arrowup.png"
-                             alt="sort-ascending">
-                    <img *ngIf="!isSortUp()" src="../../../assets/images/listshop/icons/white/arrowdown.png"
-                         alt="sort-ascending">
-                        </span>
-                </div> -->
-
-
-                <span><a [routerLink]="'/dishes/add'" class="add-button">
-                    <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
-            </div>
-
-        </div>
-    </div>
-    <!-- active filter display -->
-    <div class="container active-filter-container">
-        <div class="row">
-            <div class=" col-sm-12 col-md-12 col-lg-12">
-                <div class="row">
-                   <!--  <div *ngFor="let tag of filterTags"
-                         class="col active-filter-block"
-                         (dblclick)="removeTagFromFilter(tag)"
-                         (click)="toggleInvert(tag)"
-                    >{{tag.name}}
-                        <img *ngIf="tag.is_inverted"
-                             src="../../../assets/images/listshop/icons/orangeplain/circleminus.png" alt="add">
-                    </div> -->
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-    <!-- active filter display -->
-</div>
-<!--filter add dishes end -->
-
-<!--content start-->
+<!-- list Section starts -->
 <section>
     <div class="container">
         <div class="row">
-            <!--  <div *ngIf="isLoading" class="col-md-12 " class="loading-box">
-                 <div class="loading-text">loading dishes...</div>
-             </div> -->
-            <ng-container> <!-- *ngIf="!isLoading" -->
-                <div class="col-sm-12 col-md-8 col-lg-9">
-                    <div class="row">  <!-- MM remember if for plan here -->
-                        <!-- start category loop -->
-                        <!-- start dish list <div *ngFor="let category of shoppingList.categories, let i = index" -->
-                        <div class="col-sm-12 col-med-6 col-lg-6">
-                            <!-- single list element -->
-                            {{testDish.name
+            <!-- shopping list starts -->
+            <div class="col-sm-12 col-md-8 col-lg-9">
+                <div *ngIf="mealPlan" class="row">
+                    <!-- start category loop -->
+                    <div *ngFor="let dish of planDishes, let i = index"
+                         class="col-sm-12 col-med-6 col-lg-6">
+<app-plan-dish-element
+        dishId="{{dish.dish_id}}"
+        dishName="{{dish.name}}"
+        reference="{{dish.reference}}"
+        (doubleTap)="beep($event)">
+</app-plan-dish-element>
+                    </div>
+                    <!-- end category loop -->
+
+                </div>
+            </div>
+            <!-- shopping list ends -->
+            <!-- sidebar starts -->
+            <div class="col-md-4 col-lg-3 order-md-last">
+                <!-- actions -->
+                <div class="ls-flat-card ls-card-contents">
+                    <ng-container *ngIf="showActions">
+                          <div>
+                            <span class="action-link" (click)="clearList()">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
+                            </span>
+                        </div>
+                        <div>
+                            <span class="action-link" (click)="clearList()">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Copy Meal Plan
+                            </span>
+                        </div>
+                        <div>
+                            <span class="action-link" (click)="clearList()">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Generate List
+                            </span>
+                        </div>
+
+
+                    </ng-container>
+                    <div class="action-button-right">
+                        <a (click)="toggleShowActions()">
+                            <img *ngIf="showActions" class="sm-button" src="../../../assets/images/listshop/icons/orangeround/chevronsup.png"
+                                 alt="add">
+                            <img *ngIf="!showActions" class="sm-button" src="../../../assets/images/listshop/icons/orangeround/chevronsdown.png"
+                                 alt="add">
+                        </a>
+                    </div>
+                </div>
+                <!-- end actions -->
+                <!-- removed -->
+                <div *ngIf="removedItems.length > 0" class="ls-flat-card">
+                    <h3>Removed Items</h3>
+                    <ul>
+                        <li *ngFor="let item of removedItems" (dblclick)="reAddItem(item)">
+                            {{
+                            item.tag.name
                             }}
 
-
-                            <div class="col-lg-4}} col-md-6">
-
-                                <!-- single list element -->
-                                <app-plan-dish-element
-                                        [dish]=testDish
-                                        (doubleTap)="removeDishFromPlan($event)">
-                                </app-plan-dish-element>
-                                <!-- single list element -->
-
-
-                            </div>
-
-                        <!-- end category loop -->
-
-                    </div>
-                    </div>
+                        </li>
+                    </ul>
+                    <div class="ls-card-link" (click)="clearRemoved()">clear</div>
                 </div>
-                <!-- start sidebar -->
-                <div class="col-md-4 col-lg-3 order-md-last">
-                    <!-- actions -->
-                    <div class="ls-flat-card ls-card-contents">
-                        <ng-container *ngIf="showActions">
-                            <div (click)="toggleShowChangeName()">
-                            <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                Change Name
-                            </span>
-                            </div>
-                            <div>
-                            <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                Copy Meal Plan
-                            </span>
-                            </div>
-                            <div>
-                            <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                Generate List
-                            </span>
-                            </div>
-                        </ng-container>
-                        <div class="action-button-right">
-                            <a (click)="toggleShowActions()">
-                                <img *ngIf="showActions" class="sm-button"
-                                     src="../../../assets/images/listshop/icons/orangeround/chevronsup.png"
-                                     alt="add">
-                                <img *ngIf="!showActions" class="sm-button"
-                                     src="../../../assets/images/listshop/icons/orangeround/chevronsdown.png"
-                                     alt="add">
-                            </a>
-                        </div>
-                    </div>
-                    <!-- end actions -->
-                    <!-- removed -->
-                    <div *ngIf="removedDishes.length > 0" class="ls-flat-card">
-                        <h3>Removed Items</h3>
-                        <ul>
-                            <li *ngFor="let dish of removedDishes" (dblclick)="reAddDish(dish)">
-                                {{
-                                dish.name
-                                }}
-
-                            </li>
-                        </ul>
-                        <div class="ls-card-link" (click)="clearRemoved()">clear</div>
-                    </div>
-                    <!-- end removed -->
-                </div>
-                <!-- end sidebar -->
-            </ng-container>
+                <!-- end removed -->
             </div>
+            <!-- sidebar end -->
         </div>
-</section>
-<!--content End-->
-
-<!-- modal -->
-<app-modal #tagaddedmodal [autoHide]="2500">
-    <div class="app-modal-body">
-        Tag added to Dishes
     </div>
-</app-modal>
-
-
-
+</section>
+<!-- list Section End -->

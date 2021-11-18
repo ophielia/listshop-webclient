@@ -11,9 +11,12 @@ import {Dish} from "../../model/dish";
 })
 export class PlanDishElementComponent implements OnInit {
 
-    @Input() dish: Dish
+    @Input() dishId: String
+    @Input() dishName: String
+    @Input() reference: String
 
     @Output() doubleTap: EventEmitter<String> = new EventEmitter<String>();
+
 
 
     constructor(
@@ -33,6 +36,6 @@ export class PlanDishElementComponent implements OnInit {
     }
 
     doubleTapDish() {
-        this.doubleTap.emit(this.dish.dish_id);
+        this.doubleTap.emit(this.dishId);
     }
 }
