@@ -148,8 +148,8 @@ export class DishService {
     saveDishChanges(dish: Dish, dishDescription: string, dishReference: string, dishName: string) : Observable<Object>{
         // clip values to 255 characters
         dish.name = dishName.length > 255 ?  dishName.substr(0,255) : dishName;
-        dish.reference = dishReference.length > 255 ?  dishReference.substr(0,255) : dishReference;
-        dish.description = dishDescription.length > 255 ?  dishDescription.substr(0,255) : dishDescription;
+        dish.reference = (dishReference && dishReference.length > 255) ?  dishReference.substr(0,255) : dishReference;
+        dish.description = (dishDescription && dishDescription.length > 255) ?  dishDescription.substr(0,255) : dishDescription;
         return this.saveDish(dish);
     }
 
