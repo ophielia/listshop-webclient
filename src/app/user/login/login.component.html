@@ -7,15 +7,17 @@
     <div>
         <h2 class="title text-center"><span> Login</span></h2>
         <div class="card">
-            <form name="form" (submit)="f.form.valid && doLogin()" #f="ngForm" novalidate>
+            <form name="form" class="theme-form" (submit)="f.form.valid && doLogin()" #f="ngForm" novalidate>
                 <div class="form-group" [ngClass]="{ 'has-error': f.submitted  }">
-                    <label>Username</label>
-                    <input type="text" class="form-control" name="username" [(ngModel)]="username" required />
+                    <input type="text"
+                           placeholder = "email address"
+                           class="form-control"
+                           name="username"
+                           [(ngModel)]="username" required />
                     <span *ngIf="f.submitted  " class="help-block">Username is required</span>
                 </div>
                 <div class="form-group" [ngClass]="{ 'has-error': f.submitted  }">
-                    <label>Password&nbsp;</label>
-                    <input type="password" class="form-control" name="password" [(ngModel)]="password"  required />
+                    <input type="password" placeholder = "password"  class="form-control" name="password" [(ngModel)]="password"  required />
                     <span *ngIf="f.submitted " class="help-block">Password is required</span>
                 </div>
                 <div class="form-button text-center">

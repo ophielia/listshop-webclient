@@ -10,7 +10,10 @@
 
             <form [formGroup]="signUpForm" #formDir="ngForm" class="theme-form">
              <div class="form-group">
-                    <input type="email" placeholder = "email address" class="form-control" formControlName="email" required >
+                    <input type="email"
+                           placeholder = "email address"
+                           class="form-control"
+                           formControlName="email" required >
                 </div>
                 <div *ngIf="email.invalid && (email.dirty || email.touched)"
                      class="alert alert-danger">
