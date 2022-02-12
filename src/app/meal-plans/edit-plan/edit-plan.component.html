@@ -73,11 +73,32 @@
                 <!-- actions -->
                 <div class="ls-flat-card ls-card-contents">
                     <ng-container *ngIf="showActions">
-                          <div>
-                            <span class="action-link" (click)="clearList()">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
+
+                        <!-- Select Dishes -->
+                        <div>
+                            <span class="action-link" (click)="goToDishSelect()" >
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Select Dishes
                             </span>
                         </div>
+
+                        <!-- Quick Add Dish -->
+                        <div *ngIf="!showAddDish">
+                            <span class="action-link" (click)="toggleAddDish()">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Quick Add Dish
+                            </span>
+                        </div>
+                        <div *ngIf="showAddDish">
+                            <app-dish-select class="at-tag-select-style"
+                                             [showCancelButton]="true"
+                                             [showText]="'Select Dish'"
+                                             [dishList]="allDishes"
+
+                                             (dishSelected)="addDishToPlan($event)"
+                                             (cancelSelectDish)="toggleAddDish()"></app-dish-select>
+                        </div>
+
+
+
                         <div>
                             <span class="action-link" (click)="clearList()">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Copy Meal Plan
@@ -88,7 +109,11 @@
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Generate List
                             </span>
                         </div>
-
+                        <div>
+                            <span class="action-link" (click)="clearList()">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
+                            </span>
+                        </div>
 
                     </ng-container>
                     <div class="action-button-right">
@@ -101,20 +126,7 @@
                     </div>
                 </div>
                 <!-- end actions -->
-                <!-- removed -->
-                <div *ngIf="removedItems.length > 0" class="ls-flat-card">
-                    <h3>Removed Items</h3>
-                    <ul>
-                        <li *ngFor="let item of removedItems" (dblclick)="reAddItem(item)">
-                            {{
-                            item.tag.name
-                            }}
 
-                        </li>
-                    </ul>
-                    <div class="ls-card-link" (click)="clearRemoved()">clear</div>
-                </div>
-                <!-- end removed -->
             </div>
             <!-- sidebar end -->
         </div>

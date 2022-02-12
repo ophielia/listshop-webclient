@@ -156,6 +156,21 @@ img.lg-button {
   color: #777777;
 }
 
+/* site-wide - links */
+.action-link {
+  color: $color_tapa;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    color: $color_basic_orange;
+    transition: all 0.2s ease;
+  }
+
+  .fa {
+    margin-right: 5px;
+  }
+}
 
 /* header */
 .home-style-two,

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
 import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
@@ -30,7 +30,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     showCrossedOff: boolean = true;
     showActions: boolean = true;
     showAddDish: boolean = false;
-    showAddList: boolean = false;
+    showAddToList: boolean = false;
     showFrequent: boolean = true;
     showChangeName: boolean = false;
     shoppingListIsStarter: boolean = false;
@@ -52,6 +52,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private title: Title,
         private meta: Meta,
+        private router: Router,
         private listService: ListService,
         private dishService: DishService,
         private mealPlanService: MealPlanService,
@@ -108,14 +109,6 @@ export class EditPlanComponent implements OnInit, OnDestroy {
 
     }
 
-    clearList() {
-        this.showFrequent = false;
-        let promise = this.listService.removeAllItemsFromList(this.shoppingList.list_id);
-        promise.then(data => {
-            this.getMealPlan(this.shoppingList.list_id)
-        });
-    }
-
     iconSourceForKey(key: string, withCircle: boolean): string {
         let circleOrColor = withCircle ? "circles" : "colors"
         // assets/images/legend/colors/blue/bowl.png
@@ -124,29 +117,6 @@ export class EditPlanComponent implements OnInit, OnDestroy {
             return null;
         }
         return "assets/images/listshop/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
-    }
-
-    clearRemoved() {
-        this.removedItems = []
-    }
-
-    addTagToList(tag: Tag) {
-        // add tag to list as item in back end
-        this.logger.debug("adding tag [" + tag.tag_id + "] to list");
-        let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag);
-
-        promise.then((data) => {
-            this.getMealPlan(this.shoppingList.list_id);
-        }).catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
-        });
-    }
-
-    reAddItem(item: IItem) {
-        this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id);
-        if (item.tag) {
-            this.addTagToList(item.tag);
-        }
     }
 
     toggleShowActions() {
@@ -164,7 +134,32 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         }
     }
 
-    beep(dishId: String) {
-        
+    addDishToPlan(dish: any) {
+        let $sub = this.mealPlanService.addDishToMealPlan(dish.dish_id, this.mealPlan.meal_plan_id)
+            .subscribe(() => {
+                this.getMealPlan(this.mealPlan.meal_plan_id);
+                this.showAddDish = false;
+            });
+        this.unsubscribe.push($sub);
+    }
+
+    goToDishSelect() {
+            var url = "mealplans/edit/" +  this.mealPlan.meal_plan_id + "/dish";
+            this.router.navigateByUrl(url);
+    }
+
+    toggleAddDish() {
+        // hide other inputs
+        if (!this.showAddDish) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddDish = !this.showAddDish;
+    }
+
+    private hideAllAddInputs() {
+        this.showAddDish = false;
+        this.showAddToList = false;
+        this.showChangeName = false;
     }
 }

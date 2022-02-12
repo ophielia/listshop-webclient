@@ -8,8 +8,8 @@
     <div *ngIf="hasReference()">Ref: {{dish.reference}}</div>
 </div>
     <div class="ls-card-link-block">
-            <a class="ls-card-link" (click)="selectDishFromLink()">select</a>
-            <a class="ls-card-link" (click)="editDish()">edit</a>
+            <a class="ls-card-link" (click)="selectDishFromLink()">{{selectLabel}}</a>
+            <a class="ls-card-link" (click)="editDish()"  *ngIf="showViewLink" >edit</a>
     </div>
     <div class="clearfix"></div>
 </div>

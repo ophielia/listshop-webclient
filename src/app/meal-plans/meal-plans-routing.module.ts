@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AuthGuardHandler} from "../shared/handlers/auth-guard-handler";
 import {ManageMealPlansComponent} from "./manage-mealplans/manage-meal-plans.component";
 import {EditPlanComponent} from "./edit-plan/edit-plan.component";
+import {AddDishToPlanComponent} from "./add-dish-to-plan/add-dish-to-plan.component";
 
 
 const routes: Routes = [
@@ -19,8 +20,16 @@ const routes: Routes = [
         path: 'edit/:id',
         component: EditPlanComponent,
         data: {
-            title: 'The List Shop | Edit Dish',
-            content: 'The List Shop | Edit Dish'
+            title: 'The List Shop | Edit Meal Plan',
+            content: 'The List Shop | Edit Meal Plan'
+        }
+    },
+    {
+        path: 'edit/:id/dish',
+        component: AddDishToPlanComponent,
+        data: {
+            title: 'The List Shop | Add Dish to Meal Plan',
+            content: 'The List Shop | Add Dish to Meal Plan'
         }
     },
     {

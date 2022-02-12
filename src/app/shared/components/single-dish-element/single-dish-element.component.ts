@@ -13,6 +13,8 @@ export class SingleDishElementComponent implements OnInit {
 
     @Input() dish: IDish;
     @Input() fullDisplay: boolean;
+    @Input() showViewLink: boolean = true;
+    @Input() selectLabel: String = "select";
     @Output() edit: EventEmitter<String> = new EventEmitter<String>();
     @Output() select: EventEmitter<Dish> = new EventEmitter<Dish>();
 
@@ -21,6 +23,7 @@ export class SingleDishElementComponent implements OnInit {
         private route: ActivatedRoute,
         private title: Title,
     ) {
+        console.log("hi!");
     }
 
     ngOnInit() {

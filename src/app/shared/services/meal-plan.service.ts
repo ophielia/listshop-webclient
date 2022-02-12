@@ -92,6 +92,14 @@ export class MealPlanService {
             .post(url, null);
     }
 
+    removeDishFromMealPlan(dish_id, meal_plan_id: string): Observable<any> {
+        const url: string = this.mealplanUrl + '/' + meal_plan_id + "/dish/" + dish_id;
+
+        return this
+            .httpClient
+            .delete(url);
+    }
+
     private static mapMealPlans(object: Object): MealPlan[] {
         let embeddedObj = object["_embedded"];
         return embeddedObj["mealPlanResourceList"].map(MappingUtils.toMealPlan);

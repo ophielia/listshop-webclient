@@ -58,20 +58,7 @@ box-shadow: unset;
 
 }
 
-.action-link {
-color: $color_tapa;
-transition: all 0.2s ease;
 
-&:hover,
-&:focus {
-color: $color_basic_orange;
-transition: all 0.2s ease;
-}
-
-.fa {
-margin-right: 5px;
-}
-}
 
 table.legend-table {
 width: 100%;
