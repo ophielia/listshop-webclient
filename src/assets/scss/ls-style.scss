@@ -1019,4 +1019,14 @@ img.lg-button {
   }
 }
 
+/** dish tool bar **/
+.dish-toolbar {
+  padding-bottom: 15px;
+  span.action-link {
+    color: $color_basic_orange;
+    display: block;
+    padding: 0.5rem 1rem;
+  }
+}
+
 

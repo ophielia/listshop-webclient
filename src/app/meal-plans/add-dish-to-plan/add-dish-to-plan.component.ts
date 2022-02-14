@@ -59,6 +59,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     displayId: string ;
     mealPlan: MealPlan;
     planDishes: Dish[];
+    initialLoad: boolean = true;
 
 
     constructor(
@@ -75,7 +76,6 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        // this.fix.addFixBlogDetails();
         this.title.setTitle(this.route.snapshot.data['title']);
         this.route.params.subscribe(params => {
             let id = params['id'];
@@ -103,6 +103,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
     addDishToMealPlan(dish: any) {
+        this.initialLoad = false;
         let $sub = this.mealPlanService.addDishToMealPlan(dish.dish_id, this.mealPlan.meal_plan_id)
             .subscribe(() => {
                 this.getMealPlan(this.mealPlan.meal_plan_id);
@@ -111,6 +112,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
     removeFromMealPlan(dishId: string) {
+        this.initialLoad = false;
         let $sub = this.mealPlanService.removeDishFromMealPlan(dishId, this.mealPlan.meal_plan_id)
             .subscribe(() => {
                 this.getMealPlan(this.mealPlan.meal_plan_id);
@@ -120,6 +122,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
     filterByDishname() {
+        this.initialLoad = false;
         console.log("filter by dishname" + this.searchValue);
 
         if (this.searchValue.length == 0) {
@@ -211,6 +214,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
     addTagToFilter(tag: ITag) {
+        this.initialLoad = false;
         tag.is_inverted = false;
         if (!this.filterTags) {
             this.filterTags = [];
@@ -222,6 +226,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
     removeTagFromFilter(tag: ITag) {
+        this.initialLoad = false;
         this.isSingleClick = false;
         this.filterTags = this.filterTags.filter(t => t.tag_id != tag.tag_id);
         this.getAllDishes();
@@ -279,4 +284,8 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
 
     }
 
+    backToMealPlanEdit() {
+        var url = "mealplans/edit/" +  this.mealPlan.meal_plan_id;
+        this.router.navigateByUrl(url);
+    }
 }

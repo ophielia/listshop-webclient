@@ -2,8 +2,8 @@
 <div class="titlebar-bg">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-sm-6 col-text-center d-align-left">
-                <h2 class="title"><span>Add Dishes To Mealplan</span></h2>
+            <div class="col-md-12 col-sm-12 col-text-center d-align-left">
+                <h2 class="title"><span>{{mealPlan ? mealPlan.name : "Meal Plan"}} - Add Dishes</span></h2>
             </div>
             <div class="col-md-6 col-sm-6 col-text-end">
             </div>
@@ -22,7 +22,7 @@
                        [(ngModel)]="searchValue"
                        (keyup)="filterByDishname()"
                        (keyup.enter)="clearSearchValue()"
-                /><!--<img src="../../../assets/images/listshop/icons/orangeround/search.png" alt="add" />-->
+                />
             </span>
                 <span class="button-icon" style="margin-left: 10px">
                                    <app-tag-select class="at-tag-select-style"
@@ -61,7 +61,8 @@
                          alt="sort-ascending">
                         </span>
                 </div>
-
+                <span  (click)="backToMealPlanEdit()" class="add-button">
+                    <img src="../../../assets/images/listshop/icons/orangeround/backarrow.png" alt="add"></span>
 
             </div>
 
@@ -100,7 +101,7 @@
             </div>
             <ng-container *ngIf="!isLoading">
                 <div class="col-md-{{hasSelected ? 9 : 12}} ">
-                    <div class="row ">
+                    <div class="row" *ngIf="!initialLoad">
                         <!-- single dish element -->
                         <div *ngFor="let dish of filteredDishes, let i = index"
                              class="col-lg-{{hasSelected ? 4 : 3}} col-md-6">
@@ -123,7 +124,7 @@
 
                     <!-- dishes in meal plan -->
                     <div class="ls-dish-management-legend">
-                        <div class="selected-title">Dishes In Plan</div>
+                        <div class="selected-title">Dishes In {{mealPlan.name}}</div>
                         <div *ngFor="let selectedDish of planDishes"
                              class="selected-dish"
                              (click)="removeFromMealPlan(selectedDish.dish_id)">
@@ -131,7 +132,18 @@
                         </div>
                     </div>
                     <!-- dishes in meal plan -->
+                    <!-- commands -->
+                    <div class="ls-dish-flat-card ls-card-contents">
 
+                        <div *ngIf="!showAddTag" (click)="backToMealPlanEdit()"><span class="action-link">
+                        <i aria-hidden="true" class="fa fa-angle-right"></i>
+                        Back To Edit Meal Plan</span>
+                        </div>
+
+
+
+                    </div>
+                    <!-- commands -->
                 </div>
             </ng-container>
         </div>
