@@ -1,20 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
+import {ShoppingList} from "../../model/shoppinglist";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
-import {Category, ICategory} from "../../model/category";
-import {IItem, Item} from "../../model/item";
-import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
-import {IMealPlan, MealPlan} from "../../model/mealplan";
+import {MealPlan} from "../../model/mealplan";
 
 @Component({
     selector: 'app-edit-plan',
@@ -22,6 +19,8 @@ import {IMealPlan, MealPlan} from "../../model/mealplan";
     styleUrls: ['./edit-plan.component.scss']
 })
 export class EditPlanComponent implements OnInit, OnDestroy {
+    @ViewChild('mealplancopied') copiedMealPlanModal;
+
     private unsubscribe: Subscription[] = [];
 
     crossedOffExist: boolean;
@@ -31,7 +30,6 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     showActions: boolean = true;
     showAddDish: boolean = false;
     showAddToList: boolean = false;
-    showFrequent: boolean = true;
     showChangeName: boolean = false;
     shoppingListIsStarter: boolean = false;
     private originalName: string = null;
@@ -40,11 +38,11 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     errorMessage: any;
 
     shoppingList: ShoppingList;
-    removedItems: IItem[] = [];
 
     mealPlan: MealPlan;
     planDishes: Dish[];
 
+    copiedId: String;
 
 
     constructor(
@@ -83,7 +81,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                 this.mealPlan = p;
                 this.planDishes = [];
-                this.mealPlan.slots.forEach( s => this.planDishes.push(s.dish));
+                this.mealPlan.slots.forEach(s => this.planDishes.push(s.dish));
 
             });
         this.unsubscribe.push($sub);
@@ -144,8 +142,8 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     }
 
     goToDishSelect() {
-            var url = "mealplans/edit/" +  this.mealPlan.meal_plan_id + "/dish";
-            this.router.navigateByUrl(url);
+        var url = "mealplans/edit/" + this.mealPlan.meal_plan_id + "/dish";
+        this.router.navigateByUrl(url);
     }
 
     toggleAddDish() {
@@ -161,5 +159,24 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.showAddDish = false;
         this.showAddToList = false;
         this.showChangeName = false;
+    }
+
+    copyMealPlan() {
+        let $sub = this.mealPlanService.copyMealPlan(this.mealPlan.meal_plan_id)
+            .subscribe(r => {
+                var headers = r.headers;
+                var location = headers.get("Location");
+                var splitlocation = location.split("/");
+                var id = splitlocation[splitlocation.length - 1];
+                this.copiedId = id;
+                this.copiedMealPlanModal.show();
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
+    showCopiedMealPlan() {
+        var url = "mealplans/edit/" + this.copiedId;
+        this.router.navigateByUrl(url);
     }
 }

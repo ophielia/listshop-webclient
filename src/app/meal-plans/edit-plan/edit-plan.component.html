@@ -100,7 +100,7 @@
 
 
                         <div>
-                            <span class="action-link" (click)="clearList()">
+                            <span class="action-link" (click)="copyMealPlan()">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Copy Meal Plan
                             </span>
                         </div>
@@ -138,3 +138,12 @@
     </div>
 </section>
 <!-- list Section End -->
+
+
+<app-modal #mealplancopied [autoHide]="2500">
+    <div class="app-modal-body">
+        Meal Plan successfully copied
+        <div *ngIf="copiedId != null" style="float:right"><a class="modal-link" (click)="showCopiedMealPlan()">
+            Edit New Meal Plan</a></div>
+    </div>
+</app-modal>

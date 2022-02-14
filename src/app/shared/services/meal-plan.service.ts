@@ -119,6 +119,13 @@ export class MealPlanService {
         return throwError(error);
     }
 
+    copyMealPlan(meal_plan_id: string): Observable<HttpResponse<Object>> {
+        const url: string = this.mealplanUrl + '/' + meal_plan_id;
+
+        return this
+            .httpClient
+            .post(url, null,{observe: 'response'});
+    }
 }
 
 
