@@ -11,7 +11,6 @@ import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
 import {ITag} from "../../model/tag";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import {IListAddProperties} from "../../model/listaddproperties";
 import {IListGenerateProperties} from "../../model/listgenerateproperties";
 
@@ -167,6 +166,15 @@ export class ListService {
         return this
             .httpClient
             .post(url,
+                null)
+            .toPromise();
+    }
+
+    addMealPlanToShoppingList(mealplan_id: string, list_id: string): Promise<Object> {
+        let url = this.listUrl + "/" + list_id + "/mealplan/" + mealplan_id;
+        return this
+            .httpClient
+            .put(url,
                 null)
             .toPromise();
     }

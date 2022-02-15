@@ -126,6 +126,10 @@ export class MealPlanService {
             .httpClient
             .post(url, null,{observe: 'response'});
     }
+
+    addMealPlanToShoppingList(meal_plan_id: string, list_id: string) {
+
+    }
 }
 
 

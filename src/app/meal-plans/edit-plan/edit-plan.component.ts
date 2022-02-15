@@ -3,7 +3,7 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {ShoppingList} from "../../model/shoppinglist";
+import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
@@ -23,17 +23,13 @@ export class EditPlanComponent implements OnInit, OnDestroy {
 
     private unsubscribe: Subscription[] = [];
 
-    crossedOffExist: boolean;
-    listLegendMap: Map<string, LegendPoint>;
-    legendList: LegendPoint[] = [];
-    showCrossedOff: boolean = true;
     showActions: boolean = true;
     showAddDish: boolean = false;
     showAddToList: boolean = false;
     showChangeName: boolean = false;
     shoppingListIsStarter: boolean = false;
     private originalName: string = null;
-    shoppingListName: string = "";
+    mealPlanName: string = "";
     allDishes: IDish[];
     errorMessage: any;
 
@@ -96,25 +92,15 @@ export class EditPlanComponent implements OnInit, OnDestroy {
 
     }
 
-    saveListName() {
+    saveMealPlanName() {
         this.showChangeName = false;
         this.originalName = null;
-        this.shoppingList.name = this.shoppingListName;
+        this.shoppingList.name = this.mealPlanName;
         let promise = this.listService.updateShoppingListName(this.shoppingList)
         promise.then(data => {
             this.getMealPlan(this.shoppingList.list_id);
         });
 
-    }
-
-    iconSourceForKey(key: string, withCircle: boolean): string {
-        let circleOrColor = withCircle ? "circles" : "colors"
-        // assets/images/legend/colors/blue/bowl.png
-        let point = this.listLegendMap.get(key);
-        if (!point) {
-            return null;
-        }
-        return "assets/images/listshop/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
     }
 
     toggleShowActions() {
@@ -126,7 +112,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         if (this.showChangeName) {
             // save original value
             this.originalName = this.shoppingList.name;
-            this.shoppingListName = this.shoppingList.name;
+            this.mealPlanName = this.shoppingList.name;
         } else if (this.originalName != null) {
             this.originalName = null;
         }
@@ -146,14 +132,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(url);
     }
 
-    toggleAddDish() {
-        // hide other inputs
-        if (!this.showAddDish) {
-            // start with all inputs hidden
-            this.hideAllAddInputs();
-        }
-        this.showAddDish = !this.showAddDish;
-    }
+
 
     private hideAllAddInputs() {
         this.showAddDish = false;
@@ -178,5 +157,31 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     showCopiedMealPlan() {
         var url = "mealplans/edit/" + this.copiedId;
         this.router.navigateByUrl(url);
+    }
+
+    toggleAddToList() {
+        // hide other inputs
+        if (!this.showAddToList) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddToList = !this.showAddToList;
+    }
+
+    toggleAddDish() {
+        // hide other inputs
+        if (!this.showAddDish) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddDish = !this.showAddDish;
+    }
+
+    addMealPlanToList(list: IShoppingList) {
+        let promise = this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id);
+        promise.then(data => {
+            this.getMealPlan(this.mealPlan.meal_plan_id);
+            this.showAddToList = false;
+        })
     }
 }

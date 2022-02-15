@@ -20,11 +20,11 @@
                     <div *ngIf="showChangeName" class="change-name">
                         <input type="text" class=""
                                placeholder="{{shoppingList.name}}"
-                               [(ngModel)]="shoppingListName"
-                               (keyup.enter)="saveListName()"
+                               [(ngModel)]="mealPlanName"
+                               (keyup.enter)="saveMealPlanName()"
                         />
-                        <span (click)="saveListName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/check.png"
-                                                             alt="add" ></span>
+                        <span (click)="saveMealPlanName()"><img class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/check.png"
+                                                                alt="add" ></span>
                         <span (click)="toggleShowChangeName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
                                                                      alt="add" ></span>
 
@@ -104,11 +104,20 @@
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Copy Meal Plan
                             </span>
                         </div>
-                        <div>
-                            <span class="action-link" (click)="clearList()">
+                        <div *ngIf="!showAddToList">
+                            <span class="action-link" (click)="toggleAddToList()">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add to List
                             </span>
                         </div>
+                        <div *ngIf="showAddToList">
+                            <app-list-select class="at-tag-select-style"
+                                             [currentListId]="1"
+                                             [title]="'Add to List'"
+                                             (listSelected)="addMealPlanToList($event)"
+                                             (cancelSelectList)="toggleAddToList()"></app-list-select>
+                        </div>
+
+
                         <div>
                             <span class="action-link" (click)="clearList()">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Generate List
