@@ -95,8 +95,8 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     saveMealPlanName() {
         this.showChangeName = false;
         this.originalName = null;
-        this.shoppingList.name = this.mealPlanName;
-        let promise = this.listService.updateShoppingListName(this.shoppingList)
+        this.mealPlan.name = this.mealPlanName;
+        let promise = this.mealPlanService.renameMealPlan(this.mealPlan.meal_plan_id, this.mealPlan.name);
         promise.then(data => {
             this.getMealPlan(this.shoppingList.list_id);
         });

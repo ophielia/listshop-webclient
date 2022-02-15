@@ -18,12 +18,12 @@
             <div class="col-sm-12 col-md-8 col-lg-10">
                 <h2 class="title">
                     <div *ngIf="showChangeName" class="change-name">
-                        <input type="text" class=""
-                               placeholder="{{shoppingList.name}}"
+                        <input type="text" style="min-width: 50%" class=""
+                               placeholder="{{mealPlan.name}}"
                                [(ngModel)]="mealPlanName"
                                (keyup.enter)="saveMealPlanName()"
                         />
-                        <span (click)="saveMealPlanName()"><img class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/check.png"
+                        <span (click)="saveMealPlanName()" style="padding: 0px 15px"><img class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/check.png"
                                                                 alt="add" ></span>
                         <span (click)="toggleShowChangeName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
                                                                      alt="add" ></span>
@@ -124,7 +124,7 @@
                             </span>
                         </div>
                         <div>
-                            <span class="action-link" (click)="clearList()">
+                            <span class="action-link" (click)="toggleShowChangeName()">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
                             </span>
                         </div>

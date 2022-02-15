@@ -127,8 +127,15 @@ export class MealPlanService {
             .post(url, null,{observe: 'response'});
     }
 
-    addMealPlanToShoppingList(meal_plan_id: string, list_id: string) {
+    renameMealPlan(meal_plan_id: string, mealPlanName: string) {
+        // just filling in here
+        let url = this.mealplanUrl + "/" + meal_plan_id + "/name/" + encodeURIComponent(mealPlanName);
 
+
+        let mealplan$ = this.httpClient
+            .post(`${url}`,
+                null);
+        return mealplan$.toPromise();
     }
 }
 
