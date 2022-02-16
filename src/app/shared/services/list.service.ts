@@ -1,18 +1,17 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import { Observable, throwError} from "rxjs";
+import {Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {IShoppingList} from "../../model/shoppinglist";
 import {NGXLogger} from "ngx-logger";
-import {CreateListPost} from "../../model/create-list-post";
 import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
 import {ITag} from "../../model/tag";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
 import {IListAddProperties} from "../../model/listaddproperties";
-import {IListGenerateProperties} from "../../model/listgenerateproperties";
+import {IListGenerateProperties, ListGenerateProperties} from "../../model/listgenerateproperties";
 
 @Injectable()
 export class ListService {
@@ -73,18 +72,27 @@ export class ListService {
     }
 
     createList(listName: string): Observable<Object> {
+        var properties = new ListGenerateProperties();
+        properties.add_from_starter = false;
+        properties.list_name = listName;
 
+        return this.httpClient.post(this.listUrl, JSON.stringify(properties));
+    }
 
-        var createListPost = new CreateListPost();
-        createListPost.is_starter_list = false;
-        createListPost.name = listName;
+    createListFromMealPlan(mealPlanId: string, include_starter: boolean): Observable<HttpResponse<Object>> {
+        var properties = new ListGenerateProperties();
+        properties.add_from_starter = include_starter;
+        properties.meal_plan_source = mealPlanId;
 
-        return this.httpClient.post(this.listUrl, JSON.stringify(createListPost));
+        return this.httpClient.post(this.listUrl,
+            JSON.stringify(properties),
+            {observe: 'response'}
+        );
     }
 
     createListFromParameters(dishIds: string[], mealPlanId: string,
-                    addBase: boolean,
-                    generatePlan: boolean, listName: string = ""): Observable<HttpResponse<Object>> {
+                             addBase: boolean,
+                             generatePlan: boolean, listName: string = ""): Observable<HttpResponse<Object>> {
 
         if (listName = "") {
             listName = ListService.DEFAULT_LIST_NAME;
@@ -123,8 +131,8 @@ export class ListService {
     }
 
     setItemCrossedOff(shoppingList_id: string,
-                               item_id: string,
-                               crossedOff: boolean): Observable<Object> {
+                      item_id: string,
+                      crossedOff: boolean): Observable<Object> {
 
         var url: string = this.listUrl + "/" + shoppingList_id + "/item/shop/" + item_id + "?crossOff=" + crossedOff
 
@@ -142,10 +150,10 @@ export class ListService {
         let url = this.listUrl + "/" + shoppingList_id + "/dish/" + dish_id;
         return this
             .httpClient
-            .post(url,null);
+            .post(url, null);
     }
 
-    addDishesToList(listId: string, dishIds: string[]) : Promise<Object> {
+    addDishesToList(listId: string, dishIds: string[]): Promise<Object> {
         let url = this.listUrl + "/" + listId + "/dish"
 
         if (dishIds.length > 0) {
@@ -240,7 +248,8 @@ export class ListService {
                 JSON.stringify(shoppingList), {observe: 'response'})
             .toPromise();
     }
-    static getCrossedOff(shoppingList: IShoppingList):IItem[] {
+
+    static getCrossedOff(shoppingList: IShoppingList): IItem[] {
         if (!shoppingList.categories || shoppingList.categories.length == 0) {
             return [];
         }
@@ -250,8 +259,11 @@ export class ListService {
 
 
         return allofthem
-            .reduce(function(a,b){ return a.concat(b) }, []);
+            .reduce(function (a, b) {
+                return a.concat(b)
+            }, []);
     }
+
     handleError(error: any) {
         // log error
         // could be something more sophisticated

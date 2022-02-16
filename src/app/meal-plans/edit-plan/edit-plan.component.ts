@@ -3,10 +3,9 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
+import {IShoppingList} from "../../model/shoppinglist";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
-import {LegendPoint} from "../../model/legend-point";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
@@ -24,21 +23,20 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
 
     showActions: boolean = true;
+    showGenerate: boolean = false;
     showAddDish: boolean = false;
     showAddToList: boolean = false;
     showChangeName: boolean = false;
-    shoppingListIsStarter: boolean = false;
+    includeStarter: boolean = true;
     private originalName: string = null;
     mealPlanName: string = "";
     allDishes: IDish[];
     errorMessage: any;
 
-    shoppingList: ShoppingList;
-
     mealPlan: MealPlan;
     planDishes: Dish[];
 
-    copiedId: String;
+    copiedId: string;
 
 
     constructor(
@@ -67,7 +65,6 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        //this.fix.removeFixBlog();
         this.unsubscribe.forEach(s => s.unsubscribe())
     }
 
@@ -98,7 +95,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.mealPlan.name = this.mealPlanName;
         let promise = this.mealPlanService.renameMealPlan(this.mealPlan.meal_plan_id, this.mealPlan.name);
         promise.then(data => {
-            this.getMealPlan(this.shoppingList.list_id);
+            this.getMealPlan(this.mealPlan.meal_plan_id);
         });
 
     }
@@ -111,8 +108,8 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.showChangeName = !this.showChangeName;
         if (this.showChangeName) {
             // save original value
-            this.originalName = this.shoppingList.name;
-            this.mealPlanName = this.shoppingList.name;
+            this.originalName = this.mealPlan.name;
+            this.mealPlanName = this.mealPlan.name;
         } else if (this.originalName != null) {
             this.originalName = null;
         }
@@ -132,10 +129,9 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(url);
     }
 
-
-
     private hideAllAddInputs() {
         this.showAddDish = false;
+        this.showGenerate = false;
         this.showAddToList = false;
         this.showChangeName = false;
     }
@@ -168,6 +164,15 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.showAddToList = !this.showAddToList;
     }
 
+    toggleShowGenerate() {
+        // hide other inputs
+        if (!this.showGenerate) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showGenerate = !this.showGenerate;
+    }
+
     toggleAddDish() {
         // hide other inputs
         if (!this.showAddDish) {
@@ -183,5 +188,18 @@ export class EditPlanComponent implements OnInit, OnDestroy {
             this.getMealPlan(this.mealPlan.meal_plan_id);
             this.showAddToList = false;
         })
+    }
+
+    generateList() {
+        let $sub = this.listService.createListFromMealPlan(this.mealPlan.meal_plan_id, this.includeStarter)
+            .subscribe(r => {
+                var headers = r.headers;
+                var location = headers.get("Location");
+                var splitlocation = location.split("/");
+                var id = splitlocation[splitlocation.length - 1];
+                var url = "lists/edit/" + id;
+                this.router.navigateByUrl(url);
+            });
+        this.unsubscribe.push($sub);
     }
 }

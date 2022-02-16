@@ -32,9 +32,6 @@
                     </div>
                     <ng-container *ngIf="!showChangeName">
                         {{mealPlan ? mealPlan.name : 'none'}}
-                        <span><img *ngIf="shoppingListIsStarter" class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
-                                   alt="add" >
-                </span>
                     </ng-container>
 
                 </h2>
@@ -118,10 +115,38 @@
                         </div>
 
 
-                        <div>
-                            <span class="action-link" (click)="clearList()">
+                        <div *ngIf="!showGenerate">
+                            <span class="action-link" (click)="toggleShowGenerate()">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Generate List
                             </span>
+                        </div>
+                        <div *ngIf="showGenerate" class="generate-panel" >
+                            <div class="ls-panel" >
+
+                                <div>
+                                    <div class = "add-list-title">
+                                        Generate List From Meal Plan
+                                    </div>
+                                    <table class="generate-panel" >
+                                        <caption>include starter list</caption>
+                                        <tr>
+                                            <td class="generate-panel">Include Starter List</td>
+                                            <td class="generate-panel"><p-inputSwitch [(ngModel)]="includeStarter"></p-inputSwitch></td>
+                                        </tr>
+                                    </table>
+                                    <table class="generate-action">
+                                        <caption>generate list from meal plan</caption>
+                                        <tr (click)="generateList()">
+                                            <td >Generate List</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div  (click)="toggleShowGenerate()" class="cancel-link">
+                                    <img class="sm-button" src="../../../assets/images/listshop/icons/orangeround/xmarksthespot.png"
+                                         alt="add">
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <span class="action-link" (click)="toggleShowChangeName()">

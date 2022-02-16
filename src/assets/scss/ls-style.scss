@@ -146,6 +146,29 @@ img.lg-button {
   border-radius: 10px;
   border-color: #979797;
 
+  li.add-link {
+    color: $color_tapa;
+    text-indent: 10px;
+  }
+
+  div {
+    color: $color_basic_orange;
+    margin-bottom: 2px;
+  }
+
+  div.cancel-link {
+    width: 100%;
+    text-align: end;
+    img {
+      width:20px;
+    };
+  }
+}
+
+.add-list-title {
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 4px;
 }
 
 /* site-wide - components - modal */
