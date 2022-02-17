@@ -57,7 +57,7 @@
         dishId="{{dish.dish_id}}"
         dishName="{{dish.name}}"
         reference="{{dish.reference}}"
-        (doubleTap)="beep($event)">
+        (doubleTap)="removeDish($event)">
 </app-plan-dish-element>
                     </div>
                     <!-- end category loop -->
@@ -165,7 +165,27 @@
                     </div>
                 </div>
                 <!-- end actions -->
+                <!-- removed -->
+                <div *ngIf="removedDishes.length > 0" class="ls-flat-card">
+                    <h3>Removed Dishes</h3>
+                    <!-- <ul>
+                        <li *ngFor="let dish of removedDishes" (dblclick)="reAddDish(dish)">
+                            {{
+                            dish.name
+                            }}
 
+                        </li>
+                    </ul>-->
+
+                    <div class="removed-dishes" *ngFor="let dish of removedDishes" (dblclick)="reAddDish(dish)">
+                        {{
+                        dish.name
+                        }}
+
+                    </div>
+                    <div class="ls-card-link" (click)="clearRemovedDishes()">clear</div>
+                </div>
+                <!-- end removed -->
             </div>
             <!-- sidebar end -->
         </div>

@@ -37,6 +37,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     planDishes: Dish[];
 
     copiedId: string;
+    removedDishes: Dish[] = [];
 
 
     constructor(
@@ -201,5 +202,32 @@ export class EditPlanComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl(url);
             });
         this.unsubscribe.push($sub);
+    }
+
+    clearRemovedDishes() {
+        this.removedDishes = [];
+    }
+
+    reAddDish(dish: Dish) {
+        this.removedDishes = this.removedDishes.filter(d => d.dish_id != dish.dish_id);
+        let $sub = this.mealPlanService.addDishToMealPlan(dish.dish_id, this.mealPlan.meal_plan_id)
+            .subscribe(() => {
+                this.getMealPlan(this.mealPlan.meal_plan_id);
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
+    removeDish(dishId: string) {
+        var dishes = this.planDishes.filter(d => d.dish_id == dishId);
+        if (dishes.length > 0) {
+            this.removedDishes.push(dishes[0]);
+        }
+        let $sub = this.mealPlanService.removeDishFromMealPlan(dishId, this.mealPlan.meal_plan_id)
+            .subscribe(() => {
+                this.getMealPlan(this.mealPlan.meal_plan_id);
+            });
+        this.unsubscribe.push($sub);
+
     }
 }
