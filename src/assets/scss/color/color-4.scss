@@ -231,11 +231,11 @@ h1 {
 }
 
 .team-circle1 img {
-  filter: hue-rotate(335deg);
+ // filter: hue-rotate(335deg);
 }
 
 .team-circle2 img {
-  filter: hue-rotate(335deg);
+  //filter: hue-rotate(335deg);
 }
 
 .team-circle3 img {
@@ -243,11 +243,13 @@ h1 {
 }
 
 .testi-circle1 img {
-  filter: hue-rotate(335deg);
+//  filter: hue-rotate(335deg);
+
 }
 
 .testi-circle2 img {
-  filter: hue-rotate(335deg);
+ // filter: hue-rotate(335deg);
+
 }
 
 .testi-circle3 img {
@@ -275,7 +277,7 @@ h1 {
 }
 
 .testimonial-text h3 {
-  color: $color_caribbean_green;
+  color: $color_basic_orange;
 }
 
 .btn-custom.theme-color {

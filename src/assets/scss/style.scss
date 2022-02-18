@@ -1849,7 +1849,7 @@
       text-align: center;
       box-shadow: 0 0 65px 0 $color_silver_chalice_25;
       background-color: $white;
-      padding-top: 100px;
+      padding-top: 60px;
       padding-left: 40px;
       padding-right: 40px;
       padding-bottom: 40px;
@@ -1859,11 +1859,14 @@
         margin-bottom: 0;
       }
       h6 {
-        text-transform: capitalize;
+        text-transform: none;
+        color: $color_basic_orange;
         margin: 0;
       }
       p {
+        padding-top: 20px;
         letter-spacing: 0;
+        text-transform: none;
       }
     }
 
