@@ -5,15 +5,18 @@ import {DishesComponent} from "./dishes/dishes.component";
 import {UserComponent} from "./user/user.component";
 import {MealPlansComponent} from "./meal-plans/meal-plans.component";
 import {MealPlansModule} from "./meal-plans/meal-plans.module";
+import {HomeTwoComponent} from "./landing/home/versions/home-two/home-two.component";
+import {HomeComponent} from "./landing/home/home.component";
 
 export const rootRouterConfig: Routes = [
     {
         path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
+        pathMatch: 'full',
+        redirectTo: 'home'
     },
     {
         path: 'home',
+        component: HomeComponent,
         loadChildren: () => import('./landing/home/home.module').then(m => m.HomeModule)
     },
     {
@@ -31,23 +34,22 @@ export const rootRouterConfig: Routes = [
         loadChildren: () => import('./user/user.module').then(m => m.UserModule)
     },
     {
-        path: 'lists',
-        component: ListsComponent,
-        loadChildren: () => import('./lists/lists.module').then(m => m.ListsModule)
-    },
-    {
         path: 'dishes',
         component: DishesComponent,
         loadChildren: () => import('./dishes/dishes.module').then(m => m.DishesModule)
     },
     {
+        path: 'lists',
+        component: ListsComponent,
+        pathMatch: 'prefix',
+        loadChildren: () => import('./lists/lists.module').then(m => m.ListsModule)
+    },
+
+    {
         path: 'mealplans',
         component: MealPlansComponent,
         loadChildren: () => import('./meal-plans/meal-plans.module').then(m => m.MealPlansModule)
     },
-    {
-        path: '**',
-        redirectTo: 'home'
-    }
+
 ];
 

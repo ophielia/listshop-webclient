@@ -41,7 +41,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
     UserModule,
     ListsModule,
     // tslint:disable-next-line: max-line-length
-    RouterModule.forRoot(rootRouterConfig, { useHash: false, anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled', initialNavigation: 'enabled' })
+    RouterModule.forRoot(rootRouterConfig, { useHash: false, anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled', enableTracing: true, initialNavigation: 'enabled' })
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true},

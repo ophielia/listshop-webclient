@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { HomeComponent } from './home.component';
 import { HomeTwoComponent } from './versions/home-two/home-two.component';
 import { IntroTwoComponent } from './intro-two/intro-two.component';
 import { AboutComponent } from './about/about.component';
@@ -24,6 +25,7 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
     NgbModule
   ],
   declarations: [
+    HomeComponent,
     HomeTwoComponent,
     IntroTwoComponent,
     AboutComponent,
