@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HomeComponent } from './home.component';
-import { HomeTwoComponent } from './versions/home-two/home-two.component';
-import { IntroTwoComponent } from './intro-two/intro-two.component';
-import { AboutComponent } from './about/about.component';
-import { FeatureComponent } from './feature/feature.component';
-import { BlogComponent } from './blog/blog.component';
-import { TestimonialComponent } from './testimonial/testimonial.component';
+import { HomeTwoComponent } from './home/versions/home-two/home-two.component';
+import { IntroTwoComponent } from './home/intro-two/intro-two.component';
+import { AboutComponent } from './home/about/about.component';
+import { FeatureComponent } from './home/feature/feature.component';
+import { BlogComponent } from './home/blog/blog.component';
+import { TestimonialComponent } from './home/testimonial/testimonial.component';
+import {AboutmeComponent} from "./aboutme/aboutme.component";
+import {ContentHeaderComponent} from "./contentheader/content-header.component";
 
 @NgModule({
   imports: [
@@ -27,6 +29,8 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
   declarations: [
     HomeComponent,
     HomeTwoComponent,
+    AboutmeComponent,
+    ContentHeaderComponent,
     IntroTwoComponent,
     AboutComponent,
     FeatureComponent,

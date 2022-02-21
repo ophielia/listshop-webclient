@@ -499,7 +499,6 @@ img.lg-button {
   }
 }
 
-
 .ls-theme-nav {
   background-color: white;
 
@@ -642,6 +641,108 @@ img.lg-button {
   }
 }
 
+/* content styles (not app, not homepage) */
+.about-me {
+  width: 100vw;
+  margin-top: 50px;
+  align-items: center;
+}
+
+.about-me-block {
+  background-image: $url_aboutme;
+  backdrop-filter: opacity(0.5);
+  height: auto;
+  padding: 15px;
+  margin-right: 15px;
+
+  img {
+    max-width: 300px;
+    filter: opacity(1.0);
+  }
+  &:hover img {
+    transform: rotate(3deg) scale(1.15);
+    transition: all 0.3s ease;
+  }
+}
+
+.about-me-box {
+  padding: 5px;
+  background-color: $white;
+
+  img {
+    opacity: 1;
+    transition: .3s ease-in-out;
+    overflow: hidden;
+  }
+}
+
+.about-me-text {
+  h3 {
+    margin-top: 15px;
+    line-height: 24px;
+    font-size: 17px;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 14px;
+    margin-top: 15px;
+    text-transform: none;
+  }
+
+  h5 {
+    margin: 0;
+    line-height: 1;
+    text-transform: capitalize;
+    display: inline-block;
+    font-weight: 600;
+  }
+
+  h6 {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+}
+
+.about-me-pagin {
+  margin: 0;
+
+  .page-item {
+    &:first-child a.page-link {
+      border-top-left-radius: unset !important;
+      border-bottom-left-radius: unset !important;
+    }
+
+    &:last-child .page-link {
+      border-top-right-radius: unset !important;
+      border-bottom-right-radius: unset !important;
+    }
+  }
+
+  a.page-link {
+    color: $color_bright_turquoise;
+    font-size: 16px;
+    border: 1px solid $color_gallery;
+    transition: all 0.3s ease;
+
+    &:hover {
+      text-decoration: none;
+      background-color: $color_bright_turquoise;
+      border-color: $color_bright_turquoise;
+      color: $white !important;
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+.about-me-pagination {
+  margin-top: 50px;
+
+  li.page-item {
+    border-radius: unset;
+  }
+}
+
 /* autocomplete */
 .autocomplete-panel {
   min-width: 100%;
@@ -656,11 +757,10 @@ img.lg-button {
   right: 0px;
 }
 
-
-
 .at-tag-select-style {
   // width:100px
 }
+
 .ls-autocomplete{
   display:block;
   width: inherit;

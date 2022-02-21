@@ -40,7 +40,7 @@ export class HeaderComponent implements AfterViewInit  {
     this.homeOffset = document.getElementById('home') ? document.getElementById('home').offsetTop : 0;
     this.aboutOffset = document.getElementById('about') ? document.getElementById('about').offsetTop : 0;
     this.featureOffset = document.getElementById('feature') ? document.getElementById('feature').offsetTop : 0;
-        this.testimonialOffset = document.getElementById('testimonial') ? document.getElementById('testimonial').offsetTop : 0;
+    this.testimonialOffset = document.getElementById('testimonial') ? document.getElementById('testimonial').offsetTop : 0;
     this.teamOffset = document.getElementById('team') ? document.getElementById('team').offsetTop : 0;
     this.blogOffset = document.getElementById('blog') ? document.getElementById('blog').offsetTop : 0;
     this.priceOffset = document.getElementById('price') ? document.getElementById('price').offsetTop : 0;

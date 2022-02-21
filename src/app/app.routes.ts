@@ -6,7 +6,7 @@ import {UserComponent} from "./user/user.component";
 import {MealPlansComponent} from "./meal-plans/meal-plans.component";
 import {MealPlansModule} from "./meal-plans/meal-plans.module";
 import {HomeTwoComponent} from "./landing/home/versions/home-two/home-two.component";
-import {HomeComponent} from "./landing/home/home.component";
+import {HomeComponent} from "./landing/home.component";
 
 export const rootRouterConfig: Routes = [
     {
@@ -17,7 +17,7 @@ export const rootRouterConfig: Routes = [
     {
         path: 'home',
         component: HomeComponent,
-        loadChildren: () => import('./landing/home/home.module').then(m => m.HomeModule)
+        loadChildren: () => import('./landing/home.module').then(m => m.HomeModule)
     },
     {
         path: 'blog',
