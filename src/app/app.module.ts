@@ -8,8 +8,6 @@ import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 import { rootRouterConfig } from './app.routes';
 import { AppComponent } from './app.component';
-import { DemoComponent } from './landing/demo/demo.component';
-import { BlogComponent } from './landing/blog/blog.component';
 import {UserComponent} from "./user/user.component";
 import {ListsModule} from "./lists/lists.module";
 import {ListShopTokenInterceptor} from "./shared/handlers/list-shop-token-interceptor";
@@ -21,8 +19,6 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 @NgModule({
   declarations: [
     AppComponent,
-    DemoComponent,
-    BlogComponent,
       UserComponent,
       AlertComponent
   ],

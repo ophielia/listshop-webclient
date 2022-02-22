@@ -1,11 +1,8 @@
 import {Routes} from '@angular/router';
-import {BlogComponent} from './landing/blog/blog.component';
 import {ListsComponent} from "./lists/lists.component";
 import {DishesComponent} from "./dishes/dishes.component";
 import {UserComponent} from "./user/user.component";
 import {MealPlansComponent} from "./meal-plans/meal-plans.component";
-import {MealPlansModule} from "./meal-plans/meal-plans.module";
-import {HomeTwoComponent} from "./landing/home/versions/home-two/home-two.component";
 import {HomeComponent} from "./landing/home.component";
 
 export const rootRouterConfig: Routes = [
@@ -18,15 +15,6 @@ export const rootRouterConfig: Routes = [
         path: 'home',
         component: HomeComponent,
         loadChildren: () => import('./landing/home.module').then(m => m.HomeModule)
-    },
-    {
-        path: 'blog',
-        component: BlogComponent,
-        loadChildren: () => import('./landing/blog/blog.module').then(m => m.BlogModule)
-    },
-    {
-        path: 'pages',
-        loadChildren: () => import('./landing/pages/pages.module').then(m => m.PagesModule)
     },
     {
         path: 'user',

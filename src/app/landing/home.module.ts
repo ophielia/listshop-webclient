@@ -11,10 +11,10 @@ import { HomeTwoComponent } from './home/versions/home-two/home-two.component';
 import { IntroTwoComponent } from './home/intro-two/intro-two.component';
 import { AboutComponent } from './home/about/about.component';
 import { FeatureComponent } from './home/feature/feature.component';
-import { BlogComponent } from './home/blog/blog.component';
 import { TestimonialComponent } from './home/testimonial/testimonial.component';
 import {AboutmeComponent} from "./aboutme/aboutme.component";
 import {ContentHeaderComponent} from "./contentheader/content-header.component";
+import {PrivacyComponent} from "./privacy/privacy.component";
 
 @NgModule({
   imports: [
@@ -30,11 +30,11 @@ import {ContentHeaderComponent} from "./contentheader/content-header.component";
     HomeComponent,
     HomeTwoComponent,
     AboutmeComponent,
+    PrivacyComponent,
     ContentHeaderComponent,
     IntroTwoComponent,
     AboutComponent,
     FeatureComponent,
-    BlogComponent,
     TestimonialComponent
   ],
   providers: []
