@@ -13,6 +13,7 @@ import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
+import {OperationType} from "../../model/operation-type";
 
 @Component({
     selector: 'app-edit-list',
@@ -44,6 +45,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     shoppingList: ShoppingList;
     removedItems: IItem[] = [];
+    selectedItems: string[] = [];
 
 
 
@@ -167,6 +169,24 @@ export class EditListComponent implements OnInit, OnDestroy {
             });
         this.unsubscribe.push($sub);
 
+    }
+
+    toggleItemSelected(item: Item, category: Category) {
+        item.is_selected = !item.is_selected;
+        var inList = this.selectedContains(item.tag.tag_id)
+        if (item.is_selected && !inList) {
+            this.selectedItems.push(item.tag.tag_id);
+        } else if (!item.is_selected && inList) {
+            this.selectedItems = this.selectedItems.filter(i => i == item.tag_id);
+        }
+        // check category for selected
+        var oneSelected = category.items.filter(i => i.is_selected);
+        category.has_selected = (oneSelected != null && oneSelected.length > 0);
+    }
+
+    private selectedContains(tag_id: String): boolean {
+        var inListString = this.selectedItems.find(s => s == tag_id);
+        return inListString != null;
     }
 
 
@@ -306,17 +326,11 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     private processRetrievedShoppingList(p: IShoppingList) {
-        this.determineCrossedOffPresent(p);
+        this.handleCrossedOffAndSelected(p);
         this.prepareLegend(p);
         this.adjustForStarter(p);
         this.shoppingList = this.filterForDisplay(p);
         this.showItemLegends = this.newEvaluateShowLegend();
-    }
-
-
-    private determineCrossedOffPresent(shoppingList: IShoppingList) {
-        let crossedOff = ListService.getCrossedOff(shoppingList);
-        this.crossedOffExist = crossedOff.length > 0;
     }
 
     private prepareLegend(list: IShoppingList) {
@@ -369,17 +383,24 @@ export class EditListComponent implements OnInit, OnDestroy {
 
         var newCategories = [];
         var pulledItems = [];
+        var pulledHasSelected = false;
         for (let category of shoppingList.categories) {
             var categoryItems = [];
+            var hasSelected = false;
             for (let item of category.items) {
                 if (item.source_keys.includes(highlightId)) {
                     pulledItems.push(item);
+                    if (item.is_selected) {
+                        pulledHasSelected = true;
+                    }
                 } else {
+                    hasSelected = hasSelected || (!hasSelected && item.is_selected);
                     categoryItems.push(item);
                 }
             }
             if (categoryItems.length > 0) {
                 category.items = categoryItems;
+                category.has_selected = hasSelected;
                 newCategories.push(category);
             }
         }
@@ -408,6 +429,7 @@ export class EditListComponent implements OnInit, OnDestroy {
             name,
             pulledItems,
             null,
+            pulledHasSelected,
             "yes",
             is_frequent,
             true
@@ -467,5 +489,52 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
+    private handleCrossedOffAndSelected(shoppingList: IShoppingList) {
 
+        if (!shoppingList.categories || shoppingList.categories.length == 0) {
+            return [];
+        }
+
+        this.crossedOffExist = false;
+        for (let category of shoppingList.categories) {
+            var hasSelected = false;
+            for (let item of category.items) {
+                if (!this.crossedOffExist && item.crossed_off) {
+                    this.crossedOffExist = true;
+                }
+                if (this.selectedContains(item.tag.tag_id)) {
+                    item.is_selected = true;
+                }
+                hasSelected = hasSelected || (!hasSelected && item.is_selected);
+            }
+            category.has_selected = hasSelected;
+        }
+    }
+
+    removeSelectedInCategory(category: Category) {
+        var tagIdsToRemove = category.items.filter(i => i.is_selected).map(i => i.tag.tag_id);
+        let $sub = this.listService.performOperationOnListItems(this.shoppingList.list_id,
+            tagIdsToRemove, "Remove")
+            .subscribe(() => {
+                this.getShoppingList(this.shoppingList.list_id);
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
+    toggleCrossedOffInCategory(category: Category) {
+        var itemsToCrossOff = category.items.filter(i => i.is_selected);
+        var itemTagIds = itemsToCrossOff.map(i => i.tag.tag_id);
+        var allCrossedOff = (itemsToCrossOff.filter(itco => !itco.crossed_off)).length == 0
+        var operation = allCrossedOff ? OperationType.UnCrossOff : OperationType.CrossOff
+        // remove from selected
+        this.selectedItems = this.selectedItems.filter(tid => itemTagIds.indexOf(tid) == 0);
+        let $sub = this.listService.performOperationOnListItems(this.shoppingList.list_id,
+            itemsToCrossOff.map(i => i.tag.tag_id), operation)
+            .subscribe(() => {
+                this.getShoppingList(this.shoppingList.list_id);
+            });
+        this.unsubscribe.push($sub);
+
+    }
 }

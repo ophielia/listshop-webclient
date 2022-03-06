@@ -118,10 +118,17 @@ export class ListService {
                                tag_id: string): Observable<Object> {
 
         var tagIds: Array<string> = [tag_id];
+        return this.performOperationOnListItems(shoppingList_id, tagIds, "Remove");
+    }
+
+    performOperationOnListItems(shoppingList_id: string,
+                                tag_ids: string[],
+                                operation: string): Observable<Object> {
+
         let itemOperation = <ItemOperationPut>({
                 destination_list_id: '0',
-                operation: 'Remove',
-                tag_ids: tagIds
+                operation: operation,
+                tag_ids: tag_ids
             }
         );
         var url: string = this.listUrl + "/" + shoppingList_id + "/item"

@@ -1,5 +1,5 @@
 import {ITag} from "./tag";
-import {IItemSource} from "./item-source";
+
 export interface IItem {
   list_id: string;
   item_id: string;
@@ -10,6 +10,7 @@ export interface IItem {
   crossed_off_ts: number;
   tag_id: string;
   used_count: number;
+  is_selected: boolean;
   tag: ITag;
 }
 
@@ -26,5 +27,6 @@ export class Item implements IItem {
   crossed_off_ts: number;
   tag_id: string;
   used_count: number;
+  is_selected: boolean;
   tag: ITag;
 }

@@ -48,6 +48,11 @@ ls-fixed-top.fixed-top {
   text-decoration: line-through;
 }
 
+.itemSelected {
+  font-weight: bolder;
+  font-color: $color_basic_orange;
+}
+
 .form-control:focus {
   color: #495057;
   background-color: #fff;

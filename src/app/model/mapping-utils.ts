@@ -154,6 +154,7 @@ export default class MappingUtils {
             free_text: jsonResult.free_text,
             crossed_off_ts: jsonResult.crossed_off,
             crossed_off: (jsonResult.crossed_off != null),
+            is_selected: false,
             tag: MappingUtils._toTag(jsonResult.tag)
         });
 

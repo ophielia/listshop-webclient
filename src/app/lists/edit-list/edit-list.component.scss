@@ -111,14 +111,38 @@ text-transform: capitalize;
 color: $color_tapa;
 }
 
-td:nth-child(2) {
-width: 30%;
-}
+  td:nth-child(2) {
+    width: 30%;
+  }
 }
 
 .ls-list-column-header-special {
-box-shadow: 1px 1px 4px #e67d21b5;
-border-color: #e67d21;
+  box-shadow: 1px 1px 4px #e67d21b5;
+  border-color: #e67d21;
+}
+
+.ls-selected-actions {
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  padding-top: 10px;
+
+  .selected-label {
+    padding-right: 20px;
+    text-color: black;
+  }
+
+  .selected-actions {
+    color: $color_basic_orange;
+    text-transform: uppercase;
+    padding-right: 15px;
+  }
+}
+
+.title-bar-action {
+  text-transform: uppercase;
+  margin: auto;
+  text-align: right;
 }
 
 

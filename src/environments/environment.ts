@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   //apiUrl: 'https://nastyvarmits.fr/api/'
- apiUrl: 'http://localhost:8182/'
+  apiUrl: 'http://localhost:8182/'
 };
 
 /*
