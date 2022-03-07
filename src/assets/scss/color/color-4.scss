@@ -81,7 +81,7 @@ h1 {
     .navbar-nav {
       .nav-link {
         &.active {
-          color: $color_caribbean_green !important;
+          color: $color_basic_orange !important;
         }
       }
     }
@@ -441,7 +441,8 @@ h1 {
   .nav-item {
     &:hover {
       .nav-link {
-        color: $black;
+        font-weight: bolder;
+        color: white;
       }
     }
     &.dropdown {
@@ -462,6 +463,8 @@ h1 {
   }
   /*Dropdown css*/
   &.darkHeader {
+    background-color: white;
+
     .dropdown-menu .nav-item {
       .nav-link {
         &.active {

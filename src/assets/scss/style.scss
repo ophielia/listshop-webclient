@@ -254,7 +254,7 @@ section {
 .home {
   background-image: $url_2;
   width: 100vw;
-  height: 100vh !important;
+  height: 110vh !important;
   background-repeat: no-repeat;
   margin-top: 0;
   display: block;
@@ -701,7 +701,7 @@ ul {
 
 .theme-nav {
   .navbar {
-    background-color: transparent;
+    background-color: $color_basic_orange;
   }
 
   .nav-item {
@@ -990,6 +990,8 @@ ul {
 .home-two {
   background-image: $url_3;
   background-position: bottom;
+  margin-top: 50px;
+
 
   .slide-cap-desc {
     color: $white;
@@ -1904,7 +1906,7 @@ ul {
   width: 100vw;
   margin-top: 0;
   align-content: center;
-  padding: 0;
+  //padding: 0;
 
   .owl-nav {
     display: block !important;

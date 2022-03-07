@@ -214,13 +214,14 @@ img.lg-button {
       .navbar-nav {
         .nav-link {
           &.active {
-            color: $color_bright_yellow;
+            color: white;
           }
         }
       }
     }
 
     &.darkHeader {
+
       .default-nav {
         .navbar-nav {
           .nav-link {
@@ -274,7 +275,7 @@ img.lg-button {
   .navbar-light {
     .navbar-nav {
       .nav-link {
-        color: $color_bright_yellow;
+        color: white;
         opacity: 0.95;
 
         &.active {
@@ -342,6 +343,8 @@ img.lg-button {
   }
 
   .navbar {
+    background-color: $color_basic_orange;
+
     ul {
       &.navbar {
         li {
@@ -380,7 +383,7 @@ img.lg-button {
 
     &:hover {
       .nav-link {
-        color: $color_bright_turquoise;
+        color: white;
         transition: all 0.3s ease;
       }
     }
