@@ -218,6 +218,7 @@ img.lg-button {
           }
         }
       }
+
     }
 
     &.darkHeader {
@@ -229,6 +230,12 @@ img.lg-button {
               color: $black;
             }
           }
+        }
+
+        .dropdown-menu {
+          margin: -10px 0px;
+          border-color: $color_basic_orange;
+          border-width: 1px;
         }
       }
 
@@ -282,6 +289,15 @@ img.lg-button {
           opacity: 1;
           text-decoration: underline;
         }
+      }
+
+      .connect-button {
+        color: $color_basic_orange;
+        text-transform: uppercase;
+        border-color: $color_basic_orange;
+        border-radius: 15px;
+        border-width: 1px;
+        background-color: white;
       }
     }
   }
@@ -395,32 +411,36 @@ img.lg-button {
         display: none;
         left: 15px;
         right: 0;
-        margin: 0;
+        margin: -20px 0px;
         border: 0;
         opacity: 0;
         padding: 20px;
         visibility: hidden;
         border-radius: 0;
-        border-radius: 3px;
+        border-radius: 6px;
         overflow: hidden;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.17);
         transition: all 0.6s ease-in;
 
+
         .nav-link {
           padding: 5px;
-          font-size: 13px;
+          font-size: 15px;
           text-transform: capitalize;
           letter-spacing: 0.3px;
           transition: all 0.3s ease;
+          text-align: right;
           cursor: pointer;
 
           &.active {
-            color: $color_bright_turquoise !important;
+            color: $color_basic_orange !important;
+            text-decoration: underline;
           }
 
           &:hover {
             //color: $color_bright_turquoise !important;
             transition: all 0.3s ease;
+            text-decoration: underline;
           }
         }
       }

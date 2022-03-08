@@ -26,10 +26,10 @@
           <a class="nav-link" [routerLink]="'/lists/manage'">my lists</a>
         </li>
         <div *ngIf="!isLoggedIn" ngbDropdown class="nav-item dropdown">
-          <button class="btn bg-transparent nav-link dropdown-toggle" id="dropdownMenuButton" ngbDropdownToggle>Login</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownMenuButton" class="dropdown-menu">
-          <a class="nav-link" [routerLink]="'/user/login'">sign in</a>
-          <a class="nav-link" [routerLink]="'/user/signup'">sign up</a>
+          <button class="btn connect-button dropdown-toggle" id="dropdownMenuButton" ngbDropdownToggle>connect</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownMenuButton" class="dropdown-menu ">
+            <a class="nav-link" [routerLink]="'/user/login'">sign in</a>
+            <a class="nav-link" [routerLink]="'/user/signup'">sign up</a>
           </div>
         </div>
       </ul>
