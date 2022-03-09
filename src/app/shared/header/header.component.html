@@ -3,18 +3,22 @@
   <div class="container">
     <a [routerLink]="'/home'">
       <div class="ls-logo-img"></div>
-      <div class="ls-logo-title">the list shop</div></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isOpenMobile=!isOpenMobile">
+      <div class="ls-logo-title">the list shop</div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            (click)="isOpenMobile=!isOpenMobile">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse default-nav" id="navbarSupportedContent" [class.show]="isOpenMobile">
       <ul class="navbar-nav ml-auto" id="mymenu">
         <li class="nav-item">
-          <a class="nav-link" #home href="#home" (click)="active('home')" [ngClass]="{'active show': activeClass == 'home' }" [pageScrollOffset]="80" pageScroll>Home</a>
+          <a class="nav-link" #home href="#home" (click)="active('home')"
+             [ngClass]="{'active show': activeClass == 'home' }" [pageScrollOffset]="80" pageScroll>Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#about" (click)="active('about')" [ngClass]="{'active show': activeClass == 'about' }" [pageScrollOffset]="80" pageScroll>about</a>
+          <a class="nav-link" href="#about" (click)="active('about')"
+             [ngClass]="{'active show': activeClass == 'about' }" [pageScrollOffset]="80" pageScroll>about</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#feature" (click)="active('feature')" [ngClass]="{'active show': activeClass == 'feature' }" [pageScrollOffset]="80" pageScroll>feature</a>

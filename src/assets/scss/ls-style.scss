@@ -142,7 +142,7 @@ img.lg-button {
   display: block;
   width: inherit;
   background-color: white;
-  border-width: 1.0px;
+  border-width: 1<.0px;
   border-style: solid;
   height: auto;
   padding: 15px;
@@ -207,6 +207,30 @@ img.lg-button {
 }
 
 /* header */
+.ls-logo-title {
+  float: right;
+  padding: 20px 0px 30px 0px;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 30px;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $color_basic_orange;
+}
+
+.ls-logo-content-title {
+  float: right;
+  padding: 20px 0px 30px 0px;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 30px;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $color_basic_orange;
+}
+
 .home-style-two,
 .three {
   .navbar-light {
@@ -247,6 +271,7 @@ img.lg-button {
         margin-top: 5px;
         background-image: $url_logo_orange;
       }
+
     }
 
     .ls-logo-img {
@@ -267,6 +292,7 @@ img.lg-button {
       line-height: 30px;
       font-size: 20px;
       letter-spacing: 1px;
+      color: white;
     }
 
     a {
@@ -290,7 +316,6 @@ img.lg-button {
           text-decoration: underline;
         }
       }
-
       .connect-button {
         color: $color_basic_orange;
         text-transform: uppercase;
@@ -1049,7 +1074,7 @@ img.lg-button {
         border: 0;
         opacity: 0;
         padding: 20px;
-        visibility: hidden;
+        //visibility: hidden;
         border-radius: 0;
         border-radius: 3px;
         overflow: hidden;
@@ -1094,6 +1119,7 @@ img.lg-button {
     }
   }
 
+
   /*Dropdown css*/
   .dropdown-menu {
     .nav-item {
@@ -1103,7 +1129,7 @@ img.lg-button {
     }
 
     .nav-link {
-      color: $color_tapa !important;
+      color: $color_tapa; // !important;
     }
   }
 
