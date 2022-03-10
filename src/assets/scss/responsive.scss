@@ -1146,17 +1146,14 @@
   #mymenu .dropdown-menu {
     display: none;
     transition: 0.5s ease;
-    color: purple;
 
     &.show {
       display: block;
-      color: purple;
       transition: 0.5s ease;
     }
 
     .nav-item {
       margin-left: 0;
-      color: purple;
     }
   }
 

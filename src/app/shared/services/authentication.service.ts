@@ -3,12 +3,13 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
-import {Observable, of, throwError} from "rxjs";
-import {catchError, finalize, map} from "rxjs/operators";
+import {from, Observable, of, throwError} from "rxjs";
+import {catchError, finalize, map, switchMap} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {User} from "../../model/user";
 import {CreateUserPost} from "../../model/create-user-post";
 import CreateUserStatus from "../../model/create-user-status";
+import {ListService} from "./list.service";
 
 
 @Injectable()
@@ -17,7 +18,8 @@ export class AuthenticationService {
     private userUrl;
 
     constructor(
-        private httpClient: HttpClient
+        private httpClient: HttpClient,
+        private listService: ListService
     ) {
         this.authUrl = environment.apiUrl + "auth";
         this.userUrl = environment.apiUrl + "user";
@@ -89,7 +91,8 @@ export class AuthenticationService {
                         // store username and jwt token in local storage to keep user logged in between page refreshes
                         localStorage.setItem('currentUser', JSON.stringify(user));
 
-                        // return true to indicate successful login
+                        // create list, and return true
+
                         return CreateUserStatus.Success;
                     } else {
                         return CreateUserStatus.UnknownError;
@@ -98,6 +101,22 @@ export class AuthenticationService {
                 catchError(this.handleError));
     }
 
+    createUserAndList(username: string, password: string): Observable<CreateUserStatus> {
+        let createUserObservable = this.createUser(username, password);
+        let createListForUser = this.listService.createList(ListService.DEFAULT_LIST_NAME);
+
+        return createUserObservable
+            // Switch stream to the address request
+            .pipe(switchMap(status => {
+                if (status != CreateUserStatus.Success) {
+                    return from(CreateUserStatus.UnknownError);
+                }
+
+                return createListForUser
+                    .pipe(map(object => CreateUserStatus.Success));
+            }));
+
+    }
 
     nameIsTaken(userName: string): Observable<boolean> {
         var requestUrl = this.userUrl + '/name?name=' + userName
