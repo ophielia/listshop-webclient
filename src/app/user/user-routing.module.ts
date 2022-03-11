@@ -4,6 +4,7 @@ import {LoginComponent} from './login/login.component';
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   {
@@ -32,10 +33,10 @@ const routes: Routes = [
   },
   {
     path: 'reset',
-    component: ChangePasswordComponent,
+    component: ResetPasswordComponent,
     data: {
-      title: 'The List Shop | Change Password',
-      content: 'The List Shop | Change Password'
+      title: 'The List Shop | Reset Password',
+      content: 'The List Shop | Reset Password'
     }
   },
   {

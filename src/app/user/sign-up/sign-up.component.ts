@@ -77,7 +77,6 @@ export class SignUpComponent implements OnInit {
         }
 
         // we're validated, and ready to go!
-        console.log("ALL IS GOOD!!!");
         this.authenticationService.createUserAndList(this.signUpForm.get('email').value.trim(),
             this.signUpForm.get('userPassword').value.trim())
             .subscribe(success => {

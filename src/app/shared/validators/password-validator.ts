@@ -10,7 +10,7 @@ export default class PasswordValidator {
             errors.push(ErrorType.isRequired);
         } else if (TextValidator.longerThan(60, text)) {
             errors.push(ErrorType.textTooLong);
-        } else if (TextValidator.shorterThan(4, text)) {
+        } else if (TextValidator.shorterThan(6, text)) {
             errors.push(ErrorType.textTooShort);
         }
         if (!TextValidator.noSpaces(text)) {

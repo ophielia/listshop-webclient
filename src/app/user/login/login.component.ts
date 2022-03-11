@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-//import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Subscription} from "rxjs";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {ErrorType} from "../../model/error-type";
+import EmailValidator from "../../shared/validators/email-validator";
+import PasswordValidator from "../../shared/validators/password-validator";
 
 @Component({
   selector: 'app-login',
@@ -11,31 +15,52 @@ import {AuthenticationService} from "../../shared/services/authentication.servic
 })
 export class LoginComponent implements OnInit {
 
-  loginInfo = {email: '', userPassword: ''}
 
-  username : string = "";
-  password : string = "";
-
-  // variable
+  private unsubscribe: Subscription[] = [];
   show: boolean;
+  signInForm: FormGroup;
+
+  passwordErrors: ErrorType[] = [];
+  emailErrors: ErrorType[] = [];
+
   private returnUrl: string;
 
   constructor(private route: ActivatedRoute,
               private title: Title,
               private meta: Meta,
               private router: Router,
+              private fb: FormBuilder,
               private authenticationService: AuthenticationService) {
     // initialize variable value
     this.show = false;
   }
 
   ngOnInit() {
-    this.title.setTitle( this.route.snapshot.data['title']);
+    this.title.setTitle(this.route.snapshot.data['title']);
     this.meta.updateTag({name: 'description', content: this.route.snapshot.data['content']});
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
+    this.title.setTitle(this.route.snapshot.data['title']);
+    this.meta.updateTag({name: 'description', content: this.route.snapshot.data['content']});
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
+    this.signInForm = this.fb.group({
+      email: [""],
+      userPassword: [""]
+    });
 
+  }
 
+  ngOnDestroy() {
+    //this.fix.removeFixBlog();
+    this.unsubscribe.forEach(s => s.unsubscribe())
+  }
+
+  get email() {
+    return this.signInForm.get('email');
+  }
+
+  get userPassword() {
+    return this.signInForm.get('userPassword');
   }
 
   // click event function toggle
@@ -45,25 +70,35 @@ export class LoginComponent implements OnInit {
 
 
   doLogin() {
-    this.authenticationService.login(this.username,
-        this.password)
-        .subscribe( success => {
+    this.emailErrors = [];
+    this.passwordErrors = [];
+
+    this.emailErrors = EmailValidator.isValid(this.email.value);
+    if (this.emailErrors.length > 0) {
+      return;
+    }
+    this.passwordErrors = PasswordValidator.isValid(this.userPassword.value);
+    if (this.passwordErrors.length > 0) {
+      return;
+    }
+
+    let $sub = this.authenticationService.login(this.signInForm.get('email').value.trim(),
+        this.signInForm.get('userPassword').value.trim())
+        .subscribe(success => {
           if (!success) {
-            var error: Error = Error("BADCREDENTIALS");
-            throw error;
+            throw Error("BADCREDENTIALS");
           }
           console.log(this.returnUrl);
           this.router.navigateByUrl(this.returnUrl);
-        })
+        });
+    this.unsubscribe.push($sub);
   }
 
-    /*
-    keyPressSubmit($event: KeyboardEvent, loginForm: FormGroup) {
+  errorsContain(emailErrors: ErrorType[], searchType: string) {
+    return emailErrors.filter(t => t.valueOf() == searchType).length > 0;
+  }
 
-      if ($event.key == "U+000D" ) {
-          this.doLogin();
-      }
-    }
-     */
-
+  goToForgotPassword() {
+    this.router.navigate(['/user/reset']);
+  }
 }
