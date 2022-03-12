@@ -208,8 +208,7 @@
 <app-modal #dishesaddedtomealplan [autoHide]="2500">
     <div class="app-modal-body">
         Dishes added to meal plan
-        <div *ngIf="displayId != null" style="float:right"><a class="modal-link" href="#">
-        <!--[routerLink]="'/mealPlans/edit/' + displayId"-->
+        <div *ngIf="displayId != null" style="float:right"><a [routerLink]="'/mealplans/edit/' + displayId">
             Go To Meal Plan</a></div>
     </div>
 </app-modal>

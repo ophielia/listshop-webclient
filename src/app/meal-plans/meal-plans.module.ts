@@ -11,6 +11,7 @@ import {ManageMealPlansComponent} from "./manage-mealplans/manage-meal-plans.com
 import {SinglePlanElementComponent} from "./single-plan-element/single-plan-element.component";
 import {EditPlanComponent} from "./edit-plan/edit-plan.component";
 import {PlanDishElementComponent} from "./plan-dish-element/plan-dish-element.component";
+import {AddDishToPlanComponent} from "./add-dish-to-plan/add-dish-to-plan.component";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {PlanDishElementComponent} from "./plan-dish-element/plan-dish-element.co
         ManageMealPlansComponent,
         SinglePlanElementComponent,
         EditPlanComponent,
-        PlanDishElementComponent
+        PlanDishElementComponent,
+        AddDishToPlanComponent
         ],
     imports: [
         CommonModule,

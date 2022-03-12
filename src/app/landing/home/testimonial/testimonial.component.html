@@ -15,9 +15,8 @@
                   <img [src]="testimonials.image" alt="">
                 </div>
                 <div class="testimonial-text">
-                  <p>{{testimonials.description}}</p>
                   <h3>{{testimonials.name}}</h3>
-                  <h6>{{testimonials.designation}}</h6>
+                  <p [innerHTML]="testimonials.description"></p>
                 </div>
               </div>
             </ng-template>

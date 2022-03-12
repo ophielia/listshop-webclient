@@ -92,6 +92,14 @@ export class MealPlanService {
             .post(url, null);
     }
 
+    removeDishFromMealPlan(dish_id, meal_plan_id: string): Observable<any> {
+        const url: string = this.mealplanUrl + '/' + meal_plan_id + "/dish/" + dish_id;
+
+        return this
+            .httpClient
+            .delete(url);
+    }
+
     private static mapMealPlans(object: Object): MealPlan[] {
         let embeddedObj = object["_embedded"];
         return embeddedObj["mealPlanResourceList"].map(MappingUtils.toMealPlan);
@@ -111,6 +119,24 @@ export class MealPlanService {
         return throwError(error);
     }
 
+    copyMealPlan(meal_plan_id: string): Observable<HttpResponse<Object>> {
+        const url: string = this.mealplanUrl + '/' + meal_plan_id;
+
+        return this
+            .httpClient
+            .post(url, null,{observe: 'response'});
+    }
+
+    renameMealPlan(meal_plan_id: string, mealPlanName: string) {
+        // just filling in here
+        let url = this.mealplanUrl + "/" + meal_plan_id + "/name/" + encodeURIComponent(mealPlanName);
+
+
+        let mealplan$ = this.httpClient
+            .post(`${url}`,
+                null);
+        return mealplan$.toPromise();
+    }
 }
 
 

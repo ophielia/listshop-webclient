@@ -7,24 +7,62 @@
     <div>
         <h2 class="title text-center"><span> Login</span></h2>
         <div class="card">
-            <form name="form" class="theme-form" (submit)="f.form.valid && doLogin()" #f="ngForm" novalidate>
-                <div class="form-group" [ngClass]="{ 'has-error': f.submitted  }">
-                    <input type="text"
-                           placeholder = "email address"
+
+            <form [formGroup]="signInForm" #formDir="ngForm" class="theme-form">
+                <div class="form-group">
+                    <input type="email"
+                           placeholder="email address"
                            class="form-control"
-                           name="username"
-                           [(ngModel)]="username" required />
-                    <span *ngIf="f.submitted  " class="help-block">Username is required</span>
+                           formControlName="email" required>
                 </div>
-                <div class="form-group" [ngClass]="{ 'has-error': f.submitted  }">
-                    <input type="password" placeholder = "password"  class="form-control" name="password" [(ngModel)]="password"  required />
-                    <span *ngIf="f.submitted " class="help-block">Password is required</span>
+                <div *ngIf="emailErrors.length > 0"
+                     class="alert alert-danger">
+                    <div *ngIf="errorsContain(emailErrors, 'isRequired')">
+                        Emails are required, sleepyhead.
+                    </div>
+                    <div *ngIf="errorsContain(emailErrors, 'textTooLong')">
+                        Email must be at less than 50 characters long.
+                    </div>
+                    <div *ngIf="errorsContain(emailErrors, 'textTooShort')">
+                        Email must be at least 6 characters long.
+                    </div>
+                    <div *ngIf="errorsContain(emailErrors, 'cantHaveSpaces')">
+                        The email cannot contain spaces.
+                    </div>
+                    <div *ngIf="errorsContain(emailErrors, 'InvalidEmail')">
+                        Please enter a valid email.
+                    </div>
+                    <div *ngIf="errorsContain(emailErrors, 'emailTaken')">
+                        This email has already been used.
+                    </div>
                 </div>
+                <div class="form-group">
+                    <input type="password" placeholder="password" class="form-control" formControlName="userPassword"
+                           required>
+                </div>
+
+                <div *ngIf="passwordErrors.length > 0"
+                     class="alert alert-danger">
+                    <div *ngIf="errorsContain(passwordErrors, 'isRequired')">
+                        The password and password confirmation are required.
+                    </div>
+                    <div *ngIf="errorsContain(passwordErrors, 'textTooLong')">
+                        Passwords must be at less than 50 characters long.
+                    </div>
+                    <div *ngIf="errorsContain(passwordErrors, 'textTooShort')">
+                        Passwords must be at least 6 characters long.
+                    </div>
+                    <div *ngIf="errorsContain(passwordErrors, 'cantHaveSpaces')">
+                        Passwords cannot contain spaces.
+                    </div>
+                    <div *ngIf="errorsContain(passwordErrors, 'badVerificationMatch')">
+                        The password and password confirmation don't match.
+                    </div>
+                </div>
+                <div class="forgot" (click)="goToForgotPassword()">Forgot Password</div>
                 <div class="form-button text-center">
-                    <button class="user-button">Login</button>
+                    <button type="submit" (click)="doLogin()" class="btn btn-custom theme-color">Login</button>
                 </div>
-<!--
-                <div *ngIf="error" class="alert alert-error">{{error}}</div> -->
             </form>
         </div>
     </div>

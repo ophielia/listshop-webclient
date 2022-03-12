@@ -1,20 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
+import {IShoppingList} from "../../model/shoppinglist";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
-import {LegendPoint} from "../../model/legend-point";
-import {Category, ICategory} from "../../model/category";
-import {IItem, Item} from "../../model/item";
-import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
-import {IMealPlan, MealPlan} from "../../model/mealplan";
+import {MealPlan} from "../../model/mealplan";
 
 @Component({
     selector: 'app-edit-plan',
@@ -22,29 +18,26 @@ import {IMealPlan, MealPlan} from "../../model/mealplan";
     styleUrls: ['./edit-plan.component.scss']
 })
 export class EditPlanComponent implements OnInit, OnDestroy {
+    @ViewChild('mealplancopied') copiedMealPlanModal;
+
     private unsubscribe: Subscription[] = [];
 
-    crossedOffExist: boolean;
-    listLegendMap: Map<string, LegendPoint>;
-    legendList: LegendPoint[] = [];
-    showCrossedOff: boolean = true;
     showActions: boolean = true;
+    showGenerate: boolean = false;
     showAddDish: boolean = false;
-    showAddList: boolean = false;
-    showFrequent: boolean = true;
+    showAddToList: boolean = false;
     showChangeName: boolean = false;
-    shoppingListIsStarter: boolean = false;
+    includeStarter: boolean = true;
     private originalName: string = null;
-    shoppingListName: string = "";
+    mealPlanName: string = "";
     allDishes: IDish[];
     errorMessage: any;
-
-    shoppingList: ShoppingList;
-    removedItems: IItem[] = [];
 
     mealPlan: MealPlan;
     planDishes: Dish[];
 
+    copiedId: string;
+    removedDishes: Dish[] = [];
 
 
     constructor(
@@ -52,6 +45,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private title: Title,
         private meta: Meta,
+        private router: Router,
         private listService: ListService,
         private dishService: DishService,
         private mealPlanService: MealPlanService,
@@ -72,7 +66,6 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        //this.fix.removeFixBlog();
         this.unsubscribe.forEach(s => s.unsubscribe())
     }
 
@@ -82,7 +75,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                 this.mealPlan = p;
                 this.planDishes = [];
-                this.mealPlan.slots.forEach( s => this.planDishes.push(s.dish));
+                this.mealPlan.slots.forEach(s => this.planDishes.push(s.dish));
 
             });
         this.unsubscribe.push($sub);
@@ -97,56 +90,15 @@ export class EditPlanComponent implements OnInit, OnDestroy {
 
     }
 
-    saveListName() {
+    saveMealPlanName() {
         this.showChangeName = false;
         this.originalName = null;
-        this.shoppingList.name = this.shoppingListName;
-        let promise = this.listService.updateShoppingListName(this.shoppingList)
+        this.mealPlan.name = this.mealPlanName;
+        let promise = this.mealPlanService.renameMealPlan(this.mealPlan.meal_plan_id, this.mealPlan.name);
         promise.then(data => {
-            this.getMealPlan(this.shoppingList.list_id);
+            this.getMealPlan(this.mealPlan.meal_plan_id);
         });
 
-    }
-
-    clearList() {
-        this.showFrequent = false;
-        let promise = this.listService.removeAllItemsFromList(this.shoppingList.list_id);
-        promise.then(data => {
-            this.getMealPlan(this.shoppingList.list_id)
-        });
-    }
-
-    iconSourceForKey(key: string, withCircle: boolean): string {
-        let circleOrColor = withCircle ? "circles" : "colors"
-        // assets/images/legend/colors/blue/bowl.png
-        let point = this.listLegendMap.get(key);
-        if (!point) {
-            return null;
-        }
-        return "assets/images/listshop/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
-    }
-
-    clearRemoved() {
-        this.removedItems = []
-    }
-
-    addTagToList(tag: Tag) {
-        // add tag to list as item in back end
-        this.logger.debug("adding tag [" + tag.tag_id + "] to list");
-        let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag);
-
-        promise.then((data) => {
-            this.getMealPlan(this.shoppingList.list_id);
-        }).catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
-        });
-    }
-
-    reAddItem(item: IItem) {
-        this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id);
-        if (item.tag) {
-            this.addTagToList(item.tag);
-        }
     }
 
     toggleShowActions() {
@@ -157,14 +109,125 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.showChangeName = !this.showChangeName;
         if (this.showChangeName) {
             // save original value
-            this.originalName = this.shoppingList.name;
-            this.shoppingListName = this.shoppingList.name;
+            this.originalName = this.mealPlan.name;
+            this.mealPlanName = this.mealPlan.name;
         } else if (this.originalName != null) {
             this.originalName = null;
         }
     }
 
-    beep(dishId: String) {
-        
+    addDishToPlan(dish: any) {
+        let $sub = this.mealPlanService.addDishToMealPlan(dish.dish_id, this.mealPlan.meal_plan_id)
+            .subscribe(() => {
+                this.getMealPlan(this.mealPlan.meal_plan_id);
+                this.showAddDish = false;
+            });
+        this.unsubscribe.push($sub);
+    }
+
+    goToDishSelect() {
+        var url = "mealplans/edit/" + this.mealPlan.meal_plan_id + "/dish";
+        this.router.navigateByUrl(url);
+    }
+
+    private hideAllAddInputs() {
+        this.showAddDish = false;
+        this.showGenerate = false;
+        this.showAddToList = false;
+        this.showChangeName = false;
+    }
+
+    copyMealPlan() {
+        let $sub = this.mealPlanService.copyMealPlan(this.mealPlan.meal_plan_id)
+            .subscribe(r => {
+                var headers = r.headers;
+                var location = headers.get("Location");
+                var splitlocation = location.split("/");
+                var id = splitlocation[splitlocation.length - 1];
+                this.copiedId = id;
+                this.copiedMealPlanModal.show();
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
+    showCopiedMealPlan() {
+        var url = "mealplans/edit/" + this.copiedId;
+        this.router.navigateByUrl(url);
+    }
+
+    toggleAddToList() {
+        // hide other inputs
+        if (!this.showAddToList) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddToList = !this.showAddToList;
+    }
+
+    toggleShowGenerate() {
+        // hide other inputs
+        if (!this.showGenerate) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showGenerate = !this.showGenerate;
+    }
+
+    toggleAddDish() {
+        // hide other inputs
+        if (!this.showAddDish) {
+            // start with all inputs hidden
+            this.hideAllAddInputs();
+        }
+        this.showAddDish = !this.showAddDish;
+    }
+
+    addMealPlanToList(list: IShoppingList) {
+        let promise = this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id);
+        promise.then(data => {
+            this.getMealPlan(this.mealPlan.meal_plan_id);
+            this.showAddToList = false;
+        })
+    }
+
+    generateList() {
+        let $sub = this.listService.createListFromMealPlan(this.mealPlan.meal_plan_id, this.includeStarter)
+            .subscribe(r => {
+                var headers = r.headers;
+                var location = headers.get("Location");
+                var splitlocation = location.split("/");
+                var id = splitlocation[splitlocation.length - 1];
+                var url = "lists/edit/" + id;
+                this.router.navigateByUrl(url);
+            });
+        this.unsubscribe.push($sub);
+    }
+
+    clearRemovedDishes() {
+        this.removedDishes = [];
+    }
+
+    reAddDish(dish: Dish) {
+        this.removedDishes = this.removedDishes.filter(d => d.dish_id != dish.dish_id);
+        let $sub = this.mealPlanService.addDishToMealPlan(dish.dish_id, this.mealPlan.meal_plan_id)
+            .subscribe(() => {
+                this.getMealPlan(this.mealPlan.meal_plan_id);
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
+    removeDish(dishId: string) {
+        var dishes = this.planDishes.filter(d => d.dish_id == dishId);
+        if (dishes.length > 0) {
+            this.removedDishes.push(dishes[0]);
+        }
+        let $sub = this.mealPlanService.removeDishFromMealPlan(dishId, this.mealPlan.meal_plan_id)
+            .subscribe(() => {
+                this.getMealPlan(this.mealPlan.meal_plan_id);
+            });
+        this.unsubscribe.push($sub);
+
     }
 }

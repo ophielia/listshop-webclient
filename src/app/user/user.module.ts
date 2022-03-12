@@ -5,11 +5,20 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UserRoutingModule} from './user-routing.module';
 import {LoginComponent} from './login/login.component';
 import {SharedModule} from "../shared/shared.module";
-import {SignUpComponent} from './sign-up/sign-up.component';
+import {ChangePasswordComponent} from "./change-password/change-password.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
+import {SignUpComponent} from "./sign-up/sign-up.component";
+import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
 
 
 @NgModule({
-    declarations: [LoginComponent, SignUpComponent],
+    declarations: [LoginComponent,
+        SignUpComponent,
+        ChangePasswordComponent,
+        ResetPasswordComponent,
+        ResetConfirmComponent,
+        TokenGatewayComponent],
     imports: [
         ReactiveFormsModule,
         FormsModule,

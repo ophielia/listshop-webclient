@@ -882,6 +882,7 @@
   }
   #navbarSupportedContent {
     background: $white;
+
     .nav-item {
       padding: 0;
       margin-left: 15px;
@@ -1145,14 +1146,17 @@
   #mymenu .dropdown-menu {
     display: none;
     transition: 0.5s ease;
+
     &.show {
       display: block;
       transition: 0.5s ease;
     }
+
     .nav-item {
       margin-left: 0;
     }
   }
+
   .navbar-light .navbar-nav .nav-link {
     color: $color_tapa;
   }
@@ -1988,12 +1992,21 @@
     img {
       bottom: 20px;
     }
+
     &:before {
       bottom: 38px;
     }
+
     &:after {
       bottom: 38px;
     }
+  }
+  .ls-logo-content-title {
+    padding: 0px;
+    margin-left: -40px;
+  }
+  .ls-logo-img {
+    margin-right: 0px;
   }
 }
 

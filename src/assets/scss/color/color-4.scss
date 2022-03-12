@@ -81,7 +81,7 @@ h1 {
     .navbar-nav {
       .nav-link {
         &.active {
-          color: $color_caribbean_green !important;
+          color: $color_basic_orange !important;
         }
       }
     }
@@ -231,11 +231,11 @@ h1 {
 }
 
 .team-circle1 img {
-  filter: hue-rotate(335deg);
+ // filter: hue-rotate(335deg);
 }
 
 .team-circle2 img {
-  filter: hue-rotate(335deg);
+  //filter: hue-rotate(335deg);
 }
 
 .team-circle3 img {
@@ -243,11 +243,13 @@ h1 {
 }
 
 .testi-circle1 img {
-  filter: hue-rotate(335deg);
+//  filter: hue-rotate(335deg);
+
 }
 
 .testi-circle2 img {
-  filter: hue-rotate(335deg);
+ // filter: hue-rotate(335deg);
+
 }
 
 .testi-circle3 img {
@@ -275,7 +277,7 @@ h1 {
 }
 
 .testimonial-text h3 {
-  color: $color_caribbean_green;
+  color: $color_basic_orange;
 }
 
 .btn-custom.theme-color {
@@ -283,6 +285,7 @@ h1 {
   background-image: linear-gradient(to right, $color_basic_orange, $color_basic_orange, $color_basic_orange, $color_basic_orange);
   &:hover {
     background-position: 100% 0;
+    color: white;
   }
 }
 
@@ -334,11 +337,11 @@ h1 {
 }
 
 .home-style-two .navbar-nav .dropdown-menu .nav-link:hover {
-  color: $color_caribbean_green !important;
+  color: $color_basic_orange !important;
 }
 
 .three .navbar-nav .dropdown-menu .nav-link:hover {
-  color: $color_caribbean_green !important;
+  color: $color_basic_orange !important;
 }
 
 .abt-hover:hover .icon-hover {
@@ -439,7 +442,8 @@ h1 {
   .nav-item {
     &:hover {
       .nav-link {
-        color: $black;
+        font-weight: bolder;
+
       }
     }
     &.dropdown {
@@ -460,6 +464,8 @@ h1 {
   }
   /*Dropdown css*/
   &.darkHeader {
+    background-color: white;
+
     .dropdown-menu .nav-item {
       .nav-link {
         &.active {

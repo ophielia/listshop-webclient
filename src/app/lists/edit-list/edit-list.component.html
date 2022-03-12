@@ -27,7 +27,7 @@
                 </h2>
             </div>
             <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
-                <a class="nav-link" [routerLink]="'/lists'">All Lists</a>
+                <a class="nav-link" [routerLink]="'/lists/manage'">All Lists</a>
             </div>
         </div>
     </div>
@@ -53,10 +53,10 @@
                         <div class="row ls-ingredient-block">
                             <div class="col-sm-12 col-med-12 col-lg-6"
                                  *ngFor="let item of category.items"
-                                 (click)="toggleItemCrossedOff(item)"
-                                 (dblclick)="removeTagFromList(item)">
+                                 (click)="toggleItemSelected(item, category)">
                                 <div>
-                                    <span class="{{item.crossed_off ? 'itemCrossedOff': ''}}">
+                                    <span class="{{item.crossed_off ? 'itemCrossedOff': ''}}
+                                                {{item.is_selected ? 'itemSelected': ''}}">
                                         {{item.tag.name}}</span>
                                     <ng-container *ngIf="!(category.is_frequent)">
                                         <span *ngIf="item.used_count > 1 && !showItemLegends">({{item.used_count}}
@@ -71,6 +71,13 @@
 
                                     </ng-container>
                                 </div>
+                            </div>
+                            <div *ngIf="category.has_selected" class="ls-selected-actions">
+                                <span class="selected-label">Selected Items:</span>
+                                <span class="selected-actions"
+                                      (click)="toggleCrossedOffInCategory(category)">Cross Off</span>
+                                <span class="selected-actions"
+                                      (click)="removeSelectedInCategory(category)">Remove</span>
                             </div>
                         </div>
                     </div>
@@ -99,7 +106,7 @@
                             </tr>
                         </table>
 
-                        <div *ngIf="!showAddList" (click)="toggleAddList()">
+                            <div *ngIf="!showAddList" (click)="toggleAddList()">
                             <span class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add List
                             </span>

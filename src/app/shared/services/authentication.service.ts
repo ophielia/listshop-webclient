@@ -3,12 +3,14 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
-import {Observable, of, throwError} from "rxjs";
-import {catchError, finalize, map} from "rxjs/operators";
+import {from, Observable, of, throwError} from "rxjs";
+import {catchError, finalize, map, switchMap} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {User} from "../../model/user";
 import {CreateUserPost} from "../../model/create-user-post";
 import CreateUserStatus from "../../model/create-user-status";
+import {ListService} from "./list.service";
+import {TokenRequest, TokenType} from "../../model/token-request";
 
 
 @Injectable()
@@ -17,7 +19,8 @@ export class AuthenticationService {
     private userUrl;
 
     constructor(
-        private httpClient: HttpClient
+        private httpClient: HttpClient,
+        private listService: ListService
     ) {
         this.authUrl = environment.apiUrl + "auth";
         this.userUrl = environment.apiUrl + "user";
@@ -89,7 +92,8 @@ export class AuthenticationService {
                         // store username and jwt token in local storage to keep user logged in between page refreshes
                         localStorage.setItem('currentUser', JSON.stringify(user));
 
-                        // return true to indicate successful login
+                        // create list, and return true
+
                         return CreateUserStatus.Success;
                     } else {
                         return CreateUserStatus.UnknownError;
@@ -98,19 +102,34 @@ export class AuthenticationService {
                 catchError(this.handleError));
     }
 
+    createUserAndList(username: string, password: string): Observable<CreateUserStatus> {
+        let createUserObservable = this.createUser(username, password);
+        let createListForUser = this.listService.createList(ListService.DEFAULT_LIST_NAME);
+
+        return createUserObservable
+            // Switch stream to the address request
+            .pipe(switchMap(status => {
+                if (status != CreateUserStatus.Success) {
+                    return from(CreateUserStatus.UnknownError);
+                }
+
+                return createListForUser
+                    .pipe(map(object => CreateUserStatus.Success));
+            }));
+
+    }
 
     nameIsTaken(userName: string): Observable<boolean> {
         var requestUrl = this.userUrl + '/name?name=' + userName
 
         return this.httpClient.get(requestUrl)
             .pipe(map((response: HttpResponse<any>) => {
-                    // login successful if there's a jwt token in the response
-                    if (!response) {
-                        return false;
-                    }
-                    return true;
-                }),
-                catchError(this.handleError));
+                // login successful if there's a jwt token in the response
+                if (!response) {
+                    return false;
+                }
+                return true;
+            }));
     }
 
     logout(): Observable<any> {
@@ -179,14 +198,41 @@ export class AuthenticationService {
             return 'IE '+(tem[1] || '');
         }
 
-        if(matchTest[1]=== 'Chrome'){
+        if (matchTest[1] === 'Chrome') {
             tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
-            if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+            if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
         }
 
-        matchTest= matchTest[2]? [matchTest[1], matchTest[2]]: [navigator.appName, navigator.appVersion, '-?'];
+        matchTest = matchTest[2] ? [matchTest[1], matchTest[2]] : [navigator.appName, navigator.appVersion, '-?'];
 
-        if((tem= userAgent.match(/version\/(\d+)/i))!= null) matchTest.splice(1, 1, tem[1]);
+        if ((tem = userAgent.match(/version\/(\d+)/i)) != null) matchTest.splice(1, 1, tem[1]);
         return matchTest.join(' ');
+    }
+
+    requestPasswordReset(email: string): Observable<any> {
+        var passwordResetRequest = new TokenRequest();
+        passwordResetRequest.token_parameter = email;
+        passwordResetRequest.token_type = TokenType.PasswordReset;
+
+        let url = this.userUrl + "/token/tokenrequest";
+        return this.httpClient.post(url, JSON.stringify(passwordResetRequest))
+            .pipe(map((response: HttpResponse<any>) => {
+                    // login successful if there's a jwt token in the response
+                    let userTest = "userTest";
+                    return userTest;
+                    /*
+                                        if (user) {
+                                            // store username and jwt token in local storage to keep user logged in between page refreshes
+                                            localStorage.setItem('currentUser', JSON.stringify(user));
+
+                                            // create list, and return true
+
+                                            return CreateUserStatus.Success;
+                                        } else {
+                                            return CreateUserStatus.UnknownError;
+                                        }
+                     */
+                }),
+                catchError(this.handleError));
     }
 }
