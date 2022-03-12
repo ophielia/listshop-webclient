@@ -16,7 +16,7 @@
     <div class="container dish-toolbar">
         <div class="row">
             <div class=" col-sm-6 col-md-8 col-lg-8">
-                <h2 class="title"><span>{{dish.name}}</span></h2>
+                <h2 class="title"><span>{{dish?dish.name:""}}</span></h2>
             </div>
             <div class="col-md-4 col-sm-6 col-text-end">
                 <div class="title-bar-action">
@@ -35,7 +35,7 @@
     <div class="container">
         <div class="row">
 
-            <div *ngIf="isLoading" class="col-md-12 " class="loading-box">
+            <div *ngIf="isLoading" class="col-md-12 loading-box">
                 <div class="loading-text">loading dish...</div>
             </div>
             <ng-container *ngIf="!isLoading">
@@ -233,7 +233,7 @@
         <div class="ls-card">
             <div class="ls-tag-group-subtitle">Ratings:
             </div>
-            <div>
+            <div *ngIf="dishRatingInfo != null">
                 <ng-container *ngFor="let rating of dishRatingInfo.ratings, let i = index">
                     <div class="ls-rating">
                         {{rating.label}} :
