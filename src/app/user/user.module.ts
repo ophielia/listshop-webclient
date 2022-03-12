@@ -10,6 +10,7 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
 import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
+import {PasswordTokenComponent} from "./password-token/password-token.component";
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
         ChangePasswordComponent,
         ResetPasswordComponent,
         ResetConfirmComponent,
+        PasswordTokenComponent,
         TokenGatewayComponent],
     imports: [
         ReactiveFormsModule,

@@ -35,7 +35,6 @@ export class ResetPasswordComponent implements OnInit {
         if (extraNavigation.state && extraNavigation.state.email) {
             this.passedEmail = extraNavigation.state.email;
         }
-        console.log(this.passedEmail);
     }
 
     ngOnInit() {

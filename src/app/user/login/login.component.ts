@@ -73,13 +73,13 @@ export class LoginComponent implements OnInit {
     this.emailErrors = [];
     this.passwordErrors = [];
 
-    this.emailErrors = EmailValidator.isValid(this.email.value);
+   // this.emailErrors = EmailValidator.isValid(this.email.value);
     if (this.emailErrors.length > 0) {
-      return;
+   //   return;
     }
-    this.passwordErrors = PasswordValidator.isValid(this.userPassword.value);
+   // this.passwordErrors = PasswordValidator.isValid(this.userPassword.value);
     if (this.passwordErrors.length > 0) {
-      return;
+     // return;
     }
 
     let $sub = this.authenticationService.login(this.signInForm.get('email').value.trim(),
@@ -110,29 +110,5 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/user/reset'], navigationExtras);
 
   }
-
-  /*this.router.navigate(['/user/reset'],
-      {
-        state: {
-          email: this.email
-        }
-      }
-      );
-}
-
-
-  @RouteConfig([
-  {path: '/product/:id', component: ProductDetailComponentParam,
-   as: 'ProductDetail', data: {isProd: true}}])
-
-export class ProductDetailComponentParam {
-  productID: string;
-  constructor(params: RouteParams, data: RouteData) {
-      this.productID = params.get('id');
-
-      console.log('Is this prod environment', data.get('isProd'));
-  }
-}
-   */
 
 }

@@ -6,6 +6,7 @@ import {ChangePasswordComponent} from "./change-password/change-password.compone
 import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
+import {PasswordTokenComponent} from "./password-token/password-token.component";
 
 const routes: Routes = [
   {
@@ -51,13 +52,21 @@ const routes: Routes = [
         }
     },
     {
-        path: 'gateway',
+        path: 'gateway/:type/:token',
         component: TokenGatewayComponent,
         data: {
             title: 'The List Shop | Change Password',
             content: 'The List Shop | Change Password'
         }
   },
+    {
+        path: 'password/token',
+        component: PasswordTokenComponent,
+        data: {
+            title: 'The List Shop | Reset Password',
+            content: 'The List Shop | Reset Password'
+        }
+    },
 ];
 
 @NgModule({

@@ -11,6 +11,7 @@ import {CreateUserPost} from "../../model/create-user-post";
 import CreateUserStatus from "../../model/create-user-status";
 import {ListService} from "./list.service";
 import {TokenRequest, TokenType} from "../../model/token-request";
+import {TokenProcessPost} from "../../model/token-process-post";
 
 
 @Injectable()
@@ -220,19 +221,20 @@ export class AuthenticationService {
                     // login successful if there's a jwt token in the response
                     let userTest = "userTest";
                     return userTest;
-                    /*
-                                        if (user) {
-                                            // store username and jwt token in local storage to keep user logged in between page refreshes
-                                            localStorage.setItem('currentUser', JSON.stringify(user));
-
-                                            // create list, and return true
-
-                                            return CreateUserStatus.Success;
-                                        } else {
-                                            return CreateUserStatus.UnknownError;
-                                        }
-                     */
                 }),
                 catchError(this.handleError));
+    }
+
+    resetPasswordWithToken(token: string, newPassword: string): Observable<any> {
+        var passwordResetRequest = new TokenProcessPost();
+        passwordResetRequest.token_parameter = newPassword;
+        passwordResetRequest.token = token;
+        passwordResetRequest.token_type = TokenType.PasswordReset;
+
+        let url = this.userUrl + "/token";
+        return this.httpClient.post(url, JSON.stringify(passwordResetRequest))
+            .pipe(map((response: HttpResponse<any>) => {
+                    return "done";
+                }));
     }
 }
