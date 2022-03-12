@@ -10,6 +10,7 @@ import {User} from "../../model/user";
 import {CreateUserPost} from "../../model/create-user-post";
 import CreateUserStatus from "../../model/create-user-status";
 import {ListService} from "./list.service";
+import {TokenRequest, TokenType} from "../../model/token-request";
 
 
 @Injectable()
@@ -123,13 +124,12 @@ export class AuthenticationService {
 
         return this.httpClient.get(requestUrl)
             .pipe(map((response: HttpResponse<any>) => {
-                    // login successful if there's a jwt token in the response
-                    if (!response) {
-                        return false;
-                    }
-                    return true;
-                }),
-                catchError(this.handleError));
+                // login successful if there's a jwt token in the response
+                if (!response) {
+                    return false;
+                }
+                return true;
+            }));
     }
 
     logout(): Observable<any> {
@@ -198,14 +198,41 @@ export class AuthenticationService {
             return 'IE '+(tem[1] || '');
         }
 
-        if(matchTest[1]=== 'Chrome'){
+        if (matchTest[1] === 'Chrome') {
             tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
-            if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+            if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
         }
 
-        matchTest= matchTest[2]? [matchTest[1], matchTest[2]]: [navigator.appName, navigator.appVersion, '-?'];
+        matchTest = matchTest[2] ? [matchTest[1], matchTest[2]] : [navigator.appName, navigator.appVersion, '-?'];
 
-        if((tem= userAgent.match(/version\/(\d+)/i))!= null) matchTest.splice(1, 1, tem[1]);
+        if ((tem = userAgent.match(/version\/(\d+)/i)) != null) matchTest.splice(1, 1, tem[1]);
         return matchTest.join(' ');
+    }
+
+    requestPasswordReset(email: string): Observable<any> {
+        var passwordResetRequest = new TokenRequest();
+        passwordResetRequest.token_parameter = email;
+        passwordResetRequest.token_type = TokenType.PasswordReset;
+
+        let url = this.userUrl + "/token/tokenrequest";
+        return this.httpClient.post(url, JSON.stringify(passwordResetRequest))
+            .pipe(map((response: HttpResponse<any>) => {
+                    // login successful if there's a jwt token in the response
+                    let userTest = "userTest";
+                    return userTest;
+                    /*
+                                        if (user) {
+                                            // store username and jwt token in local storage to keep user logged in between page refreshes
+                                            localStorage.setItem('currentUser', JSON.stringify(user));
+
+                                            // create list, and return true
+
+                                            return CreateUserStatus.Success;
+                                        } else {
+                                            return CreateUserStatus.UnknownError;
+                                        }
+                     */
+                }),
+                catchError(this.handleError));
     }
 }

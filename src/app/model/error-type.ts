@@ -1,4 +1,5 @@
 export enum ErrorType {
+    EmailNotFound = 'EmailNotFound',
     InvalidEmail = 'InvalidEmail',
     cantHaveSpaces = 'cantHaveSpaces',
     badVerificationMatch = 'badVerificationMatch',

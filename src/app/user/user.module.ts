@@ -9,10 +9,16 @@ import {ChangePasswordComponent} from "./change-password/change-password.compone
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
 import {SignUpComponent} from "./sign-up/sign-up.component";
+import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
 
 
 @NgModule({
-    declarations: [LoginComponent, SignUpComponent, ChangePasswordComponent, ResetPasswordComponent, TokenGatewayComponent],
+    declarations: [LoginComponent,
+        SignUpComponent,
+        ChangePasswordComponent,
+        ResetPasswordComponent,
+        ResetConfirmComponent,
+        TokenGatewayComponent],
     imports: [
         ReactiveFormsModule,
         FormsModule,

@@ -5,6 +5,7 @@ import {SignUpComponent} from "./sign-up/sign-up.component";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
 
 const routes: Routes = [
   {
@@ -26,26 +27,36 @@ const routes: Routes = [
   {
     path: 'password',
     component: ChangePasswordComponent,
-    data: {
-      title: 'The List Shop | Change Password',
-      content: 'The List Shop | Change Password'
-    }
+      data: {
+          title: 'The List Shop | Change Password',
+          content: 'The List Shop | Change Password'
+      }
   },
-  {
-    path: 'reset',
-    component: ResetPasswordComponent,
-    data: {
-      title: 'The List Shop | Reset Password',
-      content: 'The List Shop | Reset Password'
-    }
-  },
-  {
-    path: 'gateway',
-    component: TokenGatewayComponent,
-    data: {
-      title: 'The List Shop | Change Password',
-      content: 'The List Shop | Change Password'
-    }
+    {
+        path: 'reset',
+        component: ResetPasswordComponent,
+        data: {
+            title: 'The List Shop | Reset Password',
+            content: 'The List Shop | Reset Password',
+
+        }
+    },
+    {
+        path: 'resetconfirm',
+        component: ResetConfirmComponent,
+        data: {
+            title: 'The List Shop | Password Reset',
+            content: 'The List Shop | Password Reset',
+
+        }
+    },
+    {
+        path: 'gateway',
+        component: TokenGatewayComponent,
+        data: {
+            title: 'The List Shop | Change Password',
+            content: 'The List Shop | Change Password'
+        }
   },
 ];
 

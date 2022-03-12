@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {catchError, map} from "rxjs/operators";
-import {of} from "rxjs";
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Subscription} from "rxjs";
+import {ErrorType} from "../../model/error-type";
+import EmailValidator from "../../shared/validators/email-validator";
 
 @Component({
     selector: 'app-reset-password',
@@ -13,13 +14,14 @@ import {of} from "rxjs";
 })
 export class ResetPasswordComponent implements OnInit {
 
-
+    private unsubscribe: Subscription[] = [];
     show: boolean;
     signUpForm: FormGroup;
-    // variable
-
+    passedEmail: string;
+    emailErrors: ErrorType[] = [];
 
     private returnUrl: string;
+    private generalError: boolean = false;
 
     constructor(private route: ActivatedRoute,
                 private title: Title,
@@ -29,69 +31,50 @@ export class ResetPasswordComponent implements OnInit {
                 private authenticationService: AuthenticationService) {
         // initialize variable value
         this.show = false;
+        var extraNavigation = this.router.getCurrentNavigation().extras;
+        if (extraNavigation.state && extraNavigation.state.email) {
+            this.passedEmail = extraNavigation.state.email;
+        }
+        console.log(this.passedEmail);
     }
 
     ngOnInit() {
         this.title.setTitle(this.route.snapshot.data['title']);
+
         this.meta.updateTag({name: 'description', content: this.route.snapshot.data['content']});
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
         this.signUpForm = this.fb.group({
-            email: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(50), Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validateEmailNotTaken.bind(this)],
-            userPassword: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-            confirmPassword: ["", [Validators.required]]
-        }, {updateOn: 'blur', validators: this.validatePasswordConfirmation});
-    }
-
-    // click event function toggle
-    password() {
-        this.show = !this.show;
+            email: [this.passedEmail]
+        });
     }
 
     get email() {
         return this.signUpForm.get('email');
     }
 
-    get userPassword() {
-        return this.signUpForm.get('userPassword');
-    }
+    requestReset() {
+        this.emailErrors = [];
 
-    get confirmPassword() {
-        return this.signUpForm.get('confirmPassword');
-    }
-
-
-    signUp() {
-        // create user
-        this.authenticationService.createUser(this.signUpForm.get('email').value.trim(),
-
-            this.signUpForm.get('userPassword').value.trim())
-            .subscribe(success => {
-                if (!success) {
-                    var error: Error = Error("BADCREDENTIALS");
-                    throw error;
-                }
-                this.router.navigateByUrl(this.returnUrl);
-            });
-    }
-
-    validatePasswordConfirmation(group: FormGroup): any {
-        var pw = group.controls['userPassword'];
-        var pw2 = group.controls['confirmPassword'];
-
-        if (pw.value !== pw2.value) { // this is the trick
-            pw2.setErrors({passwordsDontMatch: true});
+        this.emailErrors = EmailValidator.isValid(this.email.value);
+        if (this.emailErrors.length > 0) {
+            return;
         }
-
-        // even though there was an error, we still return null
-        // since the new error state was set on the individual field
-        return null;
+        // request reset
+        this.authenticationService.requestPasswordReset(this.signUpForm.get('email').value.trim())
+            .subscribe(success => {
+                    this.router.navigate(['/user/resetconfirm']);
+                },
+                err => {
+                    if (err.status == 400) {
+                        this.emailErrors.push(ErrorType.EmailNotFound);
+                    } else {
+                        this.generalError = true;
+                    }
+                });
     }
 
-    validateEmailNotTaken(control: AbstractControl) {
-        return this.authenticationService.nameIsTaken(control.value).pipe(
-            map(isTaken => (isTaken ? {nameIsTaken: true} : null)),
-            catchError(() => of(null))
-        );
+    errorsContain(emailErrors: ErrorType[], searchType: string) {
+        return emailErrors.filter(t => t.valueOf() == searchType).length > 0;
     }
 
 }

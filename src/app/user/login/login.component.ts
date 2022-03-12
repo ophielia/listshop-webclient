@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
 import {Subscription} from "rxjs";
 import {FormBuilder, FormGroup} from "@angular/forms";
@@ -99,6 +99,40 @@ export class LoginComponent implements OnInit {
   }
 
   goToForgotPassword() {
-    this.router.navigate(['/user/reset']);
+    let eml = this.email;
+    var navigationExtras: NavigationExtras = {
+      state: {
+        email: ''
+      }
+    };
+    navigationExtras.state.email = this.email.value;
+
+    this.router.navigate(['/user/reset'], navigationExtras);
+
   }
+
+  /*this.router.navigate(['/user/reset'],
+      {
+        state: {
+          email: this.email
+        }
+      }
+      );
+}
+
+
+  @RouteConfig([
+  {path: '/product/:id', component: ProductDetailComponentParam,
+   as: 'ProductDetail', data: {isProd: true}}])
+
+export class ProductDetailComponentParam {
+  productID: string;
+  constructor(params: RouteParams, data: RouteData) {
+      this.productID = params.get('id');
+
+      console.log('Is this prod environment', data.get('isProd'));
+  }
+}
+   */
+
 }

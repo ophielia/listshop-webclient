@@ -285,6 +285,7 @@ h1 {
   background-image: linear-gradient(to right, $color_basic_orange, $color_basic_orange, $color_basic_orange, $color_basic_orange);
   &:hover {
     background-position: 100% 0;
+    color: white;
   }
 }
 
