@@ -12,6 +12,7 @@ import CreateUserStatus from "../../model/create-user-status";
 import {ListService} from "./list.service";
 import {TokenRequest, TokenType} from "../../model/token-request";
 import {TokenProcessPost} from "../../model/token-process-post";
+import {ChangePasswordPost} from "../../model/change-password-post";
 
 
 @Injectable()
@@ -62,7 +63,6 @@ export class AuthenticationService {
                 }),
                 catchError(this.handleError));
     }
-
 
     createUser(username: string, password: string): Observable<CreateUserStatus> {
         // clear any existing token
@@ -145,21 +145,6 @@ export class AuthenticationService {
                 ));
     }
 
-    handleError(error: any) {
-        // log error
-        // could be something more sophisticated
-        let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
-        console.error(errorMsg);
-
-        // throw an application level error
-        return throwError(error);
-    }
-
-
-    static clearToken() {
-        localStorage.removeItem('currentUser');
-    }
-
     isAuthenticated() {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
@@ -188,7 +173,6 @@ export class AuthenticationService {
                 return 'other';
         }
     }
-
 
     getBrowserVersion(){
         var userAgent = navigator.userAgent, tem,
@@ -237,4 +221,47 @@ export class AuthenticationService {
                     return "done";
                 }));
     }
+
+    static clearToken() {
+        localStorage.removeItem('currentUser');
+    }
+
+    changePassword(originalPassword: string, newPassword: string): Observable<any> {
+        // clear any existing token
+        AuthenticationService.clearToken();
+        // prepare device info
+        let deviceInfo = new UserDeviceInfo();
+        deviceInfo.client_type = "Web";
+        deviceInfo.model = this.getBrowserName();
+        deviceInfo.os_version = this.getBrowserVersion();
+        // prepare user info
+
+        let encodedNewPassword = btoa(newPassword);
+        let encodedOrigPassword = btoa(originalPassword);
+        let postObject = new ChangePasswordPost();
+        postObject.new_password = encodedNewPassword;
+        postObject.original_password = encodedOrigPassword;
+
+        let url = this.userUrl + "/password";
+
+        return this.httpClient.post(url, JSON.stringify(postObject))
+            .pipe(map((response: HttpResponse<any>) => {
+                    // login successful if there's a jwt token in the response
+                    let user = MappingUtils.toUser(response);
+
+                    return "ok";
+                }),
+                catchError(this.handleError));
+    }
+
+    handleError(error: any) {
+        // log error
+        // could be something more sophisticated
+        let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
+        console.error(errorMsg);
+
+        // throw an application level error
+        return throwError(error);
+    }
+
 }

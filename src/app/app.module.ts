@@ -15,6 +15,7 @@ import {ListShopErrorHandler} from "./shared/handlers/list-shop-error-handler";
 import {AlertComponent} from "./shared/alert/alert.component";
 import {AuthGuardHandler} from "./shared/handlers/auth-guard-handler";
 import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
+import {AlertService} from "./shared/services/alert.service";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
     })
   ],
   providers: [
+      AlertService,
     {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true},
     {provide: ErrorHandler, useClass: ListShopErrorHandler},
       AuthGuardHandler
