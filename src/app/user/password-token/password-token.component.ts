@@ -21,7 +21,7 @@ export class PasswordTokenComponent implements OnInit {
 
 
     private returnUrl: string;
-    private generalError: boolean = false;
+     generalError: boolean = false;
 
     constructor(private route: ActivatedRoute,
                 private title: Title,
