@@ -20,8 +20,7 @@ import {AlertService} from "./shared/services/alert.service";
 @NgModule({
   declarations: [
     AppComponent,
-      UserComponent,
-      AlertComponent
+      UserComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

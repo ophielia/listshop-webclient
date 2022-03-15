@@ -25,6 +25,7 @@ import {ModalComponent} from "./components/modal/modal";
 import {UserHeaderComponent} from "./components/user-header/user-header.component";
 import {ListShopHeaderComponent} from "./components/list-shop-header/list-shop-header.component";
 import {SingleDishElementComponent} from "./components/single-dish-element/single-dish-element.component";
+import {AlertComponent} from "./alert/alert.component";
 
 @NgModule({
     exports: [
@@ -39,6 +40,7 @@ import {SingleDishElementComponent} from "./components/single-dish-element/singl
         ListSelectComponent,
         GenerateListComponent,
         ModalComponent,
+        AlertComponent,
         SingleDishElementComponent
 
     ],
@@ -54,6 +56,7 @@ import {SingleDishElementComponent} from "./components/single-dish-element/singl
         HeaderComponent,
         FooterComponent,
         LoaderComponent,
+        AlertComponent,
         UserHeaderComponent,
         ListShopHeaderComponent,
         DishSelectComponent,

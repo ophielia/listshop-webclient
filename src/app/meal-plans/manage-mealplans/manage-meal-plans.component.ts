@@ -11,7 +11,7 @@ import {MealPlanService} from "../../shared/services/meal-plan.service";
 @Component({
     selector: 'app-manage-meal-plans',
     templateUrl: './manage-meal-plans.component.html',
-    styleUrls: ['./manage-meal-plans.component.css']
+    styleUrls: ['./manage-meal-plans.component.scss']
 })
 export class ManageMealPlansComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
