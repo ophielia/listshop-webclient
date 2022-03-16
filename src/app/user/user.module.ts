@@ -11,6 +11,7 @@ import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
 import {PasswordTokenComponent} from "./password-token/password-token.component";
+import {DeleteUserComponent} from "./delete-user/delete-user.component";
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {PasswordTokenComponent} from "./password-token/password-token.component"
         ResetPasswordComponent,
         ResetConfirmComponent,
         PasswordTokenComponent,
+        DeleteUserComponent,
         TokenGatewayComponent],
     imports: [
         ReactiveFormsModule,

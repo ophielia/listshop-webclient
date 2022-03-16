@@ -7,32 +7,33 @@ import {TokenGatewayComponent} from "./token-gateway/token-gateway.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
 import {PasswordTokenComponent} from "./password-token/password-token.component";
+import {DeleteUserComponent} from "./delete-user/delete-user.component";
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: {
-      title: 'The List Shop | Login',
-      content: 'The List Shop | Login'
-    }
-  },
-  {
-    path: 'signup',
-    component: SignUpComponent,
-    data: {
-      title: 'The List Shop | Sign Up',
-      content: 'The List Shop | Sign Up'
-    }
-  },
-  {
-    path: 'password',
-    component: ChangePasswordComponent,
-      data: {
-          title: 'The List Shop | Change Password',
-          content: 'The List Shop | Change Password'
-      }
-  },
+    {
+        path: 'login',
+        component: LoginComponent,
+        data: {
+            title: 'The List Shop | Login',
+            content: 'The List Shop | Login'
+        }
+    },
+    {
+        path: 'signup',
+        component: SignUpComponent,
+        data: {
+            title: 'The List Shop | Sign Up',
+            content: 'The List Shop | Sign Up'
+        }
+    },
+    {
+        path: 'password',
+        component: ChangePasswordComponent,
+        data: {
+            title: 'The List Shop | Change Password',
+            content: 'The List Shop | Change Password'
+        }
+    },
     {
         path: 'reset',
         component: ResetPasswordComponent,
@@ -58,7 +59,7 @@ const routes: Routes = [
             title: 'The List Shop | Change Password',
             content: 'The List Shop | Change Password'
         }
-  },
+    },
     {
         path: 'password/token',
         component: PasswordTokenComponent,
@@ -67,10 +68,19 @@ const routes: Routes = [
             content: 'The List Shop | Reset Password'
         }
     },
+    {
+        path: 'delete',
+        component: DeleteUserComponent,
+        data: {
+            title: 'The List Shop | Delete User',
+            content: 'The List Shop | Delete User'
+        }
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
-export class UserRoutingModule { }
+export class UserRoutingModule {
+}
