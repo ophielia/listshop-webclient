@@ -145,6 +145,18 @@ export class AuthenticationService {
                 ));
     }
 
+    deleteUser(): Observable<any> {
+        var requestUrl = this.userUrl
+
+        return this.httpClient.delete(requestUrl)
+            .pipe(
+                finalize(() => {
+                        localStorage.removeItem('currentUser');
+                        return of(true);
+                    }
+                ));
+    }
+
     isAuthenticated() {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;

@@ -55,7 +55,24 @@ export class DeleteUserComponent implements OnInit {
     }
 
     deleteUser() {
-        console.log("do it - go ahead");
-    }
+
+            this.emailErrors = [];
+            this.passwordErrors = [];
+
+            // this.emailErrors = EmailValidator.isValid(this.email.value);
+            if (this.emailErrors.length > 0) {
+                //   return;
+            }
+            // this.passwordErrors = PasswordValidator.isValid(this.userPassword.value);
+            if (this.passwordErrors.length > 0) {
+                // return;
+            }
+
+            let $sub = this.authorizationService.deleteUser()
+                .subscribe();
+            this.unsubscribe.push($sub);
+        this.router.navigate(["/home"]);
+        }
+
 
 }
