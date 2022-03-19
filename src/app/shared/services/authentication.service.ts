@@ -13,6 +13,7 @@ import {ListService} from "./list.service";
 import {TokenRequest, TokenType} from "../../model/token-request";
 import {TokenProcessPost} from "../../model/token-process-post";
 import {ChangePasswordPost} from "../../model/change-password-post";
+import {ListShopPayload} from "../../model/list-shop-payload";
 
 
 @Injectable()
@@ -121,11 +122,13 @@ export class AuthenticationService {
     }
 
     nameIsTaken(userName: string): Observable<boolean> {
-        var requestUrl = this.userUrl + '/name?name=' + userName
+        var requestUrl = this.userUrl + '/name'
 
-        return this.httpClient.get(requestUrl)
+        var listShopPayload = new ListShopPayload();
+        listShopPayload.parameters[0] = userName;
+
+        return this.httpClient.post(requestUrl, JSON.stringify(listShopPayload))
             .pipe(map((response: HttpResponse<any>) => {
-                // login successful if there's a jwt token in the response
                 if (!response) {
                     return false;
                 }
