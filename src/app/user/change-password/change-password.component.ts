@@ -2,11 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {catchError, map} from "rxjs/operators";
-import {of, Subscription} from "rxjs";
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Subscription} from "rxjs";
 import {ErrorType} from "../../model/error-type";
-import EmailValidator from "../../shared/validators/email-validator";
 import PasswordValidator from "../../shared/validators/password-validator";
 
 @Component({
@@ -68,8 +66,8 @@ export class ChangePasswordComponent implements OnInit {
     changePassword() {
         this.passwordErrors = [];
 
-        this.passwordErrors = PasswordValidator.isValid(this.originalPassword.value);
-        if (this.passwordErrors.length > 0) {
+        this.emailErrors = PasswordValidator.isValid(this.originalPassword.value);
+        if (this.emailErrors.length > 0) {
             return;
         }
 
@@ -82,7 +80,13 @@ export class ChangePasswordComponent implements OnInit {
         this.authenticationService.changePassword(this.originalPassword.value.trim(),
             this.newPassword.value.trim())
             .subscribe(success => {
-                this.router.navigateByUrl(this.returnUrl);
+                this.router.navigateByUrl('/lists/manage');
+            }, error => {
+                if (error.status == '401') {
+                    this.emailErrors.push(ErrorType.passwordIsBad);
+                } else {
+                    this.emailErrors.push(ErrorType.generalError);
+                }
             });
     }
 

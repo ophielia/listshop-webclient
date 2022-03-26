@@ -225,6 +225,8 @@ export class AuthenticationService {
     }
 
     resetPasswordWithToken(token: string, newPassword: string): Observable<any> {
+        localStorage.removeItem('currentUser');
+
         var passwordResetRequest = new TokenProcessPost();
         passwordResetRequest.token_parameter = newPassword;
         passwordResetRequest.token = token;
@@ -242,15 +244,6 @@ export class AuthenticationService {
     }
 
     changePassword(originalPassword: string, newPassword: string): Observable<any> {
-        // clear any existing token
-        AuthenticationService.clearToken();
-        // prepare device info
-        let deviceInfo = new UserDeviceInfo();
-        deviceInfo.client_type = "Web";
-        deviceInfo.model = this.getBrowserName();
-        deviceInfo.os_version = this.getBrowserVersion();
-        // prepare user info
-
         let encodedNewPassword = btoa(newPassword);
         let encodedOrigPassword = btoa(originalPassword);
         let postObject = new ChangePasswordPost();
@@ -262,8 +255,6 @@ export class AuthenticationService {
         return this.httpClient.post(url, JSON.stringify(postObject))
             .pipe(map((response: HttpResponse<any>) => {
                     // login successful if there's a jwt token in the response
-                    let user = MappingUtils.toUser(response);
-
                     return "ok";
                 }),
                 catchError(this.handleError));

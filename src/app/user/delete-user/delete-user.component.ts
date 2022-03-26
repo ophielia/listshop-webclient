@@ -5,6 +5,7 @@ import {AuthenticationService} from "../../shared/services/authentication.servic
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Subscription} from "rxjs";
 import {ErrorType} from "../../model/error-type";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
     selector: 'app-delete-user',
@@ -30,12 +31,14 @@ export class DeleteUserComponent implements OnInit {
                 private meta: Meta,
                 private router: Router,
                 private fb: FormBuilder,
+                private spinner: NgxSpinnerService,
                 private authorizationService: AuthenticationService) {
         // initialize variable value
         this.show = false;
     }
 
     ngOnInit() {
+        this.spinner.hide();
         this.title.setTitle(this.route.snapshot.data['title']);
         this.meta.updateTag({name: 'description', content: this.route.snapshot.data['content']});
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/lists/manage';
@@ -55,24 +58,14 @@ export class DeleteUserComponent implements OnInit {
     }
 
     deleteUser() {
+        this.spinner.show();
+        let $sub = this.authorizationService.deleteUser()
+            .subscribe(success => {
+                this.router.navigate(["/home"]);
+            });
+        this.unsubscribe.push($sub);
 
-            this.emailErrors = [];
-            this.passwordErrors = [];
-
-            // this.emailErrors = EmailValidator.isValid(this.email.value);
-            if (this.emailErrors.length > 0) {
-                //   return;
-            }
-            // this.passwordErrors = PasswordValidator.isValid(this.userPassword.value);
-            if (this.passwordErrors.length > 0) {
-                // return;
-            }
-
-            let $sub = this.authorizationService.deleteUser()
-                .subscribe();
-            this.unsubscribe.push($sub);
-        this.router.navigate(["/home"]);
-        }
+    }
 
 
 }

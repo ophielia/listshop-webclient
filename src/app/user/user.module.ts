@@ -12,6 +12,7 @@ import {SignUpComponent} from "./sign-up/sign-up.component";
 import {ResetConfirmComponent} from "./reset-confirm/reset-confirm.component";
 import {PasswordTokenComponent} from "./password-token/password-token.component";
 import {DeleteUserComponent} from "./delete-user/delete-user.component";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {DeleteUserComponent} from "./delete-user/delete-user.component";
         TokenGatewayComponent],
     imports: [
         ReactiveFormsModule,
+        NgxSpinnerModule,
         FormsModule,
         CommonModule,
         UserRoutingModule,
