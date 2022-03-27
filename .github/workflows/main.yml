@@ -4,9 +4,10 @@
 name: Release Build
 
 on:
-  release:
-    types:
-      - created
+  worflow_dispatch
+  #release:
+  #  types:
+  #    - created
 
 jobs:
   build:
