@@ -1,0 +1,28 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Release Build
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+
+      - uses: actions/checkout@v2
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:${GITHUB_REF##*/}
+      - name: ensure fresh docker login by logging out
+        run: docker logout
+      - name: log back in now
+        run: docker login --username=${{ secrets.DOCKER_HUB_USERNAME }} --password=${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: now push
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:${GITHUB_REF##*/}
