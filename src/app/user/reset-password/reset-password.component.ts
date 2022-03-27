@@ -22,7 +22,7 @@ export class ResetPasswordComponent implements OnInit {
     emailErrors: ErrorType[] = [];
 
     private returnUrl: string;
-    private generalError: boolean = false;
+    generalError: boolean = false;
 
     constructor(private route: ActivatedRoute,
                 private title: Title,
