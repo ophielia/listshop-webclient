@@ -41,3 +41,12 @@ testem.log
 .DS_Store
 Thumbs.db
 /listshop-webclient.iml
+/src/assets/app.css
+/src/app/landing/contentheader/content-header.component.css
+/src/app/landing/contentheader/content-header.component.css.map
+/src/app/shared/header/header.component.css
+/src/app/shared/header/header.component.css.map
+/src/app/dishes/manage-dishes/manage-dishes.component.css
+/src/app/dishes/manage-dishes/manage-dishes.component.css.map
+/src/app/meal-plans/manage-mealplans/manage-meal-plans.component.css
+/src/app/meal-plans/manage-mealplans/manage-meal-plans.component.css.map
