@@ -4,7 +4,7 @@
 name: Release Build
 
 on:
-  worflow_dispatch
+  worflow_dispatch:
   #release:
   #  types:
   #    - created
