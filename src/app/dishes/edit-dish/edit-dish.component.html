@@ -168,9 +168,6 @@
         <div class="ls-card">
             <div class="ls-tag-group-subtitle">Ingredients:
             </div>
-            <span *ngFor="let tag of ingredientTags" class="ls-list-span"
-                  (click)="removeTagFromDish(tag)">{{tag.name}}</span>
-
             <div>
                 <div *ngIf="this.showAddIngredient" class="ls-add-tag">
 
@@ -184,6 +181,11 @@
                                     (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
 
                 </div>
+            </div>
+            <span *ngFor="let tag of ingredientTags" class="ls-list-span"
+                  (click)="removeTagFromDish(tag)">{{tag.name}}</span>
+
+            <div>
                 <div *ngIf="!this.showAddIngredient" class="ls-card-link-block">
 <span><a class="add-button" (click)="toggleAddIngredient()">
 <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
