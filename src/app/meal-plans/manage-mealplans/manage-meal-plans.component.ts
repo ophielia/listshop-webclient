@@ -8,6 +8,7 @@ import {ShoppingList} from "../../model/shoppinglist";
 import {MealPlan} from "../../model/mealplan";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {PlanContext} from "../plan-context/plan-context";
+import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
 
 @Component({
     selector: 'app-manage-meal-plans',
@@ -19,6 +20,7 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
 
     isLoading: boolean = true;
     mealPlans: MealPlan[];
+    private mealPlanIdToDelete: string;
 
     constructor(
         private fix: LandingFixService,
@@ -27,7 +29,8 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
         private title: Title,
         private meta: Meta,
         private mealPlanService: MealPlanService,
-        private mealPlanContext: PlanContext
+        private mealPlanContext: PlanContext,
+        private confirmDialogService: ConfirmDialogService
     ) {
     }
 
@@ -51,6 +54,7 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
                     this.mealPlans = p
                     let ids = p.map(mp => mp.meal_plan_id);
                     this.mealPlanContext.setMealPlanIds(ids);
+                    this.mealPlanIdToDelete = null;
                     this.isLoading = false;
                 }
             });
@@ -58,8 +62,19 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
     }
 
     deleteMealPlan(mealPlanId: string) {
+        this.mealPlanIdToDelete = mealPlanId;
+        this.confirmDialogService.confirmThis("Are you sure you'd like to delete this meal plan?",
+            () => {console.log("dummy"); this.doDeleteMealPlan();},
+            function () { })
+
+    }
+
+    public doDeleteMealPlan() {
+        if (!this.mealPlanIdToDelete) {
+            return;
+        }
         let sub$ = this.mealPlanService
-            .deleteMealPlan(mealPlanId)
+            .deleteMealPlan(this.mealPlanIdToDelete)
             .subscribe(l => this.getMealPlans());
         this.unsubscribe.push(sub$);
     }
