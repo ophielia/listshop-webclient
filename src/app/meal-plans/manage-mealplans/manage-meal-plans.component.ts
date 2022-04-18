@@ -7,6 +7,7 @@ import {Subscription} from "rxjs";
 import {ShoppingList} from "../../model/shoppinglist";
 import {MealPlan} from "../../model/mealplan";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
+import {PlanContext} from "../plan-context/plan-context";
 
 @Component({
     selector: 'app-manage-meal-plans',
@@ -16,6 +17,7 @@ import {MealPlanService} from "../../shared/services/meal-plan.service";
 export class ManageMealPlansComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
 
+    isLoading: boolean = true;
     mealPlans: MealPlan[];
 
     constructor(
@@ -24,7 +26,8 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
         private router: Router,
         private title: Title,
         private meta: Meta,
-        private mealPlanService: MealPlanService
+        private mealPlanService: MealPlanService,
+        private mealPlanContext: PlanContext
     ) {
     }
 
@@ -46,6 +49,9 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                 if (p) {
                     this.mealPlans = p
+                    let ids = p.map(mp => mp.meal_plan_id);
+                    this.mealPlanContext.setMealPlanIds(ids);
+                    this.isLoading = false;
                 }
             });
         this.unsubscribe.push(sub$);
