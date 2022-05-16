@@ -20,7 +20,6 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     @Output() tagSelected: EventEmitter<ITag> = new EventEmitter<ITag>();
     @Output() cancelAddTag: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() tagTypes: string;
-    @Input() selectType: string = TagSelectType.All;
     @Input() groupType: GroupType = GroupType.All;
 
     @Input() showCancelButton: boolean = false;
@@ -36,7 +35,6 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     loaded: boolean = false;
 
     dish: Dish = <Dish>{dish_id: "", name: "", description: ""};
-    currentSelect: string;
     showAddTags: boolean;
 
     allTagTypes: string[];
@@ -52,14 +50,10 @@ export class TagSelectComponent implements OnInit, OnDestroy {
         this.autoSelectedTag = null;
         this.showAddTags = false;
 
-        this.currentSelect = this.selectType;
-
-        this.groupType = this.selectType == 'Assign' ? GroupType.ExcludeGroups : GroupType.All;
-
         let tagTypesAsArray = this.tagTypes.split(",")
 
         let $sub = this.tagTreeService.allContentList(TagTree.BASE_GROUP,
-            ContentType.All, false, this.groupType, tagTypesAsArray, this.selectType)
+            ContentType.All, this.groupType, tagTypesAsArray)
             .subscribe(data => {
                 this.logger.debug("in subscribe in tag-select. data: " + data.length)
                 this.tagList = data;
@@ -121,7 +115,6 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     cancelSelectTag() {
         this.cancelAddTag.emit(true);
     }
-
 
 
     add(tagtype: string) {

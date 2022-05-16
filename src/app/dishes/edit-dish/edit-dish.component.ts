@@ -12,6 +12,7 @@ import {MealPlanService} from "../../shared/services/meal-plan.service";
 import TagType from "../../model/tag-type";
 import {IRatingInfo, RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
+import {GroupType} from "../../shared/services/tag-tree.object";
 
 
 @Component({
@@ -41,6 +42,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     dishName: string ;
     dishDescription : string;
     dishReference : string;
+    groupTypeDishType: GroupType = GroupType.All;
+    groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
 
     private dishReferenceError: string;
     private dishNameError: string;
@@ -53,8 +56,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
     private ratingsMap = new Map<number, RatingInfo>();
 
     private errorMessage: string;
-
-    displayId: string;
 
     constructor(
         private fix: LandingFixService,
@@ -115,7 +116,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
                 },
                 e => this.errorMessage = e);
     }
-
 
     harvestTagTypesForDish() {
         this.ingredientTags = [];
@@ -211,10 +211,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
 
 
-    }
-
-    displayTheRating() {
-        console.log("the rating is raging: " + this.thisRating);
     }
 
     changeTheRating(ratingInfo: RatingInfo) {

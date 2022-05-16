@@ -52,8 +52,8 @@ export class TagTreeService implements OnDestroy {
     }
 
 
-    allContentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType,
-                   tagTypes: TagType[], tagSelectType: TagSelectType): Observable<ITag[]> {
+    allContentList(id: string, contentType: ContentType,  groupType: GroupType,
+                   tagTypes: TagType[]): Observable<ITag[]> {
 
 
         this.refreshTagTreeIfNeeded();
@@ -61,7 +61,7 @@ export class TagTreeService implements OnDestroy {
 
         return observable.pipe(map((response: boolean) => {
             this.logger.debug("loaded, now returning.");
-            return this._tagTree.contentList(id, contentType, isAbbreviated, groupType, tagTypes, tagSelectType);
+            return this._tagTree.contentList(id, contentType, false, groupType, tagTypes);
         }));
 
 
@@ -77,7 +77,7 @@ export class TagTreeService implements OnDestroy {
         this.isLoadingSubject.next(true);
 
 
-        const promise = this.tagService.getAllExtendedTags();
+        const promise = this.tagService.getTagsForTagTree();
         console.log(promise);
         promise.then((data) => {
             this.logger.debug("tag data retrieved, building TagTree");
@@ -98,7 +98,6 @@ export class TagTreeService implements OnDestroy {
             this.logger.debug("refreshing TagTree");
             this.createOrRefreshTagTree();
         }
-        ;
     }
 
 

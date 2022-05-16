@@ -8,14 +8,10 @@ import {environment} from "../../../environments/environment";
 import {ITag} from "../../model/tag";
 import MappingUtils from "../../model/mapping-utils";
 
-
-
-
 @Injectable()
 export class TagService {
 
     private tagUrl;
-    private tagInfoUrl: string;
 
     constructor(
         private httpClient: HttpClient,
@@ -35,13 +31,13 @@ export class TagService {
             .toPromise();
     }
 
-    getAllExtendedTags(): Promise<ITag[]> {
+    getTagsForTagTree(): Promise<ITag[]> {
         this.logger.debug("Retrieving all tags");
-        var url = this.tagUrl + "?extended=true";
+        var url = `${this.tagUrl}/user`;
 
 
         return this.httpClient
-            .get(`${url}`)
+            .get(url)
             .pipe(map((response: HttpResponse<any>) => {
                     return TagService.mapTagsClient(response);
                 }),

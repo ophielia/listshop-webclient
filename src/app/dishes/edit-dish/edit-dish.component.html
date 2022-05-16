@@ -76,12 +76,12 @@
                                             <div class="ls-inline-block">
                                                 <app-tag-select class="at-tag-select-style"
                                                                 [tagTypes]="'DishType'"
-                                                                [selectType]="'Assign'"
-                                                                [allowAdd]="true"
+                                                                [groupType]="groupTypeDishType"
+                                                                [allowAdd]="false"
                                                                 [showCancelButton]="true"
                                                                 [placeholderText]="'Add Dish Type'"
                                                                 (tagSelected)="addTagToDish($event)"
-                                                                (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
+                                                                (cancelAddTag)="toggleShowAddDishTypeTag()"></app-tag-select>
                                             </div>
                                         </ng-container>
 
@@ -147,8 +147,8 @@
                                             <div style="display:inline-block; width: 100%">
                                                 <app-tag-select class="at-tag-select-style"
                                                                 [tagTypes]="'DishType'"
-                                                                [selectType]="'Assign'"
-                                                                [allowAdd]="true"
+                                                                [groupType]="groupTypeNoGroups"
+                                                                [allowAdd]="false"
                                                                 [showCancelButton]="true"
                                                                 [placeholderText]="'Add Dish Type'"
                                                                 (tagSelected)="addTagToDish($event)"
@@ -173,7 +173,7 @@
 
                     <app-tag-select class="at-tag-select-style"
                                     [tagTypes]="'Ingredient'"
-                                    [selectType]="'Assign'"
+                                    [groupType]="groupTypeNoGroups"
                                     [allowAdd]="true"
                                     [showCancelButton]="true"
                                     [placeholderText]="'Add Ingredient'"
@@ -215,7 +215,7 @@
 
                         <app-tag-select class="at-tag-select-style"
                                         [tagTypes]="'TagType'"
-                                        [selectType]="'Assign'"
+                                        [groupType]="groupTypeNoGroups"
                                         [allowAdd]="true"
                                         [showCancelButton]="true"
                                         [placeholderText]="'Add Tag'"

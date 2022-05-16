@@ -14,6 +14,7 @@ import {NGXLogger} from "ngx-logger";
 import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {OperationType} from "../../model/operation-type";
+import {GroupType} from "../../shared/services/tag-tree.object";
 
 @Component({
     selector: 'app-edit-list',
@@ -36,6 +37,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     showChangeName: boolean = false;
     shoppingListIsStarter: boolean = false;
     private originalName: string = null;
+    groupTypeNoGroups : GroupType = GroupType.ExcludeGroups;
     shoppingListName: string = "";
     frequentToggleAvailable: boolean = true;
     frequentItemsExist: boolean = false;
@@ -47,7 +49,6 @@ export class EditListComponent implements OnInit, OnDestroy {
     shoppingList: ShoppingList;
     removedItems: IItem[] = [];
     selectedItems: string[] = [];
-
 
     constructor(
         private fix: LandingFixService,
@@ -139,7 +140,6 @@ export class EditListComponent implements OnInit, OnDestroy {
             this.originalName = null;
         }
     }
-
 
     getShoppingList(id: string) {
         let $sub = this.listService

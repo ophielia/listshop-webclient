@@ -12,6 +12,7 @@ import {MealPlanService} from "../../shared/services/meal-plan.service";
 import TagType from "../../model/tag-type";
 import {IRatingInfo, RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
+import {GroupType} from "../../shared/services/tag-tree.object";
 
 
 @Component({
@@ -28,33 +29,18 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     isLoading: boolean = true;
 
     dish: Dish;
-    dishTypeTags: Tag[] = [];
     ingredientTags: Tag[] = [];
-    ratingTags: Tag[] = [];
-    plainOldTags: Tag[] = [];
 
     showAddIngredient: boolean = false;
     showPlainTag: boolean = false;
     showAddDishType: boolean = false;
-    showEditMainInfo: boolean = false;
+    ingredientGroupType: GroupType = GroupType.ExcludeGroups;
 
     dishName: string ;
     dishDescription : string;
     dishReference : string;
 
-    private dishReferenceError: string;
-    private dishNameError: string;
-    private dishDescriptionError: string;
-
-    thisRating = 2;
-
-    private dishRatingInfo: DishRatingInfo;
-    private ratingHeaders: IRatingInfo[];
-    private ratingsMap = new Map<number, RatingInfo>();
-
     private errorMessage: string;
-
-    displayId: string;
 
     constructor(
         private fix: LandingFixService,
@@ -76,7 +62,6 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
             let id = params['id'];
             this.logger.debug('getting list with id: ', id);
             this.getDish(id);
-            this.getDishRatings(id);
         });
     }
 
@@ -90,7 +75,6 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                     this.dish = p;
                     this.isLoading = false;
-                    this.harvestTagTypesForDish();
                     this.dishName = this.dish.name;
                     this.dishReference = this.dish.reference;
                     this.dishDescription = this.dish.description;
@@ -98,87 +82,11 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
                 e => this.errorMessage = e);
     }
 
-    getDishRatings(dishId: string) {
-        this.dishService
-            .getDishRatings(dishId)
-            .subscribe(p => {
-                    if (p.headers != null) {
-                        this.ratingHeaders = p.headers;
-                    }
-                    if (p.dish_ratings != null) {
-                        this.dishRatingInfo = p.dish_ratings[0];
-                        this.dishRatingInfo.ratings.forEach(r => {
-                            r.orig_power = r.power;
-                            this.ratingsMap.set(r.rating_tag_id, r);
-                        });
-                    }
-                },
-                e => this.errorMessage = e);
-    }
-
-
-    harvestTagTypesForDish() {
-        this.ingredientTags = [];
-        this.dishTypeTags = [];
-        this.ratingTags = [];
-        this.plainOldTags = [];
-
-        for (let tag of this.dish.tags) {
-            var tagType = tag.tag_type;
-            switch (tagType) {
-                case TagType.Ingredient:
-                    this.ingredientTags.push(tag);
-                    break;
-                case TagType.DishType:
-                    this.dishTypeTags.push(tag);
-                    break;
-                case TagType.Rating:
-                    break;
-                case TagType.TagType:
-                    this.plainOldTags.push(tag);
-                    break;
-            }
-        }
-    }
-
-    stringFieldEmpty(testField) {
-        if (testField == null) {
-            return true
-        }
-        return testField.trim().length == 0;
-    }
 
     toggleAddIngredient() {
         this.showAddIngredient = !this.showAddIngredient;
         if (this.showAddIngredient) {
             this.showPlainTag = false;
-            this.showAddDishType = false;
-        }
-    }
-
-    toggleEditMainInfo() {
-        this.showEditMainInfo = !this.showEditMainInfo;
-        if (this.showEditMainInfo) {
-            this.showAddIngredient = false;
-            this.showPlainTag = false;
-            this.showAddDishType = false;
-        }
-    }
-
-    toggleShowAddDishTypeTag() {
-        this.showAddDishType = !this.showAddDishType;
-        if (this.showAddDishType) {
-            this.showEditMainInfo = false;
-            this.showPlainTag = false;
-            this.showAddIngredient = false;
-        }
-    }
-
-    toggleShowPlainTag() {
-        this.showPlainTag = !this.showPlainTag;
-        if (this.showPlainTag) {
-            this.showEditMainInfo = false;
-            this.showAddIngredient = false;
             this.showAddDishType = false;
         }
     }
@@ -213,74 +121,6 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
 
     }
 
-    displayTheRating() {
-        console.log("the rating is raging: " + this.thisRating);
-    }
-
-    changeTheRating(ratingInfo: RatingInfo) {
-        if (ratingInfo) {
-            console.log("the rating is still raging: " + ratingInfo.power);
-            console.log("but this time with a tag" + ratingInfo.rating_tag_id);
-
-            if (ratingInfo.orig_power < ratingInfo.power) {
-                console.log("going up");
-            } else if (ratingInfo.orig_power > ratingInfo.power) {
-                console.log("going down");
-
-            } else {
-                console.log("no change.");
-
-            }
-
-            this.dishService.setDishRating(this.dish.dish_id, ratingInfo.rating_tag_id, ratingInfo.power).subscribe();
-            ratingInfo.orig_power = ratingInfo.power;
-        }
-
-    }
-
-    saveAllEdits() {
-        this.validateEntry();
-        if (this.hasErrors()) {
-            return;
-        }
-        this.showEditMainInfo = false;
-        this.dishService.saveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
-            .subscribe( x => {
-                    this.getDish(this.dish.dish_id);
-                }
-
-            )
-    }
-
-    validateEntry() {
-        this.dishReferenceError = null;
-        this.dishDescriptionError = null;
-        this.dishNameError = null;
-
-        if (this.dishName == null || (this.dishName.trim())=="") {
-            this.logger.debug("Invalid - no name for the dish");
-            this.dishNameError = "Disn name is required.";
-        } else if (this.dishName != null && this.dishName.length > 255)  {
-            this.logger.debug("Invalid - dish name too long");
-            this.dishNameError = "This dish name is too long";
-        }
-        if (this.dishDescription != null && this.dishDescription.length > 255)  {
-            this.logger.debug("Invalid - dish description is too long");
-            this.dishDescriptionError = "This dish description is too long";
-        }
-        if (this.dishReference != null && this.dishReference.length > 255)  {
-            this.logger.debug("Invalid - dish reference is too long");
-            this.dishReferenceError = "The dish reference is too long";
-        }
-
-    }
-
-
-    private hasErrors() {
-        return this.dishNameError != null ||
-            this.dishDescriptionError != null ||
-            this.dishReferenceError != null;
-    }
 
 
 }

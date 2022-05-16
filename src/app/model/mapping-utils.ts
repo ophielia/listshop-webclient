@@ -28,7 +28,7 @@ export default class MappingUtils {
     }
 
     static toShoppingList(jsonResult: any): IShoppingList {
-        let shoppinglist = <IShoppingList>({
+        let shoppingList = <IShoppingList>({
             list_id: jsonResult.shopping_list.list_id,
             name: jsonResult.shopping_list.name,
             user_id: jsonResult.shopping_list.user_id,
@@ -43,9 +43,9 @@ export default class MappingUtils {
         });
 
         if (MappingUtils.showConsoleLogs) {
-            console.log('Parsed list:', shoppinglist);
+            console.log('Parsed list:', shoppingList);
         }
-        return shoppinglist;
+        return shoppingList;
 
     }
 
@@ -64,7 +64,7 @@ export default class MappingUtils {
     }
 
     static toMealPlan(r: any): MealPlan {
-        let mealplan = <MealPlan>({
+        let mealPlan = <MealPlan>({
                 meal_plan_id: r.meal_plan.meal_plan_id,
                 user_id: r.meal_plan.user_id,
                 name: r.meal_plan.name,
@@ -75,10 +75,10 @@ export default class MappingUtils {
         ;
 
         if (MappingUtils.showConsoleLogs) {
-            console.log('Parsed mealplan:', mealplan);
+            console.log('Parsed mealplan:', mealPlan);
         }
 
-        return mealplan;
+        return mealPlan;
     }
 
     static toRatingUpdateInfo(r: any): RatingUpdateInfo {
@@ -92,12 +92,11 @@ export default class MappingUtils {
     }
 
     private static _toRatingUpdateInfo(r: any): RatingUpdateInfo {
-        let ratingUpdateInfo = <RatingUpdateInfo>({
-                headers: r.headers.map(MappingUtils._toRatingInfo),
-                dish_ratings: r.dish_ratings.map(MappingUtils._toDishRatingInfo)
-            })
-        ;
-        return ratingUpdateInfo;
+
+        return <RatingUpdateInfo>({
+            headers: r.headers.map(MappingUtils._toRatingInfo),
+            dish_ratings: r.dish_ratings.map(MappingUtils._toDishRatingInfo)
+        });
     }
 
     static _toRatingInfo(r: any): IRatingInfo {
@@ -168,15 +167,15 @@ export default class MappingUtils {
     private static _toTag(jsonResult: any): ITag {
         return <ITag>({
             tag_id: jsonResult.tag_id,
-            name: jsonResult.name,
+            user_id: jsonResult.user_id,
             description: jsonResult.description,
-            search_select: jsonResult.search_select,
-            assign_select: jsonResult.assign_select,
-            power: jsonResult.power,
-            parent_id: jsonResult.parent_id,
-            dishes: jsonResult.dishes ? jsonResult.dishes.map(MappingUtils._toDish) : null,
             is_inverted: false,
-            tag_type: jsonResult.tag_type
+            is_group: jsonResult.is_group,
+            name: jsonResult.name,
+            parent_id: jsonResult.parent_id,
+            power: jsonResult.power,
+            tag_type: jsonResult.tag_type,
+            is_expanded: false,
         })
     }
 

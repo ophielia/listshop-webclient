@@ -59,7 +59,7 @@ export class AddDishComponent implements OnInit, OnDestroy {
         this.title.setTitle(this.route.snapshot.data['title']);
 
         let $sub = this.tagTreeService.allContentList(TagTree.BASE_GROUP,
-            ContentType.All, false, GroupType.ExcludeGroups, [TagType.DishType] , TagSelectType.All)
+            ContentType.All, GroupType.All, [TagType.DishType] )
             .subscribe(data => {
                 this.logger.debug("in subscribe in tag-select. data: " + data.length)
                 this.dishTypeList = data;
