@@ -129,6 +129,7 @@
                                             [allowAdd]="true"
                                             [showCancelButton]="true"
                                             [placeholderText]="'Add Item'"
+                                            (createTag)="createTag($event)"
                                             (tagSelected)="addTagToList($event)"
                                             (cancelAddTag)="toggleAddItem()"></app-tag-select>
                         </div>
@@ -210,3 +211,14 @@
     </div>
 </section>
 <!-- list Section End -->
+
+<app-modal #addtag >
+    <div class="app-modal-body">
+        <app-create-tag-dialog
+                [tagName]="tagNameToCreate"
+                [addTargetString]="'list'"
+                [tagType]="tagTypeToCreate"
+                (createdTagId)="addTagToListById($event)">
+        </app-create-tag-dialog>
+    </div>
+</app-modal>

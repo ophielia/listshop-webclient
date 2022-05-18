@@ -52,6 +52,7 @@
                                                     [allowAdd]="true"
                                                     [showCancelButton]="true"
                                                     [placeholderText]="'Add Ingredient'"
+                                                    (createTag)="createTag($event)"
                                                     (tagSelected)="addTagToDish($event)"
                                                     (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
 
@@ -79,6 +80,19 @@
 </section>
 
 <!--content End-->
+
+<app-modal #addtag >
+    <div class="app-modal-body">
+        <app-create-tag-dialog
+                [tagName]="tagNameToCreate"
+                [addTargetString]="'dish'"
+                [tagType]="tagTypeToCreate"
+                (createdTagId)="addTagToDishById($event)">
+        </app-create-tag-dialog>
+    </div>
+</app-modal>
+
+
 
 
 

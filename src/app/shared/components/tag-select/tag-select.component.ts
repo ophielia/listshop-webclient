@@ -122,23 +122,7 @@ export class TagSelectComponent implements OnInit, OnDestroy {
         tag.tag_type = tagtype;
         tag.name = this.autoSelectedTag;
         this.createTag.emit(tag);
-        /*
-        var $sub = this.tagService.addTag(this.autoSelectedTag, tagtype)
-            .subscribe(r => {
-                this.autoSelectedTag = null;
-                var headers = r.headers;
-                var location = headers.get("Location");
-                var splitlocation = location.split("/");
-                var id = splitlocation[splitlocation.length - 1];
-                let promise = this.tagService.getById(id);
-                promise.then(data => {
-                    this.showAddTags = false;
-                    this.autoSelectedTag = null;
-                    this.tagSelected.emit(data);
-                })
-            });
-        this.unsubscribe.push($sub);
-         */
+        this.cancelAdd();
     }
 
     ngOnDestroy() {

@@ -5,7 +5,7 @@ import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {Tag} from "../../model/tag";
+import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
@@ -21,6 +21,7 @@ import {GroupType} from "../../shared/services/tag-tree.object";
     styleUrls: ['./add-dish-ingredient.component.scss']
 })
 export class AddDishIngredientComponent implements OnInit, OnDestroy {
+    @ViewChild('addtag') addTagModel;
     @ViewChild('dishesaddedtolist') addToListModal;
     @ViewChild('dishesaddedtomealplan') addToMealPlanModal;
     @ViewChild('addtagstodishesmodal') addTagsToDishesModal;
@@ -41,6 +42,8 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     dishReference : string;
 
     private errorMessage: string;
+    private tagNameToCreate: string;
+    private tagTypeToCreate: TagType;
 
     constructor(
         private fix: LandingFixService,
@@ -70,6 +73,7 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     }
 
     getDish(dishId: string) {
+
         this.dishService
             .getDish(dishId)
             .subscribe(p => {
@@ -78,8 +82,13 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
                     this.dishName = this.dish.name;
                     this.dishReference = this.dish.reference;
                     this.dishDescription = this.dish.description;
+                    this.pullIngredientTags();
                 },
                 e => this.errorMessage = e);
+    }
+
+    pullIngredientTags() {
+        this.ingredientTags =  this.dish.tags.filter(t => t.tag_type == TagType.Ingredient);
     }
 
 
@@ -92,19 +101,7 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     }
 
     addTagToDish(tag: Tag) {
-        // add tag to list as item in back end
-        this.logger.debug("adding tag [" + tag.tag_id + "] to dish");
-
-        let $sub = this.dishService
-            .addTagToDish(this.dish.dish_id, tag.tag_id)
-            .subscribe(p => {
-                this.getDish(this.dish.dish_id);
-            });
-        this.unsubscribe.push($sub);
-
-        this.showAddIngredient = false;
-        this.showPlainTag = false
-        this.showAddDishType = false
+this.addTagToDishById(tag.tag_id);
     }
 
     removeTagFromDish(tag: Tag) {
@@ -122,5 +119,26 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     }
 
 
+    createTag(tag: ITag) {
+        this.tagNameToCreate = tag.name;
+        this.tagTypeToCreate = tag.tag_type;
+        this.addTagModel.show();
 
+    }
+
+    addTagToDishById(tagId: string) {
+        // add tag to list as item in back end
+        this.logger.debug("adding tag [" + tagId + "] to dish");
+        this.addTagModel.hide();
+        let $sub = this.dishService
+            .addTagToDish(this.dish.dish_id, tagId)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);
+            });
+        this.unsubscribe.push($sub);
+
+        this.showAddIngredient = false;
+        this.showPlainTag = false
+        this.showAddDishType = false
+    }
 }

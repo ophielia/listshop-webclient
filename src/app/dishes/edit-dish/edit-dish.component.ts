@@ -218,22 +218,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.tagNameToCreate = tag.name;
         this.tagTypeToCreate = tag.tag_type;
         this.addTagModel.show();
-        /*
-         // add tag to list as item in back end
-         this.logger.debug("adding tag [" + tag.tag_id + "] to dish");
-
-         let $sub = this.dishService
-             .addTagToDish(this.dish.dish_id, tag.tag_id)
-             .subscribe(p => {
-                 this.getDish(this.dish.dish_id);
-             });
-         this.unsubscribe.push($sub);
-
-         this.showAddIngredient = false;
-         this.showPlainTag = false
-         this.showAddDishType = false
-         */
-    }
+     }
 
     removeTagFromDish(tag: Tag) {
         // add tag to list as item in back end

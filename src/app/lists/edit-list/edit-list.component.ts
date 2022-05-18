@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
@@ -9,12 +9,13 @@ import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
 import {Category, ICategory} from "../../model/category";
 import {IItem, Item} from "../../model/item";
-import {Tag} from "../../model/tag";
+import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {OperationType} from "../../model/operation-type";
 import {GroupType} from "../../shared/services/tag-tree.object";
+import TagType from "../../model/tag-type";
 
 @Component({
     selector: 'app-edit-list',
@@ -22,6 +23,8 @@ import {GroupType} from "../../shared/services/tag-tree.object";
     styleUrls: ['./edit-list.component.scss']
 })
 export class EditListComponent implements OnInit, OnDestroy {
+    @ViewChild('addtag') addTagModel;
+
     private unsubscribe: Subscription[] = [];
 
     crossedOffExist: boolean;
@@ -49,6 +52,8 @@ export class EditListComponent implements OnInit, OnDestroy {
     shoppingList: ShoppingList;
     removedItems: IItem[] = [];
     selectedItems: string[] = [];
+    tagNameToCreate: string;
+    tagTypeToCreate: TagType;
 
     constructor(
         private fix: LandingFixService,
@@ -210,8 +215,14 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     addTagToList(tag: Tag) {
         // add tag to list as item in back end
-        this.logger.debug("adding tag [" + tag.tag_id + "] to list");
-        let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tag);
+        this.addTagToListById(tag.tag_id);
+    }
+
+    addTagToListById(tagId: string) {
+        // add tag to list as item in back end
+        this.logger.debug("adding tag [" + tagId + "] to list");
+        this.addTagModel.hide();
+        let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tagId);
 
         promise.then((data) => {
             this.getShoppingList(this.shoppingList.list_id);
@@ -526,5 +537,12 @@ export class EditListComponent implements OnInit, OnDestroy {
             }
         }
         return false;
+    }
+
+    createTag(tag: ITag) {
+        this.tagNameToCreate = tag.name;
+        this.tagTypeToCreate = tag.tag_type;
+        this.addTagModel.show();
+
     }
 }

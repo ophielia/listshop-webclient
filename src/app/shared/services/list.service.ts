@@ -146,9 +146,9 @@ export class ListService {
         return this.httpClient.post(url, null);
     }
 
-    addTagItemToShoppingList(shoppingList_id: string, tag: ITag): Promise<Object> {
-        let item: Item = <Item>{tag_id: tag.tag_id};
-        let url = this.listUrl + "/" + shoppingList_id + "/tag/" + tag.tag_id
+    addTagItemToShoppingList(shoppingList_id: string, tagId: string): Promise<Object> {
+        let item: Item = <Item>{tag_id: tagId};
+        let url = this.listUrl + "/" + shoppingList_id + "/tag/" + tagId;
 
         return this.httpClient.post(url, item).toPromise();
     }
