@@ -21,9 +21,7 @@ import {GroupType} from "../../shared/services/tag-tree.object";
     styleUrls: ['./edit-dish.component.scss']
 })
 export class EditDishComponent implements OnInit, OnDestroy {
-    @ViewChild('dishesaddedtolist') addToListModal;
-    @ViewChild('dishesaddedtomealplan') addToMealPlanModal;
-    @ViewChild('addtagstodishesmodal') addTagsToDishesModal;
+    @ViewChild('addtag') addTagModel;
 
     unsubscribe: Subscription[] = [];
     isLoading: boolean = true;
@@ -49,13 +47,15 @@ export class EditDishComponent implements OnInit, OnDestroy {
     private dishNameError: string;
     private dishDescriptionError: string;
 
-    thisRating = 2;
+     tagNameToCreate: string;
+     tagTypeToCreate: TagType;
 
     private dishRatingInfo: DishRatingInfo;
     private ratingHeaders: IRatingInfo[];
     private ratingsMap = new Map<number, RatingInfo>();
 
     private errorMessage: string;
+
 
     constructor(
         private fix: LandingFixService,
@@ -183,6 +183,21 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
     }
 
+    addTagToDishById(tagId: string) {
+        this.addTagModel.hide();
+        // add tag to list as item in back end
+        let $sub = this.dishService
+            .addTagToDish(this.dish.dish_id, tagId)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);
+            });
+        this.unsubscribe.push($sub);
+
+        this.showAddIngredient = false;
+        this.showPlainTag = false
+        this.showAddDishType = false
+    }
+
     addTagToDish(tag: Tag) {
         // add tag to list as item in back end
         this.logger.debug("adding tag [" + tag.tag_id + "] to dish");
@@ -197,6 +212,27 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.showAddIngredient = false;
         this.showPlainTag = false
         this.showAddDishType = false
+    }
+
+    createTag(tag: Tag) {
+        this.tagNameToCreate = tag.name;
+        this.tagTypeToCreate = tag.tag_type;
+        this.addTagModel.show();
+        /*
+         // add tag to list as item in back end
+         this.logger.debug("adding tag [" + tag.tag_id + "] to dish");
+
+         let $sub = this.dishService
+             .addTagToDish(this.dish.dish_id, tag.tag_id)
+             .subscribe(p => {
+                 this.getDish(this.dish.dish_id);
+             });
+         this.unsubscribe.push($sub);
+
+         this.showAddIngredient = false;
+         this.showPlainTag = false
+         this.showAddDishType = false
+         */
     }
 
     removeTagFromDish(tag: Tag) {

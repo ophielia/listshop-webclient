@@ -20,17 +20,6 @@ export class TagService {
         this.tagUrl = environment.apiUrl + "tag";
     }
 
-    getById(tag_id: string): Promise<ITag> {
-        let url = this.tagUrl + "/" + tag_id;
-        return this.httpClient
-            .get(url)
-            .pipe(map((response: HttpResponse<any>) => {
-                return TagService.mapTagClient(response);
-            }),
-                catchError(TagService.handleError))
-            .toPromise();
-    }
-
     getTagsForTagTree(): Promise<ITag[]> {
         this.logger.debug("Retrieving all tags");
         var url = `${this.tagUrl}/user`;
@@ -46,15 +35,15 @@ export class TagService {
 
     }
 
-    addTag(newTagName: string, tagType: string): Observable<HttpResponse<Object>> {
+    addTagToParent(newTagName: string, parentId: string, tagType: TagType): Observable<HttpResponse<Object>> {
         var newTag: ITag = <ITag>({
             name: newTagName,
             tag_type: tagType
         });
-
+        let url = `${this.tagUrl}/${parentId}/child`;
         return this
             .httpClient
-            .post(this.tagUrl,
+            .post(url,
                 JSON.stringify(newTag), {observe: 'response'});
 
     }
@@ -62,10 +51,6 @@ export class TagService {
     static mapTagsClient(object: Object): ITag[] {
         let embeddedObj = object["_embedded"];
         return embeddedObj["tagResourceList"].map(MappingUtils.toTag);
-    }
-
-    static mapTagClient(object: Object): ITag {
-        return MappingUtils.toTag(object);
     }
 
     static handleError(error: any) {

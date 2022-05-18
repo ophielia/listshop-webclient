@@ -101,4 +101,7 @@ export class TagTreeService implements OnDestroy {
     }
 
 
+    retrieveTag(tagId: string) {
+        return this._tagTree.retrieveTag(tagId);
+    }
 }

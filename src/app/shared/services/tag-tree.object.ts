@@ -238,6 +238,9 @@ export class TagTree {
             return tagsToReturn;
         }
 
+    retrieveTag(tagId: string) {
+        return this._lookupDisplay.get(tagId);
+    }
 }
 
 export class TagTreeNode {

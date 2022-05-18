@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ITag} from "../../../model/tag";
+import {ITag, Tag} from "../../../model/tag";
 import {Dish} from "../../../model/dish";
 import TagType from "../../../model/tag-type";
 import {Subscription} from "rxjs";
@@ -7,7 +7,6 @@ import {TagService} from "../../services/tag.service";
 import {TagTreeService} from "../../services/tag-tree.service";
 import {ContentType, GroupType, TagTree} from "../../services/tag-tree.object";
 import {NGXLogger} from "ngx-logger";
-import TagSelectType from "../../../model/tag-select-type";
 
 
 @Component({
@@ -19,6 +18,7 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
     @Output() tagSelected: EventEmitter<ITag> = new EventEmitter<ITag>();
     @Output() cancelAddTag: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() createTag: EventEmitter<ITag> = new EventEmitter<ITag>();
     @Input() tagTypes: string;
     @Input() groupType: GroupType = GroupType.All;
 
@@ -118,6 +118,11 @@ export class TagSelectComponent implements OnInit, OnDestroy {
 
 
     add(tagtype: string) {
+        let tag = new Tag();
+        tag.tag_type = tagtype;
+        tag.name = this.autoSelectedTag;
+        this.createTag.emit(tag);
+        /*
         var $sub = this.tagService.addTag(this.autoSelectedTag, tagtype)
             .subscribe(r => {
                 this.autoSelectedTag = null;
@@ -133,6 +138,7 @@ export class TagSelectComponent implements OnInit, OnDestroy {
                 })
             });
         this.unsubscribe.push($sub);
+         */
     }
 
     ngOnDestroy() {

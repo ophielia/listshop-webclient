@@ -1,0 +1,59 @@
+<h2>Create New Item</h2>
+<div *ngIf="stepOne">
+    <div>
+        <input type="text" class="form-control ls-inline-input"
+               [(ngModel)]="tagName"
+        />
+    </div>
+    <div class="ls-list-span-buttons" (click)="moveToStepTwo()">
+        <span>
+        Next
+    </span>
+    </div>
+</div>
+<ng-container *ngIf="stepTwo">
+    <div>
+    <span class="category-as-button">
+        {{tagName}}
+    </span>
+        <h3>Please select a category</h3>
+    </div>
+    <div class="drilldown-content">
+        <div *ngFor="let nav of navigationList"
+             (click)="drillDown(nav.tag_id)"
+             class="category-box">{{nav.name}}</div>
+        <img *ngIf="(navigationList.length > 0 ) && (contentList.length > 0)"
+             src="../../../../assets/images/listshop/icons/orangeround/rightarrow.png">
+        <div *ngFor="let tag of contentList"
+             (click)="drillDown(tag.tag_id)"
+             class="category-box">{{tag.name}}</div>
+    </div>
+    <div>
+        <div *ngIf="categoryIsSelected()" (click)="moveToStepThree()" class="category-create">Select Category {{selectedCategoryName}}</div>
+        <div *ngIf="!categoryIsSelected()" class="category-create-disabled">Select Category</div>
+
+    </div>
+</ng-container>
+<ng-container *ngIf="stepThree">
+    <div>
+        <h3>Create Item</h3>
+        <span class="category-as-button">
+        {{tagName}}
+    </span>
+
+    </div>
+    <div>
+        <h3>In Category</h3>
+        <span class="category-as-button">
+        {{selectedCategoryName}}
+    </span>
+
+    </div>
+
+    <div class="add-category button-pair">
+        <div class="button left inverse" (click)="moveToStepOne()">Modify Item</div>
+        <div class="button right standard" (click)="createTag()">Create Item, and add to {{addTargetString}}</div>
+
+    </div>
+</ng-container>
+
