@@ -28,7 +28,7 @@ export class TagSelectComponent implements OnInit, OnDestroy {
 
     tagList: ITag[];
 
-    autoSelectedTag: any;
+    autoSelectedTag: ITag;
     filteredTags: ITag[];
 
     name: string;
@@ -120,7 +120,7 @@ export class TagSelectComponent implements OnInit, OnDestroy {
     add(tagtype: string) {
         let tag = new Tag();
         tag.tag_type = tagtype;
-        tag.name = this.autoSelectedTag;
+        tag.name = this.autoSelectedTag.name;
         this.createTag.emit(tag);
         this.cancelAdd();
     }
@@ -130,6 +130,9 @@ export class TagSelectComponent implements OnInit, OnDestroy {
 
     }
 
+    isRatingTag(tag_type: any) {
+        return tag_type == TagType.Rating;
+    }
 }
 
 

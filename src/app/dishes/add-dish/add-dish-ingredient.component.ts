@@ -42,8 +42,8 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     dishReference : string;
 
     private errorMessage: string;
-    private tagNameToCreate: string;
-    private tagTypeToCreate: TagType;
+     tagNameToCreate: string;
+     tagTypeToCreate: TagType;
 
     constructor(
         private fix: LandingFixService,

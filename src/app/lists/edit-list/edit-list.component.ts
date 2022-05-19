@@ -515,9 +515,10 @@ export class EditListComponent implements OnInit, OnDestroy {
         var allCrossedOff = (itemsToCrossOff.filter(itco => !itco.crossed_off)).length == 0
         var operation = allCrossedOff ? OperationType.UnCrossOff : OperationType.CrossOff
         // remove from selected
+        this.selectedItems = [];
         this.selectedItems = this.selectedItems.filter(tid => itemTagIds.indexOf(tid) == 0);
         let $sub = this.listService.performOperationOnListItems(this.shoppingList.list_id,
-            itemsToCrossOff.map(i => i.tag.tag_id), operation)
+            itemTagIds, operation)
             .subscribe(() => {
                 this.getShoppingList(this.shoppingList.list_id);
             });
