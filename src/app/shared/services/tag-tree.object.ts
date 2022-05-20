@@ -226,9 +226,10 @@ export class TagTree {
             this._lookupDisplay.forEach(entry => {
                 if (tagTypes.indexOf(entry.tag_type) >= 0) {
                     const isGroup = entry.is_group;
-                    if (groupType == GroupType.All) {
+                    const isRatingsGroup = isGroup && entry.tag_type == 'Rating';
+                    if (groupType == GroupType.All && !isRatingsGroup) {
                         tagsToReturn.push(entry);
-                    } else if (groupType == GroupType.GroupsOnly && isGroup) {
+                    } else if (groupType == GroupType.GroupsOnly && !isRatingsGroup) {
                         tagsToReturn.push(entry);
                     } else if (groupType == GroupType.ExcludeGroups && !isGroup) {
                         tagsToReturn.push(entry);

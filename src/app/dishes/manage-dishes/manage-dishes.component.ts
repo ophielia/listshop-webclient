@@ -423,4 +423,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         }
         return this.selectedDishes.map(d => d.dish_id);
     }
+
+    isRatingTag(tag_type: string) {
+        return tag_type == 'Rating';
+    }
 }
