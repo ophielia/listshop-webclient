@@ -106,6 +106,8 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
         this.initialLoad = false;
         let $sub = this.mealPlanService.addDishToMealPlan(dish.dish_id, this.mealPlan.meal_plan_id)
             .subscribe(() => {
+                this.searchValue = "";
+                this.filterByDishname();
                 this.getMealPlan(this.mealPlan.meal_plan_id);
             });
         this.unsubscribe.push($sub);
