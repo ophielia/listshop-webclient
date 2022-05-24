@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] June 2022
+
+### Added
+- stars shown  for ratings in drop down
+- modal for adding item, which allows user to select category
+
+### Changed
+- call on api for tags
+- dish select cleared after adding dish to meal plan
+
+### Deprecated
+- assign_select, search_select in tag object
+
+### Fixed
+-remove / cross off items clears selected list afterwards
+
+
 ## [2.1.0] April 2022
 
 ### Added
