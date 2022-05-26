@@ -5,7 +5,6 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
 import {IShoppingList} from "../../model/shoppinglist";
 import {Subscription} from "rxjs";
-import {LegendService} from "../../shared/services/legend.service";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
@@ -42,6 +41,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
 
     copiedId: string;
     removedDishes: Dish[] = [];
+    userHasStarter: boolean = false;
 
 
     constructor(
@@ -53,20 +53,19 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         private listService: ListService,
         private dishService: DishService,
         private mealPlanService: MealPlanService,
-        public legendService: LegendService,
         private logger: NGXLogger,
         private planContext: PlanContext
     ) {
     }
 
     ngOnInit() {
-
         this.title.setTitle(this.route.snapshot.data['title']);
         this.route.params.subscribe(params => {
             let id = params['id'];
             this.logger.debug('getting list with id: ', id);
             this.getMealPlan(id);
             this.getSurroundingMealPlans(id);
+            this.determineIfUserHasStarter();
         });
         this.getAllDishes();
     }
@@ -241,5 +240,13 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.previousPlanId = this.planContext.getPreviousMealPlanId(id);
         this.nextPlanId = this.planContext.getNextMealPlanId(id);
 
+    }
+
+    private determineIfUserHasStarter() {
+        let promise = this.listService.getAllListsAsPromise();
+        promise.then(data => {
+            var starter = data.filter( l => l.is_starter);
+            this.userHasStarter = starter.length > 0;
+        })
     }
 }
