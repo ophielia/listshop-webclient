@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { ColorPickerService } from '../../shared/services/color-picker.service';
+import packageJson from '../../../../package.json';
+
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -11,6 +13,7 @@ export class FooterComponent {
   public hideScrollHeight = 10;
   public open = false;
   today: number = Date.now();
+  public version: string = packageJson.version;
 
   constructor(public customize: ColorPickerService) { }
 
