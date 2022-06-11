@@ -1,0 +1,51 @@
+@import '../../../assets/scss/variable';
+.beta-me-text {
+  h3 {
+    margin-top: 15px;
+    line-height: 24px;
+    font-size: 17px;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 16px;
+    margin-top: 15px;
+    text-transform: none;
+  }
+
+
+  .action-div {
+    width: fit-content;
+    padding: 5px 12px;
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+    border-color: $color_basic_orange;
+    border-radius: 15px;
+    border-width: 1px;
+    background-color: $color_basic_orange;
+  }
+  .offset {
+    margin-left: 300px;
+  }
+  .beta-options {
+    margin-bottom: 30px;
+  }
+}
+.beta-app-display {
+  img {
+    max-height: 400px;
+  }
+}
+
+//@media (max-height: 500px) and (min-width: 1000px) {
+@media  (max-width: 1000px) {
+.beta-app-display {
+  display: none;
+}
+  .beta-me-text {
+    .offset {
+      margin-left: 100px;
+    }
+  }
+}

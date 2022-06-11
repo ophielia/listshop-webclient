@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {AuthenticationService} from "../../../shared/services/authentication.service";
 
 
 @Component({
@@ -7,9 +8,19 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './intro-two.component.html',
   styleUrls: ['./intro-two.component.scss']
 })
-export class IntroTwoComponent {
+export class IntroTwoComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  isLoggedIn: boolean;
+  constructor(private modalService: NgbModal,
+              private authorizationService: AuthenticationService
+
+  ) { }
+
+  ngOnInit(): void {
+    this.isLoggedIn = this.authorizationService.isAuthenticated();
+  }
+
+
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true, size: 'lg' });
   }

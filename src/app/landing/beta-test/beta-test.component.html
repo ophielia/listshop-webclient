@@ -1,0 +1,54 @@
+<ng-container *ngIf="isLoggedIn">
+
+<app-list-shop-header></app-list-shop-header>
+</ng-container>
+<ng-container *ngIf="!isLoggedIn">
+<app-content-header></app-content-header>
+    </ng-container>
+<!-- blog Section Start -->
+<section id="blog" class="about-me">
+    <div class="about-decor">
+        <div class="about-circle1"><img src="../../../../assets/images/team1.png" alt=""></div>
+        <div class="about-circle2"><img src="../../../../assets/images/main-banner1.png" alt=""></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="title">almost <span>There</span></h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+
+                    <div class="beta-app-display">
+                        <img src="../../../../assets/images/222.png" alt="">
+                    </div>
+
+            </div>
+            <div class="col-lg-9">
+
+                <div class="beta-me-text">
+
+                    <p>We're working on an app for <span
+                            class="listshop-name">the list shop</span> so you can have your lists with you wherever you go.
+                        The app is currently in the test phase. We hope to release it towards the end of this year.
+                    </p>
+                    <h3>In the meantime, you can:</h3>
+                    <div class="beta-options">
+                        <h4>Sign up to be notified when the app is released.</h4>
+                        <div *ngIf="signedUp" class="action-div offset">You're signed up to be notified</div>
+                        <div *ngIf="!signedUp" (click)="signUpForNotification()" class="action-div offset">Notify me</div>
+                    </div>
+                    <div class="beta-options">
+                        <h4>Get early access to the app by becoming a tester</h4>
+                        <div *ngIf="isLoggedIn" (click)="sendTestInformation()" class="action-div offset">I'd like to test</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- blog Section End -->

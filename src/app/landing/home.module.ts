@@ -15,6 +15,8 @@ import { TestimonialComponent } from './home/testimonial/testimonial.component';
 import {AboutmeComponent} from "./aboutme/aboutme.component";
 import {ContentHeaderComponent} from "./contentheader/content-header.component";
 import {PrivacyComponent} from "./privacy/privacy.component";
+import {BetaTestComponent} from "./beta-test/beta-test.component";
+import {AnonymousBetaTestComponent} from "./anonymous-beta-test/anonymous-beta-test.component";
 
 @NgModule({
   imports: [
@@ -35,7 +37,9 @@ import {PrivacyComponent} from "./privacy/privacy.component";
     IntroTwoComponent,
     AboutComponent,
     FeatureComponent,
-    TestimonialComponent
+    TestimonialComponent,
+    BetaTestComponent,
+    AnonymousBetaTestComponent
   ],
   providers: []
 })
