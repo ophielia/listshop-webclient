@@ -30,18 +30,19 @@
                 <div class="beta-me-text">
 
                     <p>We're working on an app for <span
-                            class="listshop-name">the list shop</span> so you can have your lists with you wherever you go.
-                        The app is currently in the test phase. We hope to release it towards the end of this year.
+                            class="listshop-name">the list shop</span>, so you can have your lists with you wherever you go.
+                        The app is currently in the test phase, and we're working hard - hoping to release it towards the end of this year.
                     </p>
                     <h3>In the meantime, you can:</h3>
                     <div class="beta-options">
                         <h4>Sign up to be notified when the app is released.</h4>
-                        <div *ngIf="signedUp" class="action-div offset">You're signed up to be notified</div>
-                        <div *ngIf="!signedUp" (click)="signUpForNotification()" class="action-div offset">Notify me</div>
+                        <div *ngIf="signedUpForNotify" class="action-div offset">You're signed up to be notified</div>
+                        <div *ngIf="!signedUpForNotify" (click)="signUpForNotification()" class="action-div offset">Notify me</div>
                     </div>
                     <div class="beta-options">
-                        <h4>Get early access to the app by becoming a tester</h4>
-                        <div *ngIf="isLoggedIn" (click)="sendTestInformation()" class="action-div offset">I'd like to test</div>
+                        <h4>Get early access to the app by becoming a tester.</h4>
+                        <div *ngIf="testEmailCount == 0" (click)="sendTestInformation()" class="action-div offset">I'd like to test</div>
+                        <div *ngIf="testEmailCount > 0" (click)="sendTestInformation()" class="action-div offset">Resend testing email</div>
                     </div>
 
                 </div>

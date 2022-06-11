@@ -29,6 +29,7 @@ import {AlertComponent} from "./alert/alert.component";
 import {ConfirmDialogService} from "./services/confirm-dialog.service";
 import {ConfirmDialogComponent} from "./components/confirm-dialog/confirm-dialog.component";
 import { CreateTagDialogComponent } from './components/create-tag-dialog/create-tag-dialog.component';
+import {UserService} from "./services/user.service";
 
 @NgModule({
     exports: [
@@ -80,6 +81,7 @@ import { CreateTagDialogComponent } from './components/create-tag-dialog/create-
         ListService,
         DishService,
         TagService,
+        UserService,
         MealPlanService,
         ConfirmDialogService
 

@@ -10,6 +10,7 @@ import {Slot} from "./slot";
 import {RatingUpdateInfo} from "./rating-update-info";
 import {IRatingInfo, RatingInfo} from "./rating-info";
 import {DishRatingInfo, IDishRatingInfo} from "./dish-rating-info";
+import {UserProperty} from "./userproperty";
 
 
 export default class MappingUtils {
@@ -79,6 +80,17 @@ export default class MappingUtils {
         }
 
         return mealPlan;
+    }
+
+    static toUserProperty(r: any): UserProperty {
+        let userProperty = <UserProperty>({
+                key: r.key,
+                value: r.value
+            })
+        ;
+
+
+        return userProperty;
     }
 
     static toRatingUpdateInfo(r: any): RatingUpdateInfo {

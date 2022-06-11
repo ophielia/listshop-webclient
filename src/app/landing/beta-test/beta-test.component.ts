@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../shared/services/authentication.service";
+import {UserService} from "../../shared/services/user.service";
+import {UserProperty} from "../../model/userproperty";
 
 @Component({
   selector: 'app-beta-test',
@@ -8,9 +10,11 @@ import {AuthenticationService} from "../../shared/services/authentication.servic
 })
 export class BetaTestComponent implements OnInit {
   public isLoggedIn: boolean;
-  public signedUp: boolean = false;
+  public signedUpForNotify: boolean = false;
+  public testEmailCount: number = 0;
 
-  constructor(private authorizationService : AuthenticationService) { }
+  constructor(private authorizationService : AuthenticationService,
+              private userService : UserService) { }
 
   ngOnInit(): void {
     this.isLoggedIn = this.authorizationService.isAuthenticated();
@@ -18,14 +22,38 @@ export class BetaTestComponent implements OnInit {
   }
 
   signUpForNotification() {
+    var notifProperty = new UserProperty();
+    notifProperty.key = UserService.NOTIFIED_ON_RELEASE;
+    notifProperty.value = "true";
 
+    let promise = this.userService.setUserProperty(notifProperty);
+    promise.then(data => {
+      this.loadUserProperties();
+    })
   }
 
   sendTestInformation() {
+    var notifProperty = new UserProperty();
+    notifProperty.key = UserService.REQUEST_TEST_INFO;
+    notifProperty.value = "true";
 
+    let promise = this.userService.setUserProperty(notifProperty);
+    promise.then(data => {
+      this.loadUserProperties();
+    })
   }
 
   private loadUserProperties() {
 
+    let promise = this.userService.getUserProperties();
+    promise.then(data => {
+      let notifiedProperty = data.filter( l => l.key == UserService.NOTIFIED_ON_RELEASE);
+      this.signedUpForNotify = notifiedProperty.length > 0;
+      let testSent = data.filter( l => l.key == UserService.TEST_EMAILS_SENT);
+      if (testSent.length > 0) {
+        let prop = testSent[0];
+        this.testEmailCount = parseInt(prop.value);
+      }
+    })
   }
 }
