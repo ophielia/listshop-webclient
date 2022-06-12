@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from "../../shared/services/authentication.service";
 import {UserService} from "../../shared/services/user.service";
 import {UserProperty} from "../../model/userproperty";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-beta-test',
@@ -9,11 +10,15 @@ import {UserProperty} from "../../model/userproperty";
   styleUrls: ['./beta-test.component.scss']
 })
 export class BetaTestComponent implements OnInit {
+  @ViewChild('notification') notificationConfirmModal;
+  @ViewChild('testemailsent') testEmailConfirmModal;
+
   public isLoggedIn: boolean;
   public signedUpForNotify: boolean = false;
   public testEmailCount: number = 0;
 
   constructor(private authorizationService : AuthenticationService,
+              private spinner: NgxSpinnerService,
               private userService : UserService) { }
 
   ngOnInit(): void {
@@ -28,17 +33,21 @@ export class BetaTestComponent implements OnInit {
 
     let promise = this.userService.setUserProperty(notifProperty);
     promise.then(data => {
+      this.notificationConfirmModal.show();
       this.loadUserProperties();
     })
   }
 
   sendTestInformation() {
+    this.spinner.show();
     var notifProperty = new UserProperty();
     notifProperty.key = UserService.REQUEST_TEST_INFO;
     notifProperty.value = "true";
 
     let promise = this.userService.setUserProperty(notifProperty);
     promise.then(data => {
+      this.spinner.hide();
+      this.testEmailConfirmModal.show();
       this.loadUserProperties();
     })
   }

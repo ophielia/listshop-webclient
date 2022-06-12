@@ -17,17 +17,19 @@ import {ContentHeaderComponent} from "./contentheader/content-header.component";
 import {PrivacyComponent} from "./privacy/privacy.component";
 import {BetaTestComponent} from "./beta-test/beta-test.component";
 import {AnonymousBetaTestComponent} from "./anonymous-beta-test/anonymous-beta-test.component";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HomeRoutingModule,
-    SharedModule,
-    ReactiveFormsModule,
-    FormsModule,
-    CarouselModule,
-    NgbModule
-  ],
+    imports: [
+        CommonModule,
+        HomeRoutingModule,
+        SharedModule,
+        ReactiveFormsModule,
+        FormsModule,
+        CarouselModule,
+        NgbModule,
+        NgxSpinnerModule
+    ],
   declarations: [
     HomeComponent,
     HomeTwoComponent,

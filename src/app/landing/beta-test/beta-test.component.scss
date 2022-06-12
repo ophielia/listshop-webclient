@@ -32,12 +32,34 @@
     margin-bottom: 30px;
   }
 }
-.beta-app-display {
-  img {
-    max-height: 400px;
+.beta-me {
+
+  width: 100vw;
+  margin-top: 50px;
+  align-items: center;
+  .beta-background {
+    background-image: url("../../../assets/images/color/color-4/1.png");
+  }
+  .beta-extra-top {
+    margin-top: 50px;
   }
 }
-
+.padding-instructions {
+  padding: 15px 10px 30px;
+}
+.beta-app-display {
+  img {
+    max-height: 500px;
+  }
+}
+.about-decor {
+  .about-circle2 {
+    position: absolute;
+    top: auto;
+    left: 250px;
+    bottom: 20px;
+  }
+}
 //@media (max-height: 500px) and (min-width: 1000px) {
 @media  (max-width: 1000px) {
 .beta-app-display {
@@ -46,6 +68,11 @@
   .beta-me-text {
     .offset {
       margin-left: 100px;
+    }
+  }
+  .about-decor {
+    .about-circle2 {
+      display: none;
     }
   }
 }
