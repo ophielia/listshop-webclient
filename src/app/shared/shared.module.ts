@@ -30,6 +30,7 @@ import {ConfirmDialogService} from "./services/confirm-dialog.service";
 import {ConfirmDialogComponent} from "./components/confirm-dialog/confirm-dialog.component";
 import { CreateTagDialogComponent } from './components/create-tag-dialog/create-tag-dialog.component';
 import {UserService} from "./services/user.service";
+import { CelebrationComponent } from './components/celebration/celebration.component';
 
 @NgModule({
     exports: [
@@ -47,7 +48,8 @@ import {UserService} from "./services/user.service";
         AlertComponent,
         SingleDishElementComponent,
         ConfirmDialogComponent,
-        CreateTagDialogComponent
+        CreateTagDialogComponent,
+        CelebrationComponent
 
     ],
     imports: [
@@ -72,7 +74,8 @@ import {UserService} from "./services/user.service";
         ModalComponent,
         SingleDishElementComponent,
         ConfirmDialogComponent,
-        CreateTagDialogComponent
+        CreateTagDialogComponent,
+        CelebrationComponent
     ],
     providers: [
         WINDOW_PROVIDERS,

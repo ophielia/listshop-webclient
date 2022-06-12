@@ -6,7 +6,6 @@ import {filter, map} from "rxjs/operators";
 import {ContentType, GroupType, TagTree} from "./tag-tree.object";
 import {TagService} from "./tag.service";
 import {NGXLogger} from "ngx-logger";
-import TagSelectType from "../../model/tag-select-type";
 
 @Injectable({providedIn: 'root'})
 export class TagTreeService implements OnDestroy {
@@ -52,7 +51,7 @@ export class TagTreeService implements OnDestroy {
     }
 
 
-    allContentList(id: string, contentType: ContentType,  groupType: GroupType,
+    allContentList(id: string, contentType: ContentType, groupType: GroupType,
                    tagTypes: TagType[]): Observable<ITag[]> {
 
 
