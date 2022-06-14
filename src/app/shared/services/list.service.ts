@@ -275,7 +275,7 @@ export class ListService {
         // log error
         // could be something more sophisticated
         let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
-        console.error(errorMsg);
+        this.logger.error(errorMsg);
 
         // throw an application level error
         return throwError(error);

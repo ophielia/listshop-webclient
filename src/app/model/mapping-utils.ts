@@ -11,6 +11,7 @@ import {RatingUpdateInfo} from "./rating-update-info";
 import {IRatingInfo, RatingInfo} from "./rating-info";
 import {DishRatingInfo, IDishRatingInfo} from "./dish-rating-info";
 import {UserProperty} from "./userproperty";
+import {Celebration} from "./celebration";
 
 
 export default class MappingUtils {
@@ -48,6 +49,21 @@ export default class MappingUtils {
         }
         return shoppingList;
 
+    }
+
+    static toCelebration(r: any): Celebration {
+        return <Celebration>({
+            handle: r.handle,
+            start_date: r.start_date,
+            end_date: r.end_date,
+            hostess_greeting_title: r.hostess_greeting_title,
+            hostess_greeting: r.hostess_greeting,
+            hostess_display: r.hostess_display,
+            waiter_title: r.waiter_title,
+            party_title: r.party_title,
+            party_text: r.party_text,
+            throw_confetti_count: r.throw_confetti_count,
+        })
     }
 
     static toDish(r: any): Dish {
