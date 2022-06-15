@@ -39,6 +39,7 @@
     "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
     "@types/googlemaps": "^3.39.2",
     "bootstrap": "^4.5.2",
+    "canvas-confetti": "^1.5.1",
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.6.4",
     "express": "^4.15.2",

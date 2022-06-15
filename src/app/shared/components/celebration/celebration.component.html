@@ -1,8 +1,15 @@
-<div class="testing">WE ARE TESTING:
-We are celebrating: {{areCelebrating}}
+<div id="my-canvas" class="testing">
+
     <div *ngIf="areCelebrating">
+        We are celebrating: {{areCelebrating}}
         Hostess is shown: {{showHostess}}
         Confetti thrown: {{throwConfetti}}
     </div>
 </div>
+
+<app-modal #hostess [autoHide]="1000">
+    <div class="app-modal-body">
+        We are celebrating!!
+    </div>
+</app-modal>
 
