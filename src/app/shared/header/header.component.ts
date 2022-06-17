@@ -15,19 +15,14 @@ export class HeaderComponent implements AfterViewInit {
     public aboutOffset: any = null;
     public featureOffset: any = null;
     public testimonialOffset: any = null;
-    public teamOffset: any = null;
-    public blogOffset: any = null;
-    public priceOffset: any = null;
-    public contactOffset: any = null;
     public isOpenMobile = false;
     public darkHeader = false;
-    public menuItems: any[];
     public isLoggedIn: boolean;
+
 
     constructor(
         @Inject(DOCUMENT) private document: Document,
         @Inject(WINDOW) private window,
-        public breakpointObserver: BreakpointObserver,
         private authorizationService: AuthenticationService
     ) {
     }

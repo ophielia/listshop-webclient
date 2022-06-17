@@ -25,6 +25,9 @@
         <li *ngIf="isLoggedIn" class="nav-item">
           <a class="nav-link" [routerLink]="'/lists/manage'">my lists</a>
         </li>
+        <li #partyButton class="nav-item beepy"  >
+          <a appTestConf="true" class="nav-link " [routerLink]="'/lists/manage'">we're celebrating!</a>
+        </li>
         <div *ngIf="!isLoggedIn" ngbDropdown class="nav-item dropdown">
           <button class="btn bg-transparent nav-link dropdown-toggle" id="dropdownMenuButton" ngbDropdownToggle>Login</button>
         <div ngbDropdownMenu aria-labelledby="dropdownMenuButton" class="dropdown-menu">

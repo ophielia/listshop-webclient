@@ -3,3 +3,15 @@
 .theme-nav .nav-item:hover .nav-link {
   color: $color_basic_orange;
 }
+
+.beepy {
+  a {
+    max-width: 300px;
+    filter: opacity(1.0);
+  }
+
+  &:hover a {
+    transform: rotate(3deg) scale(1.15);
+    transition: all 0.3s ease;
+  }
+}

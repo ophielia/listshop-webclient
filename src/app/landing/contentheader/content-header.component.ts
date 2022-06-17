@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, AfterViewInit } from '@angular/core';
+import {Component, HostListener, Inject, AfterViewInit, ViewChild} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { WINDOW } from '../../shared/services/windows.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -11,17 +11,8 @@ import {AuthenticationService} from "../../shared/services/authentication.servic
 })
 export class ContentHeaderComponent implements AfterViewInit  {
   public activeClass = 'home';
-  public homeOffset: any = null;
-  public aboutOffset: any = null;
-  public featureOffset: any = null;
-    public testimonialOffset: any = null;
-  public teamOffset: any = null;
-  public blogOffset: any = null;
-  public priceOffset: any = null;
-  public contactOffset: any = null;
   public isOpenMobile = false;
   public darkHeader = false;
-  public menuItems: any[];
   public isLoggedIn: boolean;
 
   constructor(
@@ -37,6 +28,7 @@ export class ContentHeaderComponent implements AfterViewInit  {
     }
 
   ngAfterViewInit() {
+
 }
 
    active(val) {

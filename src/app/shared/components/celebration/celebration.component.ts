@@ -11,7 +11,6 @@ import {
 import {CelebrationService} from "../../services/celebration.service";
 import {NavigationStart, Router} from "@angular/router";
 import {filter} from "rxjs/operators";
-import * as confettiLib from 'canvas-confetti';
 
 class CelebrateService {
 }
@@ -30,7 +29,7 @@ export class CelebrationComponent implements OnInit {
 
     confettiCanvas; // the canvas function from confetti-canvas library
 
-    confettiLib = confettiLib; // the dynamically imported library
+    confettiLib;
 
 
 
@@ -92,7 +91,7 @@ export class CelebrationComponent implements OnInit {
 
 
     async importCanvas(): Promise<any> {
-        //this.confettiLib = await import('canvas-confetti');
+        this.confettiLib = await import('canvas-confetti');
         this.canvas = this.renderer2.createElement('canvas');
         this.renderer2.addClass(this.canvas, 'confetti-canvas');
     }
@@ -140,7 +139,6 @@ export class CelebrationComponent implements OnInit {
                 }, 200);
             });
     }
-
 
     popupHostess() {
         this.hostess.show();
