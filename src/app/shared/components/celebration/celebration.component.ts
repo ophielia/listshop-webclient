@@ -104,7 +104,7 @@ export class CelebrationComponent implements OnInit {
 
         function finishAnimation() {
             setTimeout(() => {
-                return this.renderer2.removeChild(this.elementRef.nativeElement, this.canvas); // remove the canvas from the DOM
+               // return this.renderer2.removeChild(this.elementRef.nativeElement, this.canvas); // remove the canvas from the DOM
             }, 1000);
 
         }

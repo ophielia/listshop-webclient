@@ -1,17 +1,26 @@
 @import '../../../assets/scss/_variable.scss';
 
+$url_header_logo: url(../../../assets/images/listshop/header/logoorange.png);
+
 .theme-nav .nav-item:hover .nav-link {
   color: $color_basic_orange;
 }
 
-.beepy {
-  a {
-    max-width: 300px;
-    filter: opacity(1.0);
+.navbar-light {
+  .ls-logo-title {
+    color: $color_basic_orange;
   }
 
-  &:hover a {
-    transform: rotate(3deg) scale(1.15);
-    transition: all 0.3s ease;
+}
+
+.ls-theme-functional-nav {
+  .navbar-brand {
+    .ls-logo-img {
+      background-image: $url_header_logo;
+    }
   }
 }
+
+
+
+

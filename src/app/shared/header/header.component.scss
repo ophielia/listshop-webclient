@@ -17,6 +17,45 @@
 }
 
 
+.navbar {
+  background-color: $color_basic_orange;
+
+  ul {
+    &.navbar {
+      li {
+        &.nav-item {
+          a {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+}
+
+.nav-item {
+  &:hover {
+    .nav-link {
+      color: white;
+    }
+  }
+}
+
+
+
+.darkHeader {
+  background-color: white;
+  .ls-logo-title {
+    color: $color_basic_orange;
+  }
+  .nav-item {
+    &:hover {
+      .nav-link {
+        color: $color_basic_orange;
+      }
+    }
+  }
+}
 
 .darkHeader .account-image {
   background-image: url(../../../assets/images/listshop/header/account_space_for_light.png);

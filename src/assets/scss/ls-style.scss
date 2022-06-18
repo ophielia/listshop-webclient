@@ -4,8 +4,7 @@
 
 // urls
 //urls
-$url_logo_orange: url(../images/listshop/header/logoorange.png);
-$url_logo_white: url(../images/listshop/header/logowhite.png);
+
 
 /** home page **/
 .feature-style .feature-icon img {
@@ -14,6 +13,20 @@ $url_logo_white: url(../images/listshop/header/logowhite.png);
 }
 
 /*** site wide ***/
+.party {
+  paddling-left: 10px;
+  paddling-right: 10px;
+  a {
+    max-width: 300px;
+    filter: opacity(1.0);
+  }
+
+  &:hover a {
+    transform: rotate(3deg) scale(1.15);
+    transition: all 0.3s ease;
+  }
+}
+
 a:visited {
   color: $color_basic_orange;
 }
@@ -344,7 +357,7 @@ img.lg-button {
     &.navbar-light {
       .navbar-nav {
         .nav-link {
-          color: $color_tundora;
+          color: $color_tapa;
         }
 
         .active {
@@ -388,21 +401,7 @@ img.lg-button {
     }
   }
 
-  .navbar {
-    background-color: $color_basic_orange;
 
-    ul {
-      &.navbar {
-        li {
-          &.nav-item {
-            a {
-              color: $white;
-            }
-          }
-        }
-      }
-    }
-  }
 
   .modal.video-play {
     //.modal-dialog {

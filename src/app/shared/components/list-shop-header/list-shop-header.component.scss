@@ -8,6 +8,13 @@
   width: 30px;
 }
 
+.ls-theme-functional-nav {
+  .navbar-brand {
+    .ls-logo-img {
+      background-image: url(../../../../assets/images/listshop/header/logoorange.png);
+    }
+  }
+}
 
 
 @media(max-width: 991px) {

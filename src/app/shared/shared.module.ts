@@ -31,6 +31,7 @@ import {ConfirmDialogComponent} from "./components/confirm-dialog/confirm-dialog
 import { CreateTagDialogComponent } from './components/create-tag-dialog/create-tag-dialog.component';
 import {UserService} from "./services/user.service";
 import { CelebrationComponent } from './components/celebration/celebration.component';
+import { MyIsPartyDirective } from './directives/my-is-party.directive';
 
 @NgModule({
     exports: [
@@ -49,7 +50,8 @@ import { CelebrationComponent } from './components/celebration/celebration.compo
         SingleDishElementComponent,
         ConfirmDialogComponent,
         CreateTagDialogComponent,
-        CelebrationComponent
+        CelebrationComponent,
+        MyIsPartyDirective
 
     ],
     imports: [
@@ -75,7 +77,8 @@ import { CelebrationComponent } from './components/celebration/celebration.compo
         SingleDishElementComponent,
         ConfirmDialogComponent,
         CreateTagDialogComponent,
-        CelebrationComponent
+        CelebrationComponent,
+        MyIsPartyDirective
     ],
     providers: [
         WINDOW_PROVIDERS,
