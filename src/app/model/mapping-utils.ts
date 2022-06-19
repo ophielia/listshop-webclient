@@ -59,7 +59,6 @@ export default class MappingUtils {
             hostess_greeting_title: r.hostess_title,
             hostess_greeting: r.hostess_text,
             hostess_display: r.hostess_display,
-            waiter_title: r.waiter_title,
             party_title: r.party_title,
             party_text: r.party_text,
             throw_confetti_count: r.throw_confetti_count,
