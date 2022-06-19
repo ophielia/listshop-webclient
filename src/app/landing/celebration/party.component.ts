@@ -8,13 +8,15 @@ import {CelebrationService} from "../../shared/services/celebration.service";
   styleUrls: ['./party.component.scss']
 })
 export class PartyComponent implements OnInit {
-
+public isLoggedIn : boolean = false;
   public partyTitle: string = "";
   public partyText: string = "";
 
-  constructor(private celebrationService : CelebrationService) { }
+  constructor(private celebrationService : CelebrationService,
+              private authorizationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.isLoggedIn = this.authorizationService.isAuthenticated();
     var celebration = this.celebrationService.currentCelebration();
     if (celebration) {
       this.partyText = celebration.party_text;
