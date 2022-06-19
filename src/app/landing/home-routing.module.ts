@@ -7,6 +7,8 @@ import {PrivacyComponent} from "./privacy/privacy.component";
 import {BetaTestComponent} from "./beta-test/beta-test.component";
 import {AuthGuardHandler} from "../shared/handlers/auth-guard-handler";
 import {AnonymousBetaTestComponent} from "./anonymous-beta-test/anonymous-beta-test.component";
+import {PartyComponent} from "./celebration/party.component";
+import {PartyGuardHandler} from "../shared/handlers/party-guard-handler";
 
 // Routes
 const routes: Routes = [
@@ -17,6 +19,15 @@ const routes: Routes = [
             title: 'The List Shop',
             content: 'Your shopping mealPlans - quickly'
         },
+    },
+    {
+        path: 'celebration',
+        component: PartyComponent,
+        data: {
+            title: 'The List Shop',
+            content: 'Celebrate with us!'
+        },
+        canActivate: [PartyGuardHandler]
     },
     {
         path: 'aboutme',

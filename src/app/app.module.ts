@@ -17,6 +17,7 @@ import {AuthGuardHandler} from "./shared/handlers/auth-guard-handler";
 import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
 import {AlertService} from "./shared/services/alert.service";
 import {NgxSpinnerModule} from "ngx-spinner";
+import {PartyGuardHandler} from "./shared/handlers/party-guard-handler";
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import {NgxSpinnerModule} from "ngx-spinner";
         AlertService,
         {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true},
         {provide: ErrorHandler, useClass: ListShopErrorHandler},
-        AuthGuardHandler
+        AuthGuardHandler,
+        PartyGuardHandler
     ],
     bootstrap: [AppComponent]
 })

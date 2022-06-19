@@ -1,0 +1,37 @@
+@import '../../../assets/scss/variable';
+
+.party {
+  background-image: url('../../../assets/images/testimonial-bg.png');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position-y: 200px;
+
+  .party-top-spacing {
+    margin-top: 100px;
+  }
+  .about-decor {
+    .about-circle1 {
+      left: 100px;
+    }
+    .about-circle2 {
+      left: 100px;
+    }
+  }
+}
+
+.party-text-box {
+  text-align: center;
+  box-shadow: 0 0 65px 0 rgba(170, 170, 170, 0.25);
+  background-color: white;
+  padding-top: 60px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+  margin-bottom: 100px;
+
+  h3 {
+    color: $color_basic_orange;
+    margin-top: 0px;
+  }
+}
+

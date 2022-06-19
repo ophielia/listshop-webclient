@@ -18,6 +18,7 @@ import {PrivacyComponent} from "./privacy/privacy.component";
 import {BetaTestComponent} from "./beta-test/beta-test.component";
 import {AnonymousBetaTestComponent} from "./anonymous-beta-test/anonymous-beta-test.component";
 import {NgxSpinnerModule} from "ngx-spinner";
+import { PartyComponent } from './celebration/party.component';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import {NgxSpinnerModule} from "ngx-spinner";
     FeatureComponent,
     TestimonialComponent,
     BetaTestComponent,
-    AnonymousBetaTestComponent
+    AnonymousBetaTestComponent,
+    PartyComponent
   ],
   providers: []
 })
