@@ -18,7 +18,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   `,
   styles: [`
     .modal {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.2);
     }
   `]
 })

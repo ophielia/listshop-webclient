@@ -18,6 +18,7 @@ export class CelebrationService implements OnDestroy {
 
     private _currentCelbration: Celebration;
     private _hostessCount: number;
+    private _hostessEnabled: boolean;
     private _confettiCount: number;
     private _endCelebration: number;
     private _celebrationUrl: string;
@@ -105,6 +106,7 @@ export class CelebrationService implements OnDestroy {
     private startCelebration(celebration: Celebration) {
         this._currentCelbration = celebration;
         this._hostessCount = 0;
+        this._hostessEnabled = celebration.hostess_display;
         this._confettiCount = 0;
         var end = new Date(celebration.start_date)
         this._endCelebration = end.getTime();
@@ -114,6 +116,7 @@ export class CelebrationService implements OnDestroy {
     private stopCelebration() {
         this._currentCelbration = null;
         this._hostessCount = 0;
+        this._hostessEnabled = false;
         this._confettiCount = 0;
         this._endCelebration = 0;
         this.celebrationChangeSubject.next(true);
@@ -143,8 +146,7 @@ export class CelebrationService implements OnDestroy {
     }
 
     public doDisplayHostess(): boolean {
-        this._hostessCount++;
-        return this._hostessCount == 1;
+        return this._hostessEnabled;
     }
 
     public doThrowConfetti(): boolean {
