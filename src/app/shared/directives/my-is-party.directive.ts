@@ -1,4 +1,4 @@
-import {Directive, ViewContainerRef} from '@angular/core';
+import {Directive, TemplateRef, ViewContainerRef} from '@angular/core';
 import {CelebrationService} from "../services/celebration.service";
 
 @Directive({
@@ -8,7 +8,8 @@ export class MyIsPartyDirective {
   private hasView = false;
 
   constructor(private celebrationService: CelebrationService,
-              private viewContainer: ViewContainerRef) {
+              private viewContainer: ViewContainerRef,
+              private templateRef: TemplateRef<any>) {
     this.celebrationService.celebrationChange().subscribe(
         changed => {
           if (changed) {
