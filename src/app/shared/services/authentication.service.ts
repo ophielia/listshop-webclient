@@ -3,7 +3,7 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
-import {from, Observable, of, throwError} from "rxjs";
+import {from, Observable, of, Subject, throwError} from "rxjs";
 import {catchError, finalize, map, switchMap} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {User} from "../../model/user";
@@ -18,16 +18,33 @@ import {ListShopPayload} from "../../model/list-shop-payload";
 
 @Injectable()
 export class AuthenticationService {
+    static instance: AuthenticationService;
+
     private authUrl;
     private userUrl;
+    private userIsAuthenticated = false;
 
     constructor(
         private httpClient: HttpClient,
         private listService: ListService
     ) {
+        if (!AuthenticationService.instance) {
         this.authUrl = environment.apiUrl + "auth";
         this.userUrl = environment.apiUrl + "user";
+            let promise = this.checkAuthentication().toPromise();
+            promise.then(data => {
+                this.userIsAuthenticated = data;
+            })
+            AuthenticationService.instance = this;
     }
+
+        // Return the static instance of the class
+        // Which will only ever be the first instance
+        // Due to the if statement above
+        return AuthenticationService.instance;
+
+    }
+
 
 
     getToken(): string {
@@ -36,13 +53,36 @@ export class AuthenticationService {
         return token;
     }
 
+    checkAuthentication(): Observable<boolean> {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var token = currentUser && currentUser.token;
+        if (!token) {
+            const result = new Subject<boolean>();
+            result.next(false);
+            return result.asObservable();
+        }
+        // prepare device info
+        var deviceInfo = this.createDeviceInfo();
+        var url = this.authUrl + "/authenticate";
+        return this.httpClient.post(url, JSON.stringify(deviceInfo))
+            .pipe(map((response: HttpResponse<any>) => {
+                var status = response.status;
+
+                if (status >= 200 && status < 300) {
+                    return true;
+                }
+                        return false;
+
+                }),
+                catchError(this.handleError));
+    }
+
+
+
     login(username: string, password: string): Observable<boolean> {
         AuthenticationService.clearToken();
         // prepare device info
-        var deviceInfo = new UserDeviceInfo();
-        deviceInfo.client_type = "Web";
-        deviceInfo.model = this.getBrowserName();
-        deviceInfo.os_version = this.getBrowserVersion();
+        var deviceInfo = this.createDeviceInfo();
         var authorizePost = new AuthorizePost();
         authorizePost.password = password;
         authorizePost.username = username;
@@ -63,6 +103,14 @@ export class AuthenticationService {
                     }
                 }),
                 catchError(this.handleError));
+    }
+
+    private createDeviceInfo() :UserDeviceInfo {
+        var deviceInfo = new UserDeviceInfo();
+        deviceInfo.client_type = "Web";
+        deviceInfo.model = this.getBrowserName();
+        deviceInfo.os_version = this.getBrowserVersion();
+        return deviceInfo;
     }
 
     createUser(username: string, password: string): Observable<CreateUserStatus> {
@@ -87,10 +135,12 @@ export class AuthenticationService {
 
         return this.httpClient.post(this.userUrl, JSON.stringify(createUserPost))
             .pipe(map((response: HttpResponse<any>) => {
+
                     // login successful if there's a jwt token in the response
                     let user = MappingUtils.toUser(response);
 
                     if (user) {
+                        this.userIsAuthenticated = true;
                         // store username and jwt token in local storage to keep user logged in between page refreshes
                         localStorage.setItem('currentUser', JSON.stringify(user));
 
@@ -114,7 +164,7 @@ export class AuthenticationService {
                 if (status != CreateUserStatus.Success) {
                     return from(CreateUserStatus.UnknownError);
                 }
-
+                this.userIsAuthenticated = true;
                 return createListForUser
                     .pipe(map(object => CreateUserStatus.Success));
             }));
@@ -142,6 +192,7 @@ export class AuthenticationService {
         return this.httpClient.get(requestUrl)
             .pipe(
                 finalize(() => {
+                    this.userIsAuthenticated = false;
                         localStorage.removeItem('currentUser');
                         return of(true);
                     }
@@ -165,7 +216,8 @@ export class AuthenticationService {
         var token = currentUser && currentUser.token;
 
         //MM TODO check authentication on server
-        return token != null
+        return token != null; //&& this.userIsAuthenticated;
+
 
     }
 
@@ -269,5 +321,7 @@ export class AuthenticationService {
         // throw an application level error
         return throwError(error);
     }
+
+
 
 }

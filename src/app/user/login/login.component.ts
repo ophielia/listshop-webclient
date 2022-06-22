@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
 
     passwordErrors: ErrorType[] = [];
     emailErrors: ErrorType[] = [];
+    loginUnsuccessful: boolean = false;
 
     private returnUrl: string;
 
@@ -63,15 +64,14 @@ export class LoginComponent implements OnInit {
         return this.signInForm.get('userPassword');
     }
 
-    // click event function toggle
-    showPassword() {
-        this.show = !this.show;
+    loginCall( name, password) {
+        return this.authenticationService.login(name,password).toPromise();
     }
 
-
-    doLogin() {
+    async doLogin() {
         this.emailErrors = [];
         this.passwordErrors = [];
+        this.loginUnsuccessful = true;
 
         this.emailErrors = EmailValidator.isValid(this.email.value)
         if (this.emailErrors.length > 0) {
@@ -82,16 +82,33 @@ export class LoginComponent implements OnInit {
             return;
         }
 
+        let loginSuccess = false;
+        try {
+            loginSuccess = await this.loginCall(this.email.value.trim(), this.userPassword.value.trim())
+        } catch (error) {
+            // error on api call
+                this.loginUnsuccessful = true;
+            return;
+        }
+
+        console.log("loginSuccess: " + loginSuccess);
+        console.log(this.returnUrl);
+        this.router.navigateByUrl(this.returnUrl);
+        /*
         let $sub = this.authenticationService.login(this.signInForm.get('email').value.trim(),
             this.signInForm.get('userPassword').value.trim())
+
+
+
             .subscribe(success => {
                 if (!success) {
-                    throw Error("BADCREDENTIALS");
+
                 }
                 console.log(this.returnUrl);
                 this.router.navigateByUrl(this.returnUrl);
             });
         this.unsubscribe.push($sub);
+ */
     }
 
     errorsContain(emailErrors: ErrorType[], searchType: string) {

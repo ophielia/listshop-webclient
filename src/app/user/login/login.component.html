@@ -59,6 +59,12 @@
                         The password and password confirmation don't match.
                     </div>
                 </div>
+                <div *ngIf="loginUnsuccessful"
+                     class="alert alert-danger">
+                    <div>
+                        This email and password combination did not work.
+                    </div>
+                </div>
                 <div class="forgot" (click)="goToForgotPassword()">Forgot Password</div>
                 <div class="form-button text-center">
                     <button type="submit" (click)="doLogin()" class="btn btn-custom theme-color">Login</button>
