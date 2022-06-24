@@ -1,21 +1,21 @@
 import {Injectable} from "@angular/core";
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {AuthenticationService} from "../services/authentication.service";
 import {Observable} from "rxjs";
 
 @Injectable()
 export class ListShopTokenInterceptor implements HttpInterceptor {
-    constructor(public authenticationService: AuthenticationService) {
-    }
-
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        var token = this.authenticationService.getToken();
+        var token = this.getToken();
 
-        if (token) {
+        // is login call
+        console.dir(request);
+        let isLoginCall = request.url.endsWith("/auth") && request.method == "POST";
+        console.log(isLoginCall);
+        if (token && !isLoginCall) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${this.authenticationService.getToken()}`,
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -28,5 +28,11 @@ export class ListShopTokenInterceptor implements HttpInterceptor {
             });
             return next.handle(request);
         }
+    }
+
+    getToken(): string {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var token = currentUser && currentUser.token;
+        return token;
     }
 }

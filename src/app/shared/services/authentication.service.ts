@@ -3,7 +3,7 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
-import {from, Observable, of, Subject, throwError} from "rxjs";
+import {from, Observable, of, throwError} from "rxjs";
 import {catchError, finalize, map, switchMap} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {User} from "../../model/user";
@@ -14,6 +14,7 @@ import {TokenRequest, TokenType} from "../../model/token-request";
 import {TokenProcessPost} from "../../model/token-process-post";
 import {ChangePasswordPost} from "../../model/change-password-post";
 import {ListShopPayload} from "../../model/list-shop-payload";
+import {EmptyObservable} from "rxjs-compat/observable/EmptyObservable";
 
 
 @Injectable()
@@ -29,14 +30,14 @@ export class AuthenticationService {
         private listService: ListService
     ) {
         if (!AuthenticationService.instance) {
-        this.authUrl = environment.apiUrl + "auth";
-        this.userUrl = environment.apiUrl + "user";
+            this.authUrl = environment.apiUrl + "auth";
+            this.userUrl = environment.apiUrl + "user";
             let promise = this.checkAuthentication().toPromise();
             promise.then(data => {
                 this.userIsAuthenticated = data;
             })
             AuthenticationService.instance = this;
-    }
+        }
 
         // Return the static instance of the class
         // Which will only ever be the first instance
@@ -46,38 +47,29 @@ export class AuthenticationService {
     }
 
 
-
-    getToken(): string {
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        var token = currentUser && currentUser.token;
-        return token;
-    }
-
     checkAuthentication(): Observable<boolean> {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
         if (!token) {
-            const result = new Subject<boolean>();
-            result.next(false);
-            return result.asObservable();
+            this.userIsAuthenticated = false;
+            return of(false);
         }
         // prepare device info
         var deviceInfo = this.createDeviceInfo();
         var url = this.authUrl + "/authenticate";
-        return this.httpClient.post(url, JSON.stringify(deviceInfo))
+        return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
             .pipe(map((response: HttpResponse<any>) => {
                 var status = response.status;
-
+                console.log("status is: " + status);
                 if (status >= 200 && status < 300) {
+                    this.userIsAuthenticated = true;
                     return true;
                 }
-                        return false;
+                this.userIsAuthenticated = false;
+                return false;
 
-                }),
-                catchError(this.handleError));
+            }));
     }
-
-
 
     login(username: string, password: string): Observable<boolean> {
         AuthenticationService.clearToken();
@@ -93,19 +85,21 @@ export class AuthenticationService {
                     let user = MappingUtils.toUser(response);
 
                     if (user) {
+                        this.userIsAuthenticated = true;
                         // store username and jwt token in local storage to keep user logged in between page refreshes
                         localStorage.setItem('currentUser', JSON.stringify(user));
 
                         // return true to indicate successful login
                         return true;
                     } else {
+                        this.userIsAuthenticated = false;
                         return false;
                     }
                 }),
                 catchError(this.handleError));
     }
 
-    private createDeviceInfo() :UserDeviceInfo {
+    private createDeviceInfo(): UserDeviceInfo {
         var deviceInfo = new UserDeviceInfo();
         deviceInfo.client_type = "Web";
         deviceInfo.model = this.getBrowserName();
@@ -166,7 +160,7 @@ export class AuthenticationService {
                 }
                 this.userIsAuthenticated = true;
                 return createListForUser
-                    .pipe(map(object => CreateUserStatus.Success));
+                    .pipe(map(() => CreateUserStatus.Success));
             }));
 
     }
@@ -192,7 +186,7 @@ export class AuthenticationService {
         return this.httpClient.get(requestUrl)
             .pipe(
                 finalize(() => {
-                    this.userIsAuthenticated = false;
+                        this.userIsAuthenticated = false;
                         localStorage.removeItem('currentUser');
                         return of(true);
                     }
@@ -216,7 +210,8 @@ export class AuthenticationService {
         var token = currentUser && currentUser.token;
 
         //MM TODO check authentication on server
-        return token != null; //&& this.userIsAuthenticated;
+        //return token != null; //&& this.userIsAuthenticated;
+        return this.userIsAuthenticated;
 
 
     }
@@ -241,13 +236,13 @@ export class AuthenticationService {
         }
     }
 
-    getBrowserVersion(){
+    getBrowserVersion() {
         var userAgent = navigator.userAgent, tem,
             matchTest = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 
-        if(/trident/i.test(matchTest[1])){
-            tem =  /\brv[ :]+(\d+)/g.exec(userAgent) || [];
-            return 'IE '+(tem[1] || '');
+        if (/trident/i.test(matchTest[1])) {
+            tem = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
+            return 'IE ' + (tem[1] || '');
         }
 
         if (matchTest[1] === 'Chrome') {
@@ -287,8 +282,8 @@ export class AuthenticationService {
         let url = this.userUrl + "/token";
         return this.httpClient.post(url, JSON.stringify(passwordResetRequest))
             .pipe(map((response: HttpResponse<any>) => {
-                    return "done";
-                }));
+                return "done";
+            }));
     }
 
     static clearToken() {
@@ -321,7 +316,5 @@ export class AuthenticationService {
         // throw an application level error
         return throwError(error);
     }
-
-
 
 }

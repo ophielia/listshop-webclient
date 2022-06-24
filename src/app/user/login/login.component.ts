@@ -64,8 +64,8 @@ export class LoginComponent implements OnInit {
         return this.signInForm.get('userPassword');
     }
 
-    loginCall( name, password) {
-        return this.authenticationService.login(name,password).toPromise();
+    loginCall(name, password) {
+        return this.authenticationService.login(name, password).toPromise();
     }
 
     async doLogin() {
@@ -84,31 +84,17 @@ export class LoginComponent implements OnInit {
 
         let loginSuccess = false;
         try {
+            this.loginUnsuccessful = false;
             loginSuccess = await this.loginCall(this.email.value.trim(), this.userPassword.value.trim())
         } catch (error) {
             // error on api call
-                this.loginUnsuccessful = true;
+            this.loginUnsuccessful = true;
             return;
         }
 
         console.log("loginSuccess: " + loginSuccess);
         console.log(this.returnUrl);
         this.router.navigateByUrl(this.returnUrl);
-        /*
-        let $sub = this.authenticationService.login(this.signInForm.get('email').value.trim(),
-            this.signInForm.get('userPassword').value.trim())
-
-
-
-            .subscribe(success => {
-                if (!success) {
-
-                }
-                console.log(this.returnUrl);
-                this.router.navigateByUrl(this.returnUrl);
-            });
-        this.unsubscribe.push($sub);
- */
     }
 
     errorsContain(emailErrors: ErrorType[], searchType: string) {
