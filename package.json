@@ -45,7 +45,7 @@
     "dom-confetti": "^0.2.2",
     "express": "^4.15.2",
     "font-awesome": "^4.7.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.5.0",
     "localstorage-polyfill": "^1.0.1",
     "magnific-popup": "^1.1.0",
     "ngx-logger": "^4.1.9",
