@@ -5,9 +5,9 @@
 export const environment = {
   production: false,
   //apiUrl: 'https://nastyvarmits.fr/api/'
+  //celebrationUrl: 'https://nastyvarmits.fr/api/static/celebrations.json',
   apiUrl: 'http://localhost:8182/',
   celebrationUrl: 'http://localhost:4200/assets/static/test_celebrations.json',
-  //celebrationUrl: 'https://nastyvarmits.fr/api/static/celebrations.json',
   celebrationRefreshMinutes: 60
 
 };
