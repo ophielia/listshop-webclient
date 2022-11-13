@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
 import {forkJoin, Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
 import {IMealPlan, MealPlan} from "../../model/mealplan";
 import MealPlanType from "../../model/meal-plan-type";
+import {EnvironmentLoaderService} from "./environment-loader.service";
 
 
 @Injectable()
@@ -17,11 +17,12 @@ export class MealPlanService {
 
     constructor(
         private httpClient: HttpClient,
+        private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.authUrl = environment.apiUrl + "auth";
-        this.userUrl = environment.apiUrl + "user";
-        this.mealplanUrl = environment.apiUrl + "mealplan";
+        this.authUrl = envLoader.getEnvConfig().apiUrl + "auth";
+        this.userUrl = envLoader.getEnvConfig().apiUrl + "user";
+        this.mealplanUrl = envLoader.getEnvConfig().apiUrl + "mealplan";
     }
 
     getAllMealplans(): Observable<IMealPlan[]> {

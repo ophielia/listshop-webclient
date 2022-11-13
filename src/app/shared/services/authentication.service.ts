@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
 import {from, Observable, of, throwError} from "rxjs";
@@ -14,7 +13,8 @@ import {TokenRequest, TokenType} from "../../model/token-request";
 import {TokenProcessPost} from "../../model/token-process-post";
 import {ChangePasswordPost} from "../../model/change-password-post";
 import {ListShopPayload} from "../../model/list-shop-payload";
-import {EmptyObservable} from "rxjs-compat/observable/EmptyObservable";
+import {EnvironmentLoaderService} from "./environment-loader.service";
+import {NGXLogger} from "ngx-logger";
 
 
 @Injectable()
@@ -27,11 +27,15 @@ export class AuthenticationService {
 
     constructor(
         private httpClient: HttpClient,
-        private listService: ListService
+        private listService: ListService,
+        private envLoader: EnvironmentLoaderService,
+        private logger: NGXLogger
     ) {
+        logger.debug(envLoader.getEnvConfig());
+
         if (!AuthenticationService.instance) {
-            this.authUrl = environment.apiUrl + "auth";
-            this.userUrl = environment.apiUrl + "user";
+            this.authUrl = envLoader.getEnvConfig().apiUrl + "auth";
+            this.userUrl = envLoader.getEnvConfig().apiUrl + "user";
             let promise = this.checkAuthentication().toPromise();
             promise.then(data => {
                 this.userIsAuthenticated = data;

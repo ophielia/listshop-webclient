@@ -1,4 +1,4 @@
-import {ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -18,7 +18,11 @@ import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
 import {AlertService} from "./shared/services/alert.service";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {PartyGuardHandler} from "./shared/handlers/party-guard-handler";
+import {EnvironmentLoaderService} from "./shared/services/environment-loader.service";
 
+const initAppConfig = (envService: EnvironmentLoaderService) => {
+    return () => envService.loadEnvConfig('/assets/config/config.json');
+};
 
 @NgModule({
     declarations: [
@@ -53,6 +57,13 @@ import {PartyGuardHandler} from "./shared/handlers/party-guard-handler";
         AlertService,
         {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true},
         {provide: ErrorHandler, useClass: ListShopErrorHandler},
+        EnvironmentLoaderService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initAppConfig,
+            multi: true,
+            deps: [EnvironmentLoaderService]
+        },
         AuthGuardHandler,
         PartyGuardHandler
     ],

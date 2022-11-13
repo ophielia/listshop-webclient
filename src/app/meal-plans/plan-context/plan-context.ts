@@ -1,7 +1,6 @@
 import {Injectable, OnDestroy} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
-import {environment} from "../../../environments/environment";
 
 
 @Injectable()

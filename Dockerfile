@@ -18,3 +18,8 @@ COPY --from=build-stage /listshop-webclient/dist/out/ /usr/share/nginx/html
 
 # Copy the default nginx.conf provided by tiangolo/node-frontend
 COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY ./build/entryPoint.sh /
+RUN chmod +x entryPoint.sh
+ENTRYPOINT ["sh","/entryPoint.sh"]
+CMD ["nginx", "-g", "daemon off;”]

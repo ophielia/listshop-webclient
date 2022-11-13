@@ -1,22 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
-import {UserDeviceInfo} from "../../model/user-device-info";
-import {AuthorizePost} from "../../model/authorize-post";
-import {from, Observable, of, throwError} from "rxjs";
-import {catchError, finalize, map, switchMap} from "rxjs/operators";
+import { throwError} from "rxjs";
+import {catchError,  map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
-import {User} from "../../model/user";
-import {CreateUserPost} from "../../model/create-user-post";
-import CreateUserStatus from "../../model/create-user-status";
-import {ListService} from "./list.service";
-import {TokenRequest, TokenType} from "../../model/token-request";
-import {TokenProcessPost} from "../../model/token-process-post";
-import {ChangePasswordPost} from "../../model/change-password-post";
-import {ListShopPayload} from "../../model/list-shop-payload";
-import {MealPlan} from "../../model/mealplan";
 import {UserProperty} from "../../model/userproperty";
 import {UserPropertiesPost} from "../../model/user-properties-post";
+import {EnvironmentLoaderService} from "./environment-loader.service";
 
 
 @Injectable()
@@ -28,9 +17,10 @@ export class UserService {
     private userUrl;
 
     constructor(
-        private httpClient: HttpClient
+        private httpClient: HttpClient,
+        private envLoader: EnvironmentLoaderService
     ) {
-        this.userUrl = environment.apiUrl + "user";
+        this.userUrl = envLoader.getEnvConfig().apiUrl + "user";
     }
 
 

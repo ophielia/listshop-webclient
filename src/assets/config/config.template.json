@@ -1,0 +1,5 @@
+{
+  "apiUrl":"${API_LINK}",
+  "celebrationUrl":"${API_LINK}/celebration",
+  "celebrationRefreshInterval": 60
+}

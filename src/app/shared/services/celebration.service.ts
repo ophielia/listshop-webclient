@@ -4,8 +4,8 @@ import {TagService} from "./tag.service";
 import {NGXLogger} from "ngx-logger";
 import {Celebration, ICelebration} from "../../model/celebration";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
 import MappingUtils from "../../model/mapping-utils";
+import {EnvironmentLoaderService} from "./environment-loader.service";
 
 @Injectable({providedIn: 'root'})
 export class CelebrationService implements OnDestroy {
@@ -28,13 +28,14 @@ export class CelebrationService implements OnDestroy {
 
     constructor(private tagService: TagService,
                 private httpClient: HttpClient,
+                private envLoader: EnvironmentLoaderService,
                 private logger: NGXLogger) {
         // If the static reference doesn't exist
         // (i.e. the class has never been instantiated before)
         // set it to the newly instantiated object of this class
         if (!CelebrationService.instance) {
-            this._celebrationUrl = environment.celebrationUrl
-            this._celebrationRefreshMillis = environment.celebrationRefreshMinutes * 60 * 1000;
+            this._celebrationUrl = envLoader.getEnvConfig().celebrationUrl
+            this._celebrationRefreshMillis = envLoader.getEnvConfig().celebrationRefreshInterval * 60 * 1000;
             this.loadConfigurations();
 
             CelebrationService.instance = this;

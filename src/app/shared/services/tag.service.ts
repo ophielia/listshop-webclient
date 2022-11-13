@@ -4,9 +4,9 @@ import {NGXLogger} from "ngx-logger";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import TagType from "../../model/tag-type";
-import {environment} from "../../../environments/environment";
 import {ITag} from "../../model/tag";
 import MappingUtils from "../../model/mapping-utils";
+import {EnvironmentLoaderService} from "./environment-loader.service";
 
 @Injectable()
 export class TagService {
@@ -15,9 +15,10 @@ export class TagService {
 
     constructor(
         private httpClient: HttpClient,
+        private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.tagUrl = environment.apiUrl + "tag";
+        this.tagUrl = envLoader.getEnvConfig().apiUrl + "tag";
     }
 
     getTagsForTagTree(): Promise<ITag[]> {

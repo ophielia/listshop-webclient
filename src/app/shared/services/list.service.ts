@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
 import {Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
@@ -8,10 +7,10 @@ import {IShoppingList} from "../../model/shoppinglist";
 import {NGXLogger} from "ngx-logger";
 import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
-import {ITag} from "../../model/tag";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
 import {IListAddProperties} from "../../model/listaddproperties";
 import {IListGenerateProperties, ListGenerateProperties} from "../../model/listgenerateproperties";
+import {EnvironmentLoaderService} from "./environment-loader.service";
 
 @Injectable()
 export class ListService {
@@ -23,11 +22,12 @@ export class ListService {
 
     constructor(
         private httpClient: HttpClient,
+        private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.authUrl = environment.apiUrl + "auth";
-        this.userUrl = environment.apiUrl + "user";
-        this.listUrl = environment.apiUrl + "shoppinglist";
+        this.authUrl =  envLoader.getEnvConfig().apiUrl + "auth";
+        this.userUrl = envLoader.getEnvConfig().apiUrl + "user";
+        this.listUrl = envLoader.getEnvConfig().apiUrl + "shoppinglist";
     }
 
 
