@@ -13,6 +13,8 @@ import TagType from "../../model/tag-type";
 import {IRatingInfo, RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
+import {DishContext} from "../dish-context/dish-context";
+import {logger} from "codelyzer/util/logger";
 
 
 @Component({
@@ -55,6 +57,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     private ratingsMap = new Map<number, RatingInfo>();
 
     private errorMessage: string;
+    private previousDishId: string;
+    private nextDishId: string;
 
 
     constructor(
@@ -66,6 +70,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         private dishService: DishService,
         private mealPlanService: MealPlanService,
         private listService: ListService,
+        private dishContext: DishContext,
         private logger: NGXLogger
     ) {
     }
@@ -78,6 +83,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
             this.logger.debug('getting list with id: ', id);
             this.getDish(id);
             this.getDishRatings(id);
+            this.getSurroundingDishIds(id);
         });
     }
 
@@ -292,6 +298,13 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     }
 
+    private getSurroundingDishIds(id: string) {
+        console.log("here we are: " + id);
+
+        this.previousDishId = this.dishContext.getPreviousDishId(id);
+        this.nextDishId = this.dishContext.getNextDishId(id);
+
+    }
 
     private hasErrors() {
         return this.dishNameError != null ||

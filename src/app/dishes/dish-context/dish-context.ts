@@ -4,6 +4,7 @@ import {NGXLogger} from "ngx-logger";
 import {ITag} from "../../model/tag";
 import {SortKey} from "../../model/sort-key";
 import {SortDirection} from "../../model/sort-direction";
+import {logger} from "codelyzer/util/logger";
 
 
 @Injectable()
@@ -31,6 +32,7 @@ export class DishContext implements OnDestroy {
 
     public getNextDishId(dishId: string): string {
         let currentIndex = this.getIndex(dishId);
+        console.log("ext dish - index: " + currentIndex);
         if (currentIndex == this.dishIds.length - 1) {
             return null;
         }
@@ -39,13 +41,14 @@ export class DishContext implements OnDestroy {
 
     public getPreviousDishId(dishId: string): string {
         let currentIndex = this.getIndex(dishId);
+        console.log("ext dish - index: " + currentIndex);
         if (currentIndex == 0) {
             return null;
         }
         return this.dishIds[currentIndex - 1];
     }
 
-    private getIndex(dishId: String) {
+    public getIndex(dishId: String) {
         var index = 0;
         for (let id of this.dishIds) {
             if (id == dishId) {
