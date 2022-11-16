@@ -16,6 +16,7 @@ import {GenerateListComponent} from "../../shared/components/generate-list/gener
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
+import {DishContext} from "../dish-context/dish-context";
 
 
 @Component({
@@ -68,13 +69,17 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         private mealPlanService: MealPlanService,
         private listService: ListService,
         private logger: NGXLogger,
-        private confirmDialogService: ConfirmDialogService
+        private dishContext: DishContext
     ) {
     }
 
     ngOnInit() {
         // this.fix.addFixBlogDetails();
         this.title.setTitle(this.route.snapshot.data['title']);
+        this.filterTags = this.dishContext.filterTags;
+        this.sortDirection = this.dishContext.sortDirection;
+        this.sortKey = this.dishContext.sortKey;
+        this.searchValue = this.dishContext.searchValue;
         this.getAllDishes();
     }
 
@@ -86,9 +91,12 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     filterByDishname() {
         console.log("filter by dishname" + this.searchValue);
 
-        if (this.searchValue.length == 0) {
+        if (!this.searchValue || this.searchValue.length == 0) {
             this.filteredDishes = this.allDishes;
-        } else if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
+        }
+
+
+            if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
             let filterBy = this.searchValue.toLocaleLowerCase();
             this.filteredDishes = this.filteredDishes.filter((dish: Dish) =>
                 dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
@@ -97,12 +105,15 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             this.filteredDishes = this.allDishes.filter((dish: Dish) =>
                 dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
         }
+        this.dishContext.searchValue = this.searchValue;
+        this.setFilteredIdsInContext();
         this.lastSearchLength = this.searchValue.length;
     }
 
     clearSearchValue() {
-        this.searchValue = "";
-        this.resetFilter();
+        //this.searchValue = "";
+        //this.resetFilter();
+        //MM think about removing this
     }
 
     resetFilter() {
@@ -117,7 +128,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                         this.sortDishes(p);
                         this.allDishes = p;
                         this.isLoading = false;
-                        this.resetFilter();
+                        this.filterByDishname();
+                        this.setFilteredIdsInContext();
                     },
                     e => this.errorMessage = e);
         } else {
@@ -129,7 +141,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                         this.sortDishes(p);
                         this.allDishes = p;
                         this.isLoading = false;
-                        this.filteredDishes = p;
+                        this.filterByDishname();
+                        this.setFilteredIdsInContext();
                     },
                     e => this.errorMessage = e);
             this.unsubscribe.push($sub);
@@ -144,6 +157,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         } else if (this.sortKey == SortKey.CreatedOn) {
             this.sortByCreated(dishList);
         }
+        this.dishContext.sortKey = this.sortKey;
 
     }
 
@@ -183,24 +197,25 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         }
 
         this.filterTags.push(tag);
-
+        this.dishContext.filterTags = this.filterTags;
         this.getAllDishes();
     }
 
     removeTagFromFilter(tag: ITag) {
         this.isSingleClick = false;
         this.filterTags = this.filterTags.filter(t => t.tag_id != tag.tag_id);
+        this.dishContext.filterTags = this.filterTags;
         this.getAllDishes();
     }
 
     toggleInvert(tag: ITag) {
-
         this.isSingleClick = true;
         setTimeout(() => {
             if (this.isSingleClick) {
                 for (var i: number = 0; i < this.filterTags.length; i++) {
                     if (this.filterTags[i].tag_id == tag.tag_id) {
                         this.filterTags[i].is_inverted = !this.filterTags[i].is_inverted;
+                        this.dishContext.filterTags = this.filterTags;
                     }
                 }
                 this.getAllDishes();
@@ -219,6 +234,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             this.sortDirection = SortDirection.Up;
         }
         this.changeSort();
+        this.dishContext.sortDirection = this.sortDirection
     }
 
     changeSort() {
@@ -426,5 +442,10 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     isRatingTag(tag_type: string) {
         return tag_type == 'Rating';
+    }
+
+    private setFilteredIdsInContext() {
+        var ids = this.filteredDishes.map(d => d.dish_id);
+        this.dishContext.setDishIds(ids);
     }
 }

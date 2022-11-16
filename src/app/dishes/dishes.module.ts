@@ -12,6 +12,7 @@ import {EditDishComponent} from "./edit-dish/edit-dish.component";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {AddDishComponent} from "./add-dish/add-dish.component";
 import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
+import {DishContext} from "./dish-context/dish-context";
 
 
 @NgModule({
@@ -28,6 +29,9 @@ import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.compone
         InputSwitchModule,
         FormsModule,
         NgbRatingModule
+    ],
+    providers: [
+        DishContext
     ]
 })
 export class DishesModule {
