@@ -30,7 +30,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     @ViewChild('addtagstodishesmodal') addTagsToDishesModal;
 
     unsubscribe: Subscription[] = [];
-    searchValue: string;
+    searchValue: string = "";
     lastSearchLength: number = 0;
 
     filteredDishes: Dish[];
@@ -110,14 +110,14 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.lastSearchLength = this.searchValue.length;
     }
 
-    clearSearchValue() {
-        //this.searchValue = "";
-        //this.resetFilter();
-        //MM think about removing this
-    }
-
     resetFilter() {
         this.filteredDishes = this.allDishes;
+        this.searchValue = "";
+        this.filterTags = [];
+    }
+
+    isFiltered(): boolean {
+        return this.searchValue.length > 0 ||  this.filterTags.length > 0;
     }
 
     getAllDishes() {

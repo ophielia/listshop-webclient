@@ -10,12 +10,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - structure to add url for api dynamically at runtime, with default.  Used to start in docker context.
+- context for dish module, so that search parameters are kept as user moves through dishes.
 
-### Changed
-
-### Deprecated
-
-### Fixed
 
 ## [2.3.0] June 2022
 

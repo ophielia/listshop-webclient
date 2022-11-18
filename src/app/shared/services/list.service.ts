@@ -11,6 +11,7 @@ import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
 import {IListAddProperties} from "../../model/listaddproperties";
 import {IListGenerateProperties, ListGenerateProperties} from "../../model/listgenerateproperties";
 import {EnvironmentLoaderService} from "./environment-loader.service";
+import ListShopUtils from "../utils/ListShopUtils";
 
 @Injectable()
 export class ListService {
@@ -113,14 +114,6 @@ export class ListService {
 
     }
 
-    removeItemFromShoppingList(shoppingList_id: string,
-                               item_id: string,
-                               tag_id: string): Observable<Object> {
-
-        var tagIds: Array<string> = [tag_id];
-        return this.performOperationOnListItems(shoppingList_id, tagIds, "Remove");
-    }
-
     performOperationOnListItems(shoppingList_id: string,
                                 tag_ids: string[],
                                 operation: string): Observable<Object> {
@@ -135,15 +128,6 @@ export class ListService {
         var payload = JSON.stringify(itemOperation);
 
         return this.httpClient.put(url, payload);
-    }
-
-    setItemCrossedOff(shoppingList_id: string,
-                      item_id: string,
-                      crossedOff: boolean): Observable<Object> {
-
-        var url: string = this.listUrl + "/" + shoppingList_id + "/item/shop/" + item_id + "?crossOff=" + crossedOff
-
-        return this.httpClient.post(url, null);
     }
 
     addTagItemToShoppingList(shoppingList_id: string, tagId: string): Promise<Object> {
@@ -242,7 +226,8 @@ export class ListService {
     updateShoppingListName(shoppingList: IShoppingList) {
         // create put object for call
         let shoppingListPut = new ShoppingListPut();
-        shoppingListPut.name = shoppingList.name;
+
+        shoppingListPut.name = ListShopUtils.cleanInputForServer(shoppingList.name);
         shoppingListPut.is_starter_list = shoppingList.is_starter;
         return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
     }
@@ -256,21 +241,6 @@ export class ListService {
             .toPromise();
     }
 
-    static getCrossedOff(shoppingList: IShoppingList): IItem[] {
-        if (!shoppingList.categories || shoppingList.categories.length == 0) {
-            return [];
-        }
-
-        let allofthem = shoppingList.categories
-            .map(c => c.items.filter(i => i.crossed_off));
-
-
-        return allofthem
-            .reduce(function (a, b) {
-                return a.concat(b)
-            }, []);
-    }
-
     handleError(error: any) {
         // log error
         // could be something more sophisticated
@@ -280,7 +250,6 @@ export class ListService {
         // throw an application level error
         return throwError(error);
     }
-
 
     mapShoppingLists(object: Object): IShoppingList[] {
         let embeddedObj = object["_embedded"];

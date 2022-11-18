@@ -7,6 +7,7 @@ import TagType from "../../model/tag-type";
 import {ITag} from "../../model/tag";
 import MappingUtils from "../../model/mapping-utils";
 import {EnvironmentLoaderService} from "./environment-loader.service";
+import ListShopUtils from "../utils/ListShopUtils";
 
 @Injectable()
 export class TagService {
@@ -36,9 +37,11 @@ export class TagService {
 
     }
 
+
+    //MM BINGO!!!!
     addTagToParent(newTagName: string, parentId: string, tagType: TagType): Observable<HttpResponse<Object>> {
         var newTag: ITag = <ITag>({
-            name: newTagName,
+            name: ListShopUtils.cleanInputForServer(newTagName),
             tag_type: tagType
         });
         let url = `${this.tagUrl}/${parentId}/child`;

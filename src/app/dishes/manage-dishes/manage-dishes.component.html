@@ -16,15 +16,15 @@
     <div class="container dish-toolbar">
         <div class="row">
             <div class=" col-sm-6 col-md-8 col-lg-8">
-            <span class="button-icon">
+<div style="display:inline-block">
+                <span class="button-icon" style="margin-right: 10px">
                 <input type="text" class="form-control searchbox"
                        placeholder="Search By Dishname"
                        [(ngModel)]="searchValue"
                        (keyup)="filterByDishname()"
-                       (keyup.enter)="clearSearchValue()"
                 /><!--<img src="../../../assets/images/listshop/icons/orangeround/search.png" alt="add" />-->
-            </span>
-                <span class="button-icon" style="margin-left: 10px">
+            </span >
+    <span class="button-icon" style="margin-right: 10px">
                                    <app-tag-select class="at-tag-select-style"
                                                    [tagTypes]="'Ingredient,Rating,DishType,TagType'"
                                                    [groupType]="groupType"
@@ -34,6 +34,10 @@
                                                    (tagSelected)="addTagToFilter($event)"></app-tag-select>
 
             </span>
+</div>
+
+                <div *ngIf="isFiltered()" class="filter-clear"><a (click)="resetFilter()"  class="add-button">
+                    <img src="../../../assets/images/listshop/icons/orangeround/xmarksthespot.png" alt="add"></a></div>
 
             </div>
             <div class="col-md-4 col-sm-6 col-text-end">

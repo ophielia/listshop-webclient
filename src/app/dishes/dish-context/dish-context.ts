@@ -11,8 +11,8 @@ import {logger} from "codelyzer/util/logger";
 export class DishContext implements OnDestroy {
 
     private dishIds : string[];
-    private _searchValue: string;
-    private _filterTags: ITag[];
+    private _searchValue: string = "";
+    private _filterTags: ITag[] = [];
     private _sortKey: SortKey = SortKey.LastUsed;
     private _sortDirection: SortDirection = SortDirection.Up;
 
