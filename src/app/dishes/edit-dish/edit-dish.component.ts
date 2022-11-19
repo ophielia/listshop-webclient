@@ -57,8 +57,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     private ratingsMap = new Map<number, RatingInfo>();
 
     private errorMessage: string;
-    private previousDishId: string;
-    private nextDishId: string;
+    previousDishId: string;
+    nextDishId: string;
 
 
     constructor(
