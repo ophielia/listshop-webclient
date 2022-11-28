@@ -1,40 +1,34 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Release Build
+name: Package Helmfiles
 
 on:
-  release:
-    types:
-      - created
+  workflow_dispatch:
 
 jobs:
-  build:
-
+  dump-version:
     runs-on: ubuntu-latest
-
     steps:
 
 
       - uses: actions/checkout@v2
-
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:${GITHUB_REF##*/}
-      - name: Logout of Docker
-        run: docker logout
-      - name: Log back in to Docker
-        run: docker login --username=${{ secrets.DOCKER_HUB_USERNAME }} --password=${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Push to Dockerhub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:${GITHUB_REF##*/}
+#      - name: Build the Docker image
+#        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:1.2.4
+#      - name: ensure fresh docker login by logging out
+#        run: docker logout
+#      - name: log back in now
+#        run: docker login --username=${{ secrets.DOCKER_HUB_USERNAME }} --password=${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#      - name: now push
+#        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:${GITHUB_REF##*/}
       - name: Helm Installation
         uses: azure/setup-helm@v1.1
         with:
           version: v3.7.0
+
       - name: Helm Package
         run: |
           CHART_PACKAGE_NAME="listshop-web-${GITHUB_REF##*/}+$(git rev-parse --short "$GITHUB_SHA").tgz"
           echo $CHART_PACKAGE_NAME 
           helm package build/helm/listshop-web --version "${GITHUB_REF##*/}+$(git rev-parse --short "$GITHUB_SHA")" -d .
+
       - name: Helm Repository Checkout
         uses: actions/checkout@v2
         with:
@@ -44,6 +38,7 @@ jobs:
           persist-credentials: true
           ref: main
           path: helm-chart-repository
+
       - name: Helm Push
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
