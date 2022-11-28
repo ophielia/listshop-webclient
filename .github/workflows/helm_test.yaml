@@ -10,46 +10,10 @@ jobs:
 
 
       - uses: actions/checkout@v2
-#      - name: Build the Docker image
-#        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:1.2.4
-#      - name: ensure fresh docker login by logging out
-#        run: docker logout
-#      - name: log back in now
-#        run: docker login --username=${{ secrets.DOCKER_HUB_USERNAME }} --password=${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-#      - name: now push
-#        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/listshop-webclient:${GITHUB_REF##*/}
-      - name: Helm Installation
-        uses: azure/setup-helm@v1.1
-        with:
-          version: v3.7.0
+
 
       - name: Helm Package
         run: |
-          CHART_PACKAGE_NAME="listshop-web-${GITHUB_REF##*/}+$(git rev-parse --short "$GITHUB_SHA").tgz"
-          echo $CHART_PACKAGE_NAME 
-          helm package build/helm/listshop-web --version "${GITHUB_REF##*/}+$(git rev-parse --short "$GITHUB_SHA")" -d .
-
-      - name: Helm Repository Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: ophielia/listshop-helm-repo
-          token: ${{ secrets.BOT_TOKEN }}
-          fetch-depth: 0
-          persist-credentials: true
-          ref: main
-          path: helm-chart-repository
-
-      - name: Helm Push
-        env:
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: |
-          git config --global user.email "dev@listshop.com"
-          git config --global user.name "Listshop Bot"
-          CHART_PACKAGE_NAME="listshop-web-${GITHUB_REF##*/}+$(git rev-parse --short "$GITHUB_SHA").tgz"
-          cp $CHART_PACKAGE_NAME helm-chart-repository/$CHART_REPOSITORY_NAME
-          cd helm-chart-repository
-          git add "$CHART_PACKAGE_NAME"
-          git commit -m "checking in $CHART_PACKAGE_NAME"
-          git push origin main        
-
-
+          sed -e 's/ZZZZZ/100.22.3/' build/helm/listshop-web/Chart.yaml > temp.txt
+          mv temp.txt build/helm/listshop-web/Chart.yaml
+          cat build/helm/listshop-web/Chart.yaml
