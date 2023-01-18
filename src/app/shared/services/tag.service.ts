@@ -37,8 +37,6 @@ export class TagService {
 
     }
 
-
-    //MM BINGO!!!!
     addTagToParent(newTagName: string, parentId: string, tagType: TagType): Observable<HttpResponse<Object>> {
         var newTag: ITag = <ITag>({
             name: ListShopUtils.cleanInputForServer(newTagName),

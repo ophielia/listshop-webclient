@@ -10,7 +10,6 @@ export interface IShoppingList {
   created: number;
   updated: number;
   list_type: string;
-  layout_type: string;
   item_count: number;
   name: string;
   legend: ILegendSource[];
@@ -26,7 +25,6 @@ export class ShoppingList implements IShoppingList {
   created: number;
   updated: number;
   list_type: string;
-  layout_type: string;
   item_count: number;
   name: string;
   legend: ILegendSource[];

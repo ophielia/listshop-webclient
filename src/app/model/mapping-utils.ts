@@ -39,7 +39,6 @@ export default class MappingUtils {
             item_count: jsonResult.shopping_list.item_count,
             updated: jsonResult.shopping_list.updated,
             is_starter: jsonResult.shopping_list.is_starter_list,
-            layout_type: jsonResult.shopping_list.list_layout_type,
             categories: jsonResult.shopping_list.categories != null ? jsonResult.shopping_list.categories.map(MappingUtils._toCategory) : null,
             legend: jsonResult.shopping_list.legend != null ? jsonResult.shopping_list.legend.map(MappingUtils._toLegend) : []
         });
