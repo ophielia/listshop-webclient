@@ -26,7 +26,7 @@ export class EnvironmentLoaderService {
         .pipe(map((response: HttpResponse<any>) => {
           let readEnvConfig = new EnvConfig();
             readEnvConfig.apiUrl = response.body.apiUrl;
-            readEnvConfig.celebrationUrl = "cat";
+            readEnvConfig.celebrationUrl = response.body.celebrationUrl;
             readEnvConfig.celebrationRefreshInterval = 2;
 
           return readEnvConfig;
