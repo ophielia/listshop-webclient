@@ -43,7 +43,7 @@
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.6.4",
     "dom-confetti": "^0.2.2",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.0",
     "localstorage-polyfill": "^1.0.1",
