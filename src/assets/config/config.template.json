@@ -1,5 +1,5 @@
 {
   "apiUrl":"${API_LINK}",
-  "celebrationUrl":"${API_LINK}/celebration",
+  "celebrationUrl":"${API_LINK}celebration.json",
   "celebrationRefreshInterval": 60
 }
