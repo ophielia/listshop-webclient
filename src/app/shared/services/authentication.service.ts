@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
-import {from, Observable, of, throwError} from "rxjs";
+import {from, Observable, of, Subscription, throwError} from "rxjs";
 import {catchError, finalize, map, switchMap} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {User} from "../../model/user";
@@ -18,12 +18,14 @@ import {NGXLogger} from "ngx-logger";
 
 
 @Injectable()
-export class AuthenticationService {
+export class AuthenticationService implements OnDestroy {
     static instance: AuthenticationService;
 
     private authUrl;
     private userUrl;
     private userIsAuthenticated = false;
+
+    unsubscribe: Subscription[] = [];
 
     constructor(
         private httpClient: HttpClient,
@@ -34,8 +36,8 @@ export class AuthenticationService {
         logger.debug(envLoader.getEnvConfig());
 
         if (!AuthenticationService.instance) {
-            this.authUrl = envLoader.getEnvConfig().apiUrl + "auth";
-            this.userUrl = envLoader.getEnvConfig().apiUrl + "user";
+            this.loadConfig();
+
             let promise = this.checkAuthentication().toPromise();
             promise.then(data => {
                 this.userIsAuthenticated = data;
@@ -50,6 +52,20 @@ export class AuthenticationService {
 
     }
 
+    loadConfig() {
+        let sub$ = this.envLoader
+            .getEnvConfigWhenReady()
+            .subscribe(config => {
+                if (config) {
+                    this.authUrl = config.apiUrl + "auth";
+                    this.userUrl = config.apiUrl + "user";
+                }
+            });
+        this.unsubscribe.push(sub$);
+    }
+    ngOnDestroy() {
+        this.unsubscribe.forEach(s => s.unsubscribe());
+    }
 
     checkAuthentication(): Observable<boolean> {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));

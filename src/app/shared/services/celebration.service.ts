@@ -26,17 +26,14 @@ export class CelebrationService implements OnDestroy {
     private _rawCelebrations: ICelebration[];
     private _configRefreshTime: number;
 
-    constructor(private tagService: TagService,
-                private httpClient: HttpClient,
+    constructor(private httpClient: HttpClient,
                 private envLoader: EnvironmentLoaderService,
                 private logger: NGXLogger) {
         // If the static reference doesn't exist
         // (i.e. the class has never been instantiated before)
         // set it to the newly instantiated object of this class
         if (!CelebrationService.instance) {
-            this._celebrationUrl = envLoader.getEnvConfig().celebrationUrl
-            this._celebrationRefreshMillis = envLoader.getEnvConfig().celebrationRefreshInterval * 60 * 1000;
-            this.loadConfigurations();
+            this.loadEnvConfig();
 
             CelebrationService.instance = this;
         }
@@ -47,6 +44,18 @@ export class CelebrationService implements OnDestroy {
         return CelebrationService.instance;
     }
 
+    loadEnvConfig() {
+        let sub$ = this.envLoader
+            .getEnvConfigWhenReady()
+            .subscribe(config => {
+                if (config) {
+                    this._celebrationUrl = config.celebrationUrl
+                    this._celebrationRefreshMillis = config.celebrationRefreshInterval * 60 * 1000;
+                    this.loadConfigurations();
+                }
+            });
+        this.unsubscribe.push(sub$);
+    }
 
     ngOnDestroy() {
         this.unsubscribe.forEach(s => s.unsubscribe());

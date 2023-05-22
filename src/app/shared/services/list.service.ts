@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
+import {Observable, Subscription, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {IShoppingList} from "../../model/shoppinglist";
@@ -13,11 +13,14 @@ import {IListGenerateProperties, ListGenerateProperties} from "../../model/listg
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import ListShopUtils from "../utils/ListShopUtils";
 
+
 @Injectable()
-export class ListService {
+export class ListService implements OnDestroy {
     private authUrl;
     private userUrl;
     private listUrl;
+
+    unsubscribe: Subscription[] = [];
 
     public static DEFAULT_LIST_NAME: string = "Shopping List";
 
@@ -26,11 +29,25 @@ export class ListService {
         private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.authUrl =  envLoader.getEnvConfig().apiUrl + "auth";
-        this.userUrl = envLoader.getEnvConfig().apiUrl + "user";
-        this.listUrl = envLoader.getEnvConfig().apiUrl + "shoppinglist";
+        this.loadConfig();
     }
 
+    loadConfig() {
+        let sub$ = this.envLoader
+            .getEnvConfigWhenReady()
+            .subscribe(config => {
+                if (config) {
+                    this.authUrl =  config.apiUrl + "auth";
+                    this.userUrl = config.apiUrl + "user";
+                    this.listUrl = config.apiUrl + "shoppinglist";
+                }
+            });
+        this.unsubscribe.push(sub$);
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe.forEach(s => s.unsubscribe());
+    }
 
     getAllLists(): Observable<IShoppingList[]> {
         this.logger.debug("Retrieving all shopping lists for user.");
