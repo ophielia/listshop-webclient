@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.authService.checkAuthentication().subscribe(logged => {
+        this.authService.checkAuthenticationOnInitialize().subscribe(logged => {
                 this.loading = false;
             },
             error => {

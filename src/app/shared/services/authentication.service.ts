@@ -25,6 +25,9 @@ export class AuthenticationService implements OnDestroy {
     private userUrl;
     private userIsAuthenticated = false;
 
+    private refreshPeriod = 4 * 60 * 60  * 1000; // refresh period in milliseconds.
+    private lastTokenCheck: number = 0;
+
     unsubscribe: Subscription[] = [];
 
     constructor(
@@ -38,11 +41,6 @@ export class AuthenticationService implements OnDestroy {
         if (!AuthenticationService.instance) {
             this.loadConfig();
 
-            let promise = this.checkAuthentication().toPromise();
-            promise.then(data => {
-                this.userIsAuthenticated = data;
-            })
-            AuthenticationService.instance = this;
         }
 
         // Return the static instance of the class
@@ -59,7 +57,14 @@ export class AuthenticationService implements OnDestroy {
                 if (config) {
                     this.authUrl = config.apiUrl + "auth";
                     this.userUrl = config.apiUrl + "user";
+                this.logger.info("auth - api is " + config.apiUrl);
+                this.logger.info("auth - user is " + this.userUrl);
                 }
+                let promise = this.checkAuthenticationOnInitialize().toPromise();
+                promise.then(data => {
+                    this.userIsAuthenticated = data;
+                })
+                AuthenticationService.instance = this;
             });
         this.unsubscribe.push(sub$);
     }
@@ -67,7 +72,7 @@ export class AuthenticationService implements OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    checkAuthentication(): Observable<boolean> {
+    checkAuthenticationOnInitialize(): Observable<boolean> {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
         if (!token) {
@@ -75,6 +80,7 @@ export class AuthenticationService implements OnDestroy {
             return of(false);
         }
         // prepare device info
+        this.lastTokenCheck = new Date().getTime();
         var deviceInfo = this.createDeviceInfo();
         var url = this.authUrl + "/authenticate";
         return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
@@ -90,6 +96,38 @@ export class AuthenticationService implements OnDestroy {
 
             }));
     }
+    checkAuthentication()  {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var token = currentUser && currentUser.token;
+        if (!token) {
+            return ;
+        }
+        var now = new Date().getTime();
+        var sinceRefresh = now - this.lastTokenCheck;
+
+        if (sinceRefresh <= this.refreshPeriod) {
+            this.lastTokenCheck = now;
+            return;
+        }
+
+        this.lastTokenCheck = now;
+        // prepare device info
+        var deviceInfo = this.createDeviceInfo();
+        var url = this.authUrl + "/authenticate";
+        return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
+            .pipe(map((response: HttpResponse<any>) => {
+                var status = response.status;
+                console.log("status is: " + status);
+                if (status >= 200 && status < 300) {
+                    this.userIsAuthenticated = true;
+                    return;
+                }
+                this.userIsAuthenticated = false;
+                localStorage.removeItem('currentUser');
+                return;
+
+            }));
+    }
 
     login(username: string, password: string): Observable<boolean> {
         AuthenticationService.clearToken();
@@ -101,14 +139,15 @@ export class AuthenticationService implements OnDestroy {
         authorizePost.device_info = deviceInfo
         return this.httpClient.post(this.authUrl, JSON.stringify(authorizePost))
             .pipe(map((response: HttpResponse<any>) => {
-                    // login successful if there's a jwt token in the response
+
+                // login successful if there's a jwt token in the response
                     let user = MappingUtils.toUser(response);
 
                     if (user) {
                         this.userIsAuthenticated = true;
                         // store username and jwt token in local storage to keep user logged in between page refreshes
                         localStorage.setItem('currentUser', JSON.stringify(user));
-
+                        this.lastTokenCheck = new Date().getTime();
                         // return true to indicate successful login
                         return true;
                     } else {
@@ -178,6 +217,7 @@ export class AuthenticationService implements OnDestroy {
                 if (status != CreateUserStatus.Success) {
                     return from(CreateUserStatus.UnknownError);
                 }
+                this.lastTokenCheck = new Date().getTime();
                 this.userIsAuthenticated = true;
                 return createListForUser
                     .pipe(map(() => CreateUserStatus.Success));
@@ -226,14 +266,15 @@ export class AuthenticationService implements OnDestroy {
     }
 
     isAuthenticated() {
+        // isAuthenticated's responsibility is only to check that a token is there,
+        // then to remind the authentication service to check that the token is valid.
+        // If the service finds an invalid token, it deletes it.
+        this.logger.debug("checking for token isAuthenticated");
+
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
-
-        //MM TODO check authentication on server
-        //return token != null; //&& this.userIsAuthenticated;
-        return this.userIsAuthenticated;
-
-
+        this.checkAuthentication();
+        return token != null;
     }
 
     getBrowserName() {

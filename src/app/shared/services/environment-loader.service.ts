@@ -3,6 +3,7 @@ import {EnvConfig} from "../../model/env-config";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {filter, map} from "rxjs/operators";
+import {NGXLogger} from "ngx-logger";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class EnvironmentLoaderService {
     let promise = this.loadConfig(configPath).toPromise();
     promise.then(data => {
       this.envConfig = data;
+        this.isLoadingSubject.next(false);
     })
   }
 
@@ -30,7 +32,6 @@ export class EnvironmentLoaderService {
             readEnvConfig.apiUrl = response.body.apiUrl;
             readEnvConfig.celebrationUrl = response.body.celebrationUrl;
             readEnvConfig.celebrationRefreshInterval = 2;
-            this.isLoadingSubject.next(false);
           return readEnvConfig;
 
         }));

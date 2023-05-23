@@ -73,7 +73,7 @@ export class PasswordTokenComponent implements OnInit {
 
         // create user
         this.authenticationService.resetPasswordWithToken(this.token, this.signUpForm.get('userPassword').value.trim())
-            .subscribe(success => {
+            .subscribe(() => {
                 this.router.navigate(['/user/login']);
             },
                 err => {
