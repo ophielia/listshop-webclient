@@ -32,7 +32,7 @@ export class DishContext implements OnDestroy {
 
     public getNextDishId(dishId: string): string {
         let currentIndex = this.getIndex(dishId);
-        console.log("ext dish - index: " + currentIndex);
+        this.logger.debug("ext dish - index: " + currentIndex);
         if (currentIndex == this.dishIds.length - 1) {
             return null;
         }
@@ -41,7 +41,7 @@ export class DishContext implements OnDestroy {
 
     public getPreviousDishId(dishId: string): string {
         let currentIndex = this.getIndex(dishId);
-        console.log("ext dish - index: " + currentIndex);
+        this.logger.debug("ext dish - index: " + currentIndex);
         if (currentIndex == 0) {
             return null;
         }

@@ -23,7 +23,6 @@ export class SingleDishElementComponent implements OnInit {
         private route: ActivatedRoute,
         private title: Title,
     ) {
-        console.log("hi!");
     }
 
     ngOnInit() {

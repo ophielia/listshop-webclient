@@ -19,9 +19,6 @@ export class AppComponent implements OnInit {
             },
             error => {
                 this.loading = false;
-            }, () => {
-                this.loading = false;
-                console.log("its an error");
             });
     }
 

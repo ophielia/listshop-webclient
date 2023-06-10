@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {IDish} from "../../../model/dish";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
     selector: 'app-dish-select',
@@ -18,7 +19,7 @@ export class DishSelectComponent implements OnInit, OnDestroy {
     filteredDishList: IDish[];
 
 
-    constructor() {
+    constructor(private logger: NGXLogger) {
 
     }
 
@@ -27,13 +28,13 @@ export class DishSelectComponent implements OnInit, OnDestroy {
     }
 
     filterDishes(event) {
-        console.log("in filter dishes: " + event.query)
+        this.logger.debug("in filter dishes: " + event.query)
         if (event.query) {
             if (this.dishList) {
                 let filterBy = event.query.toLocaleLowerCase();
                 this.filteredDishList = this.dishList.filter((dish: IDish) =>
                     dish.name != null && dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
-                console.log("filtered dishes length: " + this.filteredDishList.length)
+                this.logger.debug("filtered dishes length: " + this.filteredDishList.length)
             }
         } else {
             this.filteredDishList = null;
@@ -41,8 +42,8 @@ export class DishSelectComponent implements OnInit, OnDestroy {
     }
 
     bingo(event) {
-        console.log("was in bingo");
-        console.log("event is: " + event)
+        this.logger.debug("was in bingo");
+        this.logger.debug("event is: " + event)
         this.dishSelected.emit(event);
         this.autoSelectedDish = null;
         this.filteredDishList = null;

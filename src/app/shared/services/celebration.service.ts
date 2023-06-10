@@ -71,6 +71,8 @@ export class CelebrationService implements OnDestroy {
             .subscribe(data => {
                 this._rawCelebrations = this.mapCelebrations(data);
                 this.processRetrievedCelebrations();
+            }, error => {
+                this.logger.warn("error loading celebrations.")
             });
     }
 

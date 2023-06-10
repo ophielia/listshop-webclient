@@ -242,16 +242,16 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     changeTheRating(ratingInfo: RatingInfo) {
         if (ratingInfo) {
-            console.log("the rating is still raging: " + ratingInfo.power);
-            console.log("but this time with a tag" + ratingInfo.rating_tag_id);
+            this.logger.debug("the rating is still raging: " + ratingInfo.power);
+            this.logger.debug("but this time with a tag" + ratingInfo.rating_tag_id);
 
             if (ratingInfo.orig_power < ratingInfo.power) {
-                console.log("going up");
+                this.logger.debug("going up");
             } else if (ratingInfo.orig_power > ratingInfo.power) {
-                console.log("going down");
+                this.logger.debug("going down");
 
             } else {
-                console.log("no change.");
+                this.logger.debug("no change.");
 
             }
 
@@ -299,7 +299,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
     private getSurroundingDishIds(id: string) {
-        console.log("here we are: " + id);
+        this.logger.debug("here we are: " + id);
 
         this.previousDishId = this.dishContext.getPreviousDishId(id);
         this.nextDishId = this.dishContext.getNextDishId(id);

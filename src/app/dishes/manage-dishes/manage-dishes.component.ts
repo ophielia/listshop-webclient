@@ -89,7 +89,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
 
     filterByDishname() {
-        console.log("filter by dishname" + this.searchValue);
+        this.logger.debug("filter by dishname" + this.searchValue);
 
         if (!this.searchValue || this.searchValue.length == 0) {
             this.filteredDishes = this.allDishes;
@@ -321,7 +321,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             }
         )
             .catch((error) => {
-                console.log("Promise rejected with " + JSON.stringify(error));
+                this.logger.debug("Promise rejected with " + JSON.stringify(error));
             });
 
     }
@@ -347,7 +347,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             }
         )
             .catch((error) => {
-                console.log("Promise rejected with " + JSON.stringify(error));
+                this.logger.debug("Promise rejected with " + JSON.stringify(error));
             });
 
         this.showAddToList = false;
@@ -370,7 +370,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             }
         )
             .catch((error) => {
-                console.log("Promise rejected with " + JSON.stringify(error));
+                this.logger.debug("Promise rejected with " + JSON.stringify(error));
             });
 
     }
@@ -401,7 +401,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                     }
                 )
                     .catch((error) => {
-                        console.log("Promise rejected with " + JSON.stringify(error));
+                        this.logger.debug("Promise rejected with " + JSON.stringify(error));
                     });
 
             }

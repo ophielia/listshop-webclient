@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {Alert, AlertType} from "../../model/alert";
 import {AlertService} from "../services/alert.service";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-alert',
@@ -13,7 +14,9 @@ export class AlertComponent {
   alerts: Alert[] = [];
 
   constructor(private alertService: AlertService,
-              private cd: ChangeDetectorRef) {
+              private cd: ChangeDetectorRef,
+              private logger: NGXLogger
+  ) {
   }
 
   ngOnInit() {
@@ -27,7 +30,7 @@ export class AlertComponent {
       }
 
       // add alert to array
-      console.log(this.alerts);
+      this.logger.debug(this.alerts);
       if (this.alerts) {
         this.alerts = [...this.alerts, alert];
       } else {

@@ -125,7 +125,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
 
     filterByDishname() {
         this.initialLoad = false;
-        console.log("filter by dishname" + this.searchValue);
+        this.logger.debug("filter by dishname" + this.searchValue);
 
         if (this.searchValue.length == 0) {
             this.filteredDishes = this.allDishes;

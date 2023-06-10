@@ -132,6 +132,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     toggleShowCrossedOff() {
+        this.logger.debug("showCrossedOff toggle:" + this.showCrossedOff)
         this.getShoppingList(this.shoppingList.list_id);
     }
 
@@ -227,7 +228,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         promise.then((data) => {
             this.getShoppingList(this.shoppingList.list_id);
         }).catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
+            this.logger.debug("Promise rejected with " + JSON.stringify(error));
         });
     }
 
@@ -341,7 +342,6 @@ export class EditListComponent implements OnInit, OnDestroy {
             this.showFrequent = false;
             return shoppingList;
         }
-
         if (!this.showCrossedOff) {
             for (let category of shoppingList.categories) {
                 this.hideCrossedOff(category);
@@ -354,10 +354,6 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     private hideCrossedOff(category: ICategory) {
-        // process subcategories
-        for (let subcategory of category.subcategories) {
-            this.hideCrossedOff(subcategory);
-        }
         // process direct items
         category.items = category.items.filter(i => !i.crossed_off);
     }

@@ -1,17 +1,19 @@
 import {ErrorHandler, Injectable, Injector} from "@angular/core";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../services/alert.service";
+import {NGXLogger} from "ngx-logger";
 
 @Injectable()
 export class ListShopErrorHandler implements ErrorHandler {
     private notificationService: AlertService;
 
-    constructor(injector: Injector) {
+    constructor(injector: Injector,
+                private logger: NGXLogger) {
         setTimeout(() => this.notificationService = injector.get(AlertService));
     }
 
     handleError(error: Response | HttpErrorResponse) {
-        console.log(error);
+        this.logger.error(error);
 
         if (error instanceof HttpErrorResponse) {
             // Server or connection error happened

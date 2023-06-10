@@ -1,5 +1,5 @@
 {
   "apiUrl":"http://localhost:8182/",
-  "celebrationUrl":"https://nastyvarmits.fr/api/static/celebrations.json",
+  "celebrationUrl":"https://static.nastyvarmits.fr/celebrations.json",
   "celebrationRefreshInterval": 60
 }

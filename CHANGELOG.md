@@ -9,6 +9,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 - deployment for static link
+- another login issue
+- checked off toggle on list
+
+
+### Changed 
+- using production build mode
+- progressively removing console.log statements
 
 ## [2.4.6] May 2023
 

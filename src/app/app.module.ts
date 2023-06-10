@@ -35,8 +35,7 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
         HttpClientModule,
         NgxSpinnerModule,
         LoggerModule.forRoot({
-            //serverLoggingUrl: '/api/logs',
-            level: NgxLoggerLevel.TRACE,
+            level: NgxLoggerLevel.ERROR,
             serverLogLevel: NgxLoggerLevel.ERROR,
             disableConsoleLogging: false
         }),
