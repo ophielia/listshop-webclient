@@ -5,19 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.4.7] May 2023
+## [2.4.8] June 2023
 
 ### Fixed
-- deployment for static link
+- deployment for static link (another one)
 - another login issue
 - checked off toggle on list
 
-
-### Changed 
+### Changed
 - using production build mode
 - progressively removing console.log statements
 
-## [2.4.6] May 2023
+
+## [2.4.6, 2.4.7] May 2023
 
 ### Changed
 - auth guard handles checking if token exists or not
