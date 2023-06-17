@@ -32,7 +32,6 @@ export class HeaderComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
-        console.log("feature offset " + this.featureOffset);
         this.homeOffset = document.getElementById('home') ? document.getElementById('home').offsetTop - 100 : 0;
         this.aboutOffset = document.getElementById('about') ? document.getElementById('about').offsetTop - 100 : 0;
         this.featureOffset = document.getElementById('feature') ? document.getElementById('feature').offsetTop - 100 : 0;

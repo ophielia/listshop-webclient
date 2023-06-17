@@ -91,42 +91,39 @@ export class AuthenticationService implements OnDestroy {
                     this.userIsAuthenticated = true;
                     return true;
                 }
-                this.userIsAuthenticated = false;
-                return false;
+                    this.userIsAuthenticated = false;
+                    localStorage.removeItem('currentUser');
+                                    return false;
 
-            }));
+            }),
+                catchError(this.handleAuthenticationError));
     }
-    checkAuthentication()  {
+    checkAuthentication(): Promise<boolean>  {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
         if (!token) {
-            return ;
+            this.userIsAuthenticated = false;
+            return of(false).toPromise();
         }
-        var now = new Date().getTime();
-        var sinceRefresh = now - this.lastTokenCheck;
-
-        if (sinceRefresh <= this.refreshPeriod) {
-            this.lastTokenCheck = now;
-            return;
-        }
-
-        this.lastTokenCheck = now;
         // prepare device info
+        this.lastTokenCheck = new Date().getTime();
         var deviceInfo = this.createDeviceInfo();
         var url = this.authUrl + "/authenticate";
         return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
             .pipe(map((response: HttpResponse<any>) => {
-                var status = response.status;
-                console.log("status is: " + status);
-                if (status >= 200 && status < 300) {
-                    this.userIsAuthenticated = true;
-                    return;
-                }
-                this.userIsAuthenticated = false;
-                localStorage.removeItem('currentUser');
-                return;
+                    var status = response.status;
+                    console.log("status is: " + status);
+                    if (status >= 200 && status < 300) {
+                        this.userIsAuthenticated = true;
+                        return true;
+                    }
+                    this.userIsAuthenticated = false;
+                    localStorage.removeItem('currentUser');
+                    return false;
 
-            }));
+                }),
+                catchError(this.handleAuthenticationError)).toPromise();
+
     }
 
     login(username: string, password: string): Observable<boolean> {
@@ -376,6 +373,16 @@ export class AuthenticationService implements OnDestroy {
 
         // throw an application level error
         return throwError(error);
+    }
+
+    handleAuthenticationError(error: any) : Observable<boolean> {
+        // log error
+        // could be something more sophisticated
+        let errorMsg = error.message || `User could not be authenticated`;
+        console.log(errorMsg);
+        this.userIsAuthenticated = false;
+        localStorage.removeItem('currentUser');
+        return of(false);
     }
 
 }
