@@ -19,6 +19,7 @@ import {AlertService} from "./shared/services/alert.service";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {PartyGuardHandler} from "./shared/handlers/party-guard-handler";
 import {EnvironmentLoaderService} from "./shared/services/environment-loader.service";
+import {AuthenticationInterceptor} from "./shared/handlers/authentication-interceptor";
 
 const initAppConfig = (envService: EnvironmentLoaderService) => {
     return () => envService.loadEnvConfig('/assets/config/config.json');
@@ -55,6 +56,7 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
     providers: [
         AlertService,
         {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
         {provide: ErrorHandler, useClass: ListShopErrorHandler},
         EnvironmentLoaderService,
         {

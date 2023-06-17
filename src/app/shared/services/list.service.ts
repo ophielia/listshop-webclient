@@ -262,7 +262,7 @@ export class ListService implements OnDestroy {
         // log error
         // could be something more sophisticated
         let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
-        this.logger.error(errorMsg);
+        console.error(errorMsg);
 
         // throw an application level error
         return throwError(error);

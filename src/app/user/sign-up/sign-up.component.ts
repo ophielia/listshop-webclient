@@ -7,6 +7,9 @@ import {Subscription} from "rxjs";
 import EmailValidator from "../../shared/validators/email-validator";
 import {ErrorType} from "../../model/error-type";
 import PasswordValidator from "../../shared/validators/password-validator";
+import {ListService} from "../../shared/services/list.service";
+import {map} from "rxjs/operators";
+import CreateUserStatus from "../../model/create-user-status";
 
 @Component({
     selector: 'app-sign-up',
@@ -30,6 +33,7 @@ export class SignUpComponent implements OnInit {
                 private meta: Meta,
                 private router: Router,
                 private fb: FormBuilder,
+                private listService: ListService,
                 private authenticationService: AuthenticationService) {
         // initialize variable value
         this.show = false;
@@ -77,15 +81,26 @@ export class SignUpComponent implements OnInit {
         }
 
         // we're validated, and ready to go!
-        this.authenticationService.createUserAndList(this.signUpForm.get('email').value.trim(),
+        this.authenticationService.createUser(this.signUpForm.get('email').value.trim(),
             this.signUpForm.get('userPassword').value.trim())
             .subscribe(success => {
                 if (!success) {
                     var error: Error = Error("BADCREDENTIALS");
                     throw error;
                 }
-                this.router.navigateByUrl(this.returnUrl);
+
+
+
+                this.createListForUser();
+
             });
+    }
+
+    createListForUser() {
+        let sub$ = this.listService
+            .createList(ListService.DEFAULT_LIST_NAME)
+            .subscribe(l =>this.router.navigateByUrl(this.returnUrl));
+        this.unsubscribe.push(sub$);
     }
 
     validateEmailNotTaken() {

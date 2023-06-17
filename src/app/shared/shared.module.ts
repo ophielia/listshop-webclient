@@ -32,6 +32,7 @@ import { CreateTagDialogComponent } from './components/create-tag-dialog/create-
 import {UserService} from "./services/user.service";
 import { CelebrationComponent } from './components/celebration/celebration.component';
 import { MyIsPartyDirective } from './directives/my-is-party.directive';
+import {RouteMessageComponent} from "./components/route-message/route-message.component";
 
 @NgModule({
     exports: [
@@ -51,7 +52,8 @@ import { MyIsPartyDirective } from './directives/my-is-party.directive';
         ConfirmDialogComponent,
         CreateTagDialogComponent,
         CelebrationComponent,
-        MyIsPartyDirective
+        MyIsPartyDirective,
+        RouteMessageComponent
 
     ],
     imports: [
@@ -71,6 +73,7 @@ import { MyIsPartyDirective } from './directives/my-is-party.directive';
         ListShopHeaderComponent,
         DishSelectComponent,
         TagSelectComponent,
+        RouteMessageComponent,
         GenerateListComponent,
         ListSelectComponent,
         ModalComponent,
