@@ -10,8 +10,13 @@
               <h1 class="text-white">The List Shop
               </h1>
               <p class="slide-cap-desc"></p>
-               <a *ngIf="isLoggedIn" [routerLink]="'/home/theapp'"><img src="../../../../assets/images/appstore.png" alt="appstore" class="store"></a>
-               <a *ngIf="!isLoggedIn" [routerLink]="'/home/loggedout/theapp'"><img src="../../../../assets/images/appstore.png" alt="appstore" class="store"></a>
+              <ng-container *ngIf="appStoreLinkAvailable">
+                <a href="{{appStoreLink}}" target="_blank"><img src="../../../../assets/images/appstore.png" alt="appstore" class="store"></a>
+              </ng-container>
+              <ng-container *ngIf="!appStoreLinkAvailable">
+                <a *ngIf="isLoggedIn" [routerLink]="'/home/theapp'"><img src="../../../../assets/images/appstore.png" alt="appstore" class="store"></a>
+                <a *ngIf="!isLoggedIn" [routerLink]="'/home/loggedout/theapp'"><img src="../../../../assets/images/appstore.png" alt="appstore" class="store"></a>
+              </ng-container>
             </div>
           </div>
         </div>

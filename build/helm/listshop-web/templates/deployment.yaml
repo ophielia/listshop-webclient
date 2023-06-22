@@ -35,6 +35,8 @@ spec:
               value: {{ .Values.service.apiUrl }}
             - name: STATIC_LINK
               value: {{ .Values.service.staticUrl }}
+            - name: APP_STORE_LINK
+              value: {{ .Values.service.appStoreUrl }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

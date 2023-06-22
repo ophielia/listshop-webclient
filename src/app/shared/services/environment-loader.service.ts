@@ -32,6 +32,7 @@ export class EnvironmentLoaderService {
             readEnvConfig.apiUrl = response.body.apiUrl;
             readEnvConfig.celebrationUrl = response.body.celebrationUrl;
             readEnvConfig.celebrationRefreshInterval = 2;
+            readEnvConfig.appStoreLink = response.body.appStoreLink ;
           return readEnvConfig;
 
         }));

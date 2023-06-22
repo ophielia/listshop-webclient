@@ -19,7 +19,7 @@ export class AnonymousBetaTestComponent implements OnInit {
   }
 
   redirectToLogin() {
-    var url = "home/theapp";
+    var url = "user/login";
     this.router.navigateByUrl(url);
   }
 }

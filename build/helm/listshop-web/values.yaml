@@ -41,6 +41,7 @@ service:
   port: 80
   apiUrl: http://localhost/
   staticUrl: http://localhost/
+  appStoreUrl: http://localhost/
 
 ingress:
   enabled: false
