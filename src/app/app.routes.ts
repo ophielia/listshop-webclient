@@ -4,6 +4,7 @@ import {DishesComponent} from "./dishes/dishes.component";
 import {UserComponent} from "./user/user.component";
 import {MealPlansComponent} from "./meal-plans/meal-plans.component";
 import {HomeComponent} from "./landing/home.component";
+import {LandingComponent} from "./beta-campaign/landing/landing.component";
 
 export const rootRouterConfig: Routes = [
     {
@@ -37,6 +38,12 @@ export const rootRouterConfig: Routes = [
         path: 'mealplans',
         component: MealPlansComponent,
         loadChildren: () => import('./meal-plans/meal-plans.module').then(m => m.MealPlansModule)
+    },
+    {
+        path: 'mrpeanutbutter',
+        component: LandingComponent,
+        pathMatch: 'prefix',
+        loadChildren: () => import('./beta-campaign/beta-campaign.module').then(m => m.BetaCampaignModule)
     },
 
 ];
