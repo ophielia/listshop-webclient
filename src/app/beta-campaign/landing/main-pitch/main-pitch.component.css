@@ -4,8 +4,21 @@
   background-color: #e67d21;
 }
 
+.subheading {
+  text-align: right;
+}
+
 .applanding {
   padding-top: 10px;
+}
+
+.feedback-button {
+  max-width: 150px;
+}
+
+.feedback-paragraph {
+  margin-top: 50px;
+  text-align: right;
 }
 
 /*# sourceMappingURL=main-pitch.component.css.map */
