@@ -3,6 +3,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EnvironmentLoaderService} from "../../../shared/services/environment-loader.service";
 import {NGXLogger} from "ngx-logger";
 import {AuthenticationService} from "../../../shared/services/authentication.service";
+import {CampaignFeedback} from "../../../model/campaignfeedback";
+import {FeedbackService} from "../../../shared/services/feedback.service";
 
 @Component({
   selector: 'app-main-pitch',
@@ -20,6 +22,7 @@ export class MainPitchComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private envLoader: EnvironmentLoaderService,
+              private feedbackService: FeedbackService,
               private logger: NGXLogger,
               private authorizationService: AuthenticationService
 
@@ -47,6 +50,26 @@ export class MainPitchComponent implements OnInit {
 
   openSendFeedbackModal() {
     this.sendFeedbackModal.show();
+  }
+
+  testSendInfo() {
+
+    this.feedbackService.publishFeedback("test@email.com",
+        "some dummy text lorum ipso facto, etc.")
+        .subscribe(r => {
+          if (r.status == 204) {
+            this.emailSentSuccessfully();
+          } else {
+            this.troubleWithEmail();
+          }
+        });
+  }
+
+   emailSentSuccessfully() {
+    this.sendFeedbackModal.hide();
+  }
+  troubleWithEmail() {
+    this.sendFeedbackModal.hide();
   }
 
 }
