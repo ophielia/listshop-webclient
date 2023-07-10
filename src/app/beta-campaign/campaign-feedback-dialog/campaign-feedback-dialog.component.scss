@@ -1,3 +1,26 @@
+@import '../../../assets/scss/variable';
+
 div.feedback-form {
   margin-top: 20px;
+}
+
+div.submit-button {
+  text-align: right;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+span.submit-button {
+  text-transform: uppercase;
+  font-weight: lighter;
+  letter-spacing: 2px;
+  font-size: 1.5em;
+}
+
+span.orange-arrows {
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 1.5em;
+  color: $color_basic_orange;
 }

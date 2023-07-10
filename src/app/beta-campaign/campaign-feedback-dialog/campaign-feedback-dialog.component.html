@@ -2,7 +2,7 @@
  <div >
      <div class="feedback-form">
         <span>Email</span>
-        <input type="text" class="form-control ls-inline-input"
+        <input type="text" maxlength="30" class="form-control ls-inline-input"
                [(ngModel)]="email"
                placeholder="(optional)"
         />
@@ -10,11 +10,14 @@
     <div class="feedback-form">
         <span>Feedback</span>
         <textarea  class="form-control ls-inline-input"
-               [(ngModel)]="email" ></textarea>
+               [(ngModel)]="feedback" rows="8" maxlength="500"></textarea>
     </div>
-    <div class="ls-list-span-buttons" (click)="submitFeedback()">
-        <span>
-        Next
+    <div class="ls-list-span-buttons submit-button" (click)="submitFeedback()">
+        <span class="orange-arrows">
+        >>
+    </span>
+        <span class="submit-button">
+        Submit
     </span>
     </div>
 </div>

@@ -19,6 +19,8 @@ export class MainPitchComponent implements OnInit {
   twitterLink: String;
 
   @ViewChild('sendfeedback') sendFeedbackModal;
+  @ViewChild('allgood') confirmationModal;
+  @ViewChild('wehaveaproblem') errorModal;
 
   constructor(private modalService: NgbModal,
               private envLoader: EnvironmentLoaderService,
@@ -50,12 +52,18 @@ export class MainPitchComponent implements OnInit {
 
   openSendFeedbackModal() {
     this.sendFeedbackModal.show();
+
   }
 
-  testSendInfo() {
 
-    this.feedbackService.publishFeedback("test@email.com",
-        "some dummy text lorum ipso facto, etc.")
+  troubleWithEmail() {
+    this.sendFeedbackModal.hide();
+    this.errorModal.show();
+  }
+
+  submitFeedback(feedback: CampaignFeedback) {
+    this.feedbackService.publishFeedback(feedback.email,
+        feedback.text)
         .subscribe(r => {
           if (r.status == 204) {
             this.emailSentSuccessfully();
@@ -65,11 +73,8 @@ export class MainPitchComponent implements OnInit {
         });
   }
 
-   emailSentSuccessfully() {
+  emailSentSuccessfully() {
     this.sendFeedbackModal.hide();
+    this.confirmationModal.show();
   }
-  troubleWithEmail() {
-    this.sendFeedbackModal.hide();
-  }
-
 }

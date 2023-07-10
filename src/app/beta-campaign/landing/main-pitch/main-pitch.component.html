@@ -53,14 +53,23 @@
 
 <app-modal #sendfeedback >
     <div class="app-modal-body padding-instructions">
-        <app-campaign-feedback-dialog></app-campaign-feedback-dialog>
+        <app-campaign-feedback-dialog
+                (feedbackInfo)="submitFeedback($event)"></app-campaign-feedback-dialog>
     </div>
 </app-modal>
 
-<app-modal #thanks [autoHide]="3500">
+<app-modal #allgood [autoHide]="3500">
     <div class="app-modal-body padding-instructions">
-        <h2>Will Do!</h2>
-        <div>We'll send you an email when the app is released.</div>
-        <app-campaign-feedback-dialog></app-campaign-feedback-dialog>
+        <h2>Thank you!</h2>
+        <div>Thanks for taking the time to look.  We really appreciate having the feedback!</div>
+
+    </div>
+</app-modal>
+
+<app-modal #wehaveaproblem [autoHide]="3500">
+    <div class="app-modal-body padding-instructions">
+        <h2>Uh oh!</h2>
+        <div>We're having a problem registering your feedback.  You can try again.  And if it continues to be difficult, please consider sending an email.</div>
+
     </div>
 </app-modal>
