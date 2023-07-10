@@ -1,0 +1,20 @@
+<h2>Share your Thoughts</h2>
+ <div >
+     <div class="feedback-form">
+        <span>Email</span>
+        <input type="text" class="form-control ls-inline-input"
+               [(ngModel)]="email"
+               placeholder="(optional)"
+        />
+    </div>
+    <div class="feedback-form">
+        <span>Feedback</span>
+        <textarea  class="form-control ls-inline-input"
+               [(ngModel)]="email" ></textarea>
+    </div>
+    <div class="ls-list-span-buttons" (click)="submitFeedback()">
+        <span>
+        Next
+    </span>
+    </div>
+</div>

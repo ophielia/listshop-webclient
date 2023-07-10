@@ -27,9 +27,19 @@
                             </ng-container>
 
 
-                            <p class="feedback-paragraph"><a href="www.google.com"><img
+                            <p class="feedback-paragraph"><a (click)="openSendFeedbackModal()"><img
                                     src="../../../../../assets/images/listshop/applanding/button2.png" alt="feedback"
                                     class="feedback-button"></a></p>
+
+
+                            <p class="social">
+
+                                <a href="{{facebookLink}}"><img target="_blank"
+                                    src="../../../../../assets/images/listshop/applanding/facebook_logo.png" alt="facebook"
+                                    class="social"></a>
+                                <a href="{{twitterLink}}"><img  target="_blank"
+                                        src="../../../../../assets/images/listshop/applanding/twitter_logo.png" alt="twitter"
+                                        class="social"></a></p>
 
                         </div>
                     </div>
@@ -39,3 +49,18 @@
     </div>
 </section>
 <!--Home Section End-->
+
+
+<app-modal #sendfeedback >
+    <div class="app-modal-body padding-instructions">
+        <app-campaign-feedback-dialog></app-campaign-feedback-dialog>
+    </div>
+</app-modal>
+
+<app-modal #thanks [autoHide]="3500">
+    <div class="app-modal-body padding-instructions">
+        <h2>Will Do!</h2>
+        <div>We'll send you an email when the app is released.</div>
+        <app-campaign-feedback-dialog></app-campaign-feedback-dialog>
+    </div>
+</app-modal>

@@ -1,6 +1,8 @@
 {
   "apiUrl":"http://localhost:8182/",
-  "celebrationUrl":"https://static.nastyvarmits.fr/celebrations.json",
+  "celebrationUrl":"https://static.nastyvarmits.fr/testCelebrations.json",
   "celebrationRefreshInterval": 60,
-  "appStoreLink": "http://www.the-list-shop.com"
+  "appStoreLink": "http://www.the-list-shop.com",
+  "facebookLink": "http://www.facebook.com",
+  "twitterLink": "http://www.twitter.com"
 }
