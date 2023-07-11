@@ -1,0 +1,77 @@
+<!--Home Section start-->
+<section id="home" class="home home-two  applanding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="home-right">
+                    <img data-tilt data-tilt-perspective="110" data-tilt-speed="400" data-tilt-max="1.2"
+                         src="./assets/images/listshop/applanding/app_full_frontal.png" class="img-fluid"
+                         alt="slider-caption">
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-12">
+                <div class="home-contain">
+                    <div class="text-white">
+                        <div class="contain">
+                            <h4>Welcome To</h4>
+                            <h1 class="text-white">The List Shop
+                            </h1>
+                            <h4 class="subheading">Designed for families.</h4>
+                            <h4 class="subheading">useful for everyone</h4>
+
+                            <p class="slide-cap-desc"></p>
+                            <ng-container *ngIf="appStoreLinkAvailable">
+                                <p class="home-contain-store"><a href="{{appStoreLink}}" target="_blank"><img
+                                        src="../../../../../assets/images/appstore.png" alt="appstore"
+                                        class="store"></a>
+                                    <img id="testitimage" src="../../../../../assets/images/listshop/applanding/testitout.png" alt="feedback_prompt" /></p>
+                            </ng-container>
+
+
+                            <p class="feedback-paragraph"><a (click)="openSendFeedbackModal()"><img
+                                    src="../../../../../assets/images/listshop/applanding/button2.png" alt="feedback"
+                                    class="feedback-button"></a></p>
+
+
+                            <p class="social">
+<img id="feedbackimage" src="../../../../../assets/images/listshop/applanding/whatdoyouthink.png" alt="feedback_prompt" />
+                                <a href="{{facebookLink}}"><img target="_blank"
+                                    src="../../../../../assets/images/listshop/applanding/facebook_logo.png" alt="facebook"
+                                    class="social"></a>
+                                <a href="{{twitterLink}}"><img  target="_blank"
+                                        src="../../../../../assets/images/listshop/applanding/twitter_logo.png" alt="twitter"
+                                        class="social"></a></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Home Section End-->
+
+
+<app-modal #sendfeedback >
+    <div class="app-modal-body padding-instructions">
+        <app-campaign-feedback-dialog
+                (feedbackInfo)="submitFeedback($event)"></app-campaign-feedback-dialog>
+    </div>
+</app-modal>
+
+<app-modal #allgood [autoHide]="3500">
+    <div class="app-modal-body padding-instructions">
+        <h2>Thank you!</h2>
+        <div>Thanks for taking the time to look.  We really appreciate having the feedback!</div>
+
+    </div>
+</app-modal>
+
+<app-modal #wehaveaproblem [autoHide]="3500">
+    <div class="app-modal-body padding-instructions">
+        <h2>Uh oh!</h2>
+        <div>We're having a problem registering your feedback.  You can try again.  And if it continues to be difficult, please consider sending an email.</div>
+
+    </div>
+</app-modal>
+<ngx-spinner bdColor = "rgba(0,0,0,0.3)" size = "medium" color = "white" type = "ball-spin-fade-rotating" [fullScreen] = "true"><p style="color: white" > Processing... </p></ngx-spinner>

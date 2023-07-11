@@ -1,0 +1,66 @@
+@import '../../../../assets/scss/variable';
+.home-two {
+  margin-top: 0px;
+  background-image: url("../../../../assets/images/listshop/applanding/background_landing.png");
+  background-color: $color_basic_orange;
+
+
+}
+
+.subheading {
+  text-align: right;
+}
+.applanding {
+  padding-top: 10px;
+}
+
+.feedback-button {
+  max-width: 150px;
+
+}
+
+.feedback-paragraph {
+  margin-top: 50px;
+  text-align:right;
+
+}
+
+img.social {
+  max-width: 50px;
+  padding-left: 10px;
+}
+
+p.social {
+  text-align: right;
+}
+
+#testitimage {
+  width: 175px;
+  margin-top: -40px;
+  padding-left: 10px;
+}
+
+#feedbackimage {
+  width: 200px;
+  #margin-top: -40px;
+  #padding-left: 10px;
+}
+
+@media (max-width: 1024px) {
+  #testitimage {
+    display: none;
+  }
+
+  #feedbackimage {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .home-contain {
+    margin-top: 100px;
+  }
+  .home-contain-store {
+    text-align: right;
+  }
+}

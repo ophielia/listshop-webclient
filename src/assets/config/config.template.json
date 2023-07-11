@@ -2,5 +2,7 @@
   "apiUrl":"${API_LINK}",
   "celebrationUrl":"${STATIC_LINK}celebrations.json",
   "celebrationRefreshInterval": 60,
-  "appStoreLink": "${APP_STORE_LINK}"
+  "appStoreLink": "${APP_STORE_LINK}",
+  "facebookLink": "${FACEBOOK_LINK}",
+  "twitterLink": "${TWITTER_LINK}"
 }
