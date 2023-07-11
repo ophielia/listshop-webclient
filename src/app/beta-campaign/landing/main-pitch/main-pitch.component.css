@@ -31,7 +31,7 @@ p.social {
 }
 
 #testitimage {
-  width: 200px;
+  width: 175px;
   margin-top: -40px;
   padding-left: 10px;
 }
@@ -40,6 +40,25 @@ p.social {
   width: 200px;
   #margin-top: -40px;
   #padding-left: 10px;
+}
+
+@media (max-width: 1024px) {
+  #testitimage {
+    display: none;
+  }
+
+  #feedbackimage {
+    display: none;
+  }
+}
+@media (max-width: 1200px) {
+  .home-contain {
+    margin-top: 100px;
+  }
+
+  .home-contain-store {
+    text-align: right;
+  }
 }
 
 /*# sourceMappingURL=main-pitch.component.css.map */

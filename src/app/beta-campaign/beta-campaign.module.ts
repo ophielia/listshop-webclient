@@ -7,6 +7,7 @@ import {RouterModule} from "@angular/router";
 import { CampaignFeedbackDialogComponent } from './campaign-feedback-dialog/campaign-feedback-dialog.component';
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 
@@ -16,7 +17,8 @@ import {SharedModule} from "../shared/shared.module";
         CommonModule,
         RouterModule,
         FormsModule,
-        SharedModule
+        SharedModule,
+        NgxSpinnerModule
     ]
 })
 export class BetaCampaignModule { }

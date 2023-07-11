@@ -21,7 +21,7 @@
 
                             <p class="slide-cap-desc"></p>
                             <ng-container *ngIf="appStoreLinkAvailable">
-                                <p><a href="{{appStoreLink}}" target="_blank"><img
+                                <p class="home-contain-store"><a href="{{appStoreLink}}" target="_blank"><img
                                         src="../../../../../assets/images/appstore.png" alt="appstore"
                                         class="store"></a>
                                     <img id="testitimage" src="../../../../../assets/images/listshop/applanding/testitout.png" alt="feedback_prompt" /></p>
@@ -74,3 +74,4 @@
 
     </div>
 </app-modal>
+<ngx-spinner bdColor = "rgba(0,0,0,0.3)" size = "medium" color = "white" type = "ball-spin-fade-rotating" [fullScreen] = "true"><p style="color: white" > Processing... </p></ngx-spinner>

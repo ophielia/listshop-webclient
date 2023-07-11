@@ -1,3 +1,4 @@
+import {NgxSpinnerService} from "ngx-spinner";
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EnvironmentLoaderService} from "../../../shared/services/environment-loader.service";
@@ -25,6 +26,7 @@ export class MainPitchComponent implements OnInit {
   constructor(private modalService: NgbModal,
               private envLoader: EnvironmentLoaderService,
               private feedbackService: FeedbackService,
+              private spinner: NgxSpinnerService,
               private logger: NGXLogger,
               private authorizationService: AuthenticationService
 
@@ -62,9 +64,11 @@ export class MainPitchComponent implements OnInit {
   }
 
   submitFeedback(feedback: CampaignFeedback) {
+    this.spinner.show();
     this.feedbackService.publishFeedback(feedback.email,
         feedback.text)
         .subscribe(r => {
+          this.spinner.hide();
           if (r.status == 204) {
             this.emailSentSuccessfully();
           } else {
