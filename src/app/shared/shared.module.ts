@@ -33,6 +33,7 @@ import {UserService} from "./services/user.service";
 import { CelebrationComponent } from './components/celebration/celebration.component';
 import { MyIsPartyDirective } from './directives/my-is-party.directive';
 import {RouteMessageComponent} from "./components/route-message/route-message.component";
+import {FeedbackService} from "./services/feedback.service";
 
 @NgModule({
     exports: [
@@ -92,6 +93,7 @@ import {RouteMessageComponent} from "./components/route-message/route-message.co
         TagService,
         UserService,
         MealPlanService,
+        FeedbackService,
         ConfirmDialogService
 
     ]

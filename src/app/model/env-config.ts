@@ -3,6 +3,8 @@ export class EnvConfig {
   celebrationUrl: string;
   celebrationRefreshInterval: number;
   appStoreLink: string;
+  facebookLink: string;
+  twitterLink: string;
 
 }
 
