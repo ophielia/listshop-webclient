@@ -1,3 +1,17 @@
+@media (min-width: 1669px) {
+    .feature-phone {
+        top: 150px;
+        left: 75%;
+
+        img {
+            width: 100%;
+            height: 650px;
+        }
+
+    }
+}
+
+
 @media (min-width: 1367px) and (max-width: 1669px) {
     .feature-phone {
         top: 150px;
@@ -11,6 +25,17 @@
     }
 }
 
+@media (max-width: 1366px)
+{
+    .feature-phone {
+        top: 126px;
+        left: 75%;
+        img {
+            width: 100%;
+            height: unset;
+        }
+    }
+}
 .feature {
     background-image: url("../../../../assets/images/listshop/applanding/curve_featured_background.png");
     margin-top: -1px;
