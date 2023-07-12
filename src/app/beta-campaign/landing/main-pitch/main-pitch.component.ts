@@ -75,7 +75,7 @@ export class MainPitchComponent implements OnInit, OnDestroy {
             if (twLink && twLink != 'empty') {
               this.twitterLink = twLink;
             }
-        //    this.linksLoading = false;
+            this.linksLoading = false;
           }
         });
     this.unsubscribe.push(sub$);
