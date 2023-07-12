@@ -40,7 +40,7 @@ export const rootRouterConfig: Routes = [
         loadChildren: () => import('./meal-plans/meal-plans.module').then(m => m.MealPlansModule)
     },
     {
-        path: 'mrpeanutbutter',
+        path: 'landing',
         component: LandingComponent,
         pathMatch: 'prefix',
         loadChildren: () => import('./beta-campaign/beta-campaign.module').then(m => m.BetaCampaignModule)

@@ -1,3 +1,5 @@
+
+
 <!--Home Section start-->
 <section id="home" class="home home-two  applanding">
     <div class="container">
@@ -19,6 +21,7 @@
                             <h4 class="subheading">Designed for families.</h4>
                             <h4 class="subheading">useful for everyone</h4>
 
+                            <div *ngIf="!linksLoading">
                             <p class="slide-cap-desc"></p>
                             <ng-container *ngIf="appStoreLinkAvailable">
                                 <p class="home-contain-store"><a href="{{appStoreLink}}" target="_blank"><img
@@ -26,22 +29,18 @@
                                         class="store"></a>
                                     <img id="testitimage" src="../../../../../assets/images/listshop/applanding/testitout.png" alt="feedback_prompt" /></p>
                             </ng-container>
-
-
                             <p class="feedback-paragraph"><a (click)="openSendFeedbackModal()"><img
                                     src="../../../../../assets/images/listshop/applanding/button2.png" alt="feedback"
                                     class="feedback-button"></a></p>
-
-
                             <p class="social">
 <img id="feedbackimage" src="../../../../../assets/images/listshop/applanding/whatdoyouthink.png" alt="feedback_prompt" />
-                                <a href="{{facebookLink}}"><img target="_blank"
+                                <a href="{{facebookLink}}" target="_blank"><img
                                     src="../../../../../assets/images/listshop/applanding/facebook_logo.png" alt="facebook"
                                     class="social"></a>
-                                <a href="{{twitterLink}}"><img  target="_blank"
+                                <a href="{{twitterLink}}" target="_blank"><img
                                         src="../../../../../assets/images/listshop/applanding/twitter_logo.png" alt="twitter"
                                         class="social"></a></p>
-
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 {
   "name": "webclient",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "scripts": {
     "ng": "ng",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
