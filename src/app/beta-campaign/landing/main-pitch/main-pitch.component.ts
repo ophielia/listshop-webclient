@@ -110,4 +110,8 @@ export class MainPitchComponent implements OnInit, OnDestroy {
     this.sendFeedbackModal.hide();
     this.confirmationModal.show();
   }
+
+  goToTheParty() {
+
+  }
 }
