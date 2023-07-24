@@ -40,7 +40,7 @@ export class MainPitchComponent implements OnInit, OnDestroy {
     this.loadConfig();
     this.meta.addTag({name: 'twitter:card', content: "summary"});
     this.meta.addTag({name: 'twitter:site', content: "http://thelistshop.app"});
-    this.meta.addTag({name: 'twitter:creator', content: "@Marmarmotte"});
+    this.meta.addTag({name: 'twitter:creator', content: "@TheListShopApp"});
     this.meta.addTag({name: 'twitter:title', content: "New App on the Horizon"});
     this.meta.addTag({name: 'twitter:description', content: "There's a new app coming - The List Shop. Available now for testing"});
     this.meta.addTag({name: 'twitter:image', content: "http://thelistshop.app/assets/images/listshop/applanding/promo.png"});
@@ -75,7 +75,7 @@ export class MainPitchComponent implements OnInit, OnDestroy {
             if (twLink && twLink != 'empty') {
               this.twitterLink = twLink;
             }
-        //    this.linksLoading = false;
+            this.linksLoading = false;
           }
         });
     this.unsubscribe.push(sub$);
