@@ -29,7 +29,8 @@
                                         class="store"></a>
                                     <img id="testitimage" src="../../../../../assets/images/listshop/applanding/testitout.png" alt="feedback_prompt" /></p>
                             </ng-container>
-                                <ng-container *appMyIsParty>  <p class="celebrate-paragraph"><a [routerLink]="'/celebrate'">CELEBRATE</a></p></ng-container>
+                             <ng-container *appMyIsParty>  <p class="celebrate-paragraph">
+                                 <a class="celebrate" (click)="goToTheParty()">Why the confetti??</a></p></ng-container>
                             <p class="feedback-paragraph"><a (click)="openSendFeedbackModal()"><img
                                     src="../../../../../assets/images/listshop/applanding/button2.png" alt="feedback"
                                     class="feedback-button"></a></p>
@@ -63,6 +64,14 @@
     <div class="app-modal-body padding-instructions">
         <h2>Thank you!</h2>
         <div>Thanks for taking the time to look.  We really appreciate having the feedback!</div>
+
+    </div>
+</app-modal>
+
+<app-modal #partypeeper [autoHide]="3500">
+    <div class="app-modal-body padding-instructions">
+        <h2>{{partyTitle}}</h2>
+        <div>{{partyText}}</div>
 
     </div>
 </app-modal>

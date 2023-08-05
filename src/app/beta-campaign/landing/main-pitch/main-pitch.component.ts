@@ -8,6 +8,8 @@ import {CampaignFeedback} from "../../../model/campaignfeedback";
 import {FeedbackService} from "../../../shared/services/feedback.service";
 import {Subscription} from "rxjs";
 import {Meta} from "@angular/platform-browser";
+import {Router} from "@angular/router";
+import {CelebrationService} from "../../../shared/services/celebration.service";
 
 @Component({
   selector: 'app-main-pitch',
@@ -25,14 +27,19 @@ export class MainPitchComponent implements OnInit, OnDestroy {
   @ViewChild('sendfeedback') sendFeedbackModal;
   @ViewChild('allgood') confirmationModal;
   @ViewChild('wehaveaproblem') errorModal;
+  @ViewChild('partypeeper') partyModel;
 
   unsubscribe: Subscription[] = [];
+  partyText: string;
+  partyTitle: string;
 
   constructor(private modalService: NgbModal,
               private envLoader: EnvironmentLoaderService,
               private feedbackService: FeedbackService,
               private spinner: NgxSpinnerService,
               private meta: Meta,
+              private celebrationService: CelebrationService,
+              private router: Router,
               private logger: NGXLogger,
               private authorizationService: AuthenticationService
 
@@ -44,7 +51,20 @@ export class MainPitchComponent implements OnInit, OnDestroy {
     this.meta.addTag({name: 'twitter:title', content: "New App on the Horizon"});
     this.meta.addTag({name: 'twitter:description', content: "There's a new app coming - The List Shop. Available now for testing"});
     this.meta.addTag({name: 'twitter:image', content: "http://thelistshop.app/assets/images/listshop/applanding/promo.png"});
-
+    this.celebrationService.celebrationChange().subscribe(
+        changed => {
+          if (changed) {
+            var celebration = this.celebrationService.currentCelebration();
+            if (celebration) {
+              this.partyText = celebration.party_text;
+              this.partyTitle = celebration.party_title;
+            }
+            console.log("party text:" + this.celebrationService.weAreCelebrating());
+            console.log("party text:" + this.partyText);
+            console.log("party text:" + celebration);
+          }
+        }
+    )
   }
 
   ngOnInit(): void {
@@ -79,6 +99,7 @@ export class MainPitchComponent implements OnInit, OnDestroy {
           }
         });
     this.unsubscribe.push(sub$);
+
   }
 
   openSendFeedbackModal() {
@@ -112,6 +133,6 @@ export class MainPitchComponent implements OnInit, OnDestroy {
   }
 
   goToTheParty() {
-
+    this.partyModel.show();
   }
 }

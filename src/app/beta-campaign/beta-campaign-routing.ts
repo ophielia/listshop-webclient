@@ -8,14 +8,7 @@ import {LandingPartyComponent} from "./landing/landing-party/landing-party.compo
 
 
 const routes: Routes = [
-  {
-    path: '',
-    component: LandingComponent,
-    data: {
-      title: 'The List Shop App',
-      content: 'The List Shop App'
-    }
-  },
+
   {
     path: 'celebrate',
     component: LandingPartyComponent,
@@ -24,10 +17,18 @@ const routes: Routes = [
       content: 'The List Shop App'
     }
   },
+  {
+    path: '',
+    component: LandingComponent,
+    data: {
+      title: 'The List Shop App',
+      content: 'The List Shop App'
+    }
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ListsRoutingModule { }
+export class LandingRoutingModule { }

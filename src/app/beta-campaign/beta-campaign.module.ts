@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {NgxSpinnerModule} from "ngx-spinner";
 import { LandingPartyComponent } from './landing/landing-party/landing-party.component';
+import {LandingRoutingModule} from "./beta-campaign-routing";
 
 
 
@@ -19,7 +20,8 @@ import { LandingPartyComponent } from './landing/landing-party/landing-party.com
         RouterModule,
         FormsModule,
         SharedModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        LandingRoutingModule
     ]
 })
 export class BetaCampaignModule { }
