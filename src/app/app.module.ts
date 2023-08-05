@@ -1,5 +1,5 @@
 import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -71,4 +71,5 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
     bootstrap: [AppComponent]
 })
 export class AppModule {
+
 }

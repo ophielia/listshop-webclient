@@ -25,6 +25,23 @@
 
 }
 
+.celebrate-paragraph {
+  margin-top: 50px;
+  margin-bottom: -40px;
+  text-align:right;
+
+
+
+}
+
+a.celebrate {color:white;
+  text-transform: uppercase;
+  font-size: large;}
+
+a:hover.celebrate {
+  transform: rotate(3deg) ;
+  transition: all 0.3s ease;}
+
 img.social {
   max-width: 50px;
   padding-left: 10px;

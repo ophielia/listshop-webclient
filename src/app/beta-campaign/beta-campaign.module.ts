@@ -8,17 +8,20 @@ import { CampaignFeedbackDialogComponent } from './campaign-feedback-dialog/camp
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {NgxSpinnerModule} from "ngx-spinner";
+import { LandingPartyComponent } from './landing/landing-party/landing-party.component';
+import {LandingRoutingModule} from "./beta-campaign-routing";
 
 
 
 @NgModule({
-  declarations: [LandingComponent, MainPitchComponent, PitchFeaturesComponent, CampaignFeedbackDialogComponent],
+  declarations: [LandingComponent, MainPitchComponent, PitchFeaturesComponent, CampaignFeedbackDialogComponent, LandingPartyComponent],
     imports: [
         CommonModule,
         RouterModule,
         FormsModule,
         SharedModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        LandingRoutingModule
     ]
 })
 export class BetaCampaignModule { }
