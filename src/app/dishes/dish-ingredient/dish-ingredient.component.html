@@ -1,0 +1,23 @@
+<p>dish-ingredient works!</p>
+<div style="height:600px;background-color:white;margin-left:50px;padding-left: 10px">
+
+    <input type="text" class="form-control ls-inline-input"
+           [(ngModel)]="entryText" (keyup)="inputChanged($event)"
+           (keyup.space)="spaceEntered()"
+    />
+
+    <div style="    color: grey;margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Match off of : {{ searchText$ | async }}!!
+    </div>
+    <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Token list :
+        <ul>
+            <li *ngFor="let item of tokens">{{ item }}</li>
+
+        </ul>
+    </div>
+    <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Suggestions :
+        <ul>
+            <li *ngFor="let item of suggestion$|async">{{ item }}</li>
+
+        </ul>
+    </div>
+</div>

@@ -13,6 +13,7 @@ import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {AddDishComponent} from "./add-dish/add-dish.component";
 import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
 import {DishContext} from "./dish-context/dish-context";
+import { DishIngredientComponent } from './dish-ingredient/dish-ingredient.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {DishContext} from "./dish-context/dish-context";
         EditDishComponent,
         AddDishComponent,
         AddDishIngredientComponent,
-        MealplanSelectComponent],
+        MealplanSelectComponent,
+        DishIngredientComponent],
     imports: [
         CommonModule,
         DishesRoutingModule,

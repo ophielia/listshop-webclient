@@ -5,12 +5,13 @@ import {ManageDishesComponent} from "./manage-dishes/manage-dishes.component";
 import {EditDishComponent} from "./edit-dish/edit-dish.component";
 import {AddDishComponent} from "./add-dish/add-dish.component";
 import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
+import {DishIngredientComponent} from "./dish-ingredient/dish-ingredient.component";
 
 
 const routes: Routes = [
     {
         path: 'manage',
-        component: ManageDishesComponent,
+        component: DishIngredientComponent,
         data: {
             title: 'The List Shop | My Dishes',
             content: 'The List Shop | My Dishes'
@@ -43,7 +44,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        component: ManageDishesComponent,
+        component: DishIngredientComponent,
         data: {
             title: 'The List Shop | My Dishes',
             content: 'The List Shop | My Dishes'
