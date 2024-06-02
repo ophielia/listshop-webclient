@@ -79,6 +79,13 @@ ls-fixed-top.fixed-top {
 }
 
 /* site-wide - components */
+/* site-wide - components - input */
+.ls-inline-input {
+  display: inline;
+  width: 75%;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
 /* site-wide - components - custom button links */
 .link-button {
   color: $white;

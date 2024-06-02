@@ -1,0 +1,29 @@
+@import '../../../assets/scss/variable';
+@import '../../../assets/scss/ls-style';
+
+.my-ty {
+  position:relative;
+  margin-left:100px;
+  height:100px;
+}
+
+.my-ty-base {
+  @extend .ls-inline-input;
+  @extend .form-control;
+}
+
+.my-ty-entry {
+  @extend .my-ty-base;
+  position:absolute;
+  background-color:transparent;
+  &:focus {
+    background-color: transparent;
+  }
+}
+
+.my-ty-hint {
+  @extend .my-ty-base;
+  position:absolute;
+  background-color: white;
+  color: $color_tapa;
+}
