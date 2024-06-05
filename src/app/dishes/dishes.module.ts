@@ -14,7 +14,6 @@ import {AddDishComponent} from "./add-dish/add-dish.component";
 import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
 import {DishContext} from "./dish-context/dish-context";
 import { DishIngredientComponent } from './dish-ingredient/dish-ingredient.component';
-import { DishIngredientBackupComponent } from './dish-ingredient-backup/dish-ingredient-backup.component';
 
 
 @NgModule({
@@ -24,8 +23,7 @@ import { DishIngredientBackupComponent } from './dish-ingredient-backup/dish-ing
         AddDishComponent,
         AddDishIngredientComponent,
         MealplanSelectComponent,
-        DishIngredientComponent,
-        DishIngredientBackupComponent],
+        DishIngredientComponent],
     imports: [
         CommonModule,
         DishesRoutingModule,
