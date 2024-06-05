@@ -1,7 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {distinctUntilChanged, filter, map} from "rxjs/operators";
-import {EntryEvent} from "./entry-event";
+import {Component, OnInit} from '@angular/core';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
     'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -19,57 +16,20 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
     styleUrls: ['./dish-ingredient.component.scss']
 })
 export class DishIngredientComponent implements OnInit {
-    entryText: string;
     tokens: string[] = [];
 
     searchSuggestions: string[] = [];
     doubleTokenSuggestions: string[] = [];
-    searchSuggestion: string;
     doubleTokenStart: string;
 
     tmpTextWithSuggestion: string;
 
-    showSuggestions: boolean = true;
-    twoTokenMatchingPossible: boolean;
-
-
-    private midLineInput = new BehaviorSubject<boolean>(false);
-    midLineChange$ = this.midLineInput.asObservable();
-    private searchTextInput = new BehaviorSubject<EntryEvent>(null);
-    private searchTextInputChange$ = this.searchTextInput.asObservable();
-
 
     ngOnInit(): void {
-        this.midLineChange$.pipe(
-            distinctUntilChanged(),
-            map(midLine => {
-                this.showSuggestions = !midLine;
-                this.twoTokenMatchingPossible = !midLine;
-            })
-        ).subscribe();
-
-        this.searchText$.pipe(
-            filter(st => typeof st === "string"),
-            filter(st => st.trim().length > 1),
-            map(st => {
-                console.log("search text pipe for: " + st);
-                this.searchSuggestions = this.mapSuggestions(st, null);
-
-                /**
-                 let lastToken = this.tokens.length > 0 ? this.tokens[this.tokens.length - 1] : null;
-                 this.searchSuggestions = this.mapSuggestions(st, lastToken);
-                 if (this.searchSuggestions.length > 0 && this.cursorPosition == this.entryText.length) {
-                 this.searchSuggestion = this.computeSuggestionDisplay(st,this.searchSuggestions[0]);
-                 } else {
-                 this.searchSuggestion = "";
-                 }**/
-            })
-        ).subscribe();
-
     }
 
     // input / callback
-     mapSuggestions(stringToMatch: string, lastToken: string) {
+    mapSuggestions(stringToMatch: string, lastToken: string) {
         console.log("map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
         let allSuggestions: string[] = new Array();
         if (this.doubleTokenSuggestions != null && this.doubleTokenSuggestions.length > 0) {
@@ -80,203 +40,15 @@ export class DishIngredientComponent implements OnInit {
         let results = states.filter(s => s.toLowerCase().startsWith(stringToMatch.toLowerCase().trim()));
         allSuggestions = allSuggestions.concat(results);
 
-        if (this.showSuggestions && allSuggestions.length > 0) {
-            //this.searchSuggestion =allSuggestions[0];
-            this.searchSuggestion = this.computeSuggestionDisplay(stringToMatch, allSuggestions[0]);
-        } else {
-            this.searchSuggestion = "";
-        }
+
         return allSuggestions;
     }
 
-
-    searchText$ = this.searchTextInputChange$.pipe(
-        filter(ev => ev != null),
-        distinctUntilChanged(),
-        map(entryEvent => {
-            if (entryEvent.endPosition) {
-                return this.entryText.substr(entryEvent.startPosition, entryEvent.endPosition - entryEvent.startPosition).trim();
-            }
-            return this.entryText.substring(entryEvent.startPosition);
-        })
-    )
-/*
-    inputChanged($event, inputhtml: any) {
-        // processing input
-        let cursorPosition = inputhtml.selectionStart;
-        ;
-        let isMidline = cursorPosition < this.entryText.trim().length;
-        let lastSpace = this.calculateLastSpace(isMidline, cursorPosition);
-        let nextSpace = this.calculateNextSpace(isMidline, cursorPosition);
-        console.log(`input changed, cursorPosition: ${cursorPosition},isMidline: ${isMidline},
-        lastSpace: ${lastSpace},nextSpace: ${nextSpace}`);
-
-        // process tokens, if space
-        this.processTokens();
-        if ($event.key === " ") {
-            if (!this.processTwoTokenMatching()) {
-                this.clearSuggestions();
-            }
-        }
-
-        // fire is midline
-        this.midLineInput.next(isMidline);
-        // fire searchText change
-        let entryEvent = new EntryEvent();
-        entryEvent.startPosition = lastSpace;
-        entryEvent.endPosition = nextSpace;
-        this.searchTextInput.next(entryEvent);
-    }
-*/
-    processTwoTokenMatching() {
-        if (!this.twoTokenMatchingPossible) {
-            return false;
-        }
-        // double token match check
-        this.doubleTokenSuggestions = this.searchSuggestions.filter(t => t.indexOf(" "));
-        if (this.doubleTokenSuggestions && this.doubleTokenSuggestions.length > 0) {
-            this.searchSuggestions = [];
-            this.searchSuggestion = "";
-            this.doubleTokenStart = this.tokens[this.tokens.length - 1];
-            return true;
-        }
-        return false;
-    }
-
-    /*@HostListener('window:keydown', ['$event'])
-    keyEvent(event: KeyboardEvent) {
-        if (event.key === 'Tab') {
-            event.preventDefault();
-            this.selectSuggestion();
-        }
-    }*/
-
-    calculateLastSpace(isMidline: boolean, cursorPosition: number) {
-        if (this.entryText.indexOf(" ") < 0) {
-            return 0;
-        }
-        if (!isMidline) {
-            return this.entryText.lastIndexOf(" ");
-        }
-        return Math.max(this.entryText.substring(0, cursorPosition).lastIndexOf(" "), 0);
-    }
-
-    calculateNextSpace(isMidline: boolean, cursorPosition: number) {
-        if (this.entryText.indexOf(" ") < 0 || !isMidline) {
-            return null;
-        }
-        return this.entryText.substring(cursorPosition).indexOf(" ") + cursorPosition;
-    }
-
-    newProcessTokens(newValue:string) {
+    newProcessTokens(newValue: string) {
         var list = newValue.split(' ')
             .filter(i => i.trim().length > 0)
         this.tokens = list;
     }
 
-
-    clearSuggestions() {
-        this.searchSuggestions = [];
-        this.doubleTokenSuggestions = [];
-        this.searchSuggestion = "";
-        this.doubleTokenStart = null;
-    }
-
-
-
- /*   selectSuggestion() {
-        if (this.searchSuggestions.length == 0) {
-            return;
-        }
-
-        // get entry event
-        let entry = this.searchTextInput.value;
-        console.log("select entry: start: " + entry.startPosition + " , end: " + entry.endPosition);
-        // get suggestion
-        let suggestion = this.searchSuggestions ? this.searchSuggestions[0].trim() : "";
-
-        // insert suggestion in entry event
-        let insertFirstPosition = this.getInsertFirstPosition(suggestion, entry);
-        let suggestionPart = this.getSuggestionPart(suggestion, entry);
-        var entryWithSuggestion = this.entryText.substr(0, insertFirstPosition).trim();
-        entryWithSuggestion += suggestionPart;
-        if (entry.endPosition) {
-            entryWithSuggestion += " " + this.entryText.substring(entry.endPosition).trim();
-        }
-        entryWithSuggestion += " ";
-        // clear suggestions
-        this.clearSuggestions();
-
-        // set entry text
-        this.entryText = entryWithSuggestion;
-
-        // process
-        this.processTokens();
-    }*/
-
-    private getInsertFirstPosition(suggestion: string, entry: EntryEvent) {
-        var enteredLength;
-        if (this.inTwoTokenMode(suggestion)) {
-            // we have a double token match
-            var entryThroughStartPos = this.entryText.substr(0, entry.startPosition);
-            var doubleTokenStartPos = entryThroughStartPos.lastIndexOf(this.doubleTokenStart);
-            enteredLength = this.entryText.substring(doubleTokenStartPos).length;
-            return doubleTokenStartPos >= 0 ? doubleTokenStartPos + enteredLength : entry.startPosition;
-        }
-
-
-        if (entry.endPosition) {
-            console.log("dd " + this.entryText.substring(entry.startPosition, entry.endPosition));
-            enteredLength = this.entryText.substring(entry.startPosition, entry.endPosition).length;
-        } else {
-            enteredLength = this.entryText.substring(entry.startPosition).length;
-        }
-        return entry.startPosition + enteredLength;
-    }
-
-    private getSuggestionPart(suggestion: string, entry: EntryEvent) {
-        var enteredLength;
-        if (this.inTwoTokenMode(suggestion)) {
-            // we have a double token match
-            var entryThroughStartPos = this.entryText.substr(0, entry.startPosition);
-            var doubleTokenStartPos = entryThroughStartPos.lastIndexOf(this.doubleTokenStart);
-            enteredLength = this.entryText.substring(doubleTokenStartPos).length;
-            return suggestion.substr(enteredLength);
-        }
-        if (entry.endPosition) {
-            console.log("dd " + this.entryText.substring(entry.startPosition, entry.endPosition));
-            enteredLength = this.entryText.substring(entry.startPosition, entry.endPosition).trim().length;
-        } else {
-            enteredLength = this.entryText.substring(entry.startPosition).trim().length;
-        }
-        let suggestionPart = suggestion.substr(enteredLength);
-        console.log("suggestionPart: " + suggestionPart);
-        return suggestionPart;
-    }
-
-    private computeSuggestionDisplay(searchString: string, suggestion: string) {
-        console.log("computeSuggestionDisplay: searchString: " + searchString +
-            ", suggestion: " + suggestion + ", entryText: " + this.entryText);
-        console.log("computeSuggestionDisplay: calculated: " + this.entryText + suggestion.substr(searchString.trim().length));
-        var spaceLocation = suggestion.indexOf(" ");
-        if (!this.inTwoTokenMode(suggestion)) {
-            console.log("not in two token");
-            return this.entryText + suggestion.substr(searchString.trim().length);
-        }
-        console.log("in two token");
-        var displayLengthFromRight = Math.max(suggestion.substring(spaceLocation).trim().length - searchString.trim().length, 0);
-        return this.entryText + suggestion.substring(suggestion.length - displayLengthFromRight);
-    }
-
-    private inTwoTokenMode(suggestion:string) {
-        return this.doubleTokenStart != null && suggestion.indexOf(" ") >=0;
-    }
-
-
-    // use tokens
-    // modularize for use in components
-
-    // use real values instead of states
-    // (real values sorted)
 
 }

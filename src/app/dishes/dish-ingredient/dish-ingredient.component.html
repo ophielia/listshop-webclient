@@ -1,20 +1,11 @@
 <p>dish-ingredient works!</p>
-<!--
-<div id="my-ty" class="my-ty">
-    <input class="my-ty-hint form-control" type="text" value="{{searchSuggestion}}" />
-    <input #myinput class="my-ty-entry form-control" type="text" [(ngModel)]="entryText" (keyup)="inputChanged($event, myinput)" />
-</div>
 
--->
 
 <div style="height:600px;background-color:white;margin-left:50px;padding-left: 10px">
-    <app-ingredient-input [findSuggestions]="mapSuggestions"  (processAfterChange)="newProcessTokens($event)"></app-ingredient-input>
-  <!--  <input #myinput type="text" class="form-control ls-inline-input"
-           [(ngModel)]="entryText" (keyup)="inputChanged($event, myinput)"
-    />-->
+    <app-ingredient-input [findSuggestions]="mapSuggestions"
+                          (processAfterChange)="newProcessTokens($event)"></app-ingredient-input>
 
-    <div style="    color: grey;margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Match off of : {{ searchText$ | async }}!!
-    </div>
+
         <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Token list :
             <ul>
                 <li *ngFor="let item of tokens">{{ item }}</li>
