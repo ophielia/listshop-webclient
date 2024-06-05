@@ -68,6 +68,28 @@ export class DishIngredientComponent implements OnInit {
 
     }
 
+    // input / callback
+     mapSuggestions(stringToMatch: string, lastToken: string) {
+        console.log("map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
+        let allSuggestions: string[] = new Array();
+        if (this.doubleTokenSuggestions != null && this.doubleTokenSuggestions.length > 0) {
+            let doubleTokenSearch = this.doubleTokenStart + " " + stringToMatch.trim();
+            let doubleTokenResults = this.doubleTokenSuggestions.filter(s => s.toLowerCase().startsWith(doubleTokenSearch.toLowerCase().trim()));
+            allSuggestions = allSuggestions.concat(doubleTokenResults);
+        }
+        let results = states.filter(s => s.toLowerCase().startsWith(stringToMatch.toLowerCase().trim()));
+        allSuggestions = allSuggestions.concat(results);
+
+        if (this.showSuggestions && allSuggestions.length > 0) {
+            //this.searchSuggestion =allSuggestions[0];
+            this.searchSuggestion = this.computeSuggestionDisplay(stringToMatch, allSuggestions[0]);
+        } else {
+            this.searchSuggestion = "";
+        }
+        return allSuggestions;
+    }
+
+
     searchText$ = this.searchTextInputChange$.pipe(
         filter(ev => ev != null),
         distinctUntilChanged(),
@@ -78,7 +100,7 @@ export class DishIngredientComponent implements OnInit {
             return this.entryText.substring(entryEvent.startPosition);
         })
     )
-
+/*
     inputChanged($event, inputhtml: any) {
         // processing input
         let cursorPosition = inputhtml.selectionStart;
@@ -105,7 +127,7 @@ export class DishIngredientComponent implements OnInit {
         entryEvent.endPosition = nextSpace;
         this.searchTextInput.next(entryEvent);
     }
-
+*/
     processTwoTokenMatching() {
         if (!this.twoTokenMatchingPossible) {
             return false;
@@ -121,13 +143,13 @@ export class DishIngredientComponent implements OnInit {
         return false;
     }
 
-    @HostListener('window:keydown', ['$event'])
+    /*@HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {
         if (event.key === 'Tab') {
             event.preventDefault();
             this.selectSuggestion();
         }
-    }
+    }*/
 
     calculateLastSpace(isMidline: boolean, cursorPosition: number) {
         if (this.entryText.indexOf(" ") < 0) {
@@ -146,8 +168,8 @@ export class DishIngredientComponent implements OnInit {
         return this.entryText.substring(cursorPosition).indexOf(" ") + cursorPosition;
     }
 
-    processTokens() {
-        var list = this.entryText.split(' ')
+    newProcessTokens(newValue:string) {
+        var list = newValue.split(' ')
             .filter(i => i.trim().length > 0)
         this.tokens = list;
     }
@@ -160,27 +182,9 @@ export class DishIngredientComponent implements OnInit {
         this.doubleTokenStart = null;
     }
 
-    private mapSuggestions(stringToMatch: string, lastToken: string) {
-        console.log("map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
-        let allSuggestions: string[] = new Array();
-        if (this.doubleTokenSuggestions != null && this.doubleTokenSuggestions.length > 0) {
-            let doubleTokenSearch = this.doubleTokenStart + " " + stringToMatch.trim();
-            let doubleTokenResults = this.doubleTokenSuggestions.filter(s => s.toLowerCase().startsWith(doubleTokenSearch.toLowerCase().trim()));
-            allSuggestions = allSuggestions.concat(doubleTokenResults);
-        }
-        let results = states.filter(s => s.toLowerCase().startsWith(stringToMatch.toLowerCase().trim()));
-        allSuggestions = allSuggestions.concat(results);
 
-        if (this.showSuggestions && allSuggestions.length > 0) {
-            //this.searchSuggestion =allSuggestions[0];
-            this.searchSuggestion = this.computeSuggestionDisplay(stringToMatch, allSuggestions[0]);
-        } else {
-            this.searchSuggestion = "";
-        }
-        return allSuggestions;
-    }
 
-    selectSuggestion() {
+ /*   selectSuggestion() {
         if (this.searchSuggestions.length == 0) {
             return;
         }
@@ -208,7 +212,7 @@ export class DishIngredientComponent implements OnInit {
 
         // process
         this.processTokens();
-    }
+    }*/
 
     private getInsertFirstPosition(suggestion: string, entry: EntryEvent) {
         var enteredLength;
