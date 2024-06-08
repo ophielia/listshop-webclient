@@ -3,21 +3,19 @@
 
 <div style="height:600px;background-color:white;margin-left:50px;padding-left: 10px">
     <app-ingredient-input [findSuggestions]="mapSuggestions"
-                          (processAfterChange)="newProcessTokens($event)"></app-ingredient-input>
+                          (processAfterChange)="processTextInput($event)"></app-ingredient-input>
 
 
-        <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Token list :
-            <ul>
-                <li *ngFor="let item of tokens">{{ item }}</li>
+    <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Token list :
+        <table>
+            <tr *ngFor="let token of tokenList.listOfTokens">
+                <td>{{ token.text }}</td>
+                <td>{{ token.type }}</td>
+                <td>{{ token.id }}</td>
+            </tr>
 
-            </ul>
-        </div>
-        <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Suggestions :
-            <span style="color:red">{{tmpTextWithSuggestion}}</span>
-            <ul>
-                <li *ngFor="let item of searchSuggestions">{{ item }}</li>
+        </table>
+    </div>
 
-            </ul>
-        </div>
 
 </div>

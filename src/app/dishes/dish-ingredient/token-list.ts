@@ -1,13 +1,16 @@
+import {IToken, Token} from "./token";
+
 export interface ITokenList {
-    tokens: string[];
+    listOfTokens: IToken[];
 }
 
 
 export class TokenList implements ITokenList {
 
     constructor() {
+        this.listOfTokens = [];
     }
 
 
-    tokens: string[];
+    listOfTokens: Token[] = [];
 }

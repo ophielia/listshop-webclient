@@ -1,7 +1,9 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {EntryEvent} from "../dish-ingredient/entry-event";
-import {distinctUntilChanged, filter, map} from "rxjs/operators";
+import {debounce, debounceTime, distinctUntilChanged, filter, map} from "rxjs/operators";
+import {TextAndSelection} from "./text-and-selection";
+import {text} from "express";
 
 @Component({
     selector: 'app-ingredient-input',
@@ -11,7 +13,7 @@ import {distinctUntilChanged, filter, map} from "rxjs/operators";
 export class IngredientInputComponent implements OnInit {
     @Input() findSuggestions: (args: string, string) => string[];
     @Input() startText: string;
-    @Output() processAfterChange: EventEmitter<string> = new EventEmitter<string>();
+    @Output() processAfterChange: EventEmitter<TextAndSelection> = new EventEmitter<TextAndSelection>();
 
     entryText: string;
     tokens: string[] = [];
@@ -53,6 +55,7 @@ export class IngredientInputComponent implements OnInit {
     }
 
     searchText$ = this.searchTextInputChange$.pipe(
+        debounceTime(20),
         filter(ev => ev != null),
         distinctUntilChanged(),
         map(entryEvent => {
@@ -66,7 +69,7 @@ export class IngredientInputComponent implements OnInit {
     inputChanged($event, inputhtml: any) {
         // processing input
         let cursorPosition = inputhtml.selectionStart;
-        ;
+
         let isMidline = cursorPosition < this.entryText.trim().length;
         let lastSpace = this.calculateLastSpace(isMidline, cursorPosition);
         let nextSpace = this.calculateNextSpace(isMidline, cursorPosition);
@@ -74,8 +77,10 @@ export class IngredientInputComponent implements OnInit {
         lastSpace: ${lastSpace},nextSpace: ${nextSpace}`);
 
         // process tokens, if space
-        this.processTokens();
         if ($event.key === " ") {
+            var textAndSelection = new TextAndSelection(this.entryText,null);
+            this.processTokens(textAndSelection);
+
             if (!this.processTwoTokenMatching()) {
                 this.clearSuggestions();
             }
@@ -130,8 +135,8 @@ export class IngredientInputComponent implements OnInit {
         return this.entryText.substring(cursorPosition).indexOf(" ") + cursorPosition;
     }
 
-    processTokens() {
-        this.processAfterChange.next(this.entryText);
+    processTokens(textAndSelection: TextAndSelection) {
+        this.processAfterChange.next(textAndSelection);
         var list = this.entryText.split(' ')
             .filter(i => i.trim().length > 0)
         this.tokens = list;
@@ -171,7 +176,8 @@ export class IngredientInputComponent implements OnInit {
         this.entryText = entryWithSuggestion;
 
         // process
-        this.processTokens();
+        var textAndSelection = new TextAndSelection(this.entryText, suggestion);
+        this.processTokens(textAndSelection);
     }
 
     private getInsertFirstPosition(suggestion: string, entry: EntryEvent) {

@@ -12,6 +12,7 @@ import {IRatingInfo, RatingInfo} from "./rating-info";
 import {DishRatingInfo, IDishRatingInfo} from "./dish-rating-info";
 import {UserProperty} from "./userproperty";
 import {Celebration} from "./celebration";
+import {ISuggestion} from "./suggestion";
 
 
 export default class MappingUtils {
@@ -47,6 +48,20 @@ export default class MappingUtils {
             console.log('Parsed list:', shoppingList);
         }
         return shoppingList;
+
+    }
+
+    static toSuggestion(jsonResult: any): ISuggestion {
+        let suggestion = <ISuggestion>({
+            text: jsonResult.text,
+            type: jsonResult.modifier_type,
+            reference_id: jsonResult.reference_id
+        });
+
+        if (MappingUtils.showConsoleLogs) {
+            console.log('Parsed list:', suggestion);
+        }
+        return suggestion;
 
     }
 
@@ -95,6 +110,7 @@ export default class MappingUtils {
 
         return mealPlan;
     }
+
 
     static toUserProperty(r: any): UserProperty {
         let userProperty = <UserProperty>({
