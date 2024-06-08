@@ -34,8 +34,6 @@ export class DishIngredientComponent implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
 
 
-
-
     currentSuggestions: ISuggestion[] = [];
 
 
@@ -68,8 +66,8 @@ export class DishIngredientComponent implements OnInit, OnDestroy {
     // input / callback
     mapSuggestions(stringToMatch: string, lastToken: string) {
 
-        console.log("inner map suggestions suggestions: " + this.currentSuggestions);
-        console.log("inner map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
+        //console.log("inner map suggestions suggestions: " + this.currentSuggestions);
+        //console.log("inner map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
         let suggestions: string[] = new Array();
         if (doubleSuggestions != null && doubleSuggestions.length > 0) {
             let doubleTokenSearch = doubleTokenStart + " " + stringToMatch.trim();
@@ -96,22 +94,47 @@ export class DishIngredientComponent implements OnInit, OnDestroy {
     public tokenList = tokenList;
 }
 
-function checkDoubleToken(value: string) {
-    // if string is part of double token suggestions, save in double token
-    if (!doubleTokenStart) {
-        // look for double token starting with string
-        var checkExistance = doubleSuggestions
-            .filter( dt => dt.text.trim().startsWith(value.trim() + " "));
-        if (checkExistance && checkExistance.length > 0) {
-            doubleTokenStart = value.trim();
-        }
+function checkDoubleToken(processedText: string, value: string) {
+    console.log("check double token: " + doubleTokenStart);
+    // clear the token, and potentially set new token
+    // look for double token starting with string
+    var checkExistance = doubleSuggestions
+        .filter(dt => dt.text.trim().startsWith(value.trim() + " "));
+    if (checkExistance && checkExistance.length > 0 && value.trim().indexOf(" ") < 0) {
+        doubleTokenStart = value.trim();
+    } else {
+        doubleTokenStart = undefined;
     }
 
 
 }
 
+function reconcileTokenList(text: string, newTokenList: Token[]) {
+    var processingString = text;
+    // first remove the new token (should only be 1 - but it's in a list
+        for (let token of newTokenList) {
+            if (processingString.indexOf(token.text) >= 0) {
+                processingString = processingString.replace(token.text, "");
+            }
+
+        }
+        // put existing tokens in map
+        for (let existing of tokenList.listOfTokens) {
+            if (existing.text.trim().length > 0 &&
+                processingString.indexOf(existing.text.trim())>=0) {
+                processingString = processingString.replace(existing.text.trim(), "");
+                newTokenList.push(existing);
+            }
+        }
+
+
+    tokenList.listOfTokens = newTokenList;
+
+}
+
 function processTokensForInput(textAndSelection: TextAndSelection) {
     var processingString = textAndSelection.text;
+    var newTokenList = new Array<Token>();
     // remove all processed tokens from string
     if (tokenList && tokenList.listOfTokens.length > 0) {
         for (let token of tokenList.listOfTokens) {
@@ -122,7 +145,7 @@ function processTokensForInput(textAndSelection: TextAndSelection) {
         }
     }
 
-console.log("processForInput: text: " + textAndSelection.text + "; doubleTokenStart: " +doubleTokenStart);
+    console.log("processForInput: processing:" + processingString + ",text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
 
     // process remaining tokens
     var textToProcess;
@@ -130,13 +153,15 @@ console.log("processForInput: text: " + textAndSelection.text + "; doubleTokenSt
         textToProcess = textAndSelection.selected.trim();
     } else {
         // check double token start
-         checkDoubleToken(processingString.trim());
-       textToProcess = processingString.trim();
+        textToProcess = processingString.trim();
     }
     var token = createTokenForText(textToProcess);
     if (token) {
-    tokenList.listOfTokens.push(token);
+        newTokenList.push(token);
     }
+    checkDoubleToken(textToProcess,processingString.trim());
+    console.log("processForInput end: text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
+    reconcileTokenList(textAndSelection.text, newTokenList);
     processingString.replace(textToProcess, "");
 
 }
@@ -148,9 +173,16 @@ function defaultToken(text: string) {
     return token;
 }
 
-function createTokenForText(text: string) {
+function tokenOrDefault(token: IToken, text: string) {
+    if (token) {
+        return token;
+    }
+    return defaultToken(text);
+}
 
-     if (text.match(/\//)) {
+function createTokenForText(text: string) {
+    console.log("createTokenForText: text:" + text);
+    if (text.match(/\//)) {
         var token = new Token();
         token.text = text.trim();
         token.type = TokenType.Fraction;
@@ -161,23 +193,20 @@ function createTokenForText(text: string) {
         token.text = text.trim();
         token.type = TokenType.WholeNumber;
         return token;
-    } else if (doubleTokenStart && doubleTokenStart !=  text.trim()) {
-         // first attempt with double token
-         var token = mapTextToToken(doubleTokenStart.trim() + " " + text.trim());
-         if (!token) {
-             token = mapTextToToken(text.trim());
-         }
-         doubleTokenStart = null;
-         if (token) {
-             return token;
-         }
-         return defaultToken(text.trim());
-     } else {
+    } else if (doubleTokenStart && doubleTokenStart != text.trim()) {
+        console.log("createTokenForText - double: text:" + text);
+        // first attempt with double token
+        var token = mapTextToToken(doubleTokenStart.trim() + " " + text.trim());
+        console.log("createTokenForText - double: token:" + token);
+        if (!token) {
+            token = mapTextToToken(text.trim());
+        }
+        doubleTokenStart = null;
+        return tokenOrDefault(token, text.trim());
+    } else {
         // check suggestions
         var token = mapTextToToken(text.trim());
-        if (token) {
-            return token;
-        }
+        return tokenOrDefault(token, text.trim());
     }
     // not a number or fraction - doesn't match suggestion
     // will return this as a marker token
@@ -186,9 +215,9 @@ function createTokenForText(text: string) {
 
 }
 
-function mapTextToToken(text: string):IToken {
+function mapTextToToken(text: string): IToken {
     var match = allSuggestions
-        .filter( t => t.text.trim() == text.trim());
+        .filter(t => t.text.trim() == text.trim());
     if (match && match.length > 0) {
         return Token.fromSuggestion(match[0]);
     }
