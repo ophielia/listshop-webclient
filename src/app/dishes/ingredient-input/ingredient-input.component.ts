@@ -1,9 +1,8 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {EntryEvent} from "../dish-ingredient/entry-event";
-import {debounce, debounceTime, distinctUntilChanged, filter, map} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, filter, map} from "rxjs/operators";
 import {TextAndSelection} from "./text-and-selection";
-import {text} from "express";
 
 @Component({
     selector: 'app-ingredient-input',
@@ -73,12 +72,11 @@ export class IngredientInputComponent implements OnInit {
         let isMidline = cursorPosition < this.entryText.trim().length;
         let lastSpace = this.calculateLastSpace(isMidline, cursorPosition);
         let nextSpace = this.calculateNextSpace(isMidline, cursorPosition);
-        //console.log(`input changed, cursorPosition: ${cursorPosition},isMidline: ${isMidline},
-       // lastSpace: ${lastSpace},nextSpace: ${nextSpace}`);
+        //console.log(`input changed, cursorPosition: ${cursorPosition},isMidline: ${isMidline}, lastSpace: ${lastSpace},nextSpace: ${nextSpace}`);
 
         // process tokens, if space
         if ($event.key === " ") {
-            var textAndSelection = new TextAndSelection(this.entryText,null);
+            var textAndSelection = new TextAndSelection(this.entryText, null);
             this.processTokens(textAndSelection);
 
             if (!this.processTwoTokenMatching()) {
@@ -156,7 +154,7 @@ export class IngredientInputComponent implements OnInit {
 
         // get entry event
         let entry = this.searchTextInput.value;
-        //console.log("select entry: start: " + entry.startPosition + " , end: " + entry.endPosition);
+        // console.log("select entry: start: " + entry.startPosition + " , end: " + entry.endPosition);
         // get suggestion
         let suggestion = this.searchSuggestions ? this.searchSuggestions[0].trim() : "";
 
@@ -182,7 +180,7 @@ export class IngredientInputComponent implements OnInit {
 
     private getInsertFirstPosition(suggestion: string, entry: EntryEvent) {
         var enteredLength;
-        if (this.inTwoTokenMode(suggestion)) {
+        if (this.inTwoTokenMode(suggestion) && suggestion.toLowerCase().startsWith(this.doubleTokenStart.trim())) {
             // we have a double token match
             var entryThroughStartPos = this.entryText.substr(0, entry.startPosition);
             var doubleTokenStartPos = entryThroughStartPos.lastIndexOf(this.doubleTokenStart);
@@ -202,7 +200,7 @@ export class IngredientInputComponent implements OnInit {
 
     private getSuggestionPart(suggestion: string, entry: EntryEvent) {
         var enteredLength;
-        if (this.inTwoTokenMode(suggestion)) {
+        if (this.inTwoTokenMode(suggestion) && suggestion.trim().startsWith(this.doubleTokenStart)) {
             // we have a double token match
             var entryThroughStartPos = this.entryText.substr(0, entry.startPosition);
             var doubleTokenStartPos = entryThroughStartPos.lastIndexOf(this.doubleTokenStart);
@@ -221,16 +219,15 @@ export class IngredientInputComponent implements OnInit {
     }
 
     private computeSuggestionDisplay(searchString: string, suggestion: string) {
-        //console.log("computeSuggestionDisplay: searchString: " + searchString +
-       //     ", suggestion: " + suggestion + ", entryText: " + this.entryText);
+        //console.log("computeSuggestionDisplay: searchString: " + searchString +     ", suggestion: " + suggestion + ", entryText: " + this.entryText);
         //console.log("computeSuggestionDisplay: calculated: " + this.entryText + suggestion.substr(searchString.trim().length));
-        var spaceLocation = suggestion.indexOf(" ");
+        var spaceLocation = suggestion.  indexOf(" ");
         if (!this.inTwoTokenMode(suggestion)) {
             //console.log("not in two token");
             return this.entryText + suggestion.substr(searchString.trim().length);
         }
         //console.log("in two token");
-        var displayLengthFromRight = Math.max(suggestion.substring(spaceLocation).trim().length - searchString.trim().length, 0);
+        var displayLengthFromRight = Math.max(suggestion.trim().length - searchString.trim().length, 0);
         return this.entryText + suggestion.substring(suggestion.length - displayLengthFromRight);
     }
 

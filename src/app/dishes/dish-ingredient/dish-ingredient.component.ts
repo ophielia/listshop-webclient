@@ -67,9 +67,10 @@ export class DishIngredientComponent implements OnInit, OnDestroy {
     mapSuggestions(stringToMatch: string, lastToken: string) {
 
         //console.log("inner map suggestions suggestions: " + this.currentSuggestions);
-        //console.log("inner map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
+        console.log("inner map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
         let suggestions: string[] = new Array();
-        if (doubleSuggestions != null && doubleSuggestions.length > 0) {
+        if (lastToken && doubleSuggestions != null && doubleSuggestions.length > 0) {
+            console.log("inner map suggestions last token suggestions:");
             let doubleTokenSearch = doubleTokenStart + " " + stringToMatch.trim();
             let doubleTokenResults = doubleSuggestions
                 .filter(s => s.text.toLowerCase().startsWith(doubleTokenSearch.toLowerCase().trim()))
@@ -80,6 +81,8 @@ export class DishIngredientComponent implements OnInit, OnDestroy {
             .filter(s => s.text.toLowerCase().startsWith(stringToMatch.toLowerCase().trim()))
             .map(s => s.text);
         suggestions = suggestions.concat(results);
+
+        console.log("inner map suggestions suggestions:" + suggestions);
 
 
         return suggestions;
@@ -137,14 +140,23 @@ function processTokensForInput(textAndSelection: TextAndSelection) {
     var newTokenList = new Array<Token>();
     // remove all processed tokens from string
     if (tokenList && tokenList.listOfTokens.length > 0) {
+        var list = processingString.split(' ')
+            .filter(i => i.trim().length > 0)
+
         for (let token of tokenList.listOfTokens) {
-            if (processingString.indexOf(token.text) >= 0) {
+            if (token.text.indexOf(" ") < 0) {
+                if (list.includes(token.text)) {
+                    processingString = processingString.replace(token.text, "");
+                }
+            } else {
                 processingString = processingString.replace(token.text, "");
             }
-
         }
     }
 
+    if (processingString.trim().length == 0) {
+        return;
+    }
     console.log("processForInput: processing:" + processingString + ",text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
 
     // process remaining tokens
