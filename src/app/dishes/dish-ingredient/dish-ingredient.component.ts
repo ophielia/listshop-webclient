@@ -113,11 +113,11 @@ function checkDoubleToken(processedText: string, value: string) {
 }
 
 function reconcileTokenList(text: string, newTokenList: Token[]) {
-    var processingString = text;
+    var processingString = " " + text + " ";
     // first remove the new token (should only be 1 - but it's in a list
         for (let token of newTokenList) {
             if (processingString.indexOf(token.text) >= 0) {
-                processingString = processingString.replace(token.text, "");
+                processingString = processingString.replace(token.matchingText, " ");
             }
 
         }
@@ -125,7 +125,7 @@ function reconcileTokenList(text: string, newTokenList: Token[]) {
         for (let existing of tokenList.listOfTokens) {
             if (existing.text.trim().length > 0 &&
                 processingString.indexOf(existing.text.trim())>=0) {
-                processingString = processingString.replace(existing.text.trim(), "");
+                processingString = processingString.replace(existing.matchingText, " ");
                 newTokenList.push(existing);
             }
         }
@@ -136,7 +136,7 @@ function reconcileTokenList(text: string, newTokenList: Token[]) {
 }
 
 function processTokensForInput(textAndSelection: TextAndSelection) {
-    var processingString = textAndSelection.text;
+    var processingString = " " + textAndSelection.text + " ";
     var newTokenList = new Array<Token>();
     // remove all processed tokens from string
     if (tokenList && tokenList.listOfTokens.length > 0) {
@@ -146,15 +146,16 @@ function processTokensForInput(textAndSelection: TextAndSelection) {
         for (let token of tokenList.listOfTokens) {
             if (token.text.indexOf(" ") < 0) {
                 if (list.includes(token.text)) {
-                    processingString = processingString.replace(token.text, "");
+                    processingString = processingString.replace(token.matchingText, " ");
                 }
             } else {
-                processingString = processingString.replace(token.text, "");
+                processingString = processingString.replace(token.text, " ");
             }
         }
     }
 
     if (processingString.trim().length == 0) {
+        reconcileTokenList(textAndSelection.text, newTokenList);
         return;
     }
     console.log("processForInput: processing:" + processingString + ",text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
@@ -174,15 +175,10 @@ function processTokensForInput(textAndSelection: TextAndSelection) {
     checkDoubleToken(textToProcess,processingString.trim());
     console.log("processForInput end: text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
     reconcileTokenList(textAndSelection.text, newTokenList);
-    processingString.replace(textToProcess, "");
-
 }
 
 function defaultToken(text: string) {
-    var token = new Token();
-    token.text = text;
-    token.type = TokenType.Marker;
-    return token;
+    return Token.defaultFromText(text);
 }
 
 function tokenOrDefault(token: IToken, text: string) {
@@ -197,12 +193,14 @@ function createTokenForText(text: string) {
     if (text.match(/\//)) {
         var token = new Token();
         token.text = text.trim();
+        token.matchingText = " " + token.text + " ";
         token.type = TokenType.Fraction;
         return token;
     } else if (text.match(/[0-9]+/)) {
         // whole number match
         var token = new Token();
         token.text = text.trim();
+        token.matchingText = " " + token.text + " ";
         token.type = TokenType.WholeNumber;
         return token;
     } else if (doubleTokenStart && doubleTokenStart != text.trim()) {

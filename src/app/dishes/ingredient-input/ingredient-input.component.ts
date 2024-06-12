@@ -21,6 +21,7 @@ export class IngredientInputComponent implements OnInit {
     doubleTokenSuggestions: string[] = [];
     searchSuggestion: string;
     doubleTokenStart: string;
+    textLength: number;
 
     showSuggestions: boolean = true;
     twoTokenMatchingPossible: boolean;
@@ -70,12 +71,14 @@ export class IngredientInputComponent implements OnInit {
         let cursorPosition = inputhtml.selectionStart;
 
         let isMidline = cursorPosition < this.entryText.trim().length;
+        let isDeletion: boolean = this.textLength > this.entryText.trim().length;
         let lastSpace = this.calculateLastSpace(isMidline, cursorPosition);
         let nextSpace = this.calculateNextSpace(isMidline, cursorPosition);
+        this.textLength = this.entryText.trim().length;
         //console.log(`input changed, cursorPosition: ${cursorPosition},isMidline: ${isMidline}, lastSpace: ${lastSpace},nextSpace: ${nextSpace}`);
 
-        // process tokens, if space
-        if ($event.key === " ") {
+        // process tokens, if space or deletion
+        if ($event.key === " " || isDeletion) {
             var textAndSelection = new TextAndSelection(this.entryText, null);
             this.processTokens(textAndSelection);
 
@@ -91,6 +94,7 @@ export class IngredientInputComponent implements OnInit {
         entryEvent.startPosition = lastSpace;
         entryEvent.endPosition = nextSpace;
         this.searchTextInput.next(entryEvent);
+
     }
 
     processTwoTokenMatching() {
@@ -114,6 +118,7 @@ export class IngredientInputComponent implements OnInit {
             event.preventDefault();
             this.selectSuggestion();
         }
+
     }
 
     calculateLastSpace(isMidline: boolean, cursorPosition: number) {
