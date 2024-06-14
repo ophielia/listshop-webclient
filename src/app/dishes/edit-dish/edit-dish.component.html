@@ -216,9 +216,15 @@
 
                 </div>
             </div>
-            <span *ngFor="let tag of ingredientTags" class="ls-list-span"
-                  (click)="removeTagFromDish(tag)">{{tag.name}}</span>
-
+            <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags" >
+                <div class="ls-ingredient-display">{{ingredient.tag_display}}</div>
+                <div class="ls-ingredient-edit">
+                    <span (click)="showEditIngredient(ingredient)" class="ls-card-link">Edit</span>
+                    <span class="ls-card-link">Delete</span>
+                </div>
+            </div>
+            <!--<span *ngFor="let tag of ingredientTags" class="ls-list-span"
+                  (click)="removeTagFromDish(tag)">{{tag.name}}!</span>-->
             <div>
                 <div *ngIf="!this.showAddIngredient" class="ls-card-link-block">
 <span><a class="add-button" (click)="toggleAddIngredient()">
@@ -315,6 +321,12 @@
     </div>
 </app-modal>
 
-
+<app-xlmodal #edittag >
+    <div class="app-modal-body">
+        <app-add-ingredient-dialog
+        [tagId]="selectedIngredientId">
+        </app-add-ingredient-dialog>
+    </div>
+</app-xlmodal>
 
 

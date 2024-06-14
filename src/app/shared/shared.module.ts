@@ -34,6 +34,7 @@ import { CelebrationComponent } from './components/celebration/celebration.compo
 import { MyIsPartyDirective } from './directives/my-is-party.directive';
 import {RouteMessageComponent} from "./components/route-message/route-message.component";
 import {FeedbackService} from "./services/feedback.service";
+import { XLModalComponent } from './components/xlmodal/xlmodal.component';
 
 @NgModule({
     exports: [
@@ -48,6 +49,7 @@ import {FeedbackService} from "./services/feedback.service";
         ListSelectComponent,
         GenerateListComponent,
         ModalComponent,
+        XLModalComponent,
         AlertComponent,
         SingleDishElementComponent,
         ConfirmDialogComponent,
@@ -82,7 +84,8 @@ import {FeedbackService} from "./services/feedback.service";
         ConfirmDialogComponent,
         CreateTagDialogComponent,
         CelebrationComponent,
-        MyIsPartyDirective
+        MyIsPartyDirective,
+        XLModalComponent
     ],
     providers: [
         WINDOW_PROVIDERS,

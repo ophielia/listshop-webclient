@@ -1,0 +1,23 @@
+<p>add-ingredient-dialog works!</p>
+<p>{{tagId}}</p>
+<p>dish-ingredient works!</p>
+
+
+<div style="height:600px;background-color:white;margin-left:50px;padding-left: 10px">
+    <app-ingredient-input [findSuggestions]="mapSuggestions"
+                          (processAfterChange)="processTextInput($event)"></app-ingredient-input>
+
+
+    <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Token list :
+        <table>
+            <tr *ngFor="let token of tokenList.listOfTokens">
+                <td>{{ token.text }}</td>
+                <td>{{ token.type }}</td>
+                <td>{{ token.id }}</td>
+            </tr>
+
+        </table>
+    </div>
+
+
+</div>

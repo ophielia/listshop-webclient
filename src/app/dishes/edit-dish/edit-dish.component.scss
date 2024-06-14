@@ -1,5 +1,58 @@
 @import '../../../assets/scss/variable';
 
+.ls-ingredient-item {
+  #border: thick dotted #060;
+  margin: 0px auto 0px auto;
+  text-align: left;
+  width: 100%;
+  display: inline-block;
+  vertical-align: top;
+
+  .ls-ingredient-edit {
+    display: none;
+    padding-left: 28px;
+    padding-right: 28px;
+    border-width: 1.0px;
+    border-style: solid;
+    background-color: white;
+    padding: 15px;
+    margin-top: -15px;
+    margin-left: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
+    border-color: #979797;
+    .ls-card-link {
+      display: inline;
+      padding-left: 10px;
+      text-transform: uppercase;
+      color: $color_tapa;
+
+      &:hover {
+        color: $color_basic_orange
+      }
+    }
+  }
+  &:hover {
+    .ls-ingredient-edit {
+      display: inline-block;
+    }
+    .ls-ingredient-display {
+      font-weight: bolder;
+    }
+  }
+
+  .ls-ingredient-display {
+    padding-left: 28px;
+    text-transform: capitalize;
+    display: inline-block;
+
+    vertical-align: top;
+  }
+}
+
+
+
+
 .add-button {
   display: inline-block;
   margin-top: 5px;

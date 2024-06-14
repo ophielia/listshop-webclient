@@ -11,7 +11,7 @@ import {DishIngredientComponent} from "./dish-ingredient/dish-ingredient.compone
 const routes: Routes = [
     {
         path: 'manage',
-        component: DishIngredientComponent,
+        component: ManageDishesComponent,
         data: {
             title: 'The List Shop | My Dishes',
             content: 'The List Shop | My Dishes'
@@ -44,7 +44,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        component: DishIngredientComponent,
+        component: ManageDishesComponent,
         data: {
             title: 'The List Shop | My Dishes',
             content: 'The List Shop | My Dishes'

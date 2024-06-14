@@ -15,6 +15,7 @@ import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.compone
 import {DishContext} from "./dish-context/dish-context";
 import { DishIngredientComponent } from './dish-ingredient/dish-ingredient.component';
 import { IngredientInputComponent } from './ingredient-input/ingredient-input.component';
+import { AddIngredientDialogComponent } from './add-ingredient-dialog/add-ingredient-dialog.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { IngredientInputComponent } from './ingredient-input/ingredient-input.co
         AddDishIngredientComponent,
         MealplanSelectComponent,
         DishIngredientComponent,
-        IngredientInputComponent],
+        IngredientInputComponent,
+        AddIngredientDialogComponent],
     imports: [
         CommonModule,
         DishesRoutingModule,

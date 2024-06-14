@@ -13,6 +13,7 @@ import {DishRatingInfo, IDishRatingInfo} from "./dish-rating-info";
 import {UserProperty} from "./userproperty";
 import {Celebration} from "./celebration";
 import {ISuggestion} from "./suggestion";
+import {IIngredient} from "./Ingredient";
 
 
 export default class MappingUtils {
@@ -124,7 +125,10 @@ export default class MappingUtils {
     }
 
     static toRatingUpdateInfo(r: any): RatingUpdateInfo {
-        let ratingInfo = MappingUtils._toRatingUpdateInfo(r.ratingUpdateInfo);
+        if (!r || r == null) {
+            return new RatingUpdateInfo();
+        }
+        let ratingInfo = MappingUtils._toRatingUpdateInfo(r);
 
         if (MappingUtils.showConsoleLogs) {
             console.log('Parsed rating info:', ratingInfo);
@@ -221,8 +225,24 @@ export default class MappingUtils {
         })
     }
 
-    private static _toDish(jsonResult: any): Dish {
+    private static _toIngredients(jsonResult: any): IIngredient {
+        return <IIngredient>({
+            ingredient_id: jsonResult.ingredient_id,
+            tag_id: jsonResult.tag_id,
+            tag_display: jsonResult.tag_display,
+            whole_quantity: jsonResult.whole_quantity,
+            fractional_quantity: jsonResult.fractional_quantity,
+            quantity_display: jsonResult.quantity_display,
+            unit_id: jsonResult.unit_id,
+            unit_name: jsonResult.unit_name,
+            raw_modifiers: jsonResult.raw_modifiers,
+            unit_display: jsonResult.unit_display,
+            raw_entry: jsonResult.raw_entry
+        })
+    }
 
+    private static _toDish(jsonResult: any): Dish {
+        var ratings = MappingUtils.toRatingUpdateInfo(jsonResult.ratings);
         return <Dish>({
             dish_id: jsonResult.dish_id,
             name: jsonResult.name,
@@ -230,7 +250,9 @@ export default class MappingUtils {
             reference: jsonResult.reference,
             user_id: jsonResult.user_id,
             last_added: jsonResult.last_added,
-            tags: jsonResult.tags.map(MappingUtils._toTag)
+            tags: jsonResult.tags.map(MappingUtils._toTag),
+            ingredients: jsonResult.ingredients.map(MappingUtils._toIngredients),
+            ratings: ratings
         });
     }
 

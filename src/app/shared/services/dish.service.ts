@@ -12,6 +12,7 @@ import {EnvironmentLoaderService} from "./environment-loader.service";
 @Injectable()
 export class DishService {
     private dishUrl;
+    private dishV2Url;
 
     constructor(
         private httpClient: HttpClient,
@@ -19,13 +20,14 @@ export class DishService {
         private logger: NGXLogger
     ) {
         this.dishUrl =  envLoader.getEnvConfig().apiUrl + "dish";
+        this.dishV2Url =  envLoader.getEnvConfig().apiUrl + "v2/dish";
     }
 
 
     getAllDishes() {
         this.logger.debug("Retrieving all dishes for user.");
 
-        return this.httpClient.get(this.dishUrl)
+        return this.httpClient.get(this.dishV2Url )
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return
                     return DishService.mapDishes(response);
@@ -36,7 +38,7 @@ export class DishService {
     getDish(dishId: string) {
         this.logger.debug("Retrieving dish [" + dishId + "] for user.");
 
-        let url = this.dishUrl + "/" + dishId
+        let url = this.dishV2Url + "/" + dishId
         return this.httpClient.get(url)
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return
@@ -167,7 +169,7 @@ export class DishService {
     private static mapDishes(object: Object): Dish[] {
         let embeddedObj = object["_embedded"];
         if (embeddedObj) {
-            return embeddedObj["dishResourceList"].map(MappingUtils.toDish);
+            return embeddedObj["dish_list"].map(MappingUtils.toDish);
         } else
             return [];
     }

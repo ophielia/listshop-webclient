@@ -15,6 +15,8 @@ import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
 import {logger} from "codelyzer/util/logger";
+import {RatingUpdateInfo} from "../../model/rating-update-info";
+import {Ingredient} from "../../model/Ingredient";
 
 
 @Component({
@@ -24,13 +26,14 @@ import {logger} from "codelyzer/util/logger";
 })
 export class EditDishComponent implements OnInit, OnDestroy {
     @ViewChild('addtag') addTagModel;
+    @ViewChild('edittag') editTagModel;
 
     unsubscribe: Subscription[] = [];
     isLoading: boolean = true;
 
     dish: Dish;
     dishTypeTags: Tag[] = [];
-    ingredientTags: Tag[] = [];
+    ingredientTags: Ingredient[] = [];
     ratingTags: Tag[] = [];
     plainOldTags: Tag[] = [];
 
@@ -45,6 +48,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     groupTypeDishType: GroupType = GroupType.All;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
 
+    selectedIngredientId = "16";
     private dishReferenceError: string;
     private dishNameError: string;
     private dishDescriptionError: string;
@@ -53,7 +57,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
      tagTypeToCreate: TagType;
 
     private dishRatingInfo: DishRatingInfo;
-    private ratingHeaders: IRatingInfo[];
     private ratingsMap = new Map<number, RatingInfo>();
 
     private errorMessage: string;
@@ -66,10 +69,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private title: Title,
-        private meta: Meta,
         private dishService: DishService,
-        private mealPlanService: MealPlanService,
-        private listService: ListService,
         private dishContext: DishContext,
         private logger: NGXLogger
     ) {
@@ -82,7 +82,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
             let id = params['id'];
             this.logger.debug('getting list with id: ', id);
             this.getDish(id);
-            this.getDishRatings(id);
             this.getSurroundingDishIds(id);
         });
     }
@@ -98,29 +97,23 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.dish = p;
                     this.isLoading = false;
                     this.harvestTagTypesForDish();
+                    this.ingredientTags = this.dish.ingredients;
                     this.dishName = this.dish.name;
                     this.dishReference = this.dish.reference;
                     this.dishDescription = this.dish.description;
+                    this.mapRatings(this.dish.ratings);
                 },
                 e => this.errorMessage = e);
     }
 
-    getDishRatings(dishId: string) {
-        this.dishService
-            .getDishRatings(dishId)
-            .subscribe(p => {
-                    if (p.headers != null) {
-                        this.ratingHeaders = p.headers;
-                    }
-                    if (p.dish_ratings != null) {
-                        this.dishRatingInfo = p.dish_ratings[0];
-                        this.dishRatingInfo.ratings.forEach(r => {
-                            r.orig_power = r.power;
-                            this.ratingsMap.set(r.rating_tag_id, r);
-                        });
-                    }
-                },
-                e => this.errorMessage = e);
+    mapRatings(ratingUpdateInfo: RatingUpdateInfo) {
+        if (ratingUpdateInfo.dish_ratings != null) {
+            this.dishRatingInfo = ratingUpdateInfo.dish_ratings[0];
+            this.dishRatingInfo.ratings.forEach(r => {
+                r.orig_power = r.power;
+                this.ratingsMap.set(r.rating_tag_id, r);
+            });
+        }
     }
 
     harvestTagTypesForDish() {
@@ -132,9 +125,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
         for (let tag of this.dish.tags) {
             var tagType = tag.tag_type;
             switch (tagType) {
-                case TagType.Ingredient:
-                    this.ingredientTags.push(tag);
-                    break;
                 case TagType.DishType:
                     this.dishTypeTags.push(tag);
                     break;
@@ -189,6 +179,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
     }
 
+    showEditIngredient(tag: Tag) {
+        this.selectedIngredientId = tag.tag_id;
+        this.editTagModel.show();
+    }
     addTagToDishById(tagId: string) {
         this.addTagModel.hide();
         // add tag to list as item in back end
