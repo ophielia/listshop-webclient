@@ -1,28 +1,34 @@
+<h2>{{ componentTitle }}</h2>
 <ng-container *ngIf="!loading">
-<p>add-ingredient-dialog works!</p>
-<p>{{this._ingredient.tag_id}}</p>
-<p>{{this._ingredient.is_liquid}}!</p>
-<p>dish-ingredient works!</p>
 
+    <div>
+        <div class="container edit-container">
+            <div class="row">
+                <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-right">
 
-<div style="height:600px;background-color:white;margin-left:50px;padding-left: 10px">
-    <app-ingredient-input
-            [startText]="this.startText$"
-            [findSuggestions]="mapSuggestions"
-                          (processAfterChange)="processTextInput($event)"></app-ingredient-input>
+                    <app-ingredient-input
+                            [startText]="this.startText$"
+                            [sendResult]="this.sendResult$"
+                            [findSuggestions]="mapSuggestions"
+                            (processAfterChange)="processTextInput($event)"></app-ingredient-input>
+                </div>
+                <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-left">
+                    <div class="tag-display-edit-button">{{ this._ingredient.tag_display }}</div>
+                    <div class="done" (click)="finalizeInput()">done</div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="debugTokens"
+             style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">
+            Token list :
+            <table>
+                <tr *ngFor="let token of tokenList.listOfTokens">
+                    <td>{{ token.text }}</td>
+                    <td>{{ token.type }}</td>
+                    <td>{{ token.id }}</td>
+                </tr>
 
-
-    <div style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">Token list :
-        <table>
-            <tr *ngFor="let token of tokenList.listOfTokens">
-                <td>{{ token.text }}</td>
-                <td>{{ token.type }}</td>
-                <td>{{ token.id }}</td>
-            </tr>
-
-        </table>
+            </table>
+        </div>
     </div>
-
-
-</div>
 </ng-container>

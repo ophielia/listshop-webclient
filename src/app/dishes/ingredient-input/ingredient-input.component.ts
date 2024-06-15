@@ -14,6 +14,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
 
 
     @Input() startText: Observable<string>;
+    @Input() sendResult: Observable<boolean>;
 
     @Output() processAfterChange: EventEmitter<TextAndSelection> = new EventEmitter<TextAndSelection>();
 
@@ -64,6 +65,12 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
             this.entryText = val;
         })
         this.unsubscribe.push($sub3);
+
+        var $sub4 = this.sendResult.subscribe(val => {
+            // deal with asynchronous Observable result
+            if (val) {this.sendResultToParent();}
+        })
+        this.unsubscribe.push($sub3);
     }
 
     ngOnDestroy(): void {
@@ -101,7 +108,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
             if (!this.processTwoTokenMatching()) {
                 this.clearSuggestions();
             }
-        }
+        } //else if ($event.key === e)
 
         // fire is midline
         this.midLineInput.next(isMidline);
@@ -276,4 +283,9 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
     // (real values sorted)
 
 
+    private sendResultToParent() {
+        var textAndSelection = new TextAndSelection(this.entryText, null);
+        textAndSelection.final = true;
+        this.processTokens(textAndSelection);
+    }
 }

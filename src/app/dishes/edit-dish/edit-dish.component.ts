@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
-import {Subscription} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {Tag} from "../../model/tag";
@@ -31,6 +31,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     unsubscribe: Subscription[] = [];
     isLoading: boolean = true;
+
+    private editedIngredient = new Subject<Ingredient>();
+    editedIngredient$ = this.editedIngredient.asObservable();
+    editId = undefined;
 
     dish: Dish;
     dishTypeTags: Tag[] = [];
@@ -184,7 +188,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
     showEditIngredient(ingredient: Ingredient) {
-        this.selectedIngredient = ingredient;
+        this.editedIngredient.next(ingredient);
+this.editId = ingredient.tag_id;
         this.editTagModel.show();
     }
     addTagToDishById(tagId: string) {
@@ -317,5 +322,11 @@ export class EditDishComponent implements OnInit, OnDestroy {
             let tag = this.tagTreeService.retrieveTag(ingredient.tag_id);
             ingredient.is_liquid = tag.is_liquid;
         }
+    }
+
+    saveIngredientChanges(ingredient: Ingredient) {
+        console.log("ingredient is:" + ingredient );
+        this.editTagModel.hide();
+
     }
 }

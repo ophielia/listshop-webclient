@@ -57,7 +57,7 @@
   border: 1px solid #e67d21;
   border-radius: 10px;
   text-align: center;
-  margin-left: 16px;
+
   }
 
 .ls-list-span {
@@ -73,6 +73,18 @@
     }
   }
 }
+
+.ls-card-link {
+  display: inline;
+  padding-left: 10px;
+  text-transform: uppercase;
+  color: $color_tapa;
+
+  &:hover {
+    color: $color_basic_orange
+  }
+}
+
 
 
 .ls-list-comma {

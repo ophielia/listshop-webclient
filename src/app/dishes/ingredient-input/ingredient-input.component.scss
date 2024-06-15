@@ -3,13 +3,13 @@
 
 .my-ty {
     position:relative;
-    margin-left:100px;
     height:100px;
 }
 
 .my-ty-base {
     @extend .ls-inline-input;
     @extend .form-control;
+    width: 100%
 }
 
 .my-ty-entry {
