@@ -222,6 +222,7 @@ export default class MappingUtils {
             power: jsonResult.power,
             tag_type: jsonResult.tag_type,
             is_expanded: false,
+            is_liquid: jsonResult.is_liquid
         })
     }
 

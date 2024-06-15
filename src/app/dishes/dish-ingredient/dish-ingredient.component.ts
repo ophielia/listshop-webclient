@@ -22,6 +22,7 @@ let doubleSuggestions: ISuggestion[] = [];
 let tokenList: ITokenList = new TokenList();
 let doubleTokenStart: string;
 
+//MM this is deprecated - it can be removed
 @Component({
     selector: 'app-dish-ingredient',
     templateUrl: './dish-ingredient.component.html',
@@ -54,7 +55,7 @@ export class DishIngredientComponent implements OnInit, OnDestroy {
 
     getSuggestionsForTag(tagId: string) {
         let promise = this.foodService
-            .getSuggestionsForTag(tagId);
+            .getSuggestionsForTag(tagId, undefined);
         promise.then(data => {
             console.log("received suggestions: " + this.currentSuggestions);
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);

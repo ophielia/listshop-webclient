@@ -8,6 +8,7 @@ export interface ITag {
 
   is_inverted: boolean;
   is_group: boolean;
+  is_liquid: boolean;
 }
 
 export class Tag implements ITag {
@@ -22,4 +23,5 @@ export class Tag implements ITag {
   parent_id: string;
   is_inverted: boolean;
   is_group: boolean = false;
+  is_liquid: boolean;
 }

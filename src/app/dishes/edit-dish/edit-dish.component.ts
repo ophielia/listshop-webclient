@@ -16,7 +16,8 @@ import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
 import {logger} from "codelyzer/util/logger";
 import {RatingUpdateInfo} from "../../model/rating-update-info";
-import {Ingredient} from "../../model/Ingredient";
+import {IIngredient, Ingredient} from "../../model/Ingredient";
+import {TagTreeService} from "../../shared/services/tag-tree.service";
 
 
 @Component({
@@ -48,7 +49,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     groupTypeDishType: GroupType = GroupType.All;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
 
-    selectedIngredientId = "16";
+    selectedIngredient: Ingredient;
     private dishReferenceError: string;
     private dishNameError: string;
     private dishDescriptionError: string;
@@ -71,6 +72,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         private title: Title,
         private dishService: DishService,
         private dishContext: DishContext,
+        private tagTreeService: TagTreeService,
         private logger: NGXLogger
     ) {
     }
@@ -91,7 +93,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
     getDish(dishId: string) {
-        this.dishService
+        let $sub = this.dishService
             .getDish(dishId)
             .subscribe(p => {
                     this.dish = p;
@@ -102,8 +104,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.dishReference = this.dish.reference;
                     this.dishDescription = this.dish.description;
                     this.mapRatings(this.dish.ratings);
+                    this.determineLiquids(this.dish.ingredients);
                 },
                 e => this.errorMessage = e);
+        this.unsubscribe.push($sub);
     }
 
     mapRatings(ratingUpdateInfo: RatingUpdateInfo) {
@@ -179,8 +183,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
     }
 
-    showEditIngredient(tag: Tag) {
-        this.selectedIngredientId = tag.tag_id;
+    showEditIngredient(ingredient: Ingredient) {
+        this.selectedIngredient = ingredient;
         this.editTagModel.show();
     }
     addTagToDishById(tagId: string) {
@@ -307,4 +311,11 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
 
+    private determineLiquids(ingredients: IIngredient[]) {
+        // loop through ingredients, setting is liquid
+        for (let ingredient of ingredients) {
+            let tag = this.tagTreeService.retrieveTag(ingredient.tag_id);
+            ingredient.is_liquid = tag.is_liquid;
+        }
+    }
 }

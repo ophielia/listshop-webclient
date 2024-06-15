@@ -40,9 +40,16 @@ export class FoodService implements OnDestroy {
     }
 
 
-    getSuggestionsForTag(tagId: string): Promise<ISuggestion[]> {
-        this.logger.debug("Retrieving all shopping mealPlans for user.");
+    getSuggestionsForTag(tagId: string, isLiquid: boolean): Promise<ISuggestion[]> {
+        this.logger.debug("Retrieving all suggestions for tag.");
         var url = this.amountUrl + "/suggestions/" + tagId
+        var requestParams = new Array<string>();
+        if (isLiquid && isLiquid != null) {
+            requestParams.push("liquid=" + isLiquid);
+            url += "?" + requestParams[0];
+        }
+
+
         return this.httpClient.get(url)
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return

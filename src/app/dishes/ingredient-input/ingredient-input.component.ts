@@ -1,5 +1,5 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {EntryEvent} from "../dish-ingredient/entry-event";
 import {debounceTime, distinctUntilChanged, filter, map} from "rxjs/operators";
 import {TextAndSelection} from "./text-and-selection";
@@ -9,10 +9,15 @@ import {TextAndSelection} from "./text-and-selection";
     templateUrl: './ingredient-input.component.html',
     styleUrls: ['./ingredient-input.component.scss']
 })
-export class IngredientInputComponent implements OnInit {
+export class IngredientInputComponent implements OnInit , OnDestroy {
     @Input() findSuggestions: (args: string, string) => string[];
-    @Input() startText: string;
+
+
+    @Input() startText: Observable<string>;
+
     @Output() processAfterChange: EventEmitter<TextAndSelection> = new EventEmitter<TextAndSelection>();
+
+    private unsubscribe: Subscription[] = [];
 
     entryText: string;
     tokens: string[] = [];
@@ -34,16 +39,17 @@ export class IngredientInputComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.entryText = this.startText;
-        this.midLineChange$.pipe(
+        this.entryText = "";
+        var $sub1 = this.midLineChange$.pipe(
             distinctUntilChanged(),
             map(midLine => {
                 this.showSuggestions = !midLine;
                 this.twoTokenMatchingPossible = !midLine;
             })
         ).subscribe();
+        this.unsubscribe.push($sub1);
 
-        this.searchText$.pipe(
+        var $sub2 = this.searchText$.pipe(
             filter(st => typeof st === "string"),
             filter(st => st.trim().length > 1),
             map(st => {
@@ -51,7 +57,17 @@ export class IngredientInputComponent implements OnInit {
                 this.searchSuggestions = this.findSuggestionsAndComputeDisplay(st, null);
             })
         ).subscribe();
+        this.unsubscribe.push($sub2);
 
+        var $sub3 = this.startText.subscribe(val => {
+            // deal with asynchronous Observable result
+            this.entryText = val;
+        })
+        this.unsubscribe.push($sub3);
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.forEach(s => s.unsubscribe())
     }
 
     searchText$ = this.searchTextInputChange$.pipe(
@@ -250,6 +266,8 @@ export class IngredientInputComponent implements OnInit {
         }
         return allSuggestions;
     }
+
+
 
     // use tokens
     // modularize for use in components

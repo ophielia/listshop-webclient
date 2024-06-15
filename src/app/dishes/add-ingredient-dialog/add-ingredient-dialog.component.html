@@ -1,10 +1,14 @@
+<ng-container *ngIf="!loading">
 <p>add-ingredient-dialog works!</p>
-<p>{{tagId}}</p>
+<p>{{this._ingredient.tag_id}}</p>
+<p>{{this._ingredient.is_liquid}}!</p>
 <p>dish-ingredient works!</p>
 
 
 <div style="height:600px;background-color:white;margin-left:50px;padding-left: 10px">
-    <app-ingredient-input [findSuggestions]="mapSuggestions"
+    <app-ingredient-input
+            [startText]="this.startText$"
+            [findSuggestions]="mapSuggestions"
                           (processAfterChange)="processTextInput($event)"></app-ingredient-input>
 
 
@@ -21,3 +25,4 @@
 
 
 </div>
+</ng-container>

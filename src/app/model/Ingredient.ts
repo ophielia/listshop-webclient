@@ -12,6 +12,7 @@ export interface IIngredient {
   raw_modifiers: string;
   unit_display: string;
   raw_entry: string;
+  is_liquid: boolean;
 }
 
 export class Ingredient implements IIngredient {
@@ -29,4 +30,5 @@ export class Ingredient implements IIngredient {
   raw_modifiers: string;
   unit_display: string;
   raw_entry: string;
+  is_liquid: boolean;
 }
