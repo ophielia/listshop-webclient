@@ -1,0 +1,50 @@
+@import '../../../assets/scss/variable';
+
+.tag-display-edit-button {
+  display: inline-block;
+  text-transform: capitalize;
+
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: white;
+  background-color: $color_basic_orange;
+  border: 1px solid $color_basic_orange;
+  border-radius: 10px;
+  text-align: center;
+  margin-left: 8px;
+
+}
+
+.done {
+  @extend .tag-display-edit-button;
+  text-transform: uppercase;
+  margin-left:16px;
+  background-color: white;
+  color: $color_basic_orange;
+}
+
+.squeeze-right {
+  padding-right: 1px;
+}
+
+.squeeze-left {
+  padding-left: 1px;
+}
+
+.edit-container {
+  #width: 90%;
+  #text-align: right;
+}
+
+.ls-card-link {
+  display: inline;
+  padding-left: 10px;
+  text-transform: uppercase;
+  color: $color_tapa;
+
+  &:hover {
+    color: $color_basic_orange
+  }
+}
