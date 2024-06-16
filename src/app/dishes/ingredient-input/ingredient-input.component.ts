@@ -140,6 +140,9 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
         if (event.key === 'Tab') {
             event.preventDefault();
             this.selectSuggestion();
+        } else if (event.key === 'Enter') {
+            event.preventDefault();
+            this.sendResultToParent();
         }
 
     }

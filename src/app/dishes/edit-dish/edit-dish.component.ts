@@ -190,7 +190,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     showEditIngredient(ingredient: Ingredient) {
         this.editedIngredient.next(ingredient);
 this.editId = ingredient.tag_id;
-        this.editTagModel.show();
+this.selectedIngredient = ingredient;
+      //  this.editTagModel.show();
     }
     addTagToDishById(tagId: string) {
         this.addTagModel.hide();
@@ -327,6 +328,13 @@ this.editId = ingredient.tag_id;
     saveIngredientChanges(ingredient: Ingredient) {
         console.log("ingredient is:" + ingredient );
         this.editTagModel.hide();
+        this.editId = 0;
+    }
 
+    ingredientDisplay(ingredient: Ingredient) {
+        if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
+            return ingredient.raw_entry + " " + ingredient.tag_display;
+        }
+        return ingredient.tag_display;
     }
 }

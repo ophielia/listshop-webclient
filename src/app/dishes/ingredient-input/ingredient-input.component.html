@@ -1,4 +1,5 @@
 <div id="my-ty" class="my-ty">
-    <input class="my-ty-hint form-control" type="text" value="{{searchSuggestion}}" />
-    <input #myinput class="my-ty-entry form-control" type="text" [(ngModel)]="entryText" (keyup)="inputChanged($event, myinput)" />
+    <input class="my-ty-hint form-control" type="text" value="{{searchSuggestion}}"  />
+    <input #myinput class="my-ty-entry form-control" type="text" placeholder="enter amount"
+           [(ngModel)]="entryText" (keyup)="inputChanged($event, myinput)" />
 </div>

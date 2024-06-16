@@ -217,11 +217,22 @@
                 </div>
             </div>
             <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags" >
-                <div class="ls-ingredient-display">{{ingredient.tag_display}}</div>
-                <div class="ls-ingredient-edit">
-                    <span (click)="showEditIngredient(ingredient)" class="ls-card-link">Edit</span>
-                    <span class="ls-card-link">Delete</span>
-                </div>
+               <ng-container *ngIf="editId != ingredient.tag_id">
+                   <div class="ls-ingredient-display">{{ingredientDisplay(ingredient)}}</div>
+                   <div class="ls-ingredient-edit">
+                       <span (click)="showEditIngredient(ingredient)" class="ls-card-link">Edit</span>
+                       <span class="ls-card-link">Delete</span>
+                   </div>
+               </ng-container>
+                <ng-container *ngIf="editId == ingredient.tag_id">
+
+                    <app-add-ingredient-inline
+                            [ingredient]="selectedIngredient"
+                            (editedIngredient)="saveIngredientChanges($event)"
+
+                    >
+                    </app-add-ingredient-inline>
+                </ng-container>
             </div>
             <!--<span *ngFor="let tag of ingredientTags" class="ls-list-span"
                   (click)="removeTagFromDish(tag)">{{tag.name}}!</span>-->
@@ -323,10 +334,9 @@
 
 <app-xlmodal #edittag >
     <div class="app-modal-body">
-        <app-add-ingredient-dialog
-        [ingredient]="editedIngredient$"
-        (editedIngredient)="saveIngredientChanges($event)">
-        </app-add-ingredient-dialog>
+      <!--  <app-add-ingredient-dialog
+        [ingredient]="selectedIngredient">
+        </app-add-ingredient-dialog>-->
     </div>
 </app-xlmodal>
 
