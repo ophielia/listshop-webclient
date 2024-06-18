@@ -34,7 +34,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     private editedIngredient = new Subject<Ingredient>();
     editedIngredient$ = this.editedIngredient.asObservable();
-    editId = undefined;
+    editId = "0";
 
     dish: Dish;
     dishTypeTags: Tag[] = [];
@@ -244,6 +244,20 @@ this.selectedIngredient = ingredient;
 
     }
 
+    removeIngredientFromDish(ingredient: Ingredient) {
+        // remove ingredient from dish
+        this.logger.debug("removing ingredient [" + ingredient.tag_id + "] from dish");
+
+        let $sub = this.dishService
+            .removeIngredientFromDish(this.dish.dish_id, ingredient.id)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);
+            });
+        this.unsubscribe.push($sub);
+
+
+    }
+
     changeTheRating(ratingInfo: RatingInfo) {
         if (ratingInfo) {
             this.logger.debug("the rating is still raging: " + ratingInfo.power);
@@ -333,7 +347,7 @@ this.selectedIngredient = ingredient;
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
                 this.editTagModel.hide();
-                this.editId = 0;
+                this.editId = "0";
             });
         this.unsubscribe.push($sub);
     }

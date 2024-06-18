@@ -137,6 +137,12 @@ export class DishService {
             .delete(`${this.dishUrl}/${dish_id}/tag/${tag_id}`);
     }
 
+    removeIngredientFromDish(dish_id: string, ingredientId: string): Observable<Object> {
+        return this
+            .httpClient
+            .delete(`${this.dishV2Url}/${dish_id}/ingredients/${ingredientId}`);
+    }
+
     setDishRating(dish_id: string, rating_tag_id: number, power: number) {
         var url = this.dishUrl + "/" + dish_id + "/rating/" + rating_tag_id + "/" + power;
         return this
