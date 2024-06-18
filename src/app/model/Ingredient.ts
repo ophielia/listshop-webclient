@@ -1,7 +1,7 @@
 import {ITag} from "./tag";
 
 export interface IIngredient {
-  ingredient_id: string;
+  id: string;
   tag_id: string;
   tag_display: string;
   whole_quantity: number;
@@ -19,7 +19,7 @@ export class Ingredient implements IIngredient {
   constructor() {
   }
 
-  ingredient_id: string;
+  id: string;
   tag_id: string;
   tag_display: string;
   whole_quantity: number;
@@ -34,7 +34,7 @@ export class Ingredient implements IIngredient {
 
   static clone(ingredient: IIngredient) {
     var newIngredient = new Ingredient();
-    newIngredient.ingredient_id = ingredient.ingredient_id;
+    newIngredient.id = ingredient.id;
     newIngredient.tag_id = ingredient.tag_id;
     newIngredient.tag_display = ingredient.tag_display;
     newIngredient.whole_quantity = ingredient.whole_quantity;

@@ -8,6 +8,7 @@ import {Dish} from "../../model/dish";
 import {RatingUpdateInfo} from "../../model/rating-update-info";
 import {ITag} from "../../model/tag";
 import {EnvironmentLoaderService} from "./environment-loader.service";
+import {IIngredient} from "../../model/Ingredient";
 
 @Injectable()
 export class DishService {
@@ -77,18 +78,6 @@ export class DishService {
 
     }
 
-    getDishRatings(dishId: string) {
-        this.logger.debug("Retrieving ratings for dish [" + dishId + "].");
-
-        let url = this.dishUrl + "/" + dishId + "/ratings"
-        return this.httpClient.get(url)
-            .pipe(map((response: HttpResponse<any>) => {
-                    // map and return
-                    return DishService.mapRatingUpdateInfo(response);
-                }),
-                catchError(DishService.handleError));
-    }
-
     findByTags(inclList: string[], exclList: string[]) {
         var inclString = "";
         if (inclList) {
@@ -133,6 +122,13 @@ export class DishService {
         return this
             .httpClient
             .post(`${this.dishUrl}/${dish_id}/tag/${tag_id}`, null);
+    }
+
+    updateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
+
+        return this
+            .httpClient
+            .put(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
     }
 
     removeTagFromDish(dish_id: string, tag_id: string): Observable<Object> {

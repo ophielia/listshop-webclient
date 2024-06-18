@@ -228,7 +228,7 @@ export default class MappingUtils {
 
     private static _toIngredients(jsonResult: any): IIngredient {
         return <IIngredient>({
-            ingredient_id: jsonResult.ingredient_id,
+            id: jsonResult.id,
             tag_id: jsonResult.tag_id,
             tag_display: jsonResult.tag_display,
             whole_quantity: jsonResult.whole_quantity,

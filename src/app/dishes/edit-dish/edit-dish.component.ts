@@ -327,8 +327,15 @@ this.selectedIngredient = ingredient;
 
     saveIngredientChanges(ingredient: Ingredient) {
         console.log("ingredient is:" + ingredient );
-        this.editTagModel.hide();
-        this.editId = 0;
+
+        let $sub = this.dishService
+            .updateIngredient(this.dish.dish_id, ingredient)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+                this.editTagModel.hide();
+                this.editId = 0;
+            });
+        this.unsubscribe.push($sub);
     }
 
     ingredientDisplay(ingredient: Ingredient) {
