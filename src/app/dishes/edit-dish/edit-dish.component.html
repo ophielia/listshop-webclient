@@ -203,7 +203,6 @@
             </div>
             <div>
                 <div *ngIf="this.showAddIngredient" class="ls-add-tag">
-<!-- MM add ingredient here -->
                     <app-tag-select class="at-tag-select-style"
                                     [tagTypes]="'Ingredient'"
                                     [groupType]="groupTypeNoGroups"
@@ -225,7 +224,6 @@
                    </div>
                </ng-container>
                 <ng-container *ngIf="editId == ingredient.tag_id">
-
                     <app-add-ingredient-inline
                             [ingredient]="selectedIngredient"
                             (editedIngredient)="saveIngredientChanges($event)"

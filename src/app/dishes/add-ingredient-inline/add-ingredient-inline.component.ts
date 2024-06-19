@@ -6,7 +6,8 @@ import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
 import {ITokenList, TokenList} from "../dish-ingredient/token-list";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
-import {Subject, Subscription} from "rxjs";
+import {BehaviorSubject, Subject, Subscription} from "rxjs";
+import {GroupType} from "../../shared/services/tag-tree.object";
 
 let allSuggestions: ISuggestion[] = [];
 let currentSuggestions: ISuggestion[] = [];
@@ -23,7 +24,7 @@ export class AddIngredientInlineComponent implements OnInit {
 
   @Input()  set ingredient(value:Ingredient)  { this._ingredient = value;}
   @Output() editedIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>();
-  private ingredientStartText = new Subject<string>();
+  private ingredientStartText = new BehaviorSubject<string>("");
   startText$ = this.ingredientStartText.asObservable();
 
   private sendResult = new Subject<boolean>();
@@ -33,8 +34,10 @@ export class AddIngredientInlineComponent implements OnInit {
 
   componentTitle = "Edit Ingredient";
   debugTokens = false;
+  editingAmount = true;
   _ingredient: IIngredient;
   loading = false;
+  groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
   currentSuggestions: ISuggestion[] = [];
 
 
@@ -45,8 +48,10 @@ export class AddIngredientInlineComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this._ingredient && this._ingredient.raw_entry && this._ingredient.raw_entry.trim().length > 0) {
+      this.ingredientStartText.next(this._ingredient.raw_entry);
+    }
     if (!this.loading) {
-      //this.clearDecksForNewIngredient();
       this.getSuggestionsForTag();
     }
   }
@@ -110,6 +115,11 @@ export class AddIngredientInlineComponent implements OnInit {
   finalizeInput() {
     // solicit last entry from  input
     this.sendResult.next(true);
+  }
+
+  cancelAddIngredient() {
+    // solicit last entry from  input
+    this.editingAmount = true;
   }
 
   processTokensForInput(textAndSelection: TextAndSelection) {
@@ -290,6 +300,32 @@ export class AddIngredientInlineComponent implements OnInit {
     newIngredient.raw_entry = "";
 
     return newIngredient;
+  }
+
+  beginEditTag() {
+    this.editingAmount = false;
+  }
+  beginEditAmount() {
+    this.editingAmount = true;
+  }
+
+  showEditTag() {
+    return !this.editingAmount;
+  }
+
+  showEditAmount() {
+    return this.editingAmount;
+  }
+
+  amountDisplayWhileEditingTag() {
+    if (this.ingredientStartText.value.trim().length > 0) {
+      return  this.ingredientStartText.getValue();
+    }
+    return "Edit Amount";
+  }
+
+  dumpEvent($event: boolean) {
+    this.logger.info("dumping event " + $event);
   }
 }
 

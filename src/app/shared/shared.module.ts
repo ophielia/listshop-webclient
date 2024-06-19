@@ -35,6 +35,7 @@ import { MyIsPartyDirective } from './directives/my-is-party.directive';
 import {RouteMessageComponent} from "./components/route-message/route-message.component";
 import {FeedbackService} from "./services/feedback.service";
 import { XLModalComponent } from './components/xlmodal/xlmodal.component';
+import {TagSelectInlineComponent} from "./components/tag-select-inline/tag-select-inline.component";
 
 @NgModule({
     exports: [
@@ -46,6 +47,7 @@ import { XLModalComponent } from './components/xlmodal/xlmodal.component';
         ListShopHeaderComponent,
         DishSelectComponent,
         TagSelectComponent,
+        TagSelectInlineComponent,
         ListSelectComponent,
         GenerateListComponent,
         ModalComponent,
@@ -76,6 +78,7 @@ import { XLModalComponent } from './components/xlmodal/xlmodal.component';
         ListShopHeaderComponent,
         DishSelectComponent,
         TagSelectComponent,
+        TagSelectInlineComponent,
         RouteMessageComponent,
         GenerateListComponent,
         ListSelectComponent,

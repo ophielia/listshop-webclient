@@ -1,0 +1,49 @@
+
+
+
+
+            <p-autoComplete
+                    [(ngModel)]="autoSelectedTag"
+                    [suggestions]="filteredTags"
+                    (completeMethod)="filterTags($event)"
+                    field="name"
+                    inputStyleClass="autocomplete-input"
+                    panelStyleClass="autocomplete-panel"
+                    styleClass="ls-autocomplete"
+                    [delay]="200"
+                    [field]="name"
+                    (onSelect)="bingo($event)"
+                    (keyup.enter)="checkSearchEnter(focusanchor)"
+                    (keyup.escape)="cancelSelectTag()"
+                    placeholder="{{placeholderText}}" [minLength]="1" #focusanchor>
+                <ng-template let-autoSelectedTag pTemplate="item">
+
+                    <div *ngIf="isRatingTag(autoSelectedTag.tag_type)" style="font-size:16px;float:right;margin:10px 10px 0 0">{{autoSelectedTag.name}}
+                        <img src="../../../../assets/images/listshop/elements/ratingstars/{{autoSelectedTag.power}}stars.png" style="height:22px;"/>
+                    </div>
+                    <div *ngIf="!isRatingTag(autoSelectedTag.tag_type)" style="font-size:16px;float:right;margin:10px 10px 0 0">{{autoSelectedTag.name}}</div>
+
+                </ng-template>
+            </p-autoComplete>
+
+
+
+
+
+
+<div *ngIf="showAddTags" class="ls-panel " >
+
+    <div>
+        <ng-container *ngFor="let ttype of allTagTypes">
+            <div *ngIf="isIncluded(ttype)" class="add-link"
+                    (click)="add(ttype)">
+                Create New {{ttype}}
+            </div>
+        </ng-container>
+    </div>
+
+    <div  (click)="cancelAdd()" class="cancel-link">
+        Cancel
+    </div>
+</div>
+

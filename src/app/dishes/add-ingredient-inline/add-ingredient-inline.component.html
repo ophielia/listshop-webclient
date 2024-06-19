@@ -2,17 +2,37 @@
 
     <div>
         <div class="container edit-container">
-            <div class="row">
+            <div *ngIf="showEditAmount()" class="row">
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-right">
-
-                    <app-ingredient-input
+                  <app-ingredient-input
                             [startText]="this.startText$"
                             [sendResult]="this.sendResult$"
                             [findSuggestions]="mapSuggestions"
                             (processAfterChange)="processTextInput($event)"></app-ingredient-input>
                 </div>
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-left">
-                    <div class="tag-display-edit-button">{{ this._ingredient.tag_display }}</div>
+                    <div class="tag-display-edit-button"  (click)="beginEditTag()">
+                        {{ this._ingredient.tag_display }}
+                    </div>
+                    <div class="done" (click)="finalizeInput()">done</div>
+                </div>
+            </div>
+            <div *ngIf="showEditTag()" class="row">
+                <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
+                    <div class="tag-display-edit-button"  style="margin-top: 5px;" (click)="beginEditAmount()">
+                        {{ amountDisplayWhileEditingTag() }}
+                    </div>
+
+                    <app-tag-select-inline class="at-tag-select-style"
+                                     [tagTypes]="'Ingredient'"
+                                     [groupType]="groupTypeNoGroups"
+                                     [allowAdd]="true"
+                                     [showCancelButton]="true"
+                                     [placeholderText]="'Add Ingredient'"
+                                     (tagSelected)="dumpEvent($event)"
+                                     (createTag)="dumpEvent($event)"
+                                     (cancelAddTag)="dumpEvent($event)"></app-tag-select-inline>
+                    <div class="done" (click)="cancelAddIngredient()">cancel</div>
                     <div class="done" (click)="finalizeInput()">done</div>
                 </div>
             </div>
