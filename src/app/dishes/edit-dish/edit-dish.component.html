@@ -216,18 +216,17 @@
                 </div>
             </div>
             <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags" >
-               <ng-container *ngIf="editId != ingredient.tag_id">
+               <ng-container *ngIf="!isCurrentEdit(ingredient)">
                    <div class="ls-ingredient-display">{{ingredientDisplay(ingredient)}}</div>
                    <div *ngIf="editId == '0'" class="ls-ingredient-edit">
                        <span (click)="showEditIngredient(ingredient)" class="ls-card-link">Edit</span>
                        <span (click)="removeIngredientFromDish(ingredient)" class="ls-card-link">Delete</span>
                    </div>
                </ng-container>
-                <ng-container *ngIf="editId == ingredient.tag_id">
+                <ng-container *ngIf="isCurrentEdit(ingredient)">
                     <app-add-ingredient-inline
                             [ingredient]="selectedIngredient"
                             (editedIngredient)="saveIngredientChanges($event)"
-
                     >
                     </app-add-ingredient-inline>
                 </ng-container>

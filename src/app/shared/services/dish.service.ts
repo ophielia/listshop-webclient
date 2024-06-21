@@ -125,6 +125,18 @@ export class DishService {
     }
 
     updateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
+        var ingredientEditObservables = new Array<Observable<Object>>();
+        ingredientEditObservables.push(this.doUpdateIngredient(dish_id, ingredient));
+
+        if (ingredient.original_tag_id  && ingredient.original_tag_id.trim().length > 0) {
+            ingredientEditObservables.push(this.doRemoveIngredientFromDish(dish_id, ingredient.original_tag_id));
+        }
+
+        return forkJoin(ingredientEditObservables);
+    }
+
+    doUpdateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
+        // remove old tag if present
 
         return this
             .httpClient
@@ -138,6 +150,12 @@ export class DishService {
     }
 
     removeIngredientFromDish(dish_id: string, ingredientId: string): Observable<Object> {
+        return this
+            .httpClient
+            .delete(`${this.dishV2Url}/${dish_id}/ingredients/${ingredientId}`);
+    }
+
+    doRemoveIngredientFromDish(dish_id: string, ingredientId: string): Observable<Object> {
         return this
             .httpClient
             .delete(`${this.dishV2Url}/${dish_id}/ingredients/${ingredientId}`);

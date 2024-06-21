@@ -14,7 +14,7 @@ import {IRatingInfo, RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
-import {logger} from "codelyzer/util/logger";
+
 import {RatingUpdateInfo} from "../../model/rating-update-info";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
@@ -166,6 +166,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
             this.showAddIngredient = false;
             this.showPlainTag = false;
             this.showAddDishType = false;
+            this.editId = "0";
         }
     }
 
@@ -346,16 +347,29 @@ this.selectedIngredient = ingredient;
             .updateIngredient(this.dish.dish_id, ingredient)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
-                this.editTagModel.hide();
+                this.ingredientTags = this.dish.ingredients;
                 this.editId = "0";
             });
         this.unsubscribe.push($sub);
+     //   this.selectedIngredient = null;
     }
+
+
 
     ingredientDisplay(ingredient: Ingredient) {
         if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
             return ingredient.raw_entry + " " + ingredient.tag_display;
         }
         return ingredient.tag_display;
+    }
+
+    isCurrentEdit(ingredient: Ingredient) {
+        if (this.editId == "0") {
+            return false;
+        }
+        if (ingredient.original_tag_id && ingredient.original_tag_id.trim().length > 0) {
+            return this.editId == ingredient.original_tag_id;
+        }
+        return this.editId == ingredient.tag_id;
     }
 }

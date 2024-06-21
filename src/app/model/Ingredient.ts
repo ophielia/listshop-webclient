@@ -1,6 +1,7 @@
 import {ITag} from "./tag";
 
 export interface IIngredient {
+  original_tag_id: string;
   id: string;
   tag_id: string;
   tag_display: string;
@@ -21,6 +22,7 @@ export class Ingredient implements IIngredient {
 
   id: string;
   tag_id: string;
+  original_tag_id: string;
   tag_display: string;
   whole_quantity: number;
   fractional_quantity: string;
