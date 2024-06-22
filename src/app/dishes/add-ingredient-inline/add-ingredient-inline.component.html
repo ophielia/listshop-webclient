@@ -2,7 +2,7 @@
 
     <div>
         <div class="container edit-container">
-            <div *ngIf="showEditAmount()" class="row">
+            <div *ngIf="isShowEditAmount()" class="row">
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-right">
                   <app-ingredient-input
                             [startText]="this.startText$"
@@ -17,7 +17,7 @@
                     <div class="done" (click)="finalizeInput()">done</div>
                 </div>
             </div>
-            <div *ngIf="showEditTag()" class="row">
+            <div *ngIf="isShowEditTag()" class="row">
                 <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
                     <div class="tag-display-edit-button"  style="margin-top: 5px;" (click)="beginEditAmount()">
                         {{ amountDisplayWhileEditingTag() }}

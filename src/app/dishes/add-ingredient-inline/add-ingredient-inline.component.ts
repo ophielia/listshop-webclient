@@ -29,6 +29,7 @@ export class AddIngredientInlineComponent implements OnInit {
             (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
             this.clearDecksForNewIngredient();
            console.log("new ingredient here");
+           this.initializeForNewIngredient(value);
         }
 
         this._ingredient = value;
@@ -44,7 +45,7 @@ export class AddIngredientInlineComponent implements OnInit {
     private unsubscribe: Subscription[] = [];
 
     componentTitle = "Edit Ingredient";
-    debugTokens = false;
+    debugTokens = true;
     editingAmount = true;
     _ingredient: IIngredient;
     loading = false;
@@ -66,7 +67,6 @@ export class AddIngredientInlineComponent implements OnInit {
             this.getSuggestionsForTag();
         }
     }
-
 
     ngOnDestroy(): void {
         this.unsubscribe.forEach(s => s.unsubscribe())
@@ -324,11 +324,11 @@ export class AddIngredientInlineComponent implements OnInit {
         this.editingAmount = true;
     }
 
-    showEditTag() {
+    isShowEditTag() {
         return !this.editingAmount;
     }
 
-    showEditAmount() {
+    isShowEditAmount() {
         return this.editingAmount;
     }
 
@@ -358,6 +358,30 @@ export class AddIngredientInlineComponent implements OnInit {
            return "";
        }
         return this._ingredient.tag_display;
+    }
+
+    private initializeForNewIngredient(ingredient: Ingredient) {
+        if (!ingredient || !ingredient.raw_entry ||
+        ingredient.raw_entry.trim().length == 0) {
+            return;
+        }
+
+        let promise = this.foodService
+            .getSuggestionsForTag(ingredient.tag_id, ingredient.is_liquid);
+        promise.then(data => {
+            console.log("received suggestions: " + this.currentSuggestions);
+            doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
+            allSuggestions = data;
+            currentSuggestions = data;
+            // split entry into tokens, and process each
+            var stringTokens = ingredient.raw_entry.split(" ");
+            var builtString ="";
+            for (var i = 0; i < stringTokens.length; i++) {
+                builtString = builtString + " " + stringTokens[i];
+                this.processTokensForInput(new TextAndSelection(builtString,null));
+            }
+
+        })
     }
 }
 
