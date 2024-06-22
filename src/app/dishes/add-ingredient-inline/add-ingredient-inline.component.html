@@ -26,12 +26,10 @@
                     <app-tag-select-inline class="at-tag-select-style"
                                      [tagTypes]="'Ingredient'"
                                      [groupType]="groupTypeNoGroups"
-                                     [allowAdd]="true"
+                                     [allowAdd]="false"
                                      [showCancelButton]="true"
                                      [placeholderText]="'Edit Ingredient'"
-                                     (tagSelected)="changeTag($event)"
-                                     (createTag)="dumpEvent($event)"
-                                     (cancelAddTag)="dumpEvent($event)"></app-tag-select-inline>
+                                     (tagSelected)="changeTag($event)"></app-tag-select-inline>
                     <div class="done" (click)="cancelAddIngredient()">cancel</div>
                     <div class="done" (click)="finalizeInput()">done</div>
                 </div>
