@@ -236,6 +236,7 @@
                     <app-add-ingredient-inline
                             [ingredient]="selectedIngredient"
                             (editedIngredient)="saveIngredientChanges($event)"
+                            (cancelEdit)="cancelIngredientEdit($event)"
                     >
                     </app-add-ingredient-inline>
                 </ng-container>

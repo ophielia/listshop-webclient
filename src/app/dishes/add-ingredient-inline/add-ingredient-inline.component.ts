@@ -36,6 +36,7 @@ export class AddIngredientInlineComponent implements OnInit {
     }
 
     @Output() editedIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>();
+    @Output() cancelEdit: EventEmitter<Boolean> = new EventEmitter<Boolean>();
     private ingredientStartText = new BehaviorSubject<string>("");
     startText$ = this.ingredientStartText.asObservable();
 
@@ -45,7 +46,7 @@ export class AddIngredientInlineComponent implements OnInit {
     private unsubscribe: Subscription[] = [];
 
     componentTitle = "Edit Ingredient";
-    debugTokens = true;
+    debugTokens = false;
     editingAmount = true;
     _ingredient: IIngredient;
     loading = false;
@@ -382,6 +383,10 @@ export class AddIngredientInlineComponent implements OnInit {
             }
 
         })
+    }
+
+    cancelIngredientEdit() {
+        this.cancelEdit.emit(true);
     }
 }
 

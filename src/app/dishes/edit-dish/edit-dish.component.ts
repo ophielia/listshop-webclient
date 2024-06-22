@@ -104,6 +104,13 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.isLoading = false;
                     this.harvestTagTypesForDish();
                     this.ingredientTags = this.dish.ingredients;
+                    this.ingredientTags.sort((a, b) => {
+                        let aNum = parseInt(a.id, 10);
+                        let bNum = parseInt(b.id, 10);
+                        if (aNum < bNum) return -1 ;
+                        else if (aNum > bNum) return 1 ;
+                        else return 0;
+                    });
                     this.dishName = this.dish.name;
                     this.dishReference = this.dish.reference;
                     this.dishDescription = this.dish.description;
@@ -347,11 +354,15 @@ this.selectedIngredient = ingredient;
             .updateIngredient(this.dish.dish_id, ingredient)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
-                this.ingredientTags = this.dish.ingredients;
                 this.editId = "0";
             });
         this.unsubscribe.push($sub);
      //   this.selectedIngredient = null;
+    }
+
+    cancelIngredientEdit($event) {
+        this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+        this.editId = "0";
     }
 
 
