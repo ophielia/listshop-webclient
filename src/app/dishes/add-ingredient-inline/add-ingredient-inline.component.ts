@@ -222,7 +222,13 @@ export class AddIngredientInlineComponent implements OnInit {
 
     createTokenForText(text: string) {
         console.log("createTokenForText: text:" + text);
-        if (text.match(/\//)) {
+        if (text.match(/\d*\.\d*/)) {
+            var token = new Token();
+            token.text = text.trim();
+            token.matchingText = " " + token.text + " ";
+            token.type = TokenType.DecimalNumber;
+            return token;
+        } else if (text.match(/\//)) {
             var token = new Token();
             token.text = text.trim();
             token.matchingText = " " + token.text + " ";
@@ -285,6 +291,11 @@ export class AddIngredientInlineComponent implements OnInit {
                 case TokenType.WholeNumber:
                     if (!ingredient.whole_quantity) {
                         ingredient.whole_quantity = Number(token.text);
+                    }
+                    break;
+                case TokenType.DecimalNumber:
+                    if (!ingredient.quantity) {
+                        ingredient.quantity = Number(token.text);
                     }
                     break;
                 case TokenType.Fraction:

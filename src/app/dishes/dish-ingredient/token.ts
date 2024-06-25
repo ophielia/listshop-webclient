@@ -48,6 +48,7 @@ export class Token implements IToken {
 
 export enum TokenType {
     WholeNumber = 'WholeNumber',
+    DecimalNumber = 'DecimalNumber',
     Fraction = 'Fraction',
     Unit = 'Unit',
     UnitSize = 'UnitSize',

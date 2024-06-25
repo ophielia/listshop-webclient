@@ -6,6 +6,7 @@ export interface IIngredient {
   tag_id: string;
   tag_display: string;
   whole_quantity: number;
+  quantity: number;
   fractional_quantity: string;
   quantity_display: string;
   unit_id: string;
@@ -25,6 +26,7 @@ export class Ingredient implements IIngredient {
   original_tag_id: string;
   tag_display: string;
   whole_quantity: number;
+  quantity: number;
   fractional_quantity: string;
   quantity_display: string;
   unit_id: string;
