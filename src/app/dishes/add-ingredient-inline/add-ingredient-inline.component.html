@@ -19,6 +19,7 @@
 
                 </div>
             </div>
+
             <div *ngIf="isShowEditTag()" class="row">
                 <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
                     <div class="tag-display-edit-button"  style="margin-top: 5px;" (click)="beginEditAmount()">
@@ -36,6 +37,14 @@
                     <div class="done" (click)="finalizeInput()">done</div>
                     <div class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
                 </div>
+            </div>
+            <div *ngIf="isShowErrors()" class="row">
+                <div class=" col-sm-12 col-md-12 col-lg-12">
+                    <ul class="ingredient-error">
+                        <li *ngFor="let error of ingredientErrors">{{error}}</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
         <div *ngIf="debugTokens"

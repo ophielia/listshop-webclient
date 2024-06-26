@@ -357,7 +357,6 @@ this.selectedIngredient = ingredient;
                 this.editId = "0";
             });
         this.unsubscribe.push($sub);
-     //   this.selectedIngredient = null;
     }
 
     cancelIngredientEdit($event) {

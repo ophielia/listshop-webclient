@@ -23,6 +23,7 @@ let doubleTokenStart: string;
 })
 export class AddIngredientInlineComponent implements OnInit {
 
+
     @Input() set ingredient(value: Ingredient) {
        if (!this._ingredient ||
             (value.tag_id != this._ingredient.tag_id ||
@@ -46,12 +47,18 @@ export class AddIngredientInlineComponent implements OnInit {
     private unsubscribe: Subscription[] = [];
 
     componentTitle = "Edit Ingredient";
-    debugTokens = false;
+    debugTokens = true;
     editingAmount = true;
     _ingredient: IIngredient;
     loading = false;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
     currentSuggestions: ISuggestion[] = [];
+    ingredientErrors: String[] = [];
+
+    ERROR_TOO_SMALL = "ERROR_TOO_SMALL";
+    ERROR_BAD_FRACTION = "ERROR_BAD_FRACTION";
+    ERROR_DECIMAL_AND_FRACTION = "ERROR_DECIMAL_AND_FRACTION";
+    ERROR_NO_QUANTITY = "ERROR_NO_QUANTITY";
 
 
     constructor(
@@ -125,6 +132,7 @@ export class AddIngredientInlineComponent implements OnInit {
             this.ingredientStartText.next("");
         }
         this.tokenList.listOfTokens = [];
+        this.ingredientErrors = [];
     }
 
     finalizeInput() {
@@ -133,8 +141,8 @@ export class AddIngredientInlineComponent implements OnInit {
     }
 
     cancelAddIngredient() {
-        // solicit last entry from  input
         this.editingAmount = true;
+        this.clearDecksForNewIngredient();
     }
 
     processTokensForInput(textAndSelection: TextAndSelection) {
@@ -229,6 +237,7 @@ export class AddIngredientInlineComponent implements OnInit {
             token.type = TokenType.DecimalNumber;
             return token;
         } else if (text.match(/\//)) {
+            // MM validate denominator here
             var token = new Token();
             token.text = text.trim();
             token.matchingText = " " + token.text + " ";
@@ -284,23 +293,36 @@ export class AddIngredientInlineComponent implements OnInit {
     private passChangesOn(text: string) {
         // assemble tokens in ingredient , and emit
         var list = this.tokenList.listOfTokens;
-
+        var errors = new Map<String,String>();
+        var quantityExists = false;
+        var partialCount = 0;
         var ingredient = this.clearedIngredient();
         for (let token of list) {
             switch (token.type) {
                 case TokenType.WholeNumber:
                     if (!ingredient.whole_quantity) {
+                        quantityExists = true;
                         ingredient.whole_quantity = Number(token.text);
                     }
                     break;
                 case TokenType.DecimalNumber:
                     if (!ingredient.quantity) {
+                        quantityExists = true;
+                        partialCount+=1;
                         ingredient.quantity = Number(token.text);
+                        if (ingredient.quantity <= 0.10) {
+                            errors.set(this.ERROR_TOO_SMALL,"Please enter a larger quantity");
+                        }
                     }
                     break;
                 case TokenType.Fraction:
                     if (ingredient.fractional_quantity == "") {
+                        quantityExists = true;
+                        partialCount+=1;
                         ingredient.fractional_quantity = token.text;
+                        if (!this.isFractionValid(token.text)) {
+                            errors.set(this.ERROR_BAD_FRACTION,"Please use a denominator of 2, 3, 4 or 8");
+                        }
                     }
                     break;
                 case TokenType.Unit:
@@ -312,6 +334,21 @@ export class AddIngredientInlineComponent implements OnInit {
                     ingredient.raw_modifiers.push(token.text);
             }
         }
+        // check quantity > 0.11
+        if (partialCount > 1) {
+            //error multiple partials
+            errors.set(this.ERROR_DECIMAL_AND_FRACTION,"Please use either a decimal or a fraction, but not both.");
+        }
+        if (!quantityExists && text.trim().length > 0) {
+            errors.set(this.ERROR_NO_QUANTITY,"Please enter a quantity.");
+        }
+
+        if (errors.size > 0) {
+            this.ingredientErrors = Array.from(errors.values());
+            return;
+        }
+        this.ingredientErrors = [];
+
         ingredient.raw_entry = text;
         this.clearDecksForNewIngredient();
         this.editedIngredient.emit(ingredient);
@@ -338,6 +375,10 @@ export class AddIngredientInlineComponent implements OnInit {
 
     isShowEditTag() {
         return !this.editingAmount;
+    }
+
+    isShowErrors() {
+        return true; //return this.ingredientErrors.length > 0;
     }
 
     isShowEditAmount() {
@@ -398,6 +439,12 @@ export class AddIngredientInlineComponent implements OnInit {
 
     cancelIngredientEdit() {
         this.cancelEdit.emit(true);
+    }
+
+    private isFractionValid(fractionText: string) {
+        var fractionCheck = fractionText.split("/");
+        var denominator = fractionText[1].trim();
+        return ['2','3','4','8'].includes(denominator);
     }
 }
 
