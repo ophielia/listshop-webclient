@@ -237,13 +237,19 @@ export class AddIngredientInlineComponent implements OnInit {
             token.type = TokenType.DecimalNumber;
             return token;
         } else if (text.match(/\//)) {
-            // MM validate denominator here
             var token = new Token();
             token.text = text.trim();
             token.matchingText = " " + token.text + " ";
             token.type = TokenType.Fraction;
             return token;
-        } else if (text.match(/[0-9]+/)) {
+        } else if (text.match(/\d+\s*-\s*\d+/)) {
+            var token = new Token();
+            var cleanedText = text.replace(/\s/,'');
+            token.text = cleanedText;
+            token.matchingText = " " + text.trim() + " ";
+            token.type = TokenType.Range;
+            return token;
+        }else if (text.match(/[0-9]+/)) {
             // whole number match
             var token = new Token();
             token.text = text.trim();

@@ -50,6 +50,7 @@ export enum TokenType {
     WholeNumber = 'WholeNumber',
     DecimalNumber = 'DecimalNumber',
     Fraction = 'Fraction',
+    Range = 'Range',
     Unit = 'Unit',
     UnitSize = 'UnitSize',
     Marker = 'Marker'
