@@ -186,7 +186,7 @@ export class AddIngredientInlineComponent implements OnInit {
 
         this.reconcileTokenList(textAndSelection.text, newTokenList);
         if (textAndSelection.final) {
-            this.passChangesOn(textAndSelection.text);
+            this.passChangesOn(textAndSelection);
         }
     }
 
@@ -236,7 +236,7 @@ export class AddIngredientInlineComponent implements OnInit {
             token.matchingText = " " + token.text + " ";
             token.type = TokenType.DecimalNumber;
             return token;
-        } else if (text.match(/\//)) {
+        } else if (text.match(/\d+\s*\/\s*\d+/)) {
             var token = new Token();
             token.text = text.trim();
             token.matchingText = " " + token.text + " ";
@@ -296,7 +296,9 @@ export class AddIngredientInlineComponent implements OnInit {
         return undefined;
     }
 
-    private passChangesOn(text: string) {
+    private passChangesOn(text: TextAndSelection) {
+        this.checkDashesAndSlashes(text);
+
         // assemble tokens in ingredient , and emit
         var list = this.tokenList.listOfTokens;
         var errors = new Map<String,String>();
@@ -309,6 +311,14 @@ export class AddIngredientInlineComponent implements OnInit {
                     if (!ingredient.whole_quantity) {
                         quantityExists = true;
                         ingredient.whole_quantity = Number(token.text);
+                    }
+                    break;
+                case TokenType.Range:
+                    if (!ingredient.whole_quantity) {
+                        quantityExists = true;
+                        var rangeValues = token.text.split("-");
+                        var upperRange = rangeValues[rangeValues.length - 1].trim();
+                        ingredient.whole_quantity = Number(upperRange);
                     }
                     break;
                 case TokenType.DecimalNumber:
@@ -345,7 +355,7 @@ export class AddIngredientInlineComponent implements OnInit {
             //error multiple partials
             errors.set(this.ERROR_DECIMAL_AND_FRACTION,"Please use either a decimal or a fraction, but not both.");
         }
-        if (!quantityExists && text.trim().length > 0) {
+        if (!quantityExists && text.text.trim().length > 0) {
             errors.set(this.ERROR_NO_QUANTITY,"Please enter a quantity.");
         }
 
@@ -355,9 +365,26 @@ export class AddIngredientInlineComponent implements OnInit {
         }
         this.ingredientErrors = [];
 
-        ingredient.raw_entry = text;
+        ingredient.raw_entry = text.text;
         this.clearDecksForNewIngredient();
         this.editedIngredient.emit(ingredient);
+    }
+
+    checkDashesAndSlashes(text: TextAndSelection) {
+        var textWithSpaces = " " + text.text + " ";
+        var slashAndDashFound = false;
+        if (textWithSpaces.match(/\s+(\d+)\s+-\s+(\d+)\s+/)) {
+            slashAndDashFound = true;
+            textWithSpaces = textWithSpaces.replace(/\s+(\d+)\s*-\s*(\d+)\s+/," $1-$2 ");
+        }
+        if (textWithSpaces.match(/\s+(\d+)\s+\/\s+(\d+)\s+/)) {
+            slashAndDashFound = true;
+            textWithSpaces = textWithSpaces.replace(/\s+(\d+)\s*\/\s*(\d+)\s+/," $1/$2 ");
+        }
+        if (slashAndDashFound) {
+            text.text = textWithSpaces.trim();
+            this.processTextInput(text);
+        }
     }
 
     clearedIngredient() {
@@ -449,7 +476,7 @@ export class AddIngredientInlineComponent implements OnInit {
 
     private isFractionValid(fractionText: string) {
         var fractionCheck = fractionText.split("/");
-        var denominator = fractionText[1].trim();
+        var denominator = fractionCheck[1].trim();
         return ['2','3','4','8'].includes(denominator);
     }
 }
