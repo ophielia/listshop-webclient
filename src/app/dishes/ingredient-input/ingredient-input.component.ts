@@ -11,6 +11,7 @@ import {TextAndSelection} from "./text-and-selection";
 })
 export class IngredientInputComponent implements OnInit , OnDestroy {
     @Input() findSuggestions: (args: string, string) => string[];
+    @Input() isShown: boolean;
 
 
     @Input() startText: Observable<string>;

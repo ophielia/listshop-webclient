@@ -124,6 +124,13 @@ export class DishService {
             .post(`${this.dishUrl}/${dish_id}/tag/${tag_id}`, null);
     }
 
+    addIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
+        return this
+            .httpClient
+            .post(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
+
+    }
+
     updateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
         var ingredientEditObservables = new Array<Observable<Object>>();
         ingredientEditObservables.push(this.doUpdateIngredient(dish_id, ingredient));
@@ -136,8 +143,6 @@ export class DishService {
     }
 
     doUpdateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
-        // remove old tag if present
-
         return this
             .httpClient
             .put(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));

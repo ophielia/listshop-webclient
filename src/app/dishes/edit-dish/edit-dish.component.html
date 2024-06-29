@@ -211,16 +211,12 @@
 
             <div>
                 <div *ngIf="this.showAddIngredient" class="ls-add-tag">
-                    <app-tag-select class="at-tag-select-style"
-                                    [tagTypes]="'Ingredient'"
-                                    [groupType]="groupTypeNoGroups"
-                                    [allowAdd]="true"
-                                    [showCancelButton]="true"
-                                    [placeholderText]="'Add Ingredient'"
-                                    (tagSelected)="addTagToDish($event)"
-                                    (createTag)="createTag($event)"
-                                    (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
-
+                    <app-add-ingredient-inline
+                            [ingredient]="selectedIngredient"
+                            (editedIngredient)="addNewIngredient($event)"
+                            (cancelEdit)="cancelIngredientAdd($event)"
+                    >
+                    </app-add-ingredient-inline>
                 </div>
             </div>
 
@@ -233,12 +229,12 @@
                    </div>
                </ng-container>
                 <ng-container *ngIf="isCurrentEdit(ingredient)">
-                    <app-add-ingredient-inline
+                    <app-edit-ingredient-inline
                             [ingredient]="selectedIngredient"
                             (editedIngredient)="saveIngredientChanges($event)"
                             (cancelEdit)="cancelIngredientEdit($event)"
                     >
-                    </app-add-ingredient-inline>
+                    </app-edit-ingredient-inline>
                 </ng-container>
             </div>
             <!--<span *ngFor="let tag of ingredientTags" class="ls-list-span"

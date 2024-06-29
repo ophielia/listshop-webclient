@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddIngredientInlineComponent } from './add-ingredient-inline.component';
+import { EditIngredientInlineComponent } from './edit-ingredient-inline.component';
 
 describe('AddIngredientInlineComponent', () => {
-  let component: AddIngredientInlineComponent;
-  let fixture: ComponentFixture<AddIngredientInlineComponent>;
+  let component: EditIngredientInlineComponent;
+  let fixture: ComponentFixture<EditIngredientInlineComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddIngredientInlineComponent ]
+      declarations: [ EditIngredientInlineComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddIngredientInlineComponent);
+    fixture = TestBed.createComponent(EditIngredientInlineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

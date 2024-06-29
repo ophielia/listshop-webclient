@@ -9,6 +9,7 @@ import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {BehaviorSubject, Subject, Subscription} from "rxjs";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {Tag} from "../../model/tag";
+import {TagTreeService} from "../../shared/services/tag-tree.service";
 
 let allSuggestions: ISuggestion[] = [];
 let currentSuggestions: ISuggestion[] = [];
@@ -17,15 +18,13 @@ let tokenList: ITokenList = new TokenList();
 let doubleTokenStart: string;
 
 @Component({
-    selector: 'app-add-ingredient-inline',
-    templateUrl: './add-ingredient-inline.component.html',
-    styleUrls: ['./add-ingredient-inline.component.scss']
+    selector: 'app-edit-ingredient-inline',
+    templateUrl: './edit-ingredient-inline.component.html',
+    styleUrls: ['./edit-ingredient-inline.component.scss']
 })
-export class AddIngredientInlineComponent implements OnInit {
-
-
+export class EditIngredientInlineComponent implements OnInit {
     @Input() set ingredient(value: Ingredient) {
-       if (!this._ingredient ||
+       if (!this._ingredient || !this._ingredient.tag_id ||
             (value.tag_id != this._ingredient.tag_id ||
             (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
             this.clearDecksForNewIngredient();
@@ -35,9 +34,9 @@ export class AddIngredientInlineComponent implements OnInit {
 
         this._ingredient = value;
     }
-
     @Output() editedIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>();
     @Output() cancelEdit: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+
     private ingredientStartText = new BehaviorSubject<string>("");
     startText$ = this.ingredientStartText.asObservable();
 
@@ -46,8 +45,7 @@ export class AddIngredientInlineComponent implements OnInit {
 
     private unsubscribe: Subscription[] = [];
 
-    componentTitle = "Edit Ingredient";
-    debugTokens = true;
+    debugTokens = false;
     editingAmount = true;
     _ingredient: IIngredient;
     loading = false;
@@ -60,10 +58,10 @@ export class AddIngredientInlineComponent implements OnInit {
     ERROR_DECIMAL_AND_FRACTION = "ERROR_DECIMAL_AND_FRACTION";
     ERROR_NO_QUANTITY = "ERROR_NO_QUANTITY";
 
-
     constructor(
         private foodService: FoodService,
-        private logger: NGXLogger
+        private logger: NGXLogger,
+        private tagTreeService: TagTreeService
     ) {
     }
 
@@ -435,6 +433,18 @@ export class AddIngredientInlineComponent implements OnInit {
         this._ingredient.tag_display = tag.name;
     }
 
+    addIngredient(tag: Tag) {
+        this.editingAmount = true;
+        if (!this._ingredient) {
+            this._ingredient = new Ingredient();
+        }
+        this._ingredient.tag_id = tag.tag_id;
+        this._ingredient.tag_display = tag.name;
+        let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
+        this._ingredient.is_liquid = lookupTag.is_liquid;
+        this.getSuggestionsForTag();
+    }
+
     dumpEvent($event) {
         console.log("couldn't care less.");
     }
@@ -447,7 +457,7 @@ export class AddIngredientInlineComponent implements OnInit {
     }
 
     private initializeForNewIngredient(ingredient: Ingredient) {
-        if (!ingredient || !ingredient.raw_entry ||
+        if (!ingredient || !ingredient.raw_entry || !ingredient.tag_id ||
         ingredient.raw_entry.trim().length == 0) {
             return;
         }

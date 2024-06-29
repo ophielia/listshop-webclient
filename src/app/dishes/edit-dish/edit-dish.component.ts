@@ -364,6 +364,12 @@ this.selectedIngredient = ingredient;
         this.editId = "0";
     }
 
+    cancelIngredientAdd($event) {
+        this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+        this.editId = "0";
+        this.showAddIngredient = false;
+    }
+
 
 
     ingredientDisplay(ingredient: Ingredient) {
@@ -381,5 +387,18 @@ this.selectedIngredient = ingredient;
             return this.editId == ingredient.original_tag_id;
         }
         return this.editId == ingredient.tag_id;
+    }
+
+    addNewIngredient(ingredient: Ingredient) {
+        console.log("adding a new ingredient");
+        // check for duplicate
+        let $sub = this.dishService
+            .addIngredient(this.dish.dish_id, ingredient)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+                this.editId = "0";
+            });
+        this.unsubscribe.push($sub);
+        this.showAddIngredient = false;
     }
 }

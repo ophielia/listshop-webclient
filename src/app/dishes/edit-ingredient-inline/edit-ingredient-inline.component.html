@@ -8,6 +8,7 @@
                             [startText]="this.startText$"
                             [sendResult]="this.sendResult$"
                             [findSuggestions]="mapSuggestions"
+                            [isShown]="isShowEditAmount()"
                             (processAfterChange)="processTextInput($event)"></app-ingredient-input>
                 </div>
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-left">
@@ -32,10 +33,9 @@
                                      [allowAdd]="false"
                                      [showCancelButton]="true"
                                      [placeholderText]="'Edit Ingredient'"
-                                     (tagSelected)="changeTag($event)"></app-tag-select-inline>
-                    <div class="done" (click)="cancelAddIngredient()">cancel</div>
+                                     (tagSelected)="addIngredient($event)"></app-tag-select-inline>
                     <div class="done" (click)="finalizeInput()">done</div>
-                    <div class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
+                    <div class="cancel-ingredient" (click)="cancelAddIngredient()">X</div>
                 </div>
             </div>
             <div *ngIf="isShowErrors()" class="row">
