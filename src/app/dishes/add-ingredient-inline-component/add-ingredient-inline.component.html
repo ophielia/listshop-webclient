@@ -1,0 +1,58 @@
+<ng-container *ngIf="!loading">
+
+    <div>
+        <div class="container edit-container">
+            <div *ngIf="(isEditAmount$ | async)" class="row">
+                <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-right">
+                    <app-ingredient-input
+                            [startText]="this.startText$"
+                            [sendResult]="this.sendResult$"
+                            [findSuggestions]="mapSuggestions"
+                            [isActive]="isEditAmount$"
+                            (processAfterChange)="processTextInput($event)"></app-ingredient-input>
+                </div>
+                <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-left">
+                    <div class="tag-display-edit-button"  (click)="beginEditTag()">
+                        {{ ingredientNameDisplay() }}
+                    </div>
+                    <div class="done" (click)="finalizeInput()">done</div>
+                    <div class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
+                </div>
+            </div>
+
+            <div *ngIf="!(isEditAmount$ | async)" class="row">
+                <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
+                    <app-tag-select-inline class="at-tag-select-style"
+                                           [tagTypes]="'Ingredient'"
+                                           [groupType]="groupTypeNoGroups"
+                                           [allowAdd]="false"
+                                           [showCancelButton]="true"
+                                           [placeholderText]="'Add Ingredient'"
+                                           (tagSelected)="setTag($event)"></app-tag-select-inline>
+                    <div class="done" (click)="finalizeInput()">done</div>
+                    <div class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
+                </div>
+            </div>
+            <div *ngIf="isShowErrors()" class="row">
+                <div class=" col-sm-12 col-md-12 col-lg-12">
+                    <ul class="ingredient-error">
+                        <li *ngFor="let error of ingredientErrors">{{error}}</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div *ngIf="debugTokens"
+             style="    color: grey; margin-top: 50px; display: inline-block; min-width: 200px; vertical-align: top;">
+            Token list :
+            <table>
+                <tr *ngFor="let token of tokenList.listOfTokens">
+                    <td>{{ token.text }}</td>
+                    <td>{{ token.type }}</td>
+                    <td>{{ token.id }}</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</ng-container>

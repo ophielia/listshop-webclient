@@ -1,0 +1,72 @@
+@import '../../../assets/scss/variable';
+
+.tag-display-edit-button {
+  display: inline-block;
+  text-transform: capitalize;
+  vertical-align: top;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: white;
+  background-color: $color_basic_orange;
+  border: 1px solid $color_basic_orange;
+  border-radius: 10px;
+  text-align: center;
+  margin-left: 8px;
+
+}
+
+.done {
+  @extend .tag-display-edit-button;
+  text-transform: uppercase;
+  margin-left:16px;
+  background-color: white;
+  color: $color_basic_orange;
+}
+
+.cancel-ingredient {
+  @extend .done;
+  margin-left:8px;
+}
+
+.squeeze-right {
+  padding-right: 1px;
+}
+
+.squeeze-left {
+  padding-left: 1px;
+}
+
+.ingredient-error {
+  padding-inline-start: 8px;
+  color: red;
+}
+
+.edit-container {
+  #width: 90%;
+  #text-align: right;
+}
+
+.ls-card-link {
+  display: inline;
+  padding-left: 10px;
+  text-transform: uppercase;
+  color: $color_tapa;
+
+  &:hover {
+    color: $color_basic_orange
+  }
+}
+
+.at-tag-select-style {
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.cancel-button {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10px;
+  margin-top: 2px;
+}
