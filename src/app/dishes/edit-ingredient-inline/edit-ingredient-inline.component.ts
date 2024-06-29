@@ -40,13 +40,15 @@ export class EditIngredientInlineComponent implements OnInit {
     private ingredientStartText = new BehaviorSubject<string>("");
     startText$ = this.ingredientStartText.asObservable();
 
+    isEditAmount = new BehaviorSubject<boolean>(true);
+    isEditAmount$ = this.isEditAmount.asObservable();
+
     private sendResult = new Subject<boolean>();
     sendResult$ = this.sendResult.asObservable();
 
     private unsubscribe: Subscription[] = [];
 
     debugTokens = false;
-    editingAmount = true;
     _ingredient: IIngredient;
     loading = false;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
@@ -86,6 +88,7 @@ export class EditIngredientInlineComponent implements OnInit {
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
             allSuggestions = data;
             currentSuggestions = data;
+            this.isEditAmount.next(true);
         })
     }
 
@@ -139,7 +142,8 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     cancelAddIngredient() {
-        this.editingAmount = true;
+        //MM this.editingAmount = true;
+        this.isEditAmount.next(true);
         this.clearDecksForNewIngredient();
     }
 
@@ -397,23 +401,17 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     beginEditTag() {
-        this.editingAmount = false;
+        //MM this.editingAmount = false;
+        this.isEditAmount.next(false);
     }
 
     beginEditAmount() {
-        this.editingAmount = true;
-    }
-
-    isShowEditTag() {
-        return !this.editingAmount;
+        //MM this.editingAmount = true;
+        this.isEditAmount.next(true);
     }
 
     isShowErrors() {
         return true; //return this.ingredientErrors.length > 0;
-    }
-
-    isShowEditAmount() {
-        return this.editingAmount;
     }
 
     amountDisplayWhileEditingTag() {
@@ -424,7 +422,8 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     changeTag(tag: Tag) {
-        this.editingAmount = true;
+        //MM this.editingAmount = true;
+        this.isEditAmount.next(true);
         if (!this._ingredient.original_tag_id ||
             this._ingredient.original_tag_id.trim().length == 0) {
             this._ingredient.original_tag_id = this._ingredient.tag_id;
@@ -433,8 +432,9 @@ export class EditIngredientInlineComponent implements OnInit {
         this._ingredient.tag_display = tag.name;
     }
 
-    addIngredient(tag: Tag) {
-        this.editingAmount = true;
+    setTag(tag: Tag) {
+        //MM this.editingAmount = true;
+        console.log("addIngredient")
         if (!this._ingredient) {
             this._ingredient = new Ingredient();
         }
@@ -443,10 +443,7 @@ export class EditIngredientInlineComponent implements OnInit {
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
         this._ingredient.is_liquid = lookupTag.is_liquid;
         this.getSuggestionsForTag();
-    }
 
-    dumpEvent($event) {
-        console.log("couldn't care less.");
     }
 
     ingredientNameDisplay() {

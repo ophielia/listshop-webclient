@@ -2,13 +2,13 @@
 
     <div>
         <div class="container edit-container">
-            <div *ngIf="isShowEditAmount()" class="row">
+            <div *ngIf="isEditAmount$ | async" class="row">
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-right">
                   <app-ingredient-input
                             [startText]="this.startText$"
                             [sendResult]="this.sendResult$"
                             [findSuggestions]="mapSuggestions"
-                            [isShown]="isShowEditAmount()"
+                            [isActive]="isEditAmount$"
                             (processAfterChange)="processTextInput($event)"></app-ingredient-input>
                 </div>
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-left">
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div *ngIf="isShowEditTag()" class="row">
+            <div *ngIf="!(isEditAmount$ | async)" class="row">
                 <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
                     <div class="tag-display-edit-button"  style="margin-top: 5px;" (click)="beginEditAmount()">
                         {{ amountDisplayWhileEditingTag() }}
@@ -33,7 +33,7 @@
                                      [allowAdd]="false"
                                      [showCancelButton]="true"
                                      [placeholderText]="'Edit Ingredient'"
-                                     (tagSelected)="addIngredient($event)"></app-tag-select-inline>
+                                     (tagSelected)="setTag($event)"></app-tag-select-inline>
                     <div class="done" (click)="finalizeInput()">done</div>
                     <div class="cancel-ingredient" (click)="cancelAddIngredient()">X</div>
                 </div>

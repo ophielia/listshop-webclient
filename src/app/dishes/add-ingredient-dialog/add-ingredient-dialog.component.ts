@@ -27,6 +27,8 @@ export class AddIngredientDialogComponent implements OnInit, OnDestroy {
     @Output() editedIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>();
     private ingredientStartText = new Subject<string>();
     startText$ = this.ingredientStartText.asObservable();
+    private amountIsActive = new Subject<boolean>();
+    amountIsActive$ = this.amountIsActive.asObservable();
 
     private sendResult = new Subject<boolean>();
     sendResult$ = this.sendResult.asObservable();

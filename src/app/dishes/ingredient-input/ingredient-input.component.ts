@@ -1,4 +1,14 @@
-import {Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {EntryEvent} from "../dish-ingredient/entry-event";
 import {debounceTime, distinctUntilChanged, filter, map} from "rxjs/operators";
@@ -10,8 +20,10 @@ import {TextAndSelection} from "./text-and-selection";
     styleUrls: ['./ingredient-input.component.scss']
 })
 export class IngredientInputComponent implements OnInit , OnDestroy {
+    @ViewChild("ingredientInput") ingredientInput : ElementRef;
+
     @Input() findSuggestions: (args: string, string) => string[];
-    @Input() isShown: boolean;
+    @Input() isActive: Observable<boolean>;
 
 
     @Input() startText: Observable<string>;
@@ -29,6 +41,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
     searchSuggestion: string;
     doubleTokenStart: string;
     textLength: number;
+    inAmountMode: boolean = true;
 
     showSuggestions: boolean = true;
     twoTokenMatchingPossible: boolean;
@@ -71,7 +84,15 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
             // deal with asynchronous Observable result
             if (val) {this.sendResultToParent();}
         })
-        this.unsubscribe.push($sub3);
+        this.unsubscribe.push($sub4);
+
+        var $sub5 = this.isActive
+            .subscribe(val => {
+                console.log("switching mode" + val);
+            // deal with asynchronous Observable result
+            this.inAmountMode = val;
+        })
+        this.unsubscribe.push($sub5);
     }
 
     ngOnDestroy(): void {
@@ -138,10 +159,11 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
 
     @HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {
+        console.log("key press - isActive is" + this.inAmountMode);
         if (event.key === 'Tab') {
             event.preventDefault();
             this.selectSuggestion();
-        } else if (event.key === 'Enter') {
+        } else if (event.key === 'Enter' && this.inAmountMode) {
             event.preventDefault();
             this.sendResultToParent();
         }
