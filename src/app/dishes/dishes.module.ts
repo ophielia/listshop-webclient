@@ -15,7 +15,6 @@ import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.compone
 import {DishContext} from "./dish-context/dish-context";
 import { DishIngredientComponent } from './dish-ingredient/dish-ingredient.component';
 import { IngredientInputComponent } from './ingredient-input/ingredient-input.component';
-import { AddIngredientDialogComponent } from './add-ingredient-dialog/add-ingredient-dialog.component';
 import { EditIngredientInlineComponent } from './edit-ingredient-inline/edit-ingredient-inline.component';
 import { AddIngredientInlineComponent } from './add-ingredient-inline-component/add-ingredient-inline.component';
 
@@ -29,7 +28,6 @@ import { AddIngredientInlineComponent } from './add-ingredient-inline-component/
         MealplanSelectComponent,
         DishIngredientComponent,
         IngredientInputComponent,
-        AddIngredientDialogComponent,
         EditIngredientInlineComponent,
         AddIngredientInlineComponent],
     imports: [

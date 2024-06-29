@@ -142,7 +142,6 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     cancelAddIngredient() {
-        //MM this.editingAmount = true;
         this.isEditAmount.next(true);
         this.clearDecksForNewIngredient();
     }
@@ -401,12 +400,10 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     beginEditTag() {
-        //MM this.editingAmount = false;
         this.isEditAmount.next(false);
     }
 
     beginEditAmount() {
-        //MM this.editingAmount = true;
         this.isEditAmount.next(true);
     }
 
@@ -422,7 +419,6 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     changeTag(tag: Tag) {
-        //MM this.editingAmount = true;
         this.isEditAmount.next(true);
         if (!this._ingredient.original_tag_id ||
             this._ingredient.original_tag_id.trim().length == 0) {
@@ -433,7 +429,6 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     setTag(tag: Tag) {
-        //MM this.editingAmount = true;
         console.log("addIngredient")
         if (!this._ingredient) {
             this._ingredient = new Ingredient();

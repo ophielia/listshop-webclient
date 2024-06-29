@@ -18,10 +18,9 @@ export class AddIngredientInlineComponent extends EditIngredientInlineComponent 
         tagTreeService: TagTreeService
   ) {
     super(foodService, logger, tagTreeService);
-    //MM this.editingAmount = false;
     this.isEditAmount.next(false);
     this.ingredient = new Ingredient();
-    this.debugTokens = true;
+    this.debugTokens = false;
   }
 
   ngOnInit(): void {
