@@ -164,6 +164,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         if (this.showAddIngredient) {
             this.showPlainTag = false;
             this.showAddDishType = false;
+            this.editId = "0";
         }
     }
 
@@ -199,7 +200,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.editedIngredient.next(ingredient);
 this.editId = ingredient.tag_id;
 this.selectedIngredient = ingredient;
-      //  this.editTagModel.show();
+      this.showAddIngredient = false;
     }
     addTagToDishById(tagId: string) {
         this.addTagModel.hide();
