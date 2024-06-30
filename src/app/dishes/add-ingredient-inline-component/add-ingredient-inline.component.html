@@ -2,8 +2,9 @@
 
     <div>
         <div class="container edit-container">
-            <div *ngIf="(isEditAmount$ | async)" class="row">
-                <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-right">
+            <div *ngIf="(isEditAmount$ | async)" class="row ls-add-ingredient-block ">
+                <div class="col-12 ls-add-ingredient-label">Now, add the amount</div>
+                <div class="col-sm-6 col-md-6 col-lg-6 squeeze-right">
                     <app-ingredient-input
                             [startText]="this.startText$"
                             [sendResult]="this.sendResult$"
@@ -11,7 +12,7 @@
                             [isActive]="isEditAmount$"
                             (processAfterChange)="processTextInput($event)"></app-ingredient-input>
                 </div>
-                <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-left">
+                <div class="col-sm-6 col-md-6 col-lg-6 squeeze-left">
                     <div class="tag-display-edit-button"  (click)="beginEditTag()">
                         {{ ingredientNameDisplay() }}
                     </div>
@@ -20,8 +21,10 @@
                 </div>
             </div>
 
-            <div *ngIf="!(isEditAmount$ | async)" class="row">
+            <div *ngIf="!(isEditAmount$ | async)" class="row ls-add-ingredient-block">
+                <div class="col-12 ls-add-ingredient-label  extra-padding">First, pick the ingredient</div>
                 <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
+
                     <app-tag-select-inline class="at-tag-select-style"
                                            [tagTypes]="'Ingredient'"
                                            [groupType]="groupTypeNoGroups"
