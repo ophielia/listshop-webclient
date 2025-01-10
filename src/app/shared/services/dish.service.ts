@@ -194,7 +194,7 @@ export class DishService {
     private static mapDishes(object: Object): Dish[] {
         let embeddedObj = object["_embedded"];
         if (embeddedObj) {
-            return embeddedObj["dish_list"].map(MappingUtils.toDish);
+            return embeddedObj["dishResourceList"].map(MappingUtils.toDish);
         } else
             return [];
     }
