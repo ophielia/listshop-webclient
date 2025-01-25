@@ -31,7 +31,7 @@ export class DishService {
         return this.httpClient.get(this.dishV2Url )
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return
-                    return DishService.mapDishes(response);
+                    return DishService.mapDishesV2(response);
                 }),
                 catchError(DishService.handleError));
     }
@@ -195,6 +195,14 @@ export class DishService {
         let embeddedObj = object["_embedded"];
         if (embeddedObj) {
             return embeddedObj["dishResourceList"].map(MappingUtils.toDish);
+        } else
+            return [];
+    }
+
+    private static mapDishesV2(object: Object): Dish[] {
+        let embeddedObj = object["_embedded"];
+        if (embeddedObj) {
+            return embeddedObj["dish_list"].map(MappingUtils.toDish);
         } else
             return [];
     }

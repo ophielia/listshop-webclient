@@ -54,6 +54,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
 
 
     ngOnInit(): void {
+        setTimeout(() => this.ingredientInput.nativeElement.focus(), 0);
         this.entryText = "";
         var $sub1 = this.midLineChange$.pipe(
             distinctUntilChanged(),
