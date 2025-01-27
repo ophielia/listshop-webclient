@@ -24,6 +24,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
 
     @Input() findSuggestions: (args: string, string) => string[];
     @Input() isActive: Observable<boolean>;
+    @Input() skipFirstKey: boolean;
 
 
     @Input() startText: Observable<string>;
@@ -89,7 +90,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
 
         var $sub5 = this.isActive
             .subscribe(val => {
-                console.log("switching mode" + val);
+                console.log("active change " + val)
             // deal with asynchronous Observable result
             this.inAmountMode = val;
         })
@@ -164,10 +165,11 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
         if (event.key === 'Tab') {
             event.preventDefault();
             this.selectSuggestion();
-        } else if (event.key === 'Enter' && this.inAmountMode) {
+        } else if (event.key === 'Enter' && this.inAmountMode && !this.skipFirstKey) {
             event.preventDefault();
             this.sendResultToParent();
         }
+        this.skipFirstKey = false;
 
     }
 

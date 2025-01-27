@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {ITag, Tag} from "../../../model/tag";
 import {Dish} from "../../../model/dish";
 import TagType from "../../../model/tag-type";
@@ -101,6 +101,8 @@ export class TagSelectInlineComponent implements OnInit, OnDestroy {
             if (el) {
                 el.panelVisible = false;
             }
+        } else if (this.filteredTags == null) {
+            this.cancelSelectTag()
         }
     }
 

@@ -23,6 +23,7 @@ let doubleTokenStart: string;
     styleUrls: ['./edit-ingredient-inline.component.scss']
 })
 export class EditIngredientInlineComponent implements OnInit {
+        private keyLock: boolean = false;
     @Input() set ingredient(value: Ingredient) {
        if (!this._ingredient || !this._ingredient.tag_id ||
             (value.tag_id != this._ingredient.tag_id ||
@@ -42,6 +43,9 @@ export class EditIngredientInlineComponent implements OnInit {
 
     isEditAmount = new BehaviorSubject<boolean>(true);
     isEditAmount$ = this.isEditAmount.asObservable();
+
+    skipFirstKeyPress= false;
+    lastEntry: string ="";
 
     private sendResult = new Subject<boolean>();
     sendResult$ = this.sendResult.asObservable();
@@ -88,7 +92,6 @@ export class EditIngredientInlineComponent implements OnInit {
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
             allSuggestions = data;
             currentSuggestions = data;
-            this.isEditAmount.next(true);
         })
     }
 
@@ -118,6 +121,7 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     processTextInput(textAndSelection: TextAndSelection) {
+        this.lastEntry = textAndSelection.text;
         this.processTokensForInput(textAndSelection);
     }
 
@@ -142,8 +146,16 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     cancelAddIngredient() {
+        console.log("edit amount true 1");
         this.isEditAmount.next(true);
         this.clearDecksForNewIngredient();
+    }
+
+    cancelEditTag() {
+        console.log("edit amount true 1");
+        this._ingredient.raw_entry = this.lastEntry
+        this.ingredientStartText.next(this.lastEntry)
+        this.isEditAmount.next(true);
     }
 
     processTokensForInput(textAndSelection: TextAndSelection) {
@@ -388,6 +400,9 @@ export class EditIngredientInlineComponent implements OnInit {
         }
     }
 
+    getStateOfStart() {
+        return this.ingredientStartText.getValue();
+    }
     clearedIngredient() {
         var newIngredient = Ingredient.clone(this._ingredient);
         newIngredient.whole_quantity = undefined;
@@ -401,9 +416,11 @@ export class EditIngredientInlineComponent implements OnInit {
 
     beginEditTag() {
         this.isEditAmount.next(false);
+
     }
 
     beginEditAmount() {
+        console.log("edit amount true 2");
         this.isEditAmount.next(true);
     }
 
@@ -419,17 +436,24 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     changeTag(tag: Tag) {
-        this.isEditAmount.next(true);
+        console.log("skipping first key press");
+        this.skipFirstKeyPress = true;
         if (!this._ingredient.original_tag_id ||
             this._ingredient.original_tag_id.trim().length == 0) {
             this._ingredient.original_tag_id = this._ingredient.tag_id;
         }
         this._ingredient.tag_id = tag.tag_id;
         this._ingredient.tag_display = tag.name;
+        let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
+        this._ingredient.is_liquid = lookupTag.is_liquid;
+        this.getSuggestionsForTag();
+        console.log("edit amount true 3");
+        this.isEditAmount.next(true);
     }
 
     setTag(tag: Tag) {
         console.log("addIngredient")
+        this.skipFirstKeyPress = true
         if (!this._ingredient) {
             this._ingredient = new Ingredient();
         }
@@ -438,6 +462,8 @@ export class EditIngredientInlineComponent implements OnInit {
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
         this._ingredient.is_liquid = lookupTag.is_liquid;
         this.getSuggestionsForTag();
+        console.log("edit amount true 4");
+        this.isEditAmount.next(true);
 
     }
 
@@ -480,6 +506,10 @@ export class EditIngredientInlineComponent implements OnInit {
         var fractionCheck = fractionText.split("/");
         var denominator = fractionCheck[1].trim();
         return ['2','3','4','8'].includes(denominator);
+    }
+
+    tagPlaceholder() {
+        return this._ingredient.tag_display;
     }
 }
 
