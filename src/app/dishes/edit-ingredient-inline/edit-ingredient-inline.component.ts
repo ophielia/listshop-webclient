@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {IToken, Token, TokenType} from "../dish-ingredient/token";
 import {TextAndSelection} from "../ingredient-input/text-and-selection";
 import {ISuggestion} from "../../model/suggestion";
@@ -22,14 +22,14 @@ let doubleTokenStart: string;
     templateUrl: './edit-ingredient-inline.component.html',
     styleUrls: ['./edit-ingredient-inline.component.scss']
 })
-export class EditIngredientInlineComponent implements OnInit {
+export class EditIngredientInlineComponent implements OnInit , OnDestroy {
         private keyLock: boolean = false;
     @Input() set ingredient(value: Ingredient) {
        if (!this._ingredient || !this._ingredient.tag_id ||
             (value.tag_id != this._ingredient.tag_id ||
             (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
             this.clearDecksForNewIngredient();
-           console.log("new ingredient here");
+           // console.log("new ingredient here");
            this.initializeForNewIngredient(value);
         }
 
@@ -88,7 +88,7 @@ export class EditIngredientInlineComponent implements OnInit {
         let promise = this.foodService
             .getSuggestionsForTag(this._ingredient.tag_id, this._ingredient.is_liquid);
         promise.then(data => {
-            console.log("received suggestions: " + this.currentSuggestions);
+            // console.log("received suggestions: " + this.currentSuggestions);
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
             allSuggestions = data;
             currentSuggestions = data;
@@ -98,11 +98,11 @@ export class EditIngredientInlineComponent implements OnInit {
     // input / callback
     mapSuggestions(stringToMatch: string, lastToken: string) {
 
-        //console.log("inner map suggestions suggestions: " + this.currentSuggestions);
-        console.log("inner map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
+        //// console.log("inner map suggestions suggestions: " + this.currentSuggestions);
+        // console.log("inner map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
         let suggestions: string[] = new Array();
         if (lastToken && doubleSuggestions != null && doubleSuggestions.length > 0) {
-            console.log("inner map suggestions last token suggestions:");
+            // console.log("inner map suggestions last token suggestions:");
             let doubleTokenSearch = doubleTokenStart + " " + stringToMatch.trim();
             let doubleTokenResults = doubleSuggestions
                 .filter(s => s.text.toLowerCase().startsWith(doubleTokenSearch.toLowerCase().trim()))
@@ -114,15 +114,19 @@ export class EditIngredientInlineComponent implements OnInit {
             .map(s => s.text);
         suggestions = suggestions.concat(results);
 
-        console.log("inner map suggestions suggestions:" + suggestions);
+        // console.log("inner map suggestions suggestions:" + suggestions);
 
 
         return suggestions;
     }
 
     processTextInput(textAndSelection: TextAndSelection) {
-        this.lastEntry = textAndSelection.text;
         this.processTokensForInput(textAndSelection);
+    }
+
+    processLastEntry(lastEntry: string) {
+        // console.log("IN EDIT " + lastEntry);
+        this.lastEntry = lastEntry;
     }
 
     public tokenList = tokenList;
@@ -143,19 +147,6 @@ export class EditIngredientInlineComponent implements OnInit {
     finalizeInput() {
         // solicit last entry from  input
         this.sendResult.next(true);
-    }
-
-    cancelAddIngredient() {
-        console.log("edit amount true 1");
-        this.isEditAmount.next(true);
-        this.clearDecksForNewIngredient();
-    }
-
-    cancelEditTag() {
-        console.log("edit amount true 1");
-        this._ingredient.raw_entry = this.lastEntry
-        this.ingredientStartText.next(this.lastEntry)
-        this.isEditAmount.next(true);
     }
 
     processTokensForInput(textAndSelection: TextAndSelection) {
@@ -179,7 +170,7 @@ export class EditIngredientInlineComponent implements OnInit {
 
         if (processingString.trim().length > 0) {
 
-            console.log("processForInput: processing:" + processingString + ",text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
+            // console.log("processForInput: processing:" + processingString + ",text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
 
             // process remaining tokens
             var textToProcess;
@@ -194,7 +185,7 @@ export class EditIngredientInlineComponent implements OnInit {
                 newTokenList.push(token);
             }
             this.checkDoubleToken(textToProcess, processingString.trim());
-            console.log("processForInput end: text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
+            // console.log("processForInput end: text: " + textAndSelection.text + "; doubleTokenStart: " + doubleTokenStart);
         }
 
         this.reconcileTokenList(textAndSelection.text, newTokenList);
@@ -204,7 +195,7 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     checkDoubleToken(processedText: string, value: string) {
-        console.log("check double token: " + doubleTokenStart);
+        // console.log("check double token: " + doubleTokenStart);
         // clear the token, and potentially set new token
         // look for double token starting with string
         var checkExistance = doubleSuggestions
@@ -242,7 +233,7 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     createTokenForText(text: string) {
-        console.log("createTokenForText: text:" + text);
+        // console.log("createTokenForText: text:" + text);
         if (text.match(/\d*\.\d*/)) {
             var token = new Token();
             token.text = text.trim();
@@ -270,10 +261,10 @@ export class EditIngredientInlineComponent implements OnInit {
             token.type = TokenType.WholeNumber;
             return token;
         } else if (doubleTokenStart && doubleTokenStart != text.trim()) {
-            console.log("createTokenForText - double: text:" + text);
+            // console.log("createTokenForText - double: text:" + text);
             // first attempt with double token
             var token = this.mapTextToToken(doubleTokenStart.trim() + " " + text.trim());
-            console.log("createTokenForText - double: token:" + token);
+            // console.log("createTokenForText - double: token:" + token);
             if (!token) {
                 token = this.mapTextToToken(text.trim());
             }
@@ -400,9 +391,7 @@ export class EditIngredientInlineComponent implements OnInit {
         }
     }
 
-    getStateOfStart() {
-        return this.ingredientStartText.getValue();
-    }
+
     clearedIngredient() {
         var newIngredient = Ingredient.clone(this._ingredient);
         newIngredient.whole_quantity = undefined;
@@ -415,12 +404,27 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     beginEditTag() {
+        if (this._ingredient.raw_entry) {
+            this.ingredientStartText.next(this._ingredient.raw_entry);
+        } else if (this.lastEntry) {
+            this.ingredientStartText.next(this.lastEntry);
+        } else {
+            this.ingredientStartText.next("");
+        }
         this.isEditAmount.next(false);
-
     }
 
     beginEditAmount() {
-        console.log("edit amount true 2");
+
+        this.isEditAmount.next(true);
+    }
+
+    cancelAddIngredient() {
+        this.isEditAmount.next(true);
+        this.clearDecksForNewIngredient();
+    }
+
+    cancelEditTag() {
         this.isEditAmount.next(true);
     }
 
@@ -429,14 +433,14 @@ export class EditIngredientInlineComponent implements OnInit {
     }
 
     amountDisplayWhileEditingTag() {
-        if (this.ingredientStartText.value.trim().length > 0) {
-            return this.ingredientStartText.getValue();
+        if (this._ingredient.raw_entry && this._ingredient.raw_entry.trim().length > 0) {
+            return this._ingredient.raw_entry;
         }
         return "Edit Amount";
     }
 
     changeTag(tag: Tag) {
-        console.log("skipping first key press");
+        // console.log("skipping first key press");
         this.skipFirstKeyPress = true;
         if (!this._ingredient.original_tag_id ||
             this._ingredient.original_tag_id.trim().length == 0) {
@@ -447,12 +451,12 @@ export class EditIngredientInlineComponent implements OnInit {
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
         this._ingredient.is_liquid = lookupTag.is_liquid;
         this.getSuggestionsForTag();
-        console.log("edit amount true 3");
+        // console.log("edit amount true 3");
         this.isEditAmount.next(true);
     }
 
     setTag(tag: Tag) {
-        console.log("addIngredient")
+        // console.log("addIngredient")
         this.skipFirstKeyPress = true
         if (!this._ingredient) {
             this._ingredient = new Ingredient();
@@ -462,7 +466,7 @@ export class EditIngredientInlineComponent implements OnInit {
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
         this._ingredient.is_liquid = lookupTag.is_liquid;
         this.getSuggestionsForTag();
-        console.log("edit amount true 4");
+        // console.log("edit amount true 4");
         this.isEditAmount.next(true);
 
     }
@@ -483,7 +487,7 @@ export class EditIngredientInlineComponent implements OnInit {
         let promise = this.foodService
             .getSuggestionsForTag(ingredient.tag_id, ingredient.is_liquid);
         promise.then(data => {
-            console.log("received suggestions: " + this.currentSuggestions);
+            // console.log("received suggestions: " + this.currentSuggestions);
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
             allSuggestions = data;
             currentSuggestions = data;
@@ -497,6 +501,7 @@ export class EditIngredientInlineComponent implements OnInit {
 
         })
     }
+
 
     cancelIngredientEdit() {
         this.cancelEdit.emit(true);

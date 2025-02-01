@@ -31,6 +31,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
     @Input() sendResult: Observable<boolean>;
 
     @Output() processAfterChange: EventEmitter<TextAndSelection> = new EventEmitter<TextAndSelection>();
+    @Output() processLastEntry: EventEmitter<string> = new EventEmitter<string>();
 
     private unsubscribe: Subscription[] = [];
 
@@ -95,17 +96,22 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
             this.inAmountMode = val;
         })
         this.unsubscribe.push($sub5);
+
+
     }
 
     ngOnDestroy(): void {
         this.unsubscribe.forEach(s => s.unsubscribe())
     }
 
+    // MM for flash value - used to bookmark value when switching from edit amount to edit tag and back,
+    // we should get the value from around here- on change, set flash value to this.entryText
     searchText$ = this.searchTextInputChange$.pipe(
         debounceTime(20),
         filter(ev => ev != null),
         distinctUntilChanged(),
         map(entryEvent => {
+
             if (entryEvent.endPosition) {
                 return this.entryText.substr(entryEvent.startPosition, entryEvent.endPosition - entryEvent.startPosition).trim();
             }
@@ -113,7 +119,10 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
         })
     )
 
+
     inputChanged($event, inputhtml: any) {
+        console.log("about to send event - " + this.entryText)
+        this.processLastEntry.emit(this.entryText)
         // processing input
         let cursorPosition = inputhtml.selectionStart;
 

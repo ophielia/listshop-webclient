@@ -1,19 +1,20 @@
 <ng-container *ngIf="!loading">
 
-    <div>--{{this.getStateOfStart()}}--
+    <div>
         <div class="container edit-container">
             <div *ngIf="isEditAmount$ | async" class="row">
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-right">
-                  <app-ingredient-input
+                    <app-ingredient-input
                             [startText]="this.startText$"
                             [sendResult]="this.sendResult$"
                             [findSuggestions]="mapSuggestions"
                             [isActive]="isEditAmount$"
                             [skipFirstKey]="skipFirstKeyPress"
+                            (processLastEntry)="processLastEntry($event)"
                             (processAfterChange)="processTextInput($event)"></app-ingredient-input>
                 </div>
                 <div class=" col-sm-6 col-md-6 col-lg-6 squeeze-left">
-                    <div class="tag-display-edit-button"  (click)="beginEditTag()">
+                    <div class="tag-display-edit-button" (click)="beginEditTag()">
                         {{ ingredientNameDisplay() }}
                     </div>
                     <div class="done" (click)="finalizeInput()">done</div>
@@ -24,26 +25,25 @@
 
             <div *ngIf="!(isEditAmount$ | async)" class="row">
                 <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
-                    <div class="tag-display-edit-button"  style="margin-top: 5px;" (click)="beginEditAmount()">
+                    <div class="tag-display-edit-button" style="margin-top: 5px;" (click)="beginEditAmount()">
                         {{ amountDisplayWhileEditingTag() }}
                     </div>
 
                     <app-tag-select-inline class="at-tag-select-style"
-                                     [tagTypes]="'Ingredient'"
-                                     [groupType]="groupTypeNoGroups"
-                                     [allowAdd]="false"
-                                     [showCancelButton]="true"
-                                     [placeholderText]="tagPlaceholder()"
+                                           [tagTypes]="'Ingredient'"
+                                           [groupType]="groupTypeNoGroups"
+                                           [allowAdd]="false"
+                                           [showCancelButton]="true"
+                                           [placeholderText]="tagPlaceholder()"
                                            (cancelAddTag)="cancelEditTag()"
-                                     (tagSelected)="changeTag($event)"></app-tag-select-inline>
-                    <div class="done" (click)="finalizeInput()">done</div>
+                                           (tagSelected)="changeTag($event)"></app-tag-select-inline>
                     <div class="cancel-ingredient" (click)="cancelAddIngredient()">X</div>
                 </div>
             </div>
             <div *ngIf="isShowErrors()" class="row">
                 <div class=" col-sm-12 col-md-12 col-lg-12">
                     <ul class="ingredient-error">
-                        <li *ngFor="let error of ingredientErrors">{{error}}</li>
+                        <li *ngFor="let error of ingredientErrors">{{ error }}</li>
                     </ul>
                 </div>
 
