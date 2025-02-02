@@ -3,7 +3,7 @@
     <div>
         <div class="container edit-container">
             <div *ngIf="(isEditAmount$ | async)" class="row ls-add-ingredient-block ">
-                <div class="col-12 ls-add-ingredient-label">Now, add the amount</div>
+                <div class="col-12 ls-add-ingredient-label"></div>
                 <div class="col-sm-6 col-md-6 col-lg-6 squeeze-right">
                     <app-ingredient-input
                             [startText]="this.startText$"
@@ -11,6 +11,7 @@
                             [findSuggestions]="mapSuggestions"
                             [isActive]="isEditAmount$"
                             [skipFirstKey]="skipFirstKeyPress"
+                            (processLastEntry)="processLastEntry($event)"
                             (processAfterChange)="processTextInput($event)"></app-ingredient-input>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6 squeeze-left">
@@ -23,7 +24,7 @@
             </div>
 
             <div *ngIf="!(isEditAmount$ | async)" class="row ls-add-ingredient-block">
-                <div class="col-12 ls-add-ingredient-label  extra-padding">First, pick the ingredient</div>
+                <div class="col-12 ls-add-ingredient-label  extra-padding"></div>
                 <div class=" col-sm-12 col-md-12 col-lg-12 squeeze-right">
 
                     <app-tag-select-inline class="at-tag-select-style"
@@ -31,10 +32,10 @@
                                            [groupType]="groupTypeNoGroups"
                                            [allowAdd]="false"
                                            [showCancelButton]="true"
-                                           [placeholderText]="'Add Ingredient'"
+                                           [placeholderText]="tagPlaceholder()"
                                            (tagSelected)="setTag($event)"></app-tag-select-inline>
-                    <div class="done" (click)="finalizeInput()">done</div>
-                    <div class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
+                    <div class="done" (click)="saveFromTag()">done</div>
+                    <div *ngIf="showCancel" class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
                 </div>
             </div>
             <div *ngIf="isShowErrors()" class="row">

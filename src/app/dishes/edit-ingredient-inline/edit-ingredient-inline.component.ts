@@ -22,19 +22,22 @@ let doubleTokenStart: string;
     templateUrl: './edit-ingredient-inline.component.html',
     styleUrls: ['./edit-ingredient-inline.component.scss']
 })
-export class EditIngredientInlineComponent implements OnInit , OnDestroy {
-        private keyLock: boolean = false;
+export class EditIngredientInlineComponent implements OnInit, OnDestroy {
+    private keyLock: boolean = false;
+
     @Input() set ingredient(value: Ingredient) {
-       if (!this._ingredient || !this._ingredient.tag_id ||
+        if (!this._ingredient || !this._ingredient.tag_id ||
             (value.tag_id != this._ingredient.tag_id ||
-            (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
+                (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
             this.clearDecksForNewIngredient();
-           // console.log("new ingredient here");
-           this.initializeForNewIngredient(value);
+            // console.log("new ingredient here");
+            this.initializeForNewIngredient(value);
         }
 
         this._ingredient = value;
     }
+
+    @Input() showCancel: boolean = true;
     @Output() editedIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>();
     @Output() cancelEdit: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
@@ -44,8 +47,8 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
     isEditAmount = new BehaviorSubject<boolean>(true);
     isEditAmount$ = this.isEditAmount.asObservable();
 
-    skipFirstKeyPress= false;
-    lastEntry: string ="";
+    skipFirstKeyPress = false;
+    lastEntry: string = "";
 
     private sendResult = new Subject<boolean>();
     sendResult$ = this.sendResult.asObservable();
@@ -248,12 +251,12 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
             return token;
         } else if (text.match(/\d+\s*-\s*\d+/)) {
             var token = new Token();
-            var cleanedText = text.replace(/\s/,'');
+            var cleanedText = text.replace(/\s/, '');
             token.text = cleanedText;
             token.matchingText = " " + text.trim() + " ";
             token.type = TokenType.Range;
             return token;
-        }else if (text.match(/[0-9]+/)) {
+        } else if (text.match(/[0-9]+/)) {
             // whole number match
             var token = new Token();
             token.text = text.trim();
@@ -305,7 +308,7 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
 
         // assemble tokens in ingredient , and emit
         var list = this.tokenList.listOfTokens;
-        var errors = new Map<String,String>();
+        var errors = new Map<String, String>();
         var quantityExists = false;
         var partialCount = 0;
         var ingredient = this.clearedIngredient();
@@ -328,20 +331,20 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
                 case TokenType.DecimalNumber:
                     if (!ingredient.quantity) {
                         quantityExists = true;
-                        partialCount+=1;
+                        partialCount += 1;
                         ingredient.quantity = Number(token.text);
                         if (ingredient.quantity <= 0.10) {
-                            errors.set(this.ERROR_TOO_SMALL,"Please enter a larger quantity");
+                            errors.set(this.ERROR_TOO_SMALL, "Please enter a larger quantity");
                         }
                     }
                     break;
                 case TokenType.Fraction:
                     if (ingredient.fractional_quantity == "") {
                         quantityExists = true;
-                        partialCount+=1;
+                        partialCount += 1;
                         ingredient.fractional_quantity = token.text;
                         if (!this.isFractionValid(token.text)) {
-                            errors.set(this.ERROR_BAD_FRACTION,"Please use a denominator of 2, 3, 4 or 8");
+                            errors.set(this.ERROR_BAD_FRACTION, "Please use a denominator of 2, 3, 4 or 8");
                         }
                     }
                     break;
@@ -357,10 +360,10 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
         // check quantity > 0.11
         if (partialCount > 1) {
             //error multiple partials
-            errors.set(this.ERROR_DECIMAL_AND_FRACTION,"Please use either a decimal or a fraction, but not both.");
+            errors.set(this.ERROR_DECIMAL_AND_FRACTION, "Please use either a decimal or a fraction, but not both.");
         }
         if (!quantityExists && text.text.trim().length > 0) {
-            errors.set(this.ERROR_NO_QUANTITY,"Please enter a quantity.");
+            errors.set(this.ERROR_NO_QUANTITY, "Please enter a quantity.");
         }
 
         if (errors.size > 0) {
@@ -372,6 +375,7 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
         ingredient.raw_entry = text.text;
         this.clearDecksForNewIngredient();
         this.editedIngredient.emit(ingredient);
+        this.isEditAmount.next(false);
     }
 
     checkDashesAndSlashes(text: TextAndSelection) {
@@ -379,11 +383,11 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
         var slashAndDashFound = false;
         if (textWithSpaces.match(/\s+(\d+)\s+-\s+(\d+)\s+/)) {
             slashAndDashFound = true;
-            textWithSpaces = textWithSpaces.replace(/\s+(\d+)\s*-\s*(\d+)\s+/," $1-$2 ");
+            textWithSpaces = textWithSpaces.replace(/\s+(\d+)\s*-\s*(\d+)\s+/, " $1-$2 ");
         }
         if (textWithSpaces.match(/\s+(\d+)\s+\/\s+(\d+)\s+/)) {
             slashAndDashFound = true;
-            textWithSpaces = textWithSpaces.replace(/\s+(\d+)\s*\/\s*(\d+)\s+/," $1/$2 ");
+            textWithSpaces = textWithSpaces.replace(/\s+(\d+)\s*\/\s*(\d+)\s+/, " $1/$2 ");
         }
         if (slashAndDashFound) {
             text.text = textWithSpaces.trim();
@@ -401,6 +405,16 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
         newIngredient.raw_entry = "";
 
         return newIngredient;
+    }
+
+    saveFromTag() {
+        if (!this._ingredient || !this._ingredient.tag_id || this._ingredient.tag_id == "0") {
+            this.cancelAddIngredient()
+            return;
+        }
+        this._ingredient.raw_entry = this.lastEntry
+        this.editedIngredient.emit(this._ingredient);
+        this.isEditAmount.next(false);
     }
 
     beginEditTag() {
@@ -472,15 +486,17 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
     }
 
     ingredientNameDisplay() {
-       if (this._ingredient == null) {
-           return "";
-       }
-        return this._ingredient.tag_display;
+        if (this._ingredient && this._ingredient.tag_display
+            && this._ingredient.tag_display.length > 0) {
+
+            return this._ingredient.tag_display;
+        }
+        return "Enter Tag";
     }
 
     private initializeForNewIngredient(ingredient: Ingredient) {
         if (!ingredient || !ingredient.raw_entry || !ingredient.tag_id ||
-        ingredient.raw_entry.trim().length == 0) {
+            ingredient.raw_entry.trim().length == 0) {
             return;
         }
 
@@ -493,10 +509,10 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
             currentSuggestions = data;
             // split entry into tokens, and process each
             var stringTokens = ingredient.raw_entry.split(" ");
-            var builtString ="";
+            var builtString = "";
             for (var i = 0; i < stringTokens.length; i++) {
                 builtString = builtString + " " + stringTokens[i];
-                this.processTokensForInput(new TextAndSelection(builtString,null));
+                this.processTokensForInput(new TextAndSelection(builtString, null));
             }
 
         })
@@ -510,11 +526,16 @@ export class EditIngredientInlineComponent implements OnInit , OnDestroy {
     private isFractionValid(fractionText: string) {
         var fractionCheck = fractionText.split("/");
         var denominator = fractionCheck[1].trim();
-        return ['2','3','4','8'].includes(denominator);
+        return ['2', '3', '4', '8'].includes(denominator);
     }
 
     tagPlaceholder() {
-        return this._ingredient.tag_display;
+        if (this._ingredient && this._ingredient.tag_display
+            && this._ingredient.tag_display.length > 0) {
+
+            return this._ingredient.tag_display;
+        }
+        return "Ingredient";
     }
 }
 

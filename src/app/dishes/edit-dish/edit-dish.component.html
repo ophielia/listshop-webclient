@@ -210,9 +210,10 @@
             </div>
 
             <div>
-                <div *ngIf="this.showAddIngredient" class="ls-add-tag">
+                <div *ngIf="this.showAddIngredient" class="ingredient-block-content">
                     <app-add-ingredient-inline
                             [ingredient]="selectedIngredient"
+                            [showCancel]="true"
                             (editedIngredient)="addNewIngredient($event)"
                             (cancelEdit)="cancelIngredientAdd($event)"
                     >

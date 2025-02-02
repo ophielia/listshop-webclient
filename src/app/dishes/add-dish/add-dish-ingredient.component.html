@@ -16,7 +16,7 @@
     <div class="container dish-toolbar">
         <div class="row">
             <div class=" col-sm-6 col-md-8 col-lg-8">
-                <h2 class="title"><span>ADD INGREDIENTS - {{dish.name}}</span></h2>
+                <h2 class="title"><span>ADD INGREDIENTS - {{ dish.name }}</span></h2>
             </div>
             <div class="col-md-4 col-sm-6 col-text-end">
 
@@ -44,25 +44,38 @@
                             <div class="ls-card">
                                 <div class="ls-tag-group-subtitle">Ingredients:
                                 </div>
-                                <div class="ls-add-tag">
+                                <div *ngIf="this.showAddIngredient" class="add-ingredient-in-tunnel">
 
-                                    <app-tag-select class="at-tag-select-style"
-                                                    [tagTypes]="'Ingredient'"
-                                                    [groupType]="ingredientGroupType"
-                                                    [allowAdd]="true"
-                                                    [showCancelButton]="true"
-                                                    [placeholderText]="'Add Ingredient'"
-                                                    (createTag)="createTag($event)"
-                                                    (tagSelected)="addTagToDish($event)"
-                                                    (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
+                                    <app-add-ingredient-inline
+                                            [ingredient]="selectedIngredient"
+                                            [showCancel]="false"
+                                            (editedIngredient)="addNewIngredient($event)"
+                                    >
+                                    </app-add-ingredient-inline>
 
                                 </div>
 
                                 <div class="ls-card-link-block"><a
-                                        class="ls-card-link" [routerLink]="['/dishes/edit', dish.dish_id]">done</a></div>
+                                        class="ls-card-link" [routerLink]="['/dishes/edit', dish.dish_id]">view dish</a>
+                                </div>
 
-                                <span *ngFor="let tag of ingredientTags" class="ls-list-span"
-                                      (click)="removeTagFromDish(tag)">{{tag.name}}</span>
+                                <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags" >
+                                    <ng-container *ngIf="!isCurrentEdit(ingredient)">
+                                        <div class="ls-ingredient-display">{{ingredientDisplay(ingredient)}}</div>
+                                        <div *ngIf="editId == '0'" class="ls-ingredient-edit">
+                                            <span (click)="showEditIngredient(ingredient)" class="ls-card-link">Edit</span>
+                                            <span (click)="removeIngredientFromDish(ingredient)" class="ls-card-link">Delete</span>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="isCurrentEdit(ingredient)">
+                                        <app-edit-ingredient-inline
+                                                [ingredient]="selectedIngredient"
+                                                (editedIngredient)="saveIngredientChanges($event)"
+                                                (cancelEdit)="cancelIngredientEdit($event)"
+                                        >
+                                        </app-edit-ingredient-inline>
+                                    </ng-container>
+                                </div>
                                 <div>
                                     <div class="clearfix spacer50"></div>
                                 </div>
@@ -81,7 +94,7 @@
 
 <!--content End-->
 
-<app-modal #addtag >
+<app-modal #addtag>
     <div class="app-modal-body">
         <app-create-tag-dialog
                 [tagName]="tagNameToCreate"

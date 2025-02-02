@@ -13,6 +13,8 @@ import TagType from "../../model/tag-type";
 import {IRatingInfo, RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
+import {IIngredient, Ingredient} from "../../model/Ingredient";
+import {TagTreeService} from "../../shared/services/tag-tree.service";
 
 
 @Component({
@@ -30,12 +32,15 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     isLoading: boolean = true;
 
     dish: Dish;
-    ingredientTags: Tag[] = [];
+    ingredientTags: Ingredient[] = [];
 
-    showAddIngredient: boolean = false;
+    showAddIngredient: boolean = true;
+    selectedIngredient: Ingredient = null;
+    editId = "0";
+
+
     showPlainTag: boolean = false;
     showAddDishType: boolean = false;
-    ingredientGroupType: GroupType = GroupType.ExcludeGroups;
 
     dishName: string ;
     dishDescription : string;
@@ -52,7 +57,7 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
         private title: Title,
         private meta: Meta,
         private dishService: DishService,
-        private mealPlanService: MealPlanService,
+        private tagTreeService: TagTreeService,
         private listService: ListService,
         private logger: NGXLogger
     ) {
@@ -72,25 +77,50 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    getDish(dishId: string) {
+    addNewIngredient(ingredient: Ingredient) {
+        console.log("adding a new ingredient");
+        // check for duplicate
+        let $sub = this.dishService
+            .addIngredient(this.dish.dish_id, ingredient)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+                this.editId = "0";
+                this.selectedIngredient = new Ingredient();
+            });
+        this.unsubscribe.push($sub);
 
-        this.dishService
+    }
+
+    getDish(dishId: string) {
+        let $sub = this.dishService
             .getDish(dishId)
             .subscribe(p => {
                     this.dish = p;
                     this.isLoading = false;
+                    this.ingredientTags = this.dish.ingredients;
+                    this.ingredientTags.sort((a, b) => {
+                        let aNum = parseInt(a.id, 10);
+                        let bNum = parseInt(b.id, 10);
+                        if (aNum < bNum) return -1;
+                        else if (aNum > bNum) return 1;
+                        else return 0;
+                    });
                     this.dishName = this.dish.name;
                     this.dishReference = this.dish.reference;
                     this.dishDescription = this.dish.description;
-                    this.pullIngredientTags();
+                    this.determineLiquids(this.dish.ingredients);
                 },
                 e => this.errorMessage = e);
+        this.unsubscribe.push($sub);
     }
 
-    pullIngredientTags() {
-        this.ingredientTags =  this.dish.tags.filter(t => t.tag_type == TagType.Ingredient);
+    private determineLiquids(ingredients: IIngredient[]) {
+        // loop through ingredients, setting is liquid
+        for (let ingredient of ingredients) {
+            let tag = this.tagTreeService.retrieveTag(ingredient.tag_id);
+            ingredient.is_liquid = tag.is_liquid;
+        }
     }
-
 
     toggleAddIngredient() {
         this.showAddIngredient = !this.showAddIngredient;
@@ -99,25 +129,6 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
             this.showAddDishType = false;
         }
     }
-
-    addTagToDish(tag: Tag) {
-this.addTagToDishById(tag.tag_id);
-    }
-
-    removeTagFromDish(tag: Tag) {
-        // add tag to list as item in back end
-        this.logger.debug("removing tag [" + tag.tag_id + "] to dish");
-
-        let $sub = this.dishService
-            .removeTagFromDish(this.dish.dish_id, tag.tag_id)
-            .subscribe(p => {
-                this.getDish(this.dish.dish_id);
-            });
-        this.unsubscribe.push($sub);
-
-
-    }
-
 
     createTag(tag: ITag) {
         this.tagNameToCreate = tag.name;
@@ -140,5 +151,61 @@ this.addTagToDishById(tag.tag_id);
         this.showAddIngredient = false;
         this.showPlainTag = false
         this.showAddDishType = false
+    }
+
+    isCurrentEdit(ingredient: Ingredient) {
+        if (this.editId == "0") {
+            return false;
+        }
+        if (ingredient.original_tag_id && ingredient.original_tag_id.trim().length > 0) {
+            return this.editId == ingredient.original_tag_id;
+        }
+        return this.editId == ingredient.tag_id;
+    }
+
+    ingredientDisplay(ingredient: Ingredient) {
+        if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
+            return ingredient.raw_entry + " " + ingredient.tag_display;
+        }
+        return ingredient.tag_display;
+    }
+
+
+    showEditIngredient(ingredient: Ingredient) {
+        this.editId = ingredient.tag_id;
+        this.selectedIngredient = ingredient;
+        this.showAddIngredient = false;
+    }
+
+    removeIngredientFromDish(ingredient: Ingredient) {
+        // remove ingredient from dish
+        this.logger.debug("removing ingredient [" + ingredient.tag_id + "] from dish");
+
+        let $sub = this.dishService
+            .removeIngredientFromDish(this.dish.dish_id, ingredient.id)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);
+            });
+        this.unsubscribe.push($sub);
+
+
+    }
+
+    saveIngredientChanges(ingredient: Ingredient) {
+        console.log("ingredient is:" + ingredient);
+
+        let $sub = this.dishService
+            .updateIngredient(this.dish.dish_id, ingredient)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+                this.editId = "0";
+            });
+        this.unsubscribe.push($sub);
+    }
+
+
+    cancelIngredientEdit($event) {
+        this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+        this.editId = "0";
     }
 }

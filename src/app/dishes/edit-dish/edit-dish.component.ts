@@ -1,16 +1,14 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Meta, Title} from "@angular/platform-browser";
+import {Title} from "@angular/platform-browser";
 import {Subject, Subscription} from "rxjs";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
-import {ListService} from "../../shared/services/list.service";
-import {MealPlanService} from "../../shared/services/meal-plan.service";
 import TagType from "../../model/tag-type";
-import {IRatingInfo, RatingInfo} from "../../model/rating-info";
+import {RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
@@ -47,9 +45,9 @@ export class EditDishComponent implements OnInit, OnDestroy {
     showAddDishType: boolean = false;
     showEditMainInfo: boolean = false;
 
-    dishName: string ;
-    dishDescription : string;
-    dishReference : string;
+    dishName: string;
+    dishDescription: string;
+    dishReference: string;
     groupTypeDishType: GroupType = GroupType.All;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
 
@@ -58,8 +56,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     private dishNameError: string;
     private dishDescriptionError: string;
 
-     tagNameToCreate: string;
-     tagTypeToCreate: TagType;
+    tagNameToCreate: string;
+    tagTypeToCreate: TagType;
 
     private dishRatingInfo: DishRatingInfo;
     private ratingsMap = new Map<number, RatingInfo>();
@@ -107,8 +105,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.ingredientTags.sort((a, b) => {
                         let aNum = parseInt(a.id, 10);
                         let bNum = parseInt(b.id, 10);
-                        if (aNum < bNum) return -1 ;
-                        else if (aNum > bNum) return 1 ;
+                        if (aNum < bNum) return -1;
+                        else if (aNum > bNum) return 1;
                         else return 0;
                     });
                     this.dishName = this.dish.name;
@@ -198,10 +196,11 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     showEditIngredient(ingredient: Ingredient) {
         this.editedIngredient.next(ingredient);
-this.editId = ingredient.tag_id;
-this.selectedIngredient = ingredient;
-      this.showAddIngredient = false;
+        this.editId = ingredient.tag_id;
+        this.selectedIngredient = ingredient;
+        this.showAddIngredient = false;
     }
+
     addTagToDishById(tagId: string) {
         this.addTagModel.hide();
         // add tag to list as item in back end
@@ -237,7 +236,7 @@ this.selectedIngredient = ingredient;
         this.tagNameToCreate = tag.name;
         this.tagTypeToCreate = tag.tag_type;
         this.addTagModel.show();
-     }
+    }
 
     removeTagFromDish(tag: Tag) {
         // add tag to list as item in back end
@@ -295,11 +294,10 @@ this.selectedIngredient = ingredient;
         }
         this.showEditMainInfo = false;
         this.dishService.saveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
-            .subscribe( x => {
-                this.getDish(this.dish.dish_id);
-            }
-
-        )
+            .subscribe(x => {
+                    this.getDish(this.dish.dish_id);
+                }
+            )
     }
 
     validateEntry() {
@@ -307,18 +305,18 @@ this.selectedIngredient = ingredient;
         this.dishDescriptionError = null;
         this.dishNameError = null;
 
-        if (this.dishName == null || (this.dishName.trim())=="") {
+        if (this.dishName == null || (this.dishName.trim()) == "") {
             this.logger.debug("Invalid - no name for the dish");
             this.dishNameError = "Disn name is required.";
-        } else if (this.dishName != null && this.dishName.length > 255)  {
+        } else if (this.dishName != null && this.dishName.length > 255) {
             this.logger.debug("Invalid - dish name too long");
             this.dishNameError = "This dish name is too long";
         }
-        if (this.dishDescription != null && this.dishDescription.length > 255)  {
+        if (this.dishDescription != null && this.dishDescription.length > 255) {
             this.logger.debug("Invalid - dish description is too long");
             this.dishDescriptionError = "This dish description is too long";
         }
-        if (this.dishReference != null && this.dishReference.length > 255)  {
+        if (this.dishReference != null && this.dishReference.length > 255) {
             this.logger.debug("Invalid - dish reference is too long");
             this.dishReferenceError = "The dish reference is too long";
         }
@@ -349,7 +347,7 @@ this.selectedIngredient = ingredient;
     }
 
     saveIngredientChanges(ingredient: Ingredient) {
-        console.log("ingredient is:" + ingredient );
+        console.log("ingredient is:" + ingredient);
 
         let $sub = this.dishService
             .updateIngredient(this.dish.dish_id, ingredient)
@@ -370,7 +368,6 @@ this.selectedIngredient = ingredient;
         this.editId = "0";
         this.showAddIngredient = false;
     }
-
 
 
     ingredientDisplay(ingredient: Ingredient) {
