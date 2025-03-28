@@ -61,7 +61,7 @@
 
                                 <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags" >
                                     <ng-container *ngIf="!isCurrentEdit(ingredient)">
-                                        <div class="ls-ingredient-display">{{ingredientDisplay(ingredient)}}</div>
+                                        <span class="ls-ingredient-display">{{ingredientDisplay(ingredient)}}</span>
                                         <div *ngIf="editId == '0'" class="ls-ingredient-edit">
                                             <span (click)="showEditIngredient(ingredient)" class="ls-card-link">Edit</span>
                                             <span (click)="removeIngredientFromDish(ingredient)" class="ls-card-link">Delete</span>

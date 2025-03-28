@@ -469,6 +469,11 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         this.isEditAmount.next(true);
     }
 
+    showDone() {
+        return (this._ingredient && this._ingredient.tag_display
+            && this._ingredient.tag_display.length > 0);
+
+    }
     setTag(tag: Tag) {
         // console.log("addIngredient")
         this.skipFirstKeyPress = true
@@ -491,7 +496,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
             return this._ingredient.tag_display;
         }
-        return "Enter Tag";
+        return "Enter Ingredient";
     }
 
     private initializeForNewIngredient(ingredient: Ingredient) {

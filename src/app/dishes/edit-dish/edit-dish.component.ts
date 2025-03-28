@@ -324,8 +324,6 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
     private getSurroundingDishIds(id: string) {
-        this.logger.debug("here we are: " + id);
-
         this.previousDishId = this.dishContext.getPreviousDishId(id);
         this.nextDishId = this.dishContext.getNextDishId(id);
 

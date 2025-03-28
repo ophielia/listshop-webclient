@@ -17,7 +17,9 @@
                     <div class="tag-display-edit-button" (click)="beginEditTag()">
                         {{ ingredientNameDisplay() }}
                     </div>
-                    <div class="done" (click)="finalizeInput()">done</div>
+
+
+                    <div class="done" *ngIf="showDone()" (click)="finalizeInput()">done</div>
                     <div class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
 
                 </div>

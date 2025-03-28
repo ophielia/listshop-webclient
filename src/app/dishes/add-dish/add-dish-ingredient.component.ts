@@ -199,6 +199,8 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
                 this.editId = "0";
+                this.showAddIngredient = true;
+                this.selectedIngredient = null;
             });
         this.unsubscribe.push($sub);
     }
@@ -207,5 +209,7 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     cancelIngredientEdit($event) {
         this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
         this.editId = "0";
+        this.showAddIngredient = true;
+        this.selectedIngredient = null;
     }
 }

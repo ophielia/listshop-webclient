@@ -34,7 +34,7 @@
                                            [showCancelButton]="true"
                                            [placeholderText]="tagPlaceholder()"
                                            (tagSelected)="setTag($event)"></app-tag-select-inline>
-                    <div class="done" (click)="saveFromTag()">done</div>
+                    <div class="done" *ngIf="showDone()" (click)="saveFromTag()">{{ doneText }}</div>
                     <div *ngIf="showCancel" class="cancel-ingredient" (click)="cancelIngredientEdit()">X</div>
                 </div>
             </div>
