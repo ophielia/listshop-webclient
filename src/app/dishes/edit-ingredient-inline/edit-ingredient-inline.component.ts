@@ -295,12 +295,32 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     mapTextToToken(text: string): IToken {
-        var match = allSuggestions
-            .filter(t => t.text.trim() == text.trim());
-        if (match && match.length > 0) {
-            return Token.fromSuggestion(match[0]);
+        var caseInsensitive = this.caseInsensitiveMatches(text);
+        if (this.singleResult(caseInsensitive)) {
+            return Token.fromSuggestion(this.singleResult(caseInsensitive));
+        } else if (caseInsensitive && caseInsensitive.length > 1) {
+            var caseSensitive  = this.caseSensitiveMatches(text);
+            if (this.singleResult(caseSensitive)) {
+                return Token.fromSuggestion(this.singleResult(caseSensitive));
+            }
+            return Token.fromSuggestion(caseInsensitive[0]);
         }
         return undefined;
+    }
+
+    private singleResult(suggestionArray: ISuggestion[]) {
+        if (suggestionArray && suggestionArray.length == 1)
+        return suggestionArray[0];
+    }
+
+    caseInsensitiveMatches(text: string) {
+        return allSuggestions
+            .filter(t => t.text.toLowerCase().trim() == text.toLowerCase().trim());
+    }
+
+    caseSensitiveMatches(text: string) {
+        return allSuggestions
+            .filter(t => t.text.trim() == text.trim());
     }
 
     private passChangesOn(text: TextAndSelection) {
@@ -542,6 +562,8 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         }
         return "Ingredient";
     }
+
+
 }
 
 
