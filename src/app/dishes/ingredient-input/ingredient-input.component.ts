@@ -10,7 +10,7 @@ import {
     ViewChild
 } from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
-import {EntryEvent} from "../dish-ingredient/entry-event";
+import {EntryEvent} from "../edit-ingredient-inline/entry-event";
 import {debounceTime, distinctUntilChanged, filter, map} from "rxjs/operators";
 import {TextAndSelection} from "./text-and-selection";
 
