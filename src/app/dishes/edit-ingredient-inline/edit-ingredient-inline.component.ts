@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {IToken, Token, TokenType} from "../dish-ingredient/token";
+import {IToken, Token, TokenType} from "./token";
 import {TextAndSelection} from "../ingredient-input/text-and-selection";
 import {ISuggestion} from "../../model/suggestion";
 import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
-import {ITokenList, TokenList} from "../dish-ingredient/token-list";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {BehaviorSubject, Subject, Subscription} from "rxjs";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {Tag} from "../../model/tag";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
+import {ITokenList, TokenList} from "./token-list";
 
 let allSuggestions: ISuggestion[] = [];
 let currentSuggestions: ISuggestion[] = [];
@@ -93,8 +93,15 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         promise.then(data => {
             // console.log("received suggestions: " + this.currentSuggestions);
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
-            allSuggestions = data;
-            currentSuggestions = data;
+            allSuggestions = data.sort((a,b) => {
+                const lowerA = a.text.trim().toLowerCase();
+                const lowerB = b.text.trim().toLowerCase();
+                if (lowerA < lowerB) return -1;
+                if (lowerA > lowerB) return 1;
+                return 0;
+            });
+
+            currentSuggestions = allSuggestions;
         })
     }
 

@@ -5,7 +5,6 @@ import {ManageDishesComponent} from "./manage-dishes/manage-dishes.component";
 import {EditDishComponent} from "./edit-dish/edit-dish.component";
 import {AddDishComponent} from "./add-dish/add-dish.component";
 import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
-import {DishIngredientComponent} from "./dish-ingredient/dish-ingredient.component";
 
 
 const routes: Routes = [
