@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import TagType from "../../model/tag-type";
-import {ILegacyTag} from "../../model/tag";
+import {ITag} from "../../model/tag";
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {filter, map} from "rxjs/operators";
 import {ContentType, GroupType, TagTree} from "./tag-tree.object";
@@ -39,7 +39,7 @@ export class TagTreeService implements OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    navigationList(tagId: string): Observable<ILegacyTag[]> {
+    navigationList(tagId: string): Observable<ITag[]> {
         let observable = this.finishedLoadingObservable();
 
         return observable.pipe(map((response: boolean) => {
@@ -52,7 +52,7 @@ export class TagTreeService implements OnDestroy {
 
 
     allContentList(id: string, contentType: ContentType, groupType: GroupType,
-                   tagTypes: TagType[]): Observable<ILegacyTag[]> {
+                   tagTypes: TagType[]): Observable<ITag[]> {
 
 
         this.refreshTagTreeIfNeeded();
@@ -76,19 +76,17 @@ export class TagTreeService implements OnDestroy {
         this.isLoadingSubject.next(true);
 
 
-        const promise = this.tagService.getTagsForTagTree();
-        console.log(promise);
-        promise.then((data) => {
-            this.logger.debug("tag data retrieved, building TagTree");
-            this._tagTree = new TagTree(data);
-            this._lastLoaded = new Date().getTime();
-            this.isLoadingSubject.next(false);
-
-        }).catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
+        this.tagService.getTagsForTagTree().subscribe({
+            next: (response) => {
+                let tagList = response.tag_list;
+                this._tagTree = new TagTree(tagList);
+                this._lastLoaded = new Date().getTime();
+                this.isLoadingSubject.next(false);
+            },
+            error: (error) => {
+                console.log("Promise rejected with " + JSON.stringify(error));
+            }
         });
-
-
     }
 
     refreshTagTreeIfNeeded() {

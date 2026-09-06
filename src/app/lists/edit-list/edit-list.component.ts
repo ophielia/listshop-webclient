@@ -9,7 +9,7 @@ import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
 import {Category, ICategory} from "../../model/category";
 import {IItem, Item} from "../../model/item";
-import {ILegacyTag, LegacyTag} from "../../model/tag";
+import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
@@ -40,7 +40,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     showChangeName: boolean = false;
     shoppingListIsStarter: boolean = false;
     private originalName: string = null;
-    groupTypeNoGroups : GroupType = GroupType.ExcludeGroups;
+    groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
     shoppingListName: string = "";
     frequentToggleAvailable: boolean = true;
     frequentItemsExist: boolean = false;
@@ -214,7 +214,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         }
     }
 
-    addTagToList(tag: LegacyTag) {
+    addTagToList(tag: Tag) {
         // add tag to list as item in back end
         this.addTagToListById(tag.tag_id);
     }
@@ -536,7 +536,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    createTag(tag: ILegacyTag) {
+    createTag(tag: ITag) {
         this.tagNameToCreate = tag.name;
         this.tagTypeToCreate = tag.tag_type;
         this.addTagModel.show();

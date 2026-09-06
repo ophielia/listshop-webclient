@@ -29,12 +29,12 @@ export class MealplanSelectComponent implements OnInit, OnDestroy {
         this.selectedMealplan = null;
         this.mealplanService.getAllMealplans()
             .subscribe(data => {
-            this.listOfMealplans = data;
-        })
+                this.listOfMealplans = data;
+            })
     }
 
 
-    mealplanIsSelected(id : string) {
+    mealplanIsSelected(id: string) {
         this.mealplanSelected.emit(id);
     }
 

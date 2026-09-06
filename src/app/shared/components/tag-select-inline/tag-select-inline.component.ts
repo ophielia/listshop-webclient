@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {ILegacyTag, LegacyTag} from "../../../model/tag";
+import {ITag, Tag} from "../../../model/tag";
 import {Dish} from "../../../model/dish";
 import TagType from "../../../model/tag-type";
 import {Subscription} from "rxjs";
@@ -16,9 +16,9 @@ import {NGXLogger} from "ngx-logger";
 })
 export class TagSelectInlineComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
-    @Output() tagSelected: EventEmitter<ILegacyTag> = new EventEmitter<ILegacyTag>();
+    @Output() tagSelected: EventEmitter<ITag> = new EventEmitter<ITag>();
     @Output() cancelAddTag: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() createTag: EventEmitter<ILegacyTag> = new EventEmitter<ILegacyTag>();
+    @Output() createTag: EventEmitter<ITag> = new EventEmitter<ITag>();
     @Input() tagTypes: string;
     @Input() groupType: GroupType = GroupType.All;
 
@@ -26,10 +26,10 @@ export class TagSelectInlineComponent implements OnInit, OnDestroy {
     @Input() allowAdd: boolean = false;
     @Input() placeholderText: string;
 
-    tagList: ILegacyTag[];
+    tagList: ITag[];
 
-    autoSelectedTag: ILegacyTag;
-    filteredTags: ILegacyTag[];
+    autoSelectedTag: ITag;
+    filteredTags: ITag[];
 
     name: string;
     loaded: boolean = false;
@@ -68,7 +68,7 @@ export class TagSelectInlineComponent implements OnInit, OnDestroy {
         if (event.query && this.loaded) {
             if (this.tagList) {
                 let filterBy = event.query.toLocaleLowerCase();
-                this.filteredTags = this.tagList.filter((tag: ILegacyTag) =>
+                this.filteredTags = this.tagList.filter((tag: ITag) =>
                     tag.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
                 this.showAddTags = this.filteredTags.length == 0 && this.allowAdd;
             }
@@ -120,7 +120,7 @@ export class TagSelectInlineComponent implements OnInit, OnDestroy {
 
 
     add(tagtype: string) {
-        let tag = new LegacyTag();
+        let tag = new Tag();
         tag.tag_type = tagtype;
         tag.name = this.autoSelectedTag.name;
         this.createTag.emit(tag);

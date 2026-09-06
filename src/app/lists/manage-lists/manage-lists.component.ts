@@ -53,8 +53,11 @@ export class ManageListsComponent implements OnInit, OnDestroy {
 
     deleteShoppingList(listId: string) {
         this.confirmDialogService.confirmThis("Are you sure you'd like to delete this list?",
-            () => {this.doDeleteShoppingList(listId);},
-            function () { })
+            () => {
+                this.doDeleteShoppingList(listId);
+            },
+            function () {
+            })
     }
 
     doDeleteShoppingList(listId: string) {
@@ -65,7 +68,7 @@ export class ManageListsComponent implements OnInit, OnDestroy {
     }
 
     editShoppingList(listId: String) {
-        var url = "lists/edit/" +  listId;
+        var url = "lists/edit/" + listId;
         this.router.navigateByUrl(url);
 
     }

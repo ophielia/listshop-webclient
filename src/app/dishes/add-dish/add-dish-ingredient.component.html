@@ -59,11 +59,12 @@
                                         class="ls-card-link" [routerLink]="['/dishes/edit', dish.dish_id]">view dish</a>
                                 </div>
 
-                                <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags" >
+                                <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags">
                                     <ng-container *ngIf="!isCurrentEdit(ingredient)">
-                                        <span class="ls-ingredient-display">{{ingredientDisplay(ingredient)}}</span>
+                                        <span class="ls-ingredient-display">{{ ingredientDisplay(ingredient) }}</span>
                                         <div *ngIf="editId == '0'" class="ls-ingredient-edit">
-                                            <span (click)="showEditIngredient(ingredient)" class="ls-card-link">Edit</span>
+                                            <span (click)="showEditIngredient(ingredient)"
+                                                  class="ls-card-link">Edit</span>
                                             <span (click)="removeIngredientFromDish(ingredient)" class="ls-card-link">Delete</span>
                                         </div>
                                     </ng-container>

@@ -19,8 +19,8 @@ import {TextAndSelection} from "./text-and-selection";
     templateUrl: './ingredient-input.component.html',
     styleUrls: ['./ingredient-input.component.scss']
 })
-export class IngredientInputComponent implements OnInit , OnDestroy {
-    @ViewChild("ingredientInput") ingredientInput : ElementRef;
+export class IngredientInputComponent implements OnInit, OnDestroy {
+    @ViewChild("ingredientInput") ingredientInput: ElementRef;
 
     @Input() findSuggestions: (args: string, string) => string[];
     @Input() isActive: Observable<boolean>;
@@ -85,16 +85,18 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
 
         var $sub4 = this.sendResult.subscribe(val => {
             // deal with asynchronous Observable result
-            if (val) {this.sendResultToParent();}
+            if (val) {
+                this.sendResultToParent();
+            }
         })
         this.unsubscribe.push($sub4);
 
         var $sub5 = this.isActive
             .subscribe(val => {
                 console.log("active change " + val)
-            // deal with asynchronous Observable result
-            this.inAmountMode = val;
-        })
+                // deal with asynchronous Observable result
+                this.inAmountMode = val;
+            })
         this.unsubscribe.push($sub5);
 
 
@@ -287,7 +289,7 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
     private computeSuggestionDisplay(searchString: string, suggestion: string) {
         //console.log("computeSuggestionDisplay: searchString: " + searchString +     ", suggestion: " + suggestion + ", entryText: " + this.entryText);
         //console.log("computeSuggestionDisplay: calculated: " + this.entryText + suggestion.substr(searchString.trim().length));
-        var spaceLocation = suggestion.  indexOf(" ");
+        var spaceLocation = suggestion.indexOf(" ");
         if (!this.inTwoTokenMode(suggestion)) {
             //console.log("not in two token");
             return this.entryText + suggestion.substr(searchString.trim().length);
@@ -311,7 +313,6 @@ export class IngredientInputComponent implements OnInit , OnDestroy {
         }
         return allSuggestions;
     }
-
 
 
     // use tokens

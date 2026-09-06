@@ -1,4 +1,4 @@
-import {ISuggestion, Suggestion} from "../../model/suggestion";
+import {Suggestion} from "../../model/suggestion";
 
 
 export interface IToken {
@@ -12,13 +12,12 @@ export interface IToken {
 export class Token implements IToken {
 
 
-
     text: string;
     matchingText: string;
     type: TokenType;
     id: string;
 
-    static fromSuggestion(match: Suggestion){
+    static fromSuggestion(match: Suggestion) {
         var token = new Token();
         token.text = match.text;
         token.matchingText = " " + match.text + " ";
@@ -34,7 +33,7 @@ export class Token implements IToken {
         return token;
     }
 
-    static defaultFromText(text: string){
+    static defaultFromText(text: string) {
         var token = new Token();
         token.text = text;
         token.matchingText = " " + text + " ";

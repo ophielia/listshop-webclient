@@ -1,33 +1,3 @@
-export interface ILegacyTag {
-  tag_id: string;
-  name: string;
-  description: string;
-  tag_type: string;
-  power: number;
-  parent_id: string;
-
-  is_inverted: boolean;
-  is_group: boolean;
-  is_liquid: boolean;
-}
-
-export class LegacyTag implements ILegacyTag {
-  constructor() {
-  }
-
-  tag_id: string;
-  name: string;
-  description: string;
-  tag_type: string;
-  power: number;
-  parent_id: string;
-  is_inverted: boolean;
-  is_group: boolean = false;
-  is_liquid: boolean;
-}
-
-
-
 export interface ITag {
   name: string;
   power: number;
@@ -55,4 +25,15 @@ export class Tag implements ITag {
 
   is_inverted: boolean;
   is_liquid: boolean;
+}
+
+export interface ITagList {
+  tag_list: Tag[]
+}
+
+export class TagList implements ITagList {
+  constructor() {
+  }
+
+  tag_list: Tag[] = []
 }

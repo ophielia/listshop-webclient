@@ -7,7 +7,7 @@ import {NGXLogger} from "ngx-logger";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {BehaviorSubject, Subject, Subscription} from "rxjs";
 import {GroupType} from "../../shared/services/tag-tree.object";
-import {LegacyTag} from "../../model/tag";
+import {Tag} from "../../model/tag";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {ITokenList, TokenList} from "./token-list";
 
@@ -93,7 +93,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         promise.then(data => {
             // console.log("received suggestions: " + this.currentSuggestions);
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
-            allSuggestions = data.sort((a,b) => {
+            allSuggestions = data.sort((a, b) => {
                 const lowerA = a.text.trim().toLowerCase();
                 const lowerB = b.text.trim().toLowerCase();
                 if (lowerA < lowerB) return -1;
@@ -306,7 +306,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         if (this.singleResult(caseInsensitive)) {
             return Token.fromSuggestion(this.singleResult(caseInsensitive));
         } else if (caseInsensitive && caseInsensitive.length > 1) {
-            var caseSensitive  = this.caseSensitiveMatches(text);
+            var caseSensitive = this.caseSensitiveMatches(text);
             if (this.singleResult(caseSensitive)) {
                 return Token.fromSuggestion(this.singleResult(caseSensitive));
             }
@@ -317,7 +317,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
     private singleResult(suggestionArray: ISuggestion[]) {
         if (suggestionArray && suggestionArray.length == 1)
-        return suggestionArray[0];
+            return suggestionArray[0];
     }
 
     caseInsensitiveMatches(text: string) {
@@ -480,7 +480,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         return "Edit Amount";
     }
 
-    changeTag(tag: LegacyTag) {
+    changeTag(tag: Tag) {
         // console.log("skipping first key press");
         this.skipFirstKeyPress = true;
         if (!this._ingredient.original_tag_id ||
@@ -501,7 +501,8 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
             && this._ingredient.tag_display.length > 0);
 
     }
-    setTag(tag: LegacyTag) {
+
+    setTag(tag: Tag) {
         // console.log("addIngredient")
         this.skipFirstKeyPress = true
         if (!this._ingredient) {

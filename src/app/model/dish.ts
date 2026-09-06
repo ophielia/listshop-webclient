@@ -1,4 +1,4 @@
-import {ILegacyTag} from "./tag";
+import {ITag} from "./tag";
 import {IRatingInfo} from "./rating-info";
 import {IRatingUpdateInfo} from "./rating-update-info";
 import {IIngredient} from "./Ingredient";
@@ -9,7 +9,7 @@ export interface IDish {
   reference: string;
   last_added: number;
   user_id: string;
-  tags: ILegacyTag[];
+  tags: ITag[];
   ingredients: IIngredient[];
   ratings: IRatingUpdateInfo;
 }
@@ -27,7 +27,7 @@ export class Dish implements IDish {
   reference: string;
   last_added: number;
   user_id: string;
-  tags: ILegacyTag[];
+  tags: ITag[];
   ingredients: IIngredient[];
   ratings: IRatingUpdateInfo;
 }

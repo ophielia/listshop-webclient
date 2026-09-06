@@ -1,5 +1,5 @@
 import {Dish} from "./dish";
-import {ILegacyTag} from "./tag";
+import {ITag} from "./tag";
 
 export interface ISlot {
   slot_id: string;

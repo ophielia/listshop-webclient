@@ -5,14 +5,10 @@ import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {ILegacyTag, LegacyTag} from "../../model/tag";
+import {ITag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {ListService} from "../../shared/services/list.service";
-import {MealPlanService} from "../../shared/services/meal-plan.service";
 import TagType from "../../model/tag-type";
-import {IRatingInfo, RatingInfo} from "../../model/rating-info";
-import {DishRatingInfo} from "../../model/dish-rating-info";
-import {GroupType} from "../../shared/services/tag-tree.object";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 
@@ -42,13 +38,13 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     showPlainTag: boolean = false;
     showAddDishType: boolean = false;
 
-    dishName: string ;
-    dishDescription : string;
-    dishReference : string;
+    dishName: string;
+    dishDescription: string;
+    dishReference: string;
 
     private errorMessage: string;
-     tagNameToCreate: string;
-     tagTypeToCreate: TagType;
+    tagNameToCreate: string;
+    tagTypeToCreate: TagType;
 
     constructor(
         private fix: LandingFixService,
@@ -130,7 +126,7 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
         }
     }
 
-    createTag(tag: ILegacyTag) {
+    createTag(tag: ITag) {
         this.tagNameToCreate = tag.name;
         this.tagTypeToCreate = tag.tag_type;
         this.addTagModel.show();

@@ -22,6 +22,7 @@
     border-radius: 10px;
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
     border-color: #979797;
+
     .ls-card-link {
       display: inline;
       padding-left: 10px;
@@ -33,10 +34,12 @@
       }
     }
   }
+
   &:hover {
     .ls-ingredient-edit {
       display: inline-block;
     }
+
     .ls-ingredient-display {
       font-weight: bolder;
     }
@@ -53,7 +56,7 @@
 
 .ls-add-ingredient-block {
 
-  float:right;
+  float: right;
   margin-top: -15px;
 }
 
@@ -61,6 +64,7 @@
   @extend .ls-card;
   padding-bottom: 30px;
 }
+
 .add-button {
   display: inline-block;
   margin-top: 5px;
@@ -69,9 +73,11 @@
 .inline-add-button {
   display: inline-block;
   margin-top: 5px;
+
   img {
     max-height: 15px;
   }
+
   margin-right: 5px;
 }
 
@@ -98,8 +104,10 @@
   display: block;
   text-transform: capitalize;
   padding-left: 28px;
+
   &:hover {
     font-weight: bolder;
+
     &:after {
       font-weight: bolder;
       content: ' X ';
@@ -109,15 +117,17 @@
 }
 
 
-
 .ls-list-comma {
   text-transform: capitalize;
+
   &:after {
     content: ', ';
   }
+
   &:hover {
     font-weight: bolder;
     padding-left: 5px;
+
     &:after {
       content: ' X ';
       color: $color_basic_orange;
@@ -125,10 +135,12 @@
       padding-right: 5px;
     }
   }
+
   &:last-of-type {
     &:after {
       content: ' ';
     }
+
     &:hover {
       &:after {
         content: ' X ';
@@ -153,25 +165,27 @@
 }
 
 
-
 .ls-add-tag {
   padding-top: 5px;
 }
 
-.filled{
+.filled {
   color: $color_basic_orange;
   font-size: x-large;
 }
 
-.notfilled{
-  color:#6e6a6a;
+.notfilled {
+  color: #6e6a6a;
   font-size: x-large;
 }
 
 .ls-input-error {
   display: inline-block;
   width: 80%;
-  div {color: red;}
+
+  div {
+    color: red;
+  }
 }
 
 .ingredient-block-content {

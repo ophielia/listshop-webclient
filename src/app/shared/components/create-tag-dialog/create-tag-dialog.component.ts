@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ILegacyTag} from "../../../model/tag";
+import {ITag} from "../../../model/tag";
 import {TagTreeService} from "../../services/tag-tree.service";
 import {ContentType, GroupType, TagTree} from "../../services/tag-tree.object";
 import {Subscription} from "rxjs";
@@ -18,8 +18,8 @@ export class CreateTagDialogComponent implements OnInit {
   @Input() tagType: TagType;
   unsubscribe: Subscription[] = [];
 
-  contentList: ILegacyTag[] = [];
-  navigationList: ILegacyTag[] = [];
+  contentList: ITag[] = [];
+  navigationList: ITag[] = [];
   stepOne: boolean = true;
   stepTwo: boolean = false;
   stepThree: boolean = false;

@@ -8,9 +8,11 @@
 .inline-add-button {
   display: inline-block;
   margin-top: 5px;
+
   img {
     max-height: 15px;
   }
+
   margin-right: 5px;
 }
 
@@ -37,6 +39,7 @@
   margin-right: 0px;
 
 }
+
 .ls-empty-info-span {
   letter-spacing: 3px;
   color: #777777;
@@ -57,19 +60,20 @@
   border-radius: 10px;
   text-align: center;
   margin-left: 16px;
-  }
-
-
+}
 
 
 .ls-list-comma {
   text-transform: capitalize;
+
   &:after {
     content: ', ';
   }
+
   &:hover {
     font-weight: bolder;
     padding-left: 5px;
+
     &:after {
       content: ' X ';
       color: $color_basic_orange;
@@ -77,10 +81,12 @@
       padding-right: 5px;
     }
   }
+
   &:last-of-type {
     &:after {
       content: ' ';
     }
+
     &:hover {
       &:after {
         content: ' X ';
@@ -104,25 +110,27 @@
 }
 
 
-
 .ls-add-tag {
   padding-top: 5px;
 }
 
-.filled{
+.filled {
   color: $color_basic_orange;
   font-size: x-large;
 }
 
-.notfilled{
-  color:#6e6a6a;
+.notfilled {
+  color: #6e6a6a;
   font-size: x-large;
 }
 
 .ls-input-error {
   display: inline-block;
   width: 80%;
-  div {color: red;}
+
+  div {
+    color: red;
+  }
 }
 
 

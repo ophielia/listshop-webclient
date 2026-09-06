@@ -1,4 +1,4 @@
-import {ILegacyTag} from "./tag";
+import {ITag} from "./tag";
 
 export interface IIngredient {
   original_tag_id: string;

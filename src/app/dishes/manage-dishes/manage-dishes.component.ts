@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 import {IShoppingList} from "../../model/shoppinglist";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {ILegacyTag} from "../../model/tag";
+import {ITag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
 import {SortDirection} from "../../model/sort-direction";
 import {SortKey} from "../../model/sort-key";
@@ -15,7 +15,6 @@ import {GroupType} from "../../shared/services/tag-tree.object";
 import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
-import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
 import {DishContext} from "../dish-context/dish-context";
 
 
@@ -36,7 +35,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     filteredDishes: Dish[];
     allDishes: Dish[];
 
-    filterTags: ILegacyTag[];
+    filterTags: ITag[];
 
     showAddTag: boolean = false;
     showAddToList: boolean = false;
@@ -57,7 +56,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     showAddToNewList: boolean;
     isLoading: boolean = true;
 
-    displayId: string ;
+    displayId: string;
 
     constructor(
         private fix: LandingFixService,
@@ -96,7 +95,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         }
 
 
-            if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
+        if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
             let filterBy = this.searchValue.toLocaleLowerCase();
             this.filteredDishes = this.filteredDishes.filter((dish: Dish) =>
                 dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
@@ -117,7 +116,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
     isFiltered(): boolean {
-        return this.searchValue.length > 0 ||  this.filterTags.length > 0;
+        return this.searchValue.length > 0 || this.filterTags.length > 0;
     }
 
     getAllDishes() {
@@ -190,7 +189,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         });
     }
 
-    addTagToFilter(tag: ILegacyTag) {
+    addTagToFilter(tag: ITag) {
         tag.is_inverted = false;
         if (!this.filterTags) {
             this.filterTags = [];
@@ -201,14 +200,14 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.getAllDishes();
     }
 
-    removeTagFromFilter(tag: ILegacyTag) {
+    removeTagFromFilter(tag: ITag) {
         this.isSingleClick = false;
         this.filterTags = this.filterTags.filter(t => t.tag_id != tag.tag_id);
         this.dishContext.filterTags = this.filterTags;
         this.getAllDishes();
     }
 
-    toggleInvert(tag: ILegacyTag) {
+    toggleInvert(tag: ITag) {
         this.isSingleClick = true;
         setTimeout(() => {
             if (this.isSingleClick) {
@@ -251,7 +250,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
     editDish(dishId: String) {
-        var url = "dishes/edit/" +  dishId;
+        var url = "dishes/edit/" + dishId;
         this.router.navigateByUrl(url);
     }
 
@@ -306,7 +305,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.showAddToMealplan = false;
     }
 
-    addTagToDishes(tag: ILegacyTag) {
+    addTagToDishes(tag: ITag) {
         this.logger.debug("add tag to dishes");
         this.showAddTag = false;
         this.displayId = null;
@@ -340,7 +339,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.logger.debug("adding dishes [" + dishIds + "] to list [" + listId + "]");
         let promise = this.listService.addDishesToList(listId, dishIds);
 
-        promise.then( s => {
+        promise.then(s => {
                 this.logger.debug("made it here");
                 this.displayId = listId;
                 this.addToListModal.show();
@@ -383,7 +382,6 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         if (dishIds.length == 0) {
             return;
         }
-
 
 
         var newMealPlan: any = this.mealPlanService.addMealPlan('');

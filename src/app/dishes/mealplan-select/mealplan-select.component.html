@@ -1,15 +1,16 @@
-<div class="add-list-panel " >
+<div class="add-list-panel ">
 
     <div>
-        <div class = "add-list-title">
-            {{title}}
+        <div class="add-list-title">
+            {{ title }}
         </div>
         <ul>
             <li *ngIf="showNewOption" class="add-link-stressed"
-            (click)="createNewMealplan()">Create New Mealplan</li>
-            <li *ngFor="let mealPlan of listOfMealplans"  class="add-link"
+                (click)="createNewMealplan()">Create New Mealplan
+            </li>
+            <li *ngFor="let mealPlan of listOfMealplans" class="add-link"
                 (click)="mealplanIsSelected(mealPlan.meal_plan_id)">
-                {{mealPlan.name}}
+                {{ mealPlan.name }}
             </li>
 
         </ul>
