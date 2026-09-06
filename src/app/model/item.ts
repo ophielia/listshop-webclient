@@ -1,4 +1,4 @@
-import {ITag} from "./tag";
+import {ILegacyTag} from "./tag";
 
 export interface IItem {
   list_id: string;
@@ -11,7 +11,7 @@ export interface IItem {
   tag_id: string;
   used_count: number;
   is_selected: boolean;
-  tag: ITag;
+  tag: ILegacyTag;
 }
 
 export class Item implements IItem {
@@ -28,5 +28,5 @@ export class Item implements IItem {
   tag_id: string;
   used_count: number;
   is_selected: boolean;
-  tag: ITag;
+  tag: ILegacyTag;
 }

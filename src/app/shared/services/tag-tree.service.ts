@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import TagType from "../../model/tag-type";
-import {ITag} from "../../model/tag";
+import {ILegacyTag} from "../../model/tag";
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {filter, map} from "rxjs/operators";
 import {ContentType, GroupType, TagTree} from "./tag-tree.object";
@@ -39,7 +39,7 @@ export class TagTreeService implements OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    navigationList(tagId: string): Observable<ITag[]> {
+    navigationList(tagId: string): Observable<ILegacyTag[]> {
         let observable = this.finishedLoadingObservable();
 
         return observable.pipe(map((response: boolean) => {
@@ -52,7 +52,7 @@ export class TagTreeService implements OnDestroy {
 
 
     allContentList(id: string, contentType: ContentType, groupType: GroupType,
-                   tagTypes: TagType[]): Observable<ITag[]> {
+                   tagTypes: TagType[]): Observable<ILegacyTag[]> {
 
 
         this.refreshTagTreeIfNeeded();

@@ -5,7 +5,7 @@ import {Title} from "@angular/platform-browser";
 import {Subject, Subscription} from "rxjs";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {Tag} from "../../model/tag";
+import {LegacyTag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import TagType from "../../model/tag-type";
 import {RatingInfo} from "../../model/rating-info";
@@ -35,10 +35,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
     editId = "0";
 
     dish: Dish;
-    dishTypeTags: Tag[] = [];
+    dishTypeTags: LegacyTag[] = [];
     ingredientTags: Ingredient[] = [];
-    ratingTags: Tag[] = [];
-    plainOldTags: Tag[] = [];
+    ratingTags: LegacyTag[] = [];
+    plainOldTags: LegacyTag[] = [];
 
     showAddIngredient: boolean = false;
     showPlainTag: boolean = false;
@@ -216,7 +216,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.showAddDishType = false
     }
 
-    addTagToDish(tag: Tag) {
+    addTagToDish(tag: LegacyTag) {
         // add tag to list as item in back end
         this.logger.debug("adding tag [" + tag.tag_id + "] to dish");
 
@@ -232,13 +232,13 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.showAddDishType = false
     }
 
-    createTag(tag: Tag) {
+    createTag(tag: LegacyTag) {
         this.tagNameToCreate = tag.name;
         this.tagTypeToCreate = tag.tag_type;
         this.addTagModel.show();
     }
 
-    removeTagFromDish(tag: Tag) {
+    removeTagFromDish(tag: LegacyTag) {
         // add tag to list as item in back end
         this.logger.debug("removing tag [" + tag.tag_id + "] to dish");
 

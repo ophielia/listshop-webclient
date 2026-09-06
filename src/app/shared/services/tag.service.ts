@@ -4,7 +4,7 @@ import {NGXLogger} from "ngx-logger";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import TagType from "../../model/tag-type";
-import {ITag} from "../../model/tag";
+import {ILegacyTag} from "../../model/tag";
 import MappingUtils from "../../model/mapping-utils";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import ListShopUtils from "../utils/ListShopUtils";
@@ -12,19 +12,21 @@ import ListShopUtils from "../utils/ListShopUtils";
 @Injectable()
 export class TagService {
 
-    private tagUrl;
+    private legacyTagUrl;
+    private tagagUrl;
 
     constructor(
         private httpClient: HttpClient,
         private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.tagUrl = envLoader.getEnvConfig().apiUrl + "tag";
+        this.legacyTagUrl = envLoader.getEnvConfig().apiUrl + "tag";
+        this.tagagUrl = envLoader.getEnvConfig().apiUrl + "v2/tag";
     }
 
-    getTagsForTagTree(): Promise<ITag[]> {
+    getTagsForTagTree(): Promise<ILegacyTag[]> {
         this.logger.debug("Retrieving all tags");
-        var url = `${this.tagUrl}/user`;
+        var url = `${this.legacyTagUrl}/user`;
 
 
         return this.httpClient
@@ -38,11 +40,11 @@ export class TagService {
     }
 
     addTagToParent(newTagName: string, parentId: string, tagType: TagType): Observable<HttpResponse<Object>> {
-        var newTag: ITag = <ITag>({
+        var newTag: ILegacyTag = <ILegacyTag>({
             name: ListShopUtils.cleanInputForServer(newTagName),
             tag_type: tagType
         });
-        let url = `${this.tagUrl}/${parentId}/child`;
+        let url = `${this.legacyTagUrl}/${parentId}/child`;
         return this
             .httpClient
             .post(url,
@@ -50,7 +52,7 @@ export class TagService {
 
     }
 
-    static mapTagsClient(object: Object): ITag[] {
+    static mapTagsClient(object: Object): ILegacyTag[] {
         let embeddedObj = object["_embedded"];
         return embeddedObj["tagResourceList"].map(MappingUtils.toTag);
     }

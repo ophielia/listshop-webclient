@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {NGXLogger} from "ngx-logger";
-import {ITag} from "../../model/tag";
+import {ILegacyTag} from "../../model/tag";
 import {SortKey} from "../../model/sort-key";
 import {SortDirection} from "../../model/sort-direction";
 import {logger} from "codelyzer/util/logger";
@@ -12,7 +12,7 @@ export class DishContext implements OnDestroy {
 
     private dishIds : string[];
     private _searchValue: string = "";
-    private _filterTags: ITag[] = [];
+    private _filterTags: ILegacyTag[] = [];
     private _sortKey: SortKey = SortKey.LastUsed;
     private _sortDirection: SortDirection = SortDirection.Up;
 
@@ -67,11 +67,11 @@ export class DishContext implements OnDestroy {
         this._searchValue = value;
     }
 
-    get filterTags(): ITag[] {
+    get filterTags(): ILegacyTag[] {
         return this._filterTags;
     }
 
-    set filterTags(value: ITag[]) {
+    set filterTags(value: ILegacyTag[]) {
         this._filterTags = value;
     }
 

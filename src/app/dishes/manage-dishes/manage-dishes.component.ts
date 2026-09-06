@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 import {IShoppingList} from "../../model/shoppinglist";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {ITag} from "../../model/tag";
+import {ILegacyTag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
 import {SortDirection} from "../../model/sort-direction";
 import {SortKey} from "../../model/sort-key";
@@ -36,7 +36,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     filteredDishes: Dish[];
     allDishes: Dish[];
 
-    filterTags: ITag[];
+    filterTags: ILegacyTag[];
 
     showAddTag: boolean = false;
     showAddToList: boolean = false;
@@ -190,7 +190,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         });
     }
 
-    addTagToFilter(tag: ITag) {
+    addTagToFilter(tag: ILegacyTag) {
         tag.is_inverted = false;
         if (!this.filterTags) {
             this.filterTags = [];
@@ -201,14 +201,14 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.getAllDishes();
     }
 
-    removeTagFromFilter(tag: ITag) {
+    removeTagFromFilter(tag: ILegacyTag) {
         this.isSingleClick = false;
         this.filterTags = this.filterTags.filter(t => t.tag_id != tag.tag_id);
         this.dishContext.filterTags = this.filterTags;
         this.getAllDishes();
     }
 
-    toggleInvert(tag: ITag) {
+    toggleInvert(tag: ILegacyTag) {
         this.isSingleClick = true;
         setTimeout(() => {
             if (this.isSingleClick) {
@@ -306,7 +306,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.showAddToMealplan = false;
     }
 
-    addTagToDishes(tag: ITag) {
+    addTagToDishes(tag: ILegacyTag) {
         this.logger.debug("add tag to dishes");
         this.showAddTag = false;
         this.displayId = null;

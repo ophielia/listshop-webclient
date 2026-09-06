@@ -9,7 +9,7 @@ import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
 import {Category, ICategory} from "../../model/category";
 import {IItem, Item} from "../../model/item";
-import {ITag, Tag} from "../../model/tag";
+import {ILegacyTag, LegacyTag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
@@ -35,7 +35,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     filteredDishes: Dish[];
     allDishes: Dish[];
 
-    filterTags: ITag[];
+    filterTags: ILegacyTag[];
 
     showAddTag: boolean = false;
     showAddToList: boolean = false;
@@ -215,7 +215,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
         });
     }
 
-    addTagToFilter(tag: ITag) {
+    addTagToFilter(tag: ILegacyTag) {
         this.initialLoad = false;
         tag.is_inverted = false;
         if (!this.filterTags) {
@@ -227,14 +227,14 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
         this.getAllDishes();
     }
 
-    removeTagFromFilter(tag: ITag) {
+    removeTagFromFilter(tag: ILegacyTag) {
         this.initialLoad = false;
         this.isSingleClick = false;
         this.filterTags = this.filterTags.filter(t => t.tag_id != tag.tag_id);
         this.getAllDishes();
     }
 
-    toggleInvert(tag: ITag) {
+    toggleInvert(tag: ILegacyTag) {
 
         this.isSingleClick = true;
         setTimeout(() => {

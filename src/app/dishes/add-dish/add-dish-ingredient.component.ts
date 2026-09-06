@@ -5,7 +5,7 @@ import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {ITag, Tag} from "../../model/tag";
+import {ILegacyTag, LegacyTag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
@@ -130,7 +130,7 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
         }
     }
 
-    createTag(tag: ITag) {
+    createTag(tag: ILegacyTag) {
         this.tagNameToCreate = tag.name;
         this.tagTypeToCreate = tag.tag_type;
         this.addTagModel.show();

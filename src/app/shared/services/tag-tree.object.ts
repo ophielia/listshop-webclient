@@ -1,13 +1,13 @@
 import TagType from "../../model/tag-type";
-import {ITag, Tag} from "../../model/tag";
+import {ILegacyTag, LegacyTag} from "../../model/tag";
 
 
 export class TagTree {
     public static BASE_GROUP = "0";
-    private _lookupDisplay = new Map<string, ITag>();
+    private _lookupDisplay = new Map<string, ILegacyTag>();
     private _lookupRelations = new Map<string, TagTreeNode>();
 
-    constructor(tags: ITag[]) {
+    constructor(tags: ILegacyTag[]) {
 
         for (let i = 0; i < tags.length; i++) {
             let tag = tags[i];
@@ -30,12 +30,12 @@ export class TagTree {
         // fill in base tag display
         let baseDisplay = this._lookupDisplay.get(TagTree.BASE_GROUP);
         if (!baseDisplay) {
-            baseDisplay = new Tag();
+            baseDisplay = new LegacyTag();
         }
         baseDisplay.name = "All";
     }
 
-    private addTagToParentNode(tag: ITag) {
+    private addTagToParentNode(tag: ILegacyTag) {
         let parentId = tag.parent_id ? tag.parent_id : TagTree.BASE_GROUP;
         // pull parent node
         let parent = this._lookupRelations.get(parentId);
@@ -52,9 +52,9 @@ export class TagTree {
     }
 
 
-    navigationList(tagId: string): ITag[] {
+    navigationList(tagId: string): ILegacyTag[] {
         // navigation list
-        const returnList: ITag[] = [];
+        const returnList: ILegacyTag[] = [];
 
         const navDisplay = this._lookupDisplay.get(tagId);
         if (!navDisplay) {
@@ -84,7 +84,7 @@ export class TagTree {
         while (safety < 50 && parentId != "0");
 
         // add all display at the beginning
-        const allDisplay = new Tag();
+        const allDisplay = new LegacyTag();
         allDisplay.tag_id = TagTree.BASE_GROUP;
         allDisplay.name = "All";
         returnList.unshift(allDisplay);
@@ -94,7 +94,7 @@ export class TagTree {
     }
 
 
-    contentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType, tagTypes: TagType[]): ITag[] {
+    contentList(id: string, contentType: ContentType, isAbbreviated: boolean, groupType: GroupType, tagTypes: TagType[]): ILegacyTag[] {
         let requestedNode = this._lookupRelations.get(id);
         if (!requestedNode) {
             return [];
@@ -153,7 +153,7 @@ export class TagTree {
         return allOfThem;
     }
 
-    private baseContentList( contentType: ContentType, groupType: GroupType, tagTypes: TagType[]): ITag[] {
+    private baseContentList( contentType: ContentType, groupType: GroupType, tagTypes: TagType[]): ILegacyTag[] {
         const baseNode = this._lookupRelations.get(TagTree.BASE_GROUP);
         if (!baseNode) {
             return [];
@@ -193,8 +193,8 @@ export class TagTree {
             });
 
         // separate into childTags and childGroups (displays)
-        const childTags: ITag[] = [];
-        const childGroups: ITag[] = [];
+        const childTags: ILegacyTag[] = [];
+        const childGroups: ILegacyTag[] = [];
         allTagSet.forEach((node: TagTreeNode) => {
             const nodeId = node.tag_id;
             const display = this._lookupDisplay.get(nodeId);
@@ -222,7 +222,7 @@ export class TagTree {
     }
 
     private contentListSkipRelations(groupType: GroupType, tagTypes: TagType[]) {
-            let tagsToReturn: ITag[] = [];
+            let tagsToReturn: ILegacyTag[] = [];
             this._lookupDisplay.forEach(entry => {
                 if (tagTypes.indexOf(entry.tag_type) >= 0) {
                     const isGroup = entry.is_group;

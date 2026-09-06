@@ -1,4 +1,4 @@
-import {ITag} from "./tag";
+import {ILegacyTag} from "./tag";
 import {IItemSource} from "./item-source";
 import {IItem} from "./item";
 export interface IItemOperationPut {

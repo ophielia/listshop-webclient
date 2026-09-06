@@ -2,7 +2,7 @@ import {User} from "./user";
 import {IShoppingList} from "./shoppinglist";
 import {Category} from "./category";
 import {Item} from "./item";
-import {ITag} from "./tag";
+import {ILegacyTag} from "./tag";
 import {Dish} from "./dish";
 import {ILegendSource, LegendSource} from "./legend-source";
 import {MealPlan} from "./mealplan";
@@ -90,7 +90,7 @@ export default class MappingUtils {
         return dish;
     }
 
-    static toTag(r: any): ITag {
+    static toTag(r: any): ILegacyTag {
         return MappingUtils._toTag(r.tag);
     }
 
@@ -210,8 +210,8 @@ export default class MappingUtils {
         return item;
     }
 
-    private static _toTag(jsonResult: any): ITag {
-        return <ITag>({
+    private static _toTag(jsonResult: any): ILegacyTag {
+        return <ILegacyTag>({
             tag_id: jsonResult.tag_id,
             user_id: jsonResult.user_id,
             description: jsonResult.description,

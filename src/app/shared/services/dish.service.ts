@@ -6,7 +6,7 @@ import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
 import {Dish} from "../../model/dish";
 import {RatingUpdateInfo} from "../../model/rating-update-info";
-import {ITag} from "../../model/tag";
+import {ILegacyTag} from "../../model/tag";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import {IIngredient} from "../../model/Ingredient";
 
@@ -58,7 +58,7 @@ export class DishService {
     addDish(newDishName: string,
             description: string,
             reference: string,
-            tags?: ITag[]): Observable<HttpResponse<Object>> {
+            tags?: ILegacyTag[]): Observable<HttpResponse<Object>> {
 
         var newDish: Dish = <Dish>({
             name: newDishName,

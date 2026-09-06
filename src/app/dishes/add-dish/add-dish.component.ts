@@ -5,7 +5,7 @@ import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {ITag, Tag} from "../../model/tag";
+import {ILegacyTag, LegacyTag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import TagType from "../../model/tag-type";
 import {ContentType, GroupType, TagTree} from "../../shared/services/tag-tree.object";
@@ -26,10 +26,10 @@ export class AddDishComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
     isLoading: boolean = false;
 
-    dishTypeList: ITag[];
+    dishTypeList: ILegacyTag[];
 
     dish: Dish;
-    dishTypeTags: Tag[] = [];
+    dishTypeTags: LegacyTag[] = [];
 
     dishName: string ;
     dishDescription : string;
@@ -79,7 +79,7 @@ export class AddDishComponent implements OnInit, OnDestroy {
         return testField.trim().length == 0;
     }
 
-    createDish(dishTypeTag: ITag) {
+    createDish(dishTypeTag: ILegacyTag) {
         this.validateEntry();
        if (this.hasErrors()) {
            return;
@@ -87,7 +87,7 @@ export class AddDishComponent implements OnInit, OnDestroy {
 
         this.logger.debug("Creating new dish [" + this.dishName + "] with tag [" + dishTypeTag + "]");
         // put tags in dish
-        let tags: ITag[] = [];
+        let tags: ILegacyTag[] = [];
         tags.push(dishTypeTag);
 
         this.dishService.addDish(this.dishName, this.dishDescription, this.dishReference, tags)
