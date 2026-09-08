@@ -89,7 +89,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     getAllDishes() {
         this.dishService.getAllDishes()
             .subscribe(p => {
-                    this.allDishes = p;
+                    this.allDishes = p.dish_list;
                 },
                 e => this.errorMessage = e);
 

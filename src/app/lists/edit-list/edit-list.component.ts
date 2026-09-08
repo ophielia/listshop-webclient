@@ -11,11 +11,11 @@ import {Category, ICategory} from "../../model/category";
 import {IItem, Item} from "../../model/item";
 import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
-import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {OperationType} from "../../model/operation-type";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import TagType from "../../model/tag-type";
+import {IDish} from "../../model/dish";
 
 @Component({
     selector: 'app-edit-list',
@@ -242,7 +242,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     getAllDishes() {
         this.dishService.getAllDishes()
             .subscribe(p => {
-                    this.allDishes = p;
+                    this.allDishes = p.dish_list;
                 },
                 e => this.errorMessage = e);
 

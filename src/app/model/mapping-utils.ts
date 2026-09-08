@@ -3,7 +3,7 @@ import {IShoppingList} from "./shoppinglist";
 import {Category} from "./category";
 import {Item} from "./item";
 import {ITag} from "./tag";
-import {Dish} from "./dish";
+import {LegacyDish} from "./legacyDish";
 import {ILegendSource, LegendSource} from "./legend-source";
 import {MealPlan} from "./mealplan";
 import {Slot} from "./slot";
@@ -13,7 +13,7 @@ import {DishRatingInfo, IDishRatingInfo} from "./dish-rating-info";
 import {UserProperty} from "./userproperty";
 import {Celebration} from "./celebration";
 import {ISuggestion} from "./suggestion";
-import {IIngredient} from "./Ingredient";
+import {ILegacyIngredient} from "./LegacyIngredient";
 
 
 export default class MappingUtils {
@@ -80,7 +80,7 @@ export default class MappingUtils {
         })
     }
 
-    static toDish(r: any): Dish {
+    static toDish(r: any): LegacyDish {
         let dish = MappingUtils._toDish(r.dish);
 
         if (MappingUtils.showConsoleLogs) {
@@ -226,8 +226,8 @@ export default class MappingUtils {
         })
     }
 
-    private static _toIngredients(jsonResult: any): IIngredient {
-        return <IIngredient>({
+    private static _toIngredients(jsonResult: any): ILegacyIngredient {
+        return <ILegacyIngredient>({
             id: jsonResult.id,
             tag_id: jsonResult.tag_id,
             tag_display: jsonResult.tag_display,
@@ -242,9 +242,9 @@ export default class MappingUtils {
         })
     }
 
-    private static _toDish(jsonResult: any): Dish {
+    private static _toDish(jsonResult: any): LegacyDish {
         var ratings = MappingUtils.toRatingUpdateInfo(jsonResult.ratings);
-        return <Dish>({
+        return <LegacyDish>({
             dish_id: jsonResult.dish_id,
             name: jsonResult.name,
             description: jsonResult.description,

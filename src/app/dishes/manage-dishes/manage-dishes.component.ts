@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {IShoppingList} from "../../model/shoppinglist";
-import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
@@ -16,6 +15,7 @@ import {GenerateListComponent} from "../../shared/components/generate-list/gener
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {DishContext} from "../dish-context/dish-context";
+import {Dish} from "../../model/dish";
 
 
 @Component({
@@ -94,7 +94,6 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             this.filteredDishes = this.allDishes;
         }
 
-
         if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
             let filterBy = this.searchValue.toLocaleLowerCase();
             this.filteredDishes = this.filteredDishes.filter((dish: Dish) =>
@@ -124,8 +123,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             this.dishService
                 .getAllDishes()
                 .subscribe(p => {
-                        this.sortDishes(p);
-                        this.allDishes = p;
+                        this.sortDishes(p.dish_list);
+                        this.allDishes = p.dish_list;
                         this.isLoading = false;
                         this.filterByDishname();
                         this.setFilteredIdsInContext();

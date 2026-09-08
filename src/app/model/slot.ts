@@ -1,9 +1,9 @@
-import {Dish} from "./dish";
+import {LegacyDish} from "./legacyDish";
 import {ITag} from "./tag";
 
 export interface ISlot {
   slot_id: string;
-  dish: Dish;
+  dish: LegacyDish;
 }
 
 
@@ -12,6 +12,6 @@ export class Slot implements ISlot {
   }
 
   slot_id: string;
-  dish: Dish;
+  dish: LegacyDish;
 
 }

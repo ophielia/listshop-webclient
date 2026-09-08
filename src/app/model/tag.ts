@@ -11,6 +11,11 @@ export interface ITag {
   is_liquid: boolean;
 }
 
+export interface INestedTag {
+  name: string;
+  tag_id: string;
+}
+
 export class Tag implements ITag {
   constructor() {
   }
@@ -25,6 +30,14 @@ export class Tag implements ITag {
 
   is_inverted: boolean;
   is_liquid: boolean;
+}
+
+export class NestedTag implements INestedTag {
+  constructor() {
+  }
+
+  name: string;
+  tag_id: string;
 }
 
 export interface ITagList {

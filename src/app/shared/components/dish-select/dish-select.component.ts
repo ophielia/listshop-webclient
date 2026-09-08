@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {IDish} from "../../../model/dish";
+import {ILegacyDish} from "../../../model/legacyDish";
 import {NGXLogger} from "ngx-logger";
 
 @Component({
@@ -8,15 +8,15 @@ import {NGXLogger} from "ngx-logger";
     styleUrls: ['./dish-select.component.scss']
 })
 export class DishSelectComponent implements OnInit, OnDestroy {
-    @Output() dishSelected: EventEmitter<IDish> = new EventEmitter<IDish>();
+    @Output() dishSelected: EventEmitter<ILegacyDish> = new EventEmitter<ILegacyDish>();
     @Output() cancelSelectDish: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() showText: string;
     @Input() showCancelButton: boolean = false;
-    @Input() dishList: IDish[];
+    @Input() dishList: ILegacyDish[];
 
 
     autoSelectedDish: any;
-    filteredDishList: IDish[];
+    filteredDishList: ILegacyDish[];
 
 
     constructor(private logger: NGXLogger) {
@@ -32,7 +32,7 @@ export class DishSelectComponent implements OnInit, OnDestroy {
         if (event.query) {
             if (this.dishList) {
                 let filterBy = event.query.toLocaleLowerCase();
-                this.filteredDishList = this.dishList.filter((dish: IDish) =>
+                this.filteredDishList = this.dishList.filter((dish: ILegacyDish) =>
                     dish.name != null && dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
                 this.logger.debug("filtered dishes length: " + this.filteredDishList.length)
             }

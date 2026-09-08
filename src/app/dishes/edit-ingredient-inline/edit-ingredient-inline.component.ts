@@ -4,7 +4,7 @@ import {TextAndSelection} from "../ingredient-input/text-and-selection";
 import {ISuggestion} from "../../model/suggestion";
 import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
-import {IIngredient, Ingredient} from "../../model/Ingredient";
+import {ILegacyIngredient, LegacyIngredient} from "../../model/LegacyIngredient";
 import {BehaviorSubject, Subject, Subscription} from "rxjs";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {Tag} from "../../model/tag";
@@ -25,7 +25,7 @@ let doubleTokenStart: string;
 export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     private keyLock: boolean = false;
 
-    @Input() set ingredient(value: Ingredient) {
+    @Input() set ingredient(value: LegacyIngredient) {
         if (!this._ingredient || !this._ingredient.tag_id ||
             (value.tag_id != this._ingredient.tag_id ||
                 (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
@@ -38,7 +38,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     @Input() showCancel: boolean = true;
-    @Output() editedIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>();
+    @Output() editedIngredient: EventEmitter<LegacyIngredient> = new EventEmitter<LegacyIngredient>();
     @Output() cancelEdit: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
     private ingredientStartText = new BehaviorSubject<string>("");
@@ -56,7 +56,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
 
     debugTokens = false;
-    _ingredient: IIngredient;
+    _ingredient: ILegacyIngredient;
     loading = false;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
     currentSuggestions: ISuggestion[] = [];
@@ -424,7 +424,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
 
     clearedIngredient() {
-        var newIngredient = Ingredient.clone(this._ingredient);
+        var newIngredient = LegacyIngredient.clone(this._ingredient);
         newIngredient.whole_quantity = undefined;
         newIngredient.fractional_quantity = "";
         newIngredient.unit_id = "";
@@ -506,7 +506,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         // console.log("addIngredient")
         this.skipFirstKeyPress = true
         if (!this._ingredient) {
-            this._ingredient = new Ingredient();
+            this._ingredient = new LegacyIngredient();
         }
         this._ingredient.tag_id = tag.tag_id;
         this._ingredient.tag_display = tag.name;
@@ -527,7 +527,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         return "Enter Ingredient";
     }
 
-    private initializeForNewIngredient(ingredient: Ingredient) {
+    private initializeForNewIngredient(ingredient: LegacyIngredient) {
         if (!ingredient || !ingredient.raw_entry || !ingredient.tag_id ||
             ingredient.raw_entry.trim().length == 0) {
             return;

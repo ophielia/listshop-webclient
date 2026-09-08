@@ -1,6 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {ITag, Tag} from "../../../model/tag";
-import {Dish} from "../../../model/dish";
+import {LegacyDish} from "../../../model/legacyDish";
 import TagType from "../../../model/tag-type";
 import {Subscription} from "rxjs";
 import {TagService} from "../../services/tag.service";
@@ -34,7 +34,7 @@ export class TagSelectInlineComponent implements OnInit, OnDestroy {
     name: string;
     loaded: boolean = false;
 
-    dish: Dish = <Dish>{dish_id: "", name: "", description: ""};
+    dish: LegacyDish = <LegacyDish>{dish_id: "", name: "", description: ""};
     showAddTags: boolean;
 
     allTagTypes: string[];

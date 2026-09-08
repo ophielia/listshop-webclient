@@ -3,7 +3,7 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {Dish} from "../../model/dish";
+import {LegacyDish} from "../../model/legacyDish";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
@@ -27,7 +27,7 @@ export class AddDishComponent implements OnInit, OnDestroy {
 
     dishTypeList: ITag[];
 
-    dish: Dish;
+    dish: LegacyDish;
     dishTypeTags: Tag[] = [];
 
     dishName: string;

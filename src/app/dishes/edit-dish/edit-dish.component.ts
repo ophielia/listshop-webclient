@@ -3,7 +3,7 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {Subject, Subscription} from "rxjs";
-import {Dish} from "../../model/dish";
+import {LegacyDish} from "../../model/legacyDish";
 import {DishService} from "../../shared/services/dish.service";
 import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
@@ -14,8 +14,9 @@ import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
 
 import {RatingUpdateInfo} from "../../model/rating-update-info";
-import {IIngredient, Ingredient} from "../../model/Ingredient";
+import {ILegacyIngredient, LegacyIngredient} from "../../model/LegacyIngredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
+import {Dish} from "../../model/dish";
 
 
 @Component({
@@ -30,13 +31,13 @@ export class EditDishComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
     isLoading: boolean = true;
 
-    private editedIngredient = new Subject<Ingredient>();
+    private editedIngredient = new Subject<LegacyIngredient>();
     editedIngredient$ = this.editedIngredient.asObservable();
     editId = "0";
 
     dish: Dish;
     dishTypeTags: Tag[] = [];
-    ingredientTags: Ingredient[] = [];
+    ingredientTags: LegacyIngredient[] = [];
     ratingTags: Tag[] = [];
     plainOldTags: Tag[] = [];
 
@@ -51,7 +52,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     groupTypeDishType: GroupType = GroupType.All;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
 
-    selectedIngredient: Ingredient;
+    selectedIngredient: LegacyIngredient;
     private dishReferenceError: string;
     private dishNameError: string;
     private dishDescriptionError: string;
@@ -194,7 +195,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
     }
 
-    showEditIngredient(ingredient: Ingredient) {
+    showEditIngredient(ingredient: LegacyIngredient) {
         this.editedIngredient.next(ingredient);
         this.editId = ingredient.tag_id;
         this.selectedIngredient = ingredient;
@@ -252,7 +253,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     }
 
-    removeIngredientFromDish(ingredient: Ingredient) {
+    removeIngredientFromDish(ingredient: LegacyIngredient) {
         // remove ingredient from dish
         this.logger.debug("removing ingredient [" + ingredient.tag_id + "] from dish");
 
@@ -293,7 +294,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
             return;
         }
         this.showEditMainInfo = false;
-        this.dishService.saveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
+        this.dishService.legacySaveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
             .subscribe(x => {
                     this.getDish(this.dish.dish_id);
                 }
@@ -336,7 +337,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
 
-    private determineLiquids(ingredients: IIngredient[]) {
+    private determineLiquids(ingredients: ILegacyIngredient[]) {
         // loop through ingredients, setting is liquid
         for (let ingredient of ingredients) {
             let tag = this.tagTreeService.retrieveTag(ingredient.tag_id);
@@ -344,7 +345,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
     }
 
-    saveIngredientChanges(ingredient: Ingredient) {
+    saveIngredientChanges(ingredient: LegacyIngredient) {
         console.log("ingredient is:" + ingredient);
 
         let $sub = this.dishService
@@ -368,14 +369,14 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
 
-    ingredientDisplay(ingredient: Ingredient) {
+    ingredientDisplay(ingredient: LegacyIngredient) {
         if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
             return ingredient.raw_entry + " " + ingredient.tag_display;
         }
         return ingredient.tag_display;
     }
 
-    isCurrentEdit(ingredient: Ingredient) {
+    isCurrentEdit(ingredient: LegacyIngredient) {
         if (this.editId == "0") {
             return false;
         }
@@ -385,7 +386,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
         return this.editId == ingredient.tag_id;
     }
 
-    addNewIngredient(ingredient: Ingredient) {
+    addNewIngredient(ingredient: LegacyIngredient) {
         console.log("adding a new ingredient");
         // check for duplicate
         let $sub = this.dishService
