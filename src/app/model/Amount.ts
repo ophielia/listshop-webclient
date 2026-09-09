@@ -1,4 +1,5 @@
-import {ITag} from "./tag";
+import {ITag, NestedTag} from "./tag";
+import {IIngredient} from "./Ingredient";
 
 export interface IAmount {
   quantity: number;
@@ -24,4 +25,21 @@ export class Amount implements IAmount {
   unit_display: string;
   display: string;
   modifiers: string[];
+
+  static clone(amount: IAmount) {
+    var newAmount = new Amount();
+
+    newAmount.quantity = amount.quantity;
+    newAmount.whole_quantity = amount.whole_quantity;
+    newAmount.rounded_quantity = amount.rounded_quantity;
+    newAmount.fractional_quantity = amount.fractional_quantity;
+    newAmount.quantity_display = amount.quantity_display;
+    newAmount.unit_id = amount.unit_id;
+    newAmount.unit_display = amount.unit_display;
+    newAmount.display = amount.display;
+    newAmount.modifiers = amount.modifiers;
+
+
+    return newAmount;
+  }
 }

@@ -386,24 +386,12 @@ export class EditDishComponent implements OnInit, OnDestroy {
         return this.editId == ingredient.tag_id;
     }
 
-    legacyAddNewIngredient(ingredient: LegacyIngredient) {
-        console.log("adding a new ingredient");
-        // check for duplicate
-        let $sub = this.dishService
-            .legacyAddIngredient(this.dish.dish_id, ingredient)
-            .subscribe(p => {
-                this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
-                this.editId = "0";
-            });
-        this.unsubscribe.push($sub);
-        this.showAddIngredient = false;
-    }
 
-    addNewIngredient(ingredient: LegacyIngredient) {
+    addNewIngredient(ingredient: IIngredient) {
         console.log("adding a new ingredient");
         // check for duplicate
         let $sub = this.dishService
-            .legacyAddIngredient(this.dish.dish_id, ingredient)
+            .addIngredient(this.dish.dish_id, ingredient)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
                 this.editId = "0";

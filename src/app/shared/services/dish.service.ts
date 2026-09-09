@@ -8,7 +8,6 @@ import {LegacyDish} from "../../model/legacyDish";
 import {RatingUpdateInfo} from "../../model/rating-update-info";
 import {ITag} from "../../model/tag";
 import {EnvironmentLoaderService} from "./environment-loader.service";
-import {ILegacyIngredient} from "../../model/LegacyIngredient";
 import {Dish, DishList, UpdateDish} from "../../model/dish";
 import {IIngredient, PutIngredient} from "../../model/Ingredient";
 import {Amount} from "../../model/Amount";
@@ -34,25 +33,12 @@ export class DishService {
 
     }
 
-    legacyGetDish(dishId: string) {
-        this.logger.debug("Retrieving dish [" + dishId + "] for user.");
-
-        let url = this.dishV2Url + "/" + dishId
-        return this.httpClient.get(url)
-            .pipe(map((response: HttpResponse<any>) => {
-                    // map and return
-                    return DishService.mapDish(response);
-                }),
-                catchError(DishService.handleError));
-    }
-
     getDish(dishId: string) {
         this.logger.debug("Retrieving dish [" + dishId + "] for user.");
 
         let url = this.dishV2Url + "/" + dishId
         return this.httpClient.get<Dish>(url);
     }
-
 
     saveDish(dish: UpdateDish): Observable<Object> {
         return this
@@ -66,7 +52,7 @@ export class DishService {
             reference: string,
             tags?: ITag[]): Observable<HttpResponse<Object>> {
 
-        var newDish: LegacyDish = <LegacyDish>({
+        var newDish: Dish = <Dish>({
             name: newDishName,
             description: description,
             reference: reference
@@ -78,7 +64,7 @@ export class DishService {
 
         return this
             .httpClient
-            .post(`${this.legacyDishUrl}`,
+            .post(`${this.dishV2Url}`,
                 JSON.stringify(newDish),
                 {observe: 'response'});
 
@@ -96,7 +82,7 @@ export class DishService {
 
         }
 
-        var url = this.legacyDishUrl;
+        var url = this.dishV2Url;
         if (inclString.length > 0) {
             url = url + "?includedTags=" + inclString;
         }
@@ -104,12 +90,7 @@ export class DishService {
             url = url +
                 (inclString.length > 0 ? "&" : "?") + "excludedTags=" + exclString;
         }
-        return this.httpClient.get(url)
-            .pipe(map((response: HttpResponse<any>) => {
-                    // map and return
-                    return DishService.mapDishes(response);
-                }),
-                catchError(DishService.handleError));
+        return this.httpClient.get<DishList>(url);
     }
 
     addTagToDishes(dish_ids: string[], tag_id: string): Promise<Object> {
@@ -125,16 +106,12 @@ export class DishService {
     }
 
     addTagToDish(dish_id: string, tag_id: string): Observable<Object> {
+        let putIngredient = new PutIngredient();
+        putIngredient.tag_id = tag_id;
+
         return this
             .httpClient
-            .post(`${this.legacyDishUrl}/${dish_id}/tag/${tag_id}`, null);
-    }
-
-    legacyAddIngredient(dish_id: string, ingredient: ILegacyIngredient): Observable<Object> {
-        return this
-            .httpClient
-            .post(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
-
+            .post(`${this.legacyDishUrl}/${dish_id}/tag/${tag_id}`, JSON.stringify(putIngredient));
     }
 
     addIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
@@ -143,7 +120,6 @@ export class DishService {
             .post(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
 
     }
-
 
     updateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
         var ingredientEditObservables = new Array<Observable<Object>>();
@@ -155,7 +131,6 @@ export class DishService {
 
         return forkJoin(ingredientEditObservables);
     }
-
 
     doUpdateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
 
@@ -185,7 +160,7 @@ export class DishService {
     removeTagFromDish(dish_id: string, tag_id: string): Observable<Object> {
         return this
             .httpClient
-            .delete(`${this.legacyDishUrl}/${dish_id}/tag/${tag_id}`);
+            .delete(`${this.dishV2Url}/${dish_id}/tag/${tag_id}`);
     }
 
     removeIngredientFromDish(dish_id: string, ingredientId: string): Observable<Object> {
@@ -201,7 +176,7 @@ export class DishService {
     }
 
     setDishRating(dish_id: string, rating_tag_id: number, power: number) {
-        var url = this.legacyDishUrl + "/" + dish_id + "/rating/" + rating_tag_id + "/" + power;
+        var url = this.dishV2Url + "/" + dish_id + "/rating/" + rating_tag_id + "/" + power;
         return this
             .httpClient
             .put(url, null);
@@ -233,21 +208,7 @@ export class DishService {
             return [];
     }
 
-    private static mapDishesV2(object: Object): LegacyDish[] {
-        let embeddedObj = object["_embedded"];
-        if (embeddedObj) {
-            return embeddedObj["dish_list"].map(MappingUtils.toDish);
-        } else
-            return [];
-    }
 
-    private static mapDish(object: Object): LegacyDish {
-        return MappingUtils.toDish(object);
-    }
-
-    private static mapRatingUpdateInfo(object: Object): RatingUpdateInfo {
-        return MappingUtils.toRatingUpdateInfo(object);
-    }
 
 
 }
