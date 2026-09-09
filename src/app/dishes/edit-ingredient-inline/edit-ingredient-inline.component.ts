@@ -4,12 +4,12 @@ import {TextAndSelection} from "../ingredient-input/text-and-selection";
 import {ISuggestion} from "../../model/suggestion";
 import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
-import {ILegacyIngredient, LegacyIngredient} from "../../model/LegacyIngredient";
 import {BehaviorSubject, Subject, Subscription} from "rxjs";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {Tag} from "../../model/tag";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {ITokenList, TokenList} from "./token-list";
+import {IIngredient, Ingredient} from "../../model/Ingredient";
 
 let allSuggestions: ISuggestion[] = [];
 let currentSuggestions: ISuggestion[] = [];
@@ -25,9 +25,9 @@ let doubleTokenStart: string;
 export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     private keyLock: boolean = false;
 
-    @Input() set ingredient(value: LegacyIngredient) {
-        if (!this._ingredient || !this._ingredient.tag_id ||
-            (value.tag_id != this._ingredient.tag_id ||
+    @Input() set ingredient(value: Ingredient) {
+        if (!this._ingredient || !this._ingredient.tag.tag_id ||
+            (value.tag.tag_id != this._ingredient.tag.tag_id ||
                 (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
             this.clearDecksForNewIngredient();
             // console.log("new ingredient here");
@@ -38,7 +38,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     @Input() showCancel: boolean = true;
-    @Output() editedIngredient: EventEmitter<LegacyIngredient> = new EventEmitter<LegacyIngredient>();
+    @Output() editedIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>();
     @Output() cancelEdit: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
     private ingredientStartText = new BehaviorSubject<string>("");
@@ -56,7 +56,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
 
     debugTokens = false;
-    _ingredient: ILegacyIngredient;
+    _ingredient: IIngredient;
     loading = false;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
     currentSuggestions: ISuggestion[] = [];
@@ -89,7 +89,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
     getSuggestionsForTag() {
         let promise = this.foodService
-            .getSuggestionsForTag(this._ingredient.tag_id, this._ingredient.is_liquid);
+            .getSuggestionsForTag(this._ingredient.tag.tag_id, this._ingredient.is_liquid);
         promise.then(data => {
             // console.log("received suggestions: " + this.currentSuggestions);
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
@@ -424,7 +424,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
 
     clearedIngredient() {
-        var newIngredient = LegacyIngredient.clone(this._ingredient);
+        var newIngredient = Ingredient.clone(this._ingredient);
         newIngredient.whole_quantity = undefined;
         newIngredient.fractional_quantity = "";
         newIngredient.unit_id = "";
@@ -435,7 +435,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     saveFromTag() {
-        if (!this._ingredient || !this._ingredient.tag_id || this._ingredient.tag_id == "0") {
+        if (!this._ingredient || !this._ingredient.tag.tag_id || this._ingredient.tag.tag_id == "0") {
             this.cancelAddIngredient()
             return;
         }
@@ -485,10 +485,10 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         this.skipFirstKeyPress = true;
         if (!this._ingredient.original_tag_id ||
             this._ingredient.original_tag_id.trim().length == 0) {
-            this._ingredient.original_tag_id = this._ingredient.tag_id;
+            this._ingredient.original_tag_id = this._ingredient.tag.tag_id;
         }
-        this._ingredient.tag_id = tag.tag_id;
-        this._ingredient.tag_display = tag.name;
+        this._ingredient.tag.tag_id = tag.tag_id;
+        this._ingredient.tag.name = tag.name;
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
         this._ingredient.is_liquid = lookupTag.is_liquid;
         this.getSuggestionsForTag();
@@ -497,8 +497,8 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     showDone() {
-        return (this._ingredient && this._ingredient.tag_display
-            && this._ingredient.tag_display.length > 0);
+        return (this._ingredient && this._ingredient.tag.name
+            && this._ingredient.tag.name.length > 0);
 
     }
 
@@ -506,10 +506,10 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         // console.log("addIngredient")
         this.skipFirstKeyPress = true
         if (!this._ingredient) {
-            this._ingredient = new LegacyIngredient();
+            this._ingredient = new Ingredient();
         }
-        this._ingredient.tag_id = tag.tag_id;
-        this._ingredient.tag_display = tag.name;
+        this._ingredient.tag.tag_id = tag.tag_id;
+        this._ingredient.tag.name = tag.name;
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
         this._ingredient.is_liquid = lookupTag.is_liquid;
         this.getSuggestionsForTag();
@@ -519,22 +519,22 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     ingredientNameDisplay() {
-        if (this._ingredient && this._ingredient.tag_display
-            && this._ingredient.tag_display.length > 0) {
+        if (this._ingredient && this._ingredient.tag.name
+            && this._ingredient.tag.name.length > 0) {
 
-            return this._ingredient.tag_display;
+            return this._ingredient.tag.name;
         }
         return "Enter Ingredient";
     }
 
-    private initializeForNewIngredient(ingredient: LegacyIngredient) {
-        if (!ingredient || !ingredient.raw_entry || !ingredient.tag_id ||
+    private initializeForNewIngredient(ingredient: Ingredient) {
+        if (!ingredient || !ingredient.raw_entry || !ingredient.tag.tag_id ||
             ingredient.raw_entry.trim().length == 0) {
             return;
         }
 
         let promise = this.foodService
-            .getSuggestionsForTag(ingredient.tag_id, ingredient.is_liquid);
+            .getSuggestionsForTag(ingredient.tag.tag_id, ingredient.is_liquid);
         promise.then(data => {
             // console.log("received suggestions: " + this.currentSuggestions);
             doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
@@ -563,10 +563,10 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     tagPlaceholder() {
-        if (this._ingredient && this._ingredient.tag_display
-            && this._ingredient.tag_display.length > 0) {
+        if (this._ingredient && this._ingredient.tag.name
+            && this._ingredient.tag.name.length > 0) {
 
-            return this._ingredient.tag_display;
+            return this._ingredient.tag.name;
         }
         return "Ingredient";
     }

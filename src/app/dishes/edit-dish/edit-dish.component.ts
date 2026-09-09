@@ -3,7 +3,6 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {Subject, Subscription} from "rxjs";
-import {LegacyDish} from "../../model/legacyDish";
 import {DishService} from "../../shared/services/dish.service";
 import {Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
@@ -97,7 +96,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     getDish(dishId: string) {
         let $sub = this.dishService
-            .getDish(dishId)
+            .legacyGetDish(dishId)
             .subscribe(p => {
                     this.dish = p;
                     this.isLoading = false;
@@ -294,7 +293,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
             return;
         }
         this.showEditMainInfo = false;
-        this.dishService.legacySaveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
+        this.dishService.saveDishChanges(this.dish, this.dishDescription, this.dishReference, this.dishName)
             .subscribe(x => {
                     this.getDish(this.dish.dish_id);
                 }
@@ -386,11 +385,24 @@ export class EditDishComponent implements OnInit, OnDestroy {
         return this.editId == ingredient.tag_id;
     }
 
+    legacyAddNewIngredient(ingredient: LegacyIngredient) {
+        console.log("adding a new ingredient");
+        // check for duplicate
+        let $sub = this.dishService
+            .legacyAddIngredient(this.dish.dish_id, ingredient)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+                this.editId = "0";
+            });
+        this.unsubscribe.push($sub);
+        this.showAddIngredient = false;
+    }
+
     addNewIngredient(ingredient: LegacyIngredient) {
         console.log("adding a new ingredient");
         // check for duplicate
         let $sub = this.dishService
-            .addIngredient(this.dish.dish_id, ingredient)
+            .legacyAddIngredient(this.dish.dish_id, ingredient)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
                 this.editId = "0";

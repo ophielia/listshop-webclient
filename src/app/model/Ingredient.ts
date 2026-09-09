@@ -6,6 +6,18 @@ export interface IIngredient {
   display: string;
   tag: INestedTag;
   amount: IAmount;
+  is_liquid: boolean;
+}
+
+export interface IAddEditIngredient {
+  id: string;
+  tagDisplay: string;
+  tagId: string;
+  rawEntry: string;
+  amount: IAmount;
+
+
+
 }
 
 export class Ingredient implements IIngredient {
@@ -16,5 +28,17 @@ export class Ingredient implements IIngredient {
   display: string;
   tag: INestedTag;
   amount: IAmount;
+  is_liquid: boolean;
+}
+
+
+export class AddEditIngredient implements IAddEditIngredient {
+  id: string;
+  tagDisplay: string;
+  tagId: string;
+  rawEntry: string;
+  amount: IAmount;
+
+
 
 }

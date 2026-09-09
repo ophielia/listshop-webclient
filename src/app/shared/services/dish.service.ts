@@ -10,6 +10,7 @@ import {ITag} from "../../model/tag";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import {ILegacyIngredient} from "../../model/LegacyIngredient";
 import {Dish, DishList, UpdateDish} from "../../model/dish";
+import {IIngredient} from "../../model/Ingredient";
 
 @Injectable()
 export class DishService {
@@ -32,7 +33,7 @@ export class DishService {
 
     }
 
-    getDish(dishId: string) {
+    legacyGetDish(dishId: string) {
         this.logger.debug("Retrieving dish [" + dishId + "] for user.");
 
         let url = this.dishV2Url + "/" + dishId
@@ -44,12 +45,13 @@ export class DishService {
                 catchError(DishService.handleError));
     }
 
-    legacySaveDish(dish: LegacyDish): Observable<Object> {
-        return this
-            .httpClient
-            .put(`${this.legacyDishUrl}/${dish.dish_id}`,
-                JSON.stringify(dish));
+    getDish(dishId: string) {
+        this.logger.debug("Retrieving dish [" + dishId + "] for user.");
+
+        let url = this.dishV2Url + "/" + dishId
+        return this.httpClient.get<Dish>(url);
     }
+
 
     saveDish(dish: UpdateDish): Observable<Object> {
         return this
@@ -127,7 +129,14 @@ export class DishService {
             .post(`${this.legacyDishUrl}/${dish_id}/tag/${tag_id}`, null);
     }
 
-    addIngredient(dish_id: string, ingredient: ILegacyIngredient): Observable<Object> {
+    legacyAddIngredient(dish_id: string, ingredient: ILegacyIngredient): Observable<Object> {
+        return this
+            .httpClient
+            .post(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
+
+    }
+
+    addIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
         return this
             .httpClient
             .post(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
@@ -174,14 +183,6 @@ export class DishService {
         return this
             .httpClient
             .put(url, null);
-    }
-
-    legacySaveDishChanges(dish: LegacyDish, dishDescription: string, dishReference: string, dishName: string) : Observable<Object>{
-        // clip values to 255 characters
-        dish.name = dishName.length > 255 ?  dishName.substr(0,255) : dishName;
-        dish.reference = (dishReference && dishReference.length > 255) ?  dishReference.substr(0,255) : dishReference;
-        dish.description = (dishDescription && dishDescription.length > 255) ?  dishDescription.substr(0,255) : dishDescription;
-        return this.legacySaveDish(dish);
     }
 
     saveDishChanges(dish: Dish, dishDescription: string, dishReference: string, dishName: string) : Observable<Object>{

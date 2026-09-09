@@ -4,6 +4,7 @@ import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
 import {LegacyIngredient} from "../../model/LegacyIngredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
+import {Ingredient} from "../../model/Ingredient";
 
 @Component({
     selector: 'app-add-ingredient-inline',
@@ -20,7 +21,7 @@ export class AddIngredientInlineComponent extends EditIngredientInlineComponent 
     ) {
         super(foodService, logger, tagTreeService);
         this.isEditAmount.next(false);
-        this.ingredient = new LegacyIngredient();
+        this.ingredient = new Ingredient();
         this.debugTokens = false;
     }
 
