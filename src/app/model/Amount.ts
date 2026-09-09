@@ -4,6 +4,7 @@ export interface IAmount {
   quantity: number;
   whole_quantity: number;
   rounded_quantity: number;
+  fractional_quantity: string;
   quantity_display: string;
   unit_id: string;
   unit_display: string;
@@ -17,6 +18,7 @@ export class Amount implements IAmount {
   quantity: number;
   whole_quantity: number;
   rounded_quantity: number;
+  fractional_quantity: string;
   quantity_display: string;
   unit_id: string;
   unit_display: string;

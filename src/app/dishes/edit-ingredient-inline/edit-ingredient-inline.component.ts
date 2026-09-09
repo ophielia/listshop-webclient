@@ -342,42 +342,42 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         for (let token of list) {
             switch (token.type) {
                 case TokenType.WholeNumber:
-                    if (!ingredient.whole_quantity) {
+                    if (!ingredient.amount.whole_quantity) {
                         quantityExists = true;
-                        ingredient.whole_quantity = Number(token.text);
+                        ingredient.amount.whole_quantity = Number(token.text);
                     }
                     break;
                 case TokenType.Range:
-                    if (!ingredient.whole_quantity) {
+                    if (!ingredient.amount.whole_quantity) {
                         quantityExists = true;
                         var rangeValues = token.text.split("-");
                         var upperRange = rangeValues[rangeValues.length - 1].trim();
-                        ingredient.whole_quantity = Number(upperRange);
+                        ingredient.amount.whole_quantity = Number(upperRange);
                     }
                     break;
                 case TokenType.DecimalNumber:
-                    if (!ingredient.quantity) {
+                    if (!ingredient.amount.quantity) {
                         quantityExists = true;
                         partialCount += 1;
-                        ingredient.quantity = Number(token.text);
-                        if (ingredient.quantity <= 0.10) {
+                        ingredient.amount.quantity = Number(token.text);
+                        if (ingredient.amount.quantity <= 0.10) {
                             errors.set(this.ERROR_TOO_SMALL, "Please enter a larger quantity");
                         }
                     }
                     break;
                 case TokenType.Fraction:
-                    if (ingredient.fractional_quantity == "") {
+                    if (ingredient.amount.fractional_quantity == "") {
                         quantityExists = true;
                         partialCount += 1;
-                        ingredient.fractional_quantity = token.text;
+                        ingredient.amount.fractional_quantity = token.text;
                         if (!this.isFractionValid(token.text)) {
                             errors.set(this.ERROR_BAD_FRACTION, "Please use a denominator of 2, 3, 4 or 8");
                         }
                     }
                     break;
                 case TokenType.Unit:
-                    if (ingredient.unit_id == "") {
-                        ingredient.unit_id = token.id;
+                    if (ingredient.amount.unit_id == "") {
+                        ingredient.amount.unit_id = token.id;
                     }
                     break;
                 case TokenType.UnitSize, TokenType.Marker:
@@ -425,9 +425,9 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
     clearedIngredient() {
         var newIngredient = Ingredient.clone(this._ingredient);
-        newIngredient.whole_quantity = undefined;
-        newIngredient.fractional_quantity = "";
-        newIngredient.unit_id = "";
+        newIngredient.amount.whole_quantity = undefined;
+        newIngredient.amount.fractional_quantity = "";
+        newIngredient.amount.unit_id = "";
         newIngredient.raw_modifiers = [];
         newIngredient.raw_entry = "";
 

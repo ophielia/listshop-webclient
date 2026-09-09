@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {EditIngredientInlineComponent} from "../edit-ingredient-inline/edit-ingredient-inline.component";
 import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
-import {LegacyIngredient} from "../../model/LegacyIngredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {Ingredient} from "../../model/Ingredient";
 

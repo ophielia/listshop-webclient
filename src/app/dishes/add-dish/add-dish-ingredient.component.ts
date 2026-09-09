@@ -112,8 +112,8 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
                     this.isLoading = false;
                     this.ingredientTags = this.dish.ingredients;
                     this.ingredientTags.sort((a, b) => {
-                        let aNum = parseInt(a.id, 10);
-                        let bNum = parseInt(b.id, 10);
+                        let aNum = parseInt(a.item_id, 10);
+                        let bNum = parseInt(b.item_id, 10);
                         if (aNum < bNum) return -1;
                         else if (aNum > bNum) return 1;
                         else return 0;
