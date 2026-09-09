@@ -10,7 +10,8 @@ import {ITag} from "../../model/tag";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import {ILegacyIngredient} from "../../model/LegacyIngredient";
 import {Dish, DishList, UpdateDish} from "../../model/dish";
-import {IIngredient} from "../../model/Ingredient";
+import {IIngredient, PutIngredient} from "../../model/Ingredient";
+import {Amount} from "../../model/Amount";
 
 @Injectable()
 export class DishService {
@@ -22,14 +23,14 @@ export class DishService {
         private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.legacyDishUrl =  envLoader.getEnvConfig().apiUrl + "dish";
-        this.dishV2Url =  envLoader.getEnvConfig().apiUrl + "v2/dish";
+        this.legacyDishUrl = envLoader.getEnvConfig().apiUrl + "dish";
+        this.dishV2Url = envLoader.getEnvConfig().apiUrl + "v2/dish";
     }
 
     getAllDishes() {
         this.logger.debug("Retrieving all dishes for user.");
 
-        return this.httpClient.get<DishList>(this.dishV2Url )
+        return this.httpClient.get<DishList>(this.dishV2Url)
 
     }
 
@@ -111,7 +112,7 @@ export class DishService {
                 catchError(DishService.handleError));
     }
 
-    addTagToDishes(dish_ids: string[], tag_id: string) : Promise<Object> {
+    addTagToDishes(dish_ids: string[], tag_id: string): Promise<Object> {
         if (dish_ids.length == 1) {
             return this.addTagToDish(dish_ids[0], tag_id).toPromise();
         }
@@ -143,21 +144,42 @@ export class DishService {
 
     }
 
-    updateIngredient(dish_id: string, ingredient: ILegacyIngredient): Observable<Object> {
+
+    updateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
         var ingredientEditObservables = new Array<Observable<Object>>();
         ingredientEditObservables.push(this.doUpdateIngredient(dish_id, ingredient));
 
-        if (ingredient.original_tag_id  && ingredient.original_tag_id.trim().length > 0) {
+        if (ingredient.original_tag_id && ingredient.original_tag_id.trim().length > 0) {
             ingredientEditObservables.push(this.doRemoveIngredientFromDish(dish_id, ingredient.original_tag_id));
         }
 
         return forkJoin(ingredientEditObservables);
     }
 
-    doUpdateIngredient(dish_id: string, ingredient: ILegacyIngredient): Observable<Object> {
+
+    doUpdateIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
+
+        var amount = new Amount();
+        amount.quantity = ingredient.amount.quantity;
+        amount.whole_quantity = ingredient.amount.whole_quantity;
+        amount.rounded_quantity = ingredient.amount.rounded_quantity;
+        amount.fractional_quantity = ingredient.amount.fractional_quantity;
+        amount.quantity_display = ingredient.amount.quantity_display;
+        amount.unit_id = ingredient.amount.unit_id;
+        amount.unit_display = ingredient.amount.unit_display;
+        amount.display = ingredient.amount.display;
+        amount.modifiers = ingredient.raw_modifiers;
+
+        var putIngredient = new PutIngredient();
+        putIngredient.id = ingredient.item_id,
+            putIngredient.tag_id = ingredient.tag.tag_id;
+        putIngredient.tag_display = ingredient.tag.name;
+        putIngredient.raw_entry = ingredient.raw_entry;
+        putIngredient.amount = amount;
+
         return this
             .httpClient
-            .put(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
+            .put(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(putIngredient));
     }
 
     removeTagFromDish(dish_id: string, tag_id: string): Observable<Object> {
@@ -185,11 +207,11 @@ export class DishService {
             .put(url, null);
     }
 
-    saveDishChanges(dish: Dish, dishDescription: string, dishReference: string, dishName: string) : Observable<Object>{
+    saveDishChanges(dish: Dish, dishDescription: string, dishReference: string, dishName: string): Observable<Object> {
         // clip values to 255 characters
-        dish.name = dishName.length > 255 ?  dishName.substr(0,255) : dishName;
-        dish.reference = (dishReference && dishReference.length > 255) ?  dishReference.substr(0,255) : dishReference;
-        dish.description = (dishDescription && dishDescription.length > 255) ?  dishDescription.substr(0,255) : dishDescription;
+        dish.name = dishName.length > 255 ? dishName.substr(0, 255) : dishName;
+        dish.reference = (dishReference && dishReference.length > 255) ? dishReference.substr(0, 255) : dishReference;
+        dish.description = (dishDescription && dishDescription.length > 255) ? dishDescription.substr(0, 255) : dishDescription;
         return this.saveDish(dish);
     }
 

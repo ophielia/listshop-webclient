@@ -14,6 +14,15 @@ export interface IIngredient {
   raw_modifiers
 }
 
+export interface IPutIngredient {
+  id: string;
+  tag_id: string;
+  tag_display: string;
+  raw_entry: string;
+  amount: IAmount;
+
+
+}
 
 export class Ingredient implements IIngredient {
   constructor() {
@@ -54,8 +63,13 @@ export class Ingredient implements IIngredient {
 //    amount.is_liquid = ingredient.is_liquid;
     return newIngredient;
   }
-
-
+}
+  export class PutIngredient implements IPutIngredient {
+  id: string;
+  tag_id: string;
+  tag_display: string;
+  raw_entry: string;
+  amount: IAmount;
 }
 
 

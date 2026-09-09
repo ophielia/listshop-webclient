@@ -9,7 +9,6 @@ import {ITag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {ListService} from "../../shared/services/list.service";
 import TagType from "../../model/tag-type";
-import {ILegacyIngredient, LegacyIngredient} from "../../model/LegacyIngredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {Dish} from "../../model/dish";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
@@ -173,29 +172,29 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
         if (ingredient.original_tag_id && ingredient.original_tag_id.trim().length > 0) {
             return this.editId == ingredient.original_tag_id;
         }
-        return this.editId == ingredient.tag_id;
+        return this.editId == ingredient.tag.tag_id;
     }
 
     ingredientDisplay(ingredient: Ingredient) {
         if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
-            return ingredient.raw_entry + " " + ingredient.tag_display;
+            return ingredient.raw_entry + " " + ingredient.tag.name;
         }
-        return ingredient.tag_display;
+        return ingredient.tag.name;
     }
 
 
     showEditIngredient(ingredient: Ingredient) {
-        this.editId = ingredient.tag_id;
+        this.editId = ingredient.tag.tag_id;
         this.selectedIngredient = ingredient;
         this.showAddIngredient = false;
     }
 
     removeIngredientFromDish(ingredient: Ingredient) {
         // remove ingredient from dish
-        this.logger.debug("removing ingredient [" + ingredient.tag_id + "] from dish");
+        this.logger.debug("removing ingredient [" + ingredient.tag.tag_id + "] from dish");
 
         let $sub = this.dishService
-            .removeIngredientFromDish(this.dish.dish_id, ingredient.id)
+            .removeIngredientFromDish(this.dish.dish_id, ingredient.item_id)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);
             });

@@ -13,9 +13,10 @@ import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
 
 import {RatingUpdateInfo} from "../../model/rating-update-info";
-import {ILegacyIngredient, LegacyIngredient} from "../../model/LegacyIngredient";
+import {LegacyIngredient} from "../../model/LegacyIngredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {Dish} from "../../model/dish";
+import {IIngredient, Ingredient} from "../../model/Ingredient";
 
 
 @Component({
@@ -36,7 +37,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     dish: Dish;
     dishTypeTags: Tag[] = [];
-    ingredientTags: LegacyIngredient[] = [];
+    ingredientTags: Ingredient[] = [];
     ratingTags: Tag[] = [];
     plainOldTags: Tag[] = [];
 
@@ -96,15 +97,15 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     getDish(dishId: string) {
         let $sub = this.dishService
-            .legacyGetDish(dishId)
+            .getDish(dishId)
             .subscribe(p => {
                     this.dish = p;
                     this.isLoading = false;
                     this.harvestTagTypesForDish();
                     this.ingredientTags = this.dish.ingredients;
                     this.ingredientTags.sort((a, b) => {
-                        let aNum = parseInt(a.id, 10);
-                        let bNum = parseInt(b.id, 10);
+                        let aNum = parseInt(a.item_id, 10);
+                        let bNum = parseInt(b.item_id, 10);
                         if (aNum < bNum) return -1;
                         else if (aNum > bNum) return 1;
                         else return 0;
@@ -336,15 +337,15 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
 
-    private determineLiquids(ingredients: ILegacyIngredient[]) {
+    private determineLiquids(ingredients: IIngredient[]) {
         // loop through ingredients, setting is liquid
         for (let ingredient of ingredients) {
-            let tag = this.tagTreeService.retrieveTag(ingredient.tag_id);
+            let tag = this.tagTreeService.retrieveTag(ingredient.tag.tag_id);
             ingredient.is_liquid = tag.is_liquid;
         }
     }
 
-    saveIngredientChanges(ingredient: LegacyIngredient) {
+    saveIngredientChanges(ingredient: Ingredient) {
         console.log("ingredient is:" + ingredient);
 
         let $sub = this.dishService
