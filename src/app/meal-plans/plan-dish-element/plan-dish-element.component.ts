@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {LegacyDish} from "../../model/legacyDish";
+import {Dish} from "../../model/dish";
 
 @Component({
     selector: 'app-plan-dish-element',

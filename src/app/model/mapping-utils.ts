@@ -3,7 +3,7 @@ import {IShoppingList} from "./shoppinglist";
 import {Category} from "./category";
 import {Item} from "./item";
 import {ITag} from "./tag";
-import {LegacyDish} from "./legacyDish";
+import {Dish, IDish} from "./dish";
 import {ILegendSource, LegendSource} from "./legend-source";
 import {MealPlan} from "./mealplan";
 import {Slot} from "./slot";
@@ -80,7 +80,7 @@ export default class MappingUtils {
         })
     }
 
-    static toDish(r: any): LegacyDish {
+    static toDish(r: any): Dish {
         let dish = MappingUtils._toDish(r.dish);
 
         if (MappingUtils.showConsoleLogs) {
@@ -242,9 +242,9 @@ export default class MappingUtils {
         })
     }
 
-    private static _toDish(jsonResult: any): LegacyDish {
+    private static _toDish(jsonResult: any): Dish {
         var ratings = MappingUtils.toRatingUpdateInfo(jsonResult.ratings);
-        return <LegacyDish>({
+        return <Dish>({
             dish_id: jsonResult.dish_id,
             name: jsonResult.name,
             description: jsonResult.description,

@@ -3,10 +3,9 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {forkJoin, Observable, throwError} from "rxjs";
 import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
-import {LegacyDish} from "../../model/legacyDish";
+import {Dish, DishList, UpdateDish} from "../../model/dish";
 import {ITag} from "../../model/tag";
 import {EnvironmentLoaderService} from "./environment-loader.service";
-import {Dish, DishList, UpdateDish} from "../../model/dish";
 import {IIngredient, PutIngredient} from "../../model/Ingredient";
 import {Amount} from "../../model/Amount";
 
@@ -194,7 +193,7 @@ export class DishService {
         return throwError(error);
     }
 
-    private static mapDishes(object: Object): LegacyDish[] {
+    private static mapDishes(object: Object): Dish[] {
         let embeddedObj = object["_embedded"];
         if (embeddedObj) {
             return embeddedObj["dishResourceList"].map(MappingUtils.toDish);

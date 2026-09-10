@@ -136,8 +136,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             let $sub = this.dishService
                 .findByTags(includeTagList, excludeTagList)
                 .subscribe(p => {
-                        this.sortDishes(p);
-                        this.allDishes = p;
+                        this.sortDishes(p.dish_list);
+                        this.allDishes = p.dish_list;
                         this.isLoading = false;
                         this.filterByDishname();
                         this.setFilteredIdsInContext();

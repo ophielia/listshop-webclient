@@ -161,10 +161,10 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
             let $sub = this.dishService
                 .findByTags(includeTagList, excludeTagList)
                 .subscribe(p => {
-                        this.sortDishes(p);
-                        this.allDishes = p;
+                        this.sortDishes(p.dish_list);
+                        this.allDishes = p.dish_list;
                         this.isLoading = false;
-                        this.filteredDishes = p;
+                        this.filteredDishes = p.dish_list;
                     },
                     e => this.errorMessage = e);
             this.unsubscribe.push($sub);

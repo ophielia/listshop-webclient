@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LandingFixService} from "../../../shared/services/landing-fix.service";
 import {ActivatedRoute} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {LegacyDish, ILegacyDish} from "../../../model/legacyDish";
+import {Dish, IDish} from "../../../model/dish";
 
 @Component({
     selector: 'app-single-dish-element',
@@ -11,12 +11,12 @@ import {LegacyDish, ILegacyDish} from "../../../model/legacyDish";
 })
 export class SingleDishElementComponent implements OnInit {
 
-    @Input() dish: ILegacyDish;
+    @Input() dish: IDish;
     @Input() fullDisplay: boolean;
     @Input() showViewLink: boolean = true;
     @Input() selectLabel: String = "select";
     @Output() edit: EventEmitter<String> = new EventEmitter<String>();
-    @Output() select: EventEmitter<LegacyDish> = new EventEmitter<LegacyDish>();
+    @Output() select: EventEmitter<IDish> = new EventEmitter<Dish>();
 
     constructor(
         private fix: LandingFixService,
