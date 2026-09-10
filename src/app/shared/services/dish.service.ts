@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {forkJoin, Observable, throwError} from "rxjs";
-import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
 import {LegacyDish} from "../../model/legacyDish";
-import {RatingUpdateInfo} from "../../model/rating-update-info";
 import {ITag} from "../../model/tag";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import {Dish, DishList, UpdateDish} from "../../model/dish";
@@ -14,7 +12,7 @@ import {Amount} from "../../model/Amount";
 
 @Injectable()
 export class DishService {
-    private legacyDishUrl;
+
     private dishV2Url;
 
     constructor(
@@ -22,7 +20,6 @@ export class DishService {
         private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.legacyDishUrl = envLoader.getEnvConfig().apiUrl + "dish";
         this.dishV2Url = envLoader.getEnvConfig().apiUrl + "v2/dish";
     }
 
@@ -106,12 +103,9 @@ export class DishService {
     }
 
     addTagToDish(dish_id: string, tag_id: string): Observable<Object> {
-        let putIngredient = new PutIngredient();
-        putIngredient.tag_id = tag_id;
-
         return this
             .httpClient
-            .post(`${this.legacyDishUrl}/${dish_id}/tag/${tag_id}`, JSON.stringify(putIngredient));
+            .post(`${this.dishV2Url}/${dish_id}/tag/${tag_id}`, null);
     }
 
     addIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
@@ -207,8 +201,6 @@ export class DishService {
         } else
             return [];
     }
-
-
 
 
 }
