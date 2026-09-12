@@ -14,6 +14,7 @@ export interface ITag {
 export interface INestedTag {
   name: string;
   tag_id: string;
+  tag_type: string;
 }
 
 export class Tag implements ITag {
@@ -38,6 +39,7 @@ export class NestedTag implements INestedTag {
 
   name: string;
   tag_id: string;
+  tag_type: string;
 }
 
 export interface ITagList {

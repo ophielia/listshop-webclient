@@ -8,7 +8,7 @@ import {SortDirection} from "../../model/sort-direction";
 @Injectable()
 export class DishContext implements OnDestroy {
 
-    private dishIds: string[];
+    private dishIds: string[] = [];
     private _searchValue: string = "";
     private _filterTags: ITag[] = [];
     private _sortKey: SortKey = SortKey.LastUsed;
@@ -21,7 +21,7 @@ export class DishContext implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.dishIds = null;
+        this.dishIds = [];
     }
 
     public setDishIds(dishIds: string[]) {

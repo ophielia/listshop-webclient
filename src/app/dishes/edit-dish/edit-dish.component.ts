@@ -4,16 +4,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {Subject, Subscription} from "rxjs";
 import {DishService} from "../../shared/services/dish.service";
-import {Tag} from "../../model/tag";
+import {NestedTag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import TagType from "../../model/tag-type";
 import {RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
-
 import {RatingUpdateInfo} from "../../model/rating-update-info";
-import {LegacyIngredient} from "../../model/LegacyIngredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {Dish} from "../../model/dish";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
@@ -31,15 +29,15 @@ export class EditDishComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
     isLoading: boolean = true;
 
-    private editedIngredient = new Subject<LegacyIngredient>();
+    private editedIngredient = new Subject<Ingredient>();
     editedIngredient$ = this.editedIngredient.asObservable();
     editId = "0";
 
     dish: Dish;
-    dishTypeTags: Tag[] = [];
+    dishTypeTags: NestedTag[] = [];
     ingredientTags: Ingredient[] = [];
-    ratingTags: Tag[] = [];
-    plainOldTags: Tag[] = [];
+    ratingTags: NestedTag[] = [];
+    plainOldTags: NestedTag[] = [];
 
     showAddIngredient: boolean = false;
     showPlainTag: boolean = false;
@@ -52,7 +50,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     groupTypeDishType: GroupType = GroupType.All;
     groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
 
-    selectedIngredient: LegacyIngredient;
+    selectedIngredient: Ingredient;
     private dishReferenceError: string;
     private dishNameError: string;
     private dishDescriptionError: string;
@@ -116,7 +114,9 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.mapRatings(this.dish.ratings);
                     this.determineLiquids(this.dish.ingredients);
                 },
-                e => this.errorMessage = e);
+                e => {
+                    this.errorMessage = e
+                });
         this.unsubscribe.push($sub);
     }
 
@@ -152,7 +152,9 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
     stringFieldEmpty(testField) {
-        if (testField == null) {
+        if (!testField) {
+            return true;
+        } else if (testField == null) {
             return true
         }
         return testField.trim().length == 0;
@@ -195,9 +197,9 @@ export class EditDishComponent implements OnInit, OnDestroy {
         }
     }
 
-    showEditIngredient(ingredient: LegacyIngredient) {
+    showEditIngredient(ingredient: Ingredient) {
         this.editedIngredient.next(ingredient);
-        this.editId = ingredient.tag_id;
+        this.editId = ingredient.tag.tag_id;
         this.selectedIngredient = ingredient;
         this.showAddIngredient = false;
     }
@@ -253,12 +255,12 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     }
 
-    removeIngredientFromDish(ingredient: LegacyIngredient) {
+    removeIngredientFromDish(ingredient: Ingredient) {
         // remove ingredient from dish
-        this.logger.debug("removing ingredient [" + ingredient.tag_id + "] from dish");
+        this.logger.debug("removing ingredient [" + ingredient.tag.tag_id + "] from dish");
 
         let $sub = this.dishService
-            .removeIngredientFromDish(this.dish.dish_id, ingredient.id)
+            .removeIngredientFromDish(this.dish.dish_id, ingredient.item_id)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);
             });
@@ -369,21 +371,21 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
 
-    ingredientDisplay(ingredient: LegacyIngredient) {
-        if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
-            return ingredient.raw_entry + " " + ingredient.tag_display;
+    ingredientDisplay(ingredient: Ingredient) {
+        if (ingredient.display && ingredient.display.trim().length > 0) {
+            return ingredient.display ;
         }
-        return ingredient.tag_display;
+        return ingredient.tag.name;
     }
 
-    isCurrentEdit(ingredient: LegacyIngredient) {
+    isCurrentEdit(ingredient: Ingredient) {
         if (this.editId == "0") {
             return false;
         }
         if (ingredient.original_tag_id && ingredient.original_tag_id.trim().length > 0) {
             return this.editId == ingredient.original_tag_id;
         }
-        return this.editId == ingredient.tag_id;
+        return this.editId == ingredient.tag.tag_id;
     }
 
 
