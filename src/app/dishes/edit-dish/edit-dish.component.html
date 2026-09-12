@@ -282,10 +282,10 @@
                             <div class="ls-card">
                                 <div class="ls-tag-group-subtitle">Ratings:
                                 </div>
-                                <div *ngIf="dishRatingInfo != null">
-                                    <ng-container *ngFor="let rating of dishRatingInfo.ratings, let i = index">
+                                <div *ngIf="dishRatingInfo != null && dishRatingInfo.length > 0">
+                                    <ng-container *ngFor="let rating of dishRatingInfo, let i = index">
                                         <div class="ls-rating">
-                                            {{ rating.label }} :
+                                            {{ rating.tag.name }} :
                                             <ngb-rating [max]="5" [readonly]="false" [(rate)]="rating.power"
                                                         (rateChange)="changeTheRating(rating)">
                                                 <ng-template let-fill="fill">

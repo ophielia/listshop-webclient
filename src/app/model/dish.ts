@@ -1,6 +1,7 @@
 import {INestedTag, ITag} from "./tag";
 import {IRatingUpdateInfo} from "./rating-update-info";
 import {IIngredient} from "./Ingredient";
+import {IDishRatingInfo} from "./dish-rating-info";
 
 export interface IDish {
     dish_id: string;
@@ -13,7 +14,7 @@ export interface IDish {
 
     tags: INestedTag[];
     ingredients: IIngredient[];
-    ratings: IRatingUpdateInfo;
+    ratings: IDishRatingInfo[];
 }
 
 export interface IUpdateDish {
@@ -42,7 +43,7 @@ export class Dish implements IDish {
     user_id: string;
     tags: INestedTag[];
     ingredients: IIngredient[];
-    ratings: IRatingUpdateInfo;
+    ratings: IDishRatingInfo[];
 }
 
 export class UpdateDish implements IUpdateDish {

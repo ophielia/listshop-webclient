@@ -11,7 +11,6 @@ import {RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
-import {RatingUpdateInfo} from "../../model/rating-update-info";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {Dish} from "../../model/dish";
 import {IIngredient, Ingredient} from "../../model/Ingredient";
@@ -58,8 +57,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     tagNameToCreate: string;
     tagTypeToCreate: TagType;
 
-    private dishRatingInfo: DishRatingInfo;
-    private ratingsMap = new Map<number, RatingInfo>();
+    private dishRatingInfo: DishRatingInfo[];
+    private ratingsMap = new Map<string, DishRatingInfo>();
 
     private errorMessage: string;
     previousDishId: string;
@@ -120,12 +119,12 @@ export class EditDishComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
-    mapRatings(ratingUpdateInfo: RatingUpdateInfo) {
-        if (ratingUpdateInfo.dish_ratings != null) {
-            this.dishRatingInfo = ratingUpdateInfo.dish_ratings[0];
-            this.dishRatingInfo.ratings.forEach(r => {
-                r.orig_power = r.power;
-                this.ratingsMap.set(r.rating_tag_id, r);
+    mapRatings(ratingUpdateInfo: DishRatingInfo[]) {
+        if (ratingUpdateInfo != null && ratingUpdateInfo.length > 0) {
+            this.dishRatingInfo = ratingUpdateInfo;
+            this.dishRatingInfo.forEach(r => {
+                r.original_power = r.power;
+                this.ratingsMap.set(r.tag.tag_id, r);
             });
         }
     }
@@ -373,7 +372,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     ingredientDisplay(ingredient: Ingredient) {
         if (ingredient.display && ingredient.display.trim().length > 0) {
-            return ingredient.display ;
+            return ingredient.display;
         }
         return ingredient.tag.name;
     }

@@ -81,7 +81,7 @@ export default class MappingUtils {
     }
 
     static toDish(r: any): Dish {
-        let dish = MappingUtils._toDish(r.dish);
+        let dish = new Dish()
 
         if (MappingUtils.showConsoleLogs) {
             console.log('Parsed dish:', dish);
@@ -160,15 +160,7 @@ export default class MappingUtils {
     }
 
     static _toDishRatingInfo(r: any): IDishRatingInfo {
-        let dishRatingInfo = <DishRatingInfo>({
-            dish_id: r.dish_id,
-            dish_name: r.dish_name,
-            ratings: r.ratings.map(MappingUtils._toRatingInfo)
-        });
-        if (MappingUtils.showConsoleLogs) {
-            console.log('Parsed dish rating info:', dishRatingInfo);
-        }
-        return dishRatingInfo;
+        return new DishRatingInfo();
     }
 
     private static _toCategory(jsonResult: any): Category {
@@ -244,17 +236,7 @@ export default class MappingUtils {
 
     private static _toDish(jsonResult: any): Dish {
         var ratings = MappingUtils.toRatingUpdateInfo(jsonResult.ratings);
-        return <Dish>({
-            dish_id: jsonResult.dish_id,
-            name: jsonResult.name,
-            description: jsonResult.description,
-            reference: jsonResult.reference,
-            user_id: jsonResult.user_id,
-            last_added: jsonResult.last_added,
-            tags: jsonResult.tags.map(MappingUtils._toTag),
-            ingredients: jsonResult.ingredients.map(MappingUtils._toIngredients),
-            ratings: ratings
-        });
+        return new Dish();
     }
 
     private static _toLegend(r: any): LegendSource {
