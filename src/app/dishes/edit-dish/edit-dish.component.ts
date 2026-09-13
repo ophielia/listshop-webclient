@@ -7,7 +7,6 @@ import {DishService} from "../../shared/services/dish.service";
 import {NestedTag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import TagType from "../../model/tag-type";
-import {RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
@@ -268,14 +267,14 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     }
 
-    changeTheRating(ratingInfo: RatingInfo) {
+    changeTheRating(ratingInfo: DishRatingInfo) {
         if (ratingInfo) {
             this.logger.debug("the rating is still raging: " + ratingInfo.power);
-            this.logger.debug("but this time with a tag" + ratingInfo.rating_tag_id);
+            this.logger.debug("but this time with a tag" + ratingInfo.tag.tag_id);
 
-            if (ratingInfo.orig_power < ratingInfo.power) {
+            if (ratingInfo.original_power < ratingInfo.power) {
                 this.logger.debug("going up");
-            } else if (ratingInfo.orig_power > ratingInfo.power) {
+            } else if (ratingInfo.original_power > ratingInfo.power) {
                 this.logger.debug("going down");
 
             } else {
@@ -283,8 +282,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
             }
 
-            this.dishService.setDishRating(this.dish.dish_id, ratingInfo.rating_tag_id, ratingInfo.power).subscribe();
-            ratingInfo.orig_power = ratingInfo.power;
+            this.dishService.setDishRating(this.dish.dish_id, ratingInfo.tag.tag_id, ratingInfo.power).subscribe();
+            ratingInfo.original_power = ratingInfo.power;
         }
 
     }

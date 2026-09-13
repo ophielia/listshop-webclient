@@ -168,7 +168,7 @@ export class DishService {
             .delete(`${this.dishV2Url}/${dish_id}/ingredients/${ingredientId}`);
     }
 
-    setDishRating(dish_id: string, rating_tag_id: number, power: number) {
+    setDishRating(dish_id: string, rating_tag_id: string, power: number) {
         var url = this.dishV2Url + "/" + dish_id + "/rating/" + rating_tag_id + "/" + power;
         return this
             .httpClient
