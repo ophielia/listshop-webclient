@@ -26,7 +26,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     private keyLock: boolean = false;
 
     @Input() set ingredient(value: Ingredient) {
-        if (!this._ingredient || !this._ingredient.tag.tag_id ||
+        if (!this._ingredient || !this._ingredient.tag || !this._ingredient.tag.tag_id ||
             (value.tag.tag_id != this._ingredient.tag.tag_id ||
                 (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
             this.clearDecksForNewIngredient();

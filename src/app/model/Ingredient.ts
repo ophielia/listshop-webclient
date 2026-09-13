@@ -1,6 +1,6 @@
 import {INestedTag, ITag, NestedTag} from "./tag";
 import {Amount, IAmount} from "./Amount";
-import {ILegacyIngredient} from "./LegacyIngredient";
+
 
 export interface IIngredient {
   item_id: string;

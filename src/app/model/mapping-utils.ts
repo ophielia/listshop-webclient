@@ -13,7 +13,6 @@ import {DishRatingInfo, IDishRatingInfo} from "./dish-rating-info";
 import {UserProperty} from "./userproperty";
 import {Celebration} from "./celebration";
 import {ISuggestion} from "./suggestion";
-import {ILegacyIngredient} from "./LegacyIngredient";
 
 
 export default class MappingUtils {
@@ -218,21 +217,6 @@ export default class MappingUtils {
         })
     }
 
-    private static _toIngredients(jsonResult: any): ILegacyIngredient {
-        return <ILegacyIngredient>({
-            id: jsonResult.id,
-            tag_id: jsonResult.tag_id,
-            tag_display: jsonResult.tag_display,
-            whole_quantity: jsonResult.whole_quantity,
-            fractional_quantity: jsonResult.fractional_quantity,
-            quantity_display: jsonResult.quantity_display,
-            unit_id: jsonResult.unit_id,
-            unit_name: jsonResult.unit_name,
-            raw_modifiers: jsonResult.raw_modifiers,
-            unit_display: jsonResult.unit_display,
-            raw_entry: jsonResult.raw_entry
-        })
-    }
 
     private static _toDish(jsonResult: any): Dish {
         var ratings = MappingUtils.toRatingUpdateInfo(jsonResult.ratings);
