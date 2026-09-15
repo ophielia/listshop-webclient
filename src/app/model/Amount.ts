@@ -15,6 +15,15 @@ export interface IAmount {
 
 export class Amount implements IAmount {
   constructor() {
+    this.quantity = 0;
+    this.whole_quantity = 0;
+    this.rounded_quantity = 0;
+    this.fractional_quantity = "";
+    this.quantity_display = "";
+    this.unit_id = "";
+    this.unit_display = "";
+    this.display = "";
+    this.modifiers = [];
   }
   quantity: number;
   whole_quantity: number;

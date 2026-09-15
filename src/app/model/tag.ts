@@ -35,6 +35,9 @@ export class Tag implements ITag {
 
 export class NestedTag implements INestedTag {
   constructor() {
+    this.name = "";
+    this.tag_id = "0";
+    this.tag_type = "";
   }
 
   name: string;

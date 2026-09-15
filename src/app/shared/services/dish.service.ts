@@ -108,9 +108,11 @@ export class DishService {
     }
 
     addIngredient(dish_id: string, ingredient: IIngredient): Observable<Object> {
+        // map to ingredientPut
+        let updateIngredient = PutIngredient.from(ingredient);
         return this
             .httpClient
-            .post(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(ingredient));
+            .post(`${this.dishV2Url}/${dish_id}/ingredients`, JSON.stringify(updateIngredient));
 
     }
 

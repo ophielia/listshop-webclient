@@ -164,6 +164,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
             this.showPlainTag = false;
             this.showAddDishType = false;
             this.editId = "0";
+            this.selectedIngredient = new Ingredient();
         }
     }
 
@@ -387,7 +388,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
 
-    addNewIngredient(ingredient: IIngredient) {
+    addNewIngredient(ingredient: Ingredient) {
         console.log("adding a new ingredient");
         // check for duplicate
         let $sub = this.dishService
