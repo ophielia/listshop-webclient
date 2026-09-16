@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
-import {ShoppingList} from "../../model/shoppinglist";
+import {LegacyShoppingList} from "../../model/legacyShoppingList";
 import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
 
 @Component({
@@ -15,7 +15,7 @@ import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service
 export class ManageListsComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
 
-    lists: ShoppingList[];
+    lists: LegacyShoppingList[];
 
     constructor(
         private fix: LandingFixService,

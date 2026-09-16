@@ -3,11 +3,11 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
+import {ILegacyShoppingList, LegacyShoppingList} from "../../model/legacyShoppingList";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
-import {Category, ICategory} from "../../model/category";
+import {LegacyCategory, ILegacyCategory} from "../../model/legacyCategory";
 import {IItem, Item} from "../../model/item";
 import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
@@ -49,7 +49,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     private highlightSourceId: string;
     showItemLegends: boolean;
 
-    shoppingList: ShoppingList;
+    shoppingList: LegacyShoppingList;
     removedItems: IItem[] = [];
     selectedItems: string[] = [];
     tagNameToCreate: string;
@@ -156,7 +156,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
-    toggleItemSelected(item: Item, category: Category) {
+    toggleItemSelected(item: Item, category: LegacyCategory) {
         item.is_selected = !item.is_selected;
         var inList = this.selectedContains(item.tag.tag_id)
         if (item.is_selected && !inList) {
@@ -259,7 +259,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
-    addListToList(fromList: IShoppingList) {
+    addListToList(fromList: ILegacyShoppingList) {
         this.listLegendMap = null;
         this.showAddList = false;
         let promise = this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id);
@@ -311,7 +311,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         });
     }
 
-    private processRetrievedShoppingList(p: IShoppingList) {
+    private processRetrievedShoppingList(p: ILegacyShoppingList) {
         this.handleCrossedOffAndSelected(p);
         this.prepareLegend(p);
         this.frequentItemsExist = this.frequentItemsPresent(p);
@@ -321,7 +321,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private prepareLegend(list: IShoppingList) {
+    private prepareLegend(list: ILegacyShoppingList) {
 
         let legendMap = this.legendService.processLegend(list.legend);
         var collectedValue: LegendPoint[] = [];
@@ -337,7 +337,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private filterForDisplay(shoppingList: IShoppingList): IShoppingList {
+    private filterForDisplay(shoppingList: ILegacyShoppingList): ILegacyShoppingList {
         if (shoppingList.categories.length == 0) {
             this.showFrequent = false;
             return shoppingList;
@@ -353,12 +353,12 @@ export class EditListComponent implements OnInit, OnDestroy {
         return shoppingList;
     }
 
-    private hideCrossedOff(category: ICategory) {
+    private hideCrossedOff(category: ILegacyCategory) {
         // process direct items
         category.items = category.items.filter(i => !i.crossed_off);
     }
 
-    private pullCategoryByTag(sourceId: string, shoppingList: IShoppingList) {
+    private pullCategoryByTag(sourceId: string, shoppingList: ILegacyShoppingList) {
         if (!sourceId) {
             return;
         }
@@ -408,7 +408,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
         }
         // to fill in name, items, is_frequent
-        var pulledCategory = new Category(
+        var pulledCategory = new LegacyCategory(
             name,
             pulledItems,
             null,
@@ -450,7 +450,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
 
-    private adjustForStarter(list: IShoppingList) {
+    private adjustForStarter(list: ILegacyShoppingList) {
         this.shoppingListIsStarter = list.is_starter;
         if (this.shoppingListIsStarter) {
             this.showMakeStarter = false;
@@ -472,7 +472,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private handleCrossedOffAndSelected(shoppingList: IShoppingList) {
+    private handleCrossedOffAndSelected(shoppingList: ILegacyShoppingList) {
 
         if (!shoppingList.categories || shoppingList.categories.length == 0) {
             return [];
@@ -494,7 +494,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         }
     }
 
-    removeSelectedInCategory(category: Category) {
+    removeSelectedInCategory(category: LegacyCategory) {
         var tagIdsToRemove = category.items.filter(i => i.is_selected).map(i => i.tag.tag_id);
         let $sub = this.listService.performOperationOnListItems(this.shoppingList.list_id,
             tagIdsToRemove, "Remove")
@@ -505,7 +505,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    toggleCrossedOffInCategory(category: Category) {
+    toggleCrossedOffInCategory(category: LegacyCategory) {
         var itemsToCrossOff = category.items.filter(i => i.is_selected);
         var itemTagIds = itemsToCrossOff.map(i => i.tag.tag_id);
         var allCrossedOff = (itemsToCrossOff.filter(itco => !itco.crossed_off)).length == 0
@@ -522,7 +522,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private frequentItemsPresent(list: IShoppingList): boolean {
+    private frequentItemsPresent(list: ILegacyShoppingList): boolean {
 
         for (let category of list.categories) {
             for (let item of category.items) {

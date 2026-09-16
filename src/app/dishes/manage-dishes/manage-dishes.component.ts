@@ -3,7 +3,7 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {IShoppingList} from "../../model/shoppinglist";
+import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
@@ -324,7 +324,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     }
 
-    addDishesToList(list: IShoppingList) {
+    addDishesToList(list: ILegacyShoppingList) {
         this.logger.debug("add dishes to list");
         this.displayId = null;
         var listId = list.list_id;

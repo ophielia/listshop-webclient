@@ -1,10 +1,10 @@
 import {User} from "./user";
-import {IShoppingList} from "./shoppinglist";
-import {Category} from "./category";
+import {ILegacyShoppingList} from "./legacyShoppingList";
+import {LegacyCategory} from "./legacyCategory";
 import {Item} from "./item";
 import {ITag} from "./tag";
 import {Dish, IDish} from "./dish";
-import {ILegendSource, LegendSource} from "./legend-source";
+import {ILegacyLegendSource, LegacyLegendSource} from "./legacy-legend-source";
 import {MealPlan} from "./mealplan";
 import {Slot} from "./slot";
 import {RatingUpdateInfo} from "./rating-update-info";
@@ -30,8 +30,8 @@ export default class MappingUtils {
         });
     }
 
-    static toShoppingList(jsonResult: any): IShoppingList {
-        let shoppingList = <IShoppingList>({
+    static toShoppingList(jsonResult: any): ILegacyShoppingList {
+        let shoppingList = <ILegacyShoppingList>({
             list_id: jsonResult.shopping_list.list_id,
             name: jsonResult.shopping_list.name,
             user_id: jsonResult.shopping_list.user_id,
@@ -162,8 +162,8 @@ export default class MappingUtils {
         return new DishRatingInfo();
     }
 
-    private static _toCategory(jsonResult: any): Category {
-        let category = <Category>({
+    private static _toCategory(jsonResult: any): LegacyCategory {
+        let category = <LegacyCategory>({
             name: jsonResult.name,
             items: jsonResult.items.map(MappingUtils._toItem),
             //category_type: jsonResult.category_type,
@@ -223,9 +223,9 @@ export default class MappingUtils {
         return new Dish();
     }
 
-    private static _toLegend(r: any): LegendSource {
+    private static _toLegend(r: any): LegacyLegendSource {
 
-        return <ILegendSource>({
+        return <ILegacyLegendSource>({
             key: r.key,
             display: r.display
         });

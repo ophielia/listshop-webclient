@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
-import {ShoppingList} from "../../model/shoppinglist";
+import {LegacyShoppingList} from "../../model/legacyShoppingList";
 import {MealPlan} from "../../model/mealplan";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {PlanContext} from "../plan-context/plan-context";

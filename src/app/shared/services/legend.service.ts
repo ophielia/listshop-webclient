@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {LegendSource} from "../../model/legend-source";
+import {LegacyLegendSource} from "../../model/legacy-legend-source";
 import {LegendIconSource} from "../../model/legend-icon-source";
 import {LegendPoint} from "../../model/legend-point";
 
@@ -29,13 +29,13 @@ export class LegendService {
         return LegendService.instance;
     }
 
-    processLegend(sources: Array<LegendSource>): Map<string, LegendPoint> {
+    processLegend(sources: Array<LegacyLegendSource>): Map<string, LegendPoint> {
         if (!sources) {
             return new Map();
         }
         var existingSources: Array<LegendIconSource> = [];
         var existingLegends:LegendPoint[] = [];
-        var apiToAdd: Array<LegendSource> = [];
+        var apiToAdd: Array<LegacyLegendSource> = [];
         // loop through new sources
         //   - pulling existing legends (and their icon sources, separately saved)
         //   - pulling out new sources to be saved

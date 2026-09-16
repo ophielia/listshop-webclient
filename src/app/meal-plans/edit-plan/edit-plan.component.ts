@@ -3,7 +3,7 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList} from "../../model/shoppinglist";
+import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {Subscription} from "rxjs";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
@@ -188,7 +188,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.showAddDish = !this.showAddDish;
     }
 
-    addMealPlanToList(list: IShoppingList) {
+    addMealPlanToList(list: ILegacyShoppingList) {
         let promise = this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id);
         promise.then(data => {
             this.getMealPlan(this.mealPlan.meal_plan_id);

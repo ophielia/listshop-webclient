@@ -3,7 +3,7 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, Subscription, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
-import {IShoppingList} from "../../model/shoppinglist";
+import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {NGXLogger} from "ngx-logger";
 import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
@@ -49,7 +49,7 @@ export class ListService implements OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    getAllLists(): Observable<IShoppingList[]> {
+    getAllLists(): Observable<ILegacyShoppingList[]> {
         this.logger.debug("Retrieving all shopping lists for user.");
 
         return this.httpClient.get(this.listUrl)
@@ -60,7 +60,7 @@ export class ListService implements OnDestroy {
                 catchError(this.handleError));
     }
 
-    getAllListsAsPromise(): Promise<IShoppingList[]> {
+    getAllListsAsPromise(): Promise<ILegacyShoppingList[]> {
         this.logger.debug("Retrieving all shopping mealPlans for user.");
 
         return this.httpClient.get(this.listUrl)
@@ -72,7 +72,7 @@ export class ListService implements OnDestroy {
             .toPromise();
     }
 
-    getById(shoppingListId: string): Observable<IShoppingList> {
+    getById(shoppingListId: string): Observable<ILegacyShoppingList> {
         this.logger.debug("Retrieving shopping mealPlans for id:" + shoppingListId);
         var url = this.listUrl + "/" + shoppingListId;
 
@@ -232,7 +232,7 @@ export class ListService implements OnDestroy {
             .toPromise();
     }
 
-    updateShoppingListStarterStatus(shoppingList: IShoppingList) {
+    updateShoppingListStarterStatus(shoppingList: ILegacyShoppingList) {
         // create put object for call
         let shoppingListPut = new ShoppingListPut();
         shoppingListPut.name = shoppingList.name;
@@ -240,7 +240,7 @@ export class ListService implements OnDestroy {
         return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
     }
 
-    updateShoppingListName(shoppingList: IShoppingList) {
+    updateShoppingListName(shoppingList: ILegacyShoppingList) {
         // create put object for call
         let shoppingListPut = new ShoppingListPut();
 
@@ -268,7 +268,7 @@ export class ListService implements OnDestroy {
         return throwError(error);
     }
 
-    mapShoppingLists(object: Object): IShoppingList[] {
+    mapShoppingLists(object: Object): ILegacyShoppingList[] {
         let embeddedObj = object["_embedded"];
         if (embeddedObj) {
             return embeddedObj["shoppingListResourceList"].map(MappingUtils.toShoppingList);
@@ -276,7 +276,7 @@ export class ListService implements OnDestroy {
         return null;
     }
 
-    mapShoppingList(object: Object): IShoppingList {
+    mapShoppingList(object: Object): ILegacyShoppingList {
         if (object) {
             return MappingUtils.toShoppingList(object);
         }
