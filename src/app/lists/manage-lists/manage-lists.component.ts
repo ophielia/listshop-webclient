@@ -6,6 +6,7 @@ import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
 import {LegacyShoppingList} from "../../model/legacyShoppingList";
 import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
+import {NestedShoppingList} from "../../model/shoppingList";
 
 @Component({
     selector: 'app-manage-lists',
@@ -15,7 +16,7 @@ import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service
 export class ManageListsComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
 
-    lists: LegacyShoppingList[];
+    lists: NestedShoppingList[];
 
     constructor(
         private fix: LandingFixService,
@@ -45,7 +46,7 @@ export class ManageListsComponent implements OnInit, OnDestroy {
             .getAllLists()
             .subscribe(p => {
                 if (p) {
-                    this.lists = p
+                    this.lists = p.list_of_lists;
                 }
             });
         this.unsubscribe.push(sub$);

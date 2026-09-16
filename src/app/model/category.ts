@@ -1,4 +1,5 @@
-import {IItem, Item} from "./item";
+import {ILegacyItem, LegacyItem} from "./legacyItem";
+import {IItem, Item} from "./Item";
 
 export interface ICategory {
   name: string;

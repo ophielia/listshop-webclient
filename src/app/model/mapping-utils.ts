@@ -1,7 +1,7 @@
 import {User} from "./user";
 import {ILegacyShoppingList} from "./legacyShoppingList";
 import {LegacyCategory} from "./legacyCategory";
-import {Item} from "./item";
+import {LegacyItem} from "./legacyItem";
 import {ITag} from "./tag";
 import {Dish, IDish} from "./dish";
 import {ILegacyLegendSource, LegacyLegendSource} from "./legacy-legend-source";
@@ -179,8 +179,8 @@ export default class MappingUtils {
         return category;
     }
 
-    private static _toItem(jsonResult: any): Item {
-        let item = <Item>({
+    private static _toItem(jsonResult: any): LegacyItem {
+        let item = <LegacyItem>({
             list_id: jsonResult.list_id,
             item_id: jsonResult.item_id,
             source_keys: jsonResult.source_keys,

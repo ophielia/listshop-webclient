@@ -5,19 +5,21 @@ import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {NGXLogger} from "ngx-logger";
-import {IItem, Item} from "../../model/item";
+import {ILegacyItem, LegacyItem} from "../../model/legacyItem";
 import {ItemOperationPut} from "../../model/item-operation-put";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
 import {IListAddProperties} from "../../model/listaddproperties";
 import {IListGenerateProperties, ListGenerateProperties} from "../../model/listgenerateproperties";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import ListShopUtils from "../utils/ListShopUtils";
+import {IListOfShoppingLists, INestedShoppingList} from "../../model/shoppingList";
 
 
 @Injectable()
 export class ListService implements OnDestroy {
     private authUrl;
     private userUrl;
+    private legacyListUrl;
     private listUrl;
 
     unsubscribe: Subscription[] = [];
@@ -39,7 +41,8 @@ export class ListService implements OnDestroy {
                 if (config) {
                     this.authUrl =  config.apiUrl + "auth";
                     this.userUrl = config.apiUrl + "user";
-                    this.listUrl = config.apiUrl + "shoppinglist";
+                    this.legacyListUrl = config.apiUrl + "shoppinglist";
+                    this.listUrl = config.apiUrl + "v2/shoppinglist";
                 }
             });
         this.unsubscribe.push(sub$);
@@ -49,7 +52,13 @@ export class ListService implements OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    getAllLists(): Observable<ILegacyShoppingList[]> {
+    getAllLists(): Observable<IListOfShoppingLists> {
+        this.logger.debug("Retrieving all shopping lists for user.");
+
+        return this.httpClient.get<IListOfShoppingLists>(this.listUrl);
+    }
+
+    legacyGetAllLists(): Observable<ILegacyShoppingList[]> {
         this.logger.debug("Retrieving all shopping lists for user.");
 
         return this.httpClient.get(this.listUrl)
@@ -63,7 +72,7 @@ export class ListService implements OnDestroy {
     getAllListsAsPromise(): Promise<ILegacyShoppingList[]> {
         this.logger.debug("Retrieving all shopping mealPlans for user.");
 
-        return this.httpClient.get(this.listUrl)
+        return this.httpClient.get(this.legacyListUrl)
             .pipe(map((response: HttpResponse<any>) => {
                     // map and return
                     return this.mapShoppingLists(response);
@@ -74,7 +83,7 @@ export class ListService implements OnDestroy {
 
     getById(shoppingListId: string): Observable<ILegacyShoppingList> {
         this.logger.debug("Retrieving shopping mealPlans for id:" + shoppingListId);
-        var url = this.listUrl + "/" + shoppingListId;
+        var url = this.legacyListUrl + "/" + shoppingListId;
 
         return this.httpClient.get(url)
             .pipe(map((response: HttpResponse<any>) => {
@@ -85,7 +94,7 @@ export class ListService implements OnDestroy {
     }
 
     deleteList(list_id: string) {
-        var url = this.listUrl + "/" + list_id;
+        var url = this.legacyListUrl + "/" + list_id;
         return this.httpClient.delete(url);
     }
 
@@ -94,7 +103,7 @@ export class ListService implements OnDestroy {
         properties.add_from_starter = false;
         properties.list_name = listName;
 
-        return this.httpClient.post(this.listUrl, JSON.stringify(properties));
+        return this.httpClient.post(this.legacyListUrl, JSON.stringify(properties));
     }
 
     createListFromMealPlan(mealPlanId: string, include_starter: boolean): Observable<HttpResponse<Object>> {
@@ -102,7 +111,7 @@ export class ListService implements OnDestroy {
         properties.add_from_starter = include_starter;
         properties.meal_plan_source = mealPlanId;
 
-        return this.httpClient.post(this.listUrl,
+        return this.httpClient.post(this.legacyListUrl,
             JSON.stringify(properties),
             {observe: 'response'}
         );
@@ -123,7 +132,7 @@ export class ListService implements OnDestroy {
             list_name: listName
 
         });
-        var url = this.listUrl;
+        var url = this.legacyListUrl;
         return this
             .httpClient
             .post(url,
@@ -141,28 +150,28 @@ export class ListService implements OnDestroy {
                 tag_ids: tag_ids
             }
         );
-        var url: string = this.listUrl + "/" + shoppingList_id + "/item"
+        var url: string = this.legacyListUrl + "/" + shoppingList_id + "/item"
         var payload = JSON.stringify(itemOperation);
 
         return this.httpClient.put(url, payload);
     }
 
     addTagItemToShoppingList(shoppingList_id: string, tagId: string): Promise<Object> {
-        let item: Item = <Item>{tag_id: tagId};
-        let url = this.listUrl + "/" + shoppingList_id + "/tag/" + tagId;
+        let item: LegacyItem = <LegacyItem>{tag_id: tagId};
+        let url = this.legacyListUrl + "/" + shoppingList_id + "/tag/" + tagId;
 
         return this.httpClient.post(url, item).toPromise();
     }
 
     addDishToShoppingList(shoppingList_id: string, dish_id: string): Observable<Object> {
-        let url = this.listUrl + "/" + shoppingList_id + "/dish/" + dish_id;
+        let url = this.legacyListUrl + "/" + shoppingList_id + "/dish/" + dish_id;
         return this
             .httpClient
             .post(url, null);
     }
 
     addDishesToList(listId: string, dishIds: string[]): Promise<Object> {
-        let url = this.listUrl + "/" + listId + "/dish"
+        let url = this.legacyListUrl + "/" + listId + "/dish"
 
         if (dishIds.length > 0) {
 
@@ -178,7 +187,7 @@ export class ListService implements OnDestroy {
     }
 
     addListToShoppingList(shoppingList_id: string, list_id: string): Promise<Object> {
-        let url = this.listUrl + "/" + shoppingList_id + "/list/" + list_id;
+        let url = this.legacyListUrl + "/" + shoppingList_id + "/list/" + list_id;
         return this
             .httpClient
             .post(url,
@@ -187,7 +196,7 @@ export class ListService implements OnDestroy {
     }
 
     addMealPlanToShoppingList(mealplan_id: string, list_id: string): Promise<Object> {
-        let url = this.listUrl + "/" + list_id + "/mealplan/" + mealplan_id;
+        let url = this.legacyListUrl + "/" + list_id + "/mealplan/" + mealplan_id;
         return this
             .httpClient
             .put(url,
@@ -209,7 +218,7 @@ export class ListService implements OnDestroy {
     }
 
     removeDishItems(list_id: string, id: string) {
-        let url = this.listUrl + "/" + list_id + "/dish/" + id;
+        let url = this.legacyListUrl + "/" + list_id + "/dish/" + id;
         return this
             .httpClient
             .delete(url)
@@ -217,7 +226,7 @@ export class ListService implements OnDestroy {
     }
 
     removeListItems(list_id: string, fromListId: string) {
-        let url = this.listUrl + "/" + list_id + "/list/" + fromListId;
+        let url = this.legacyListUrl + "/" + list_id + "/list/" + fromListId;
         return this
             .httpClient
             .delete(url)
@@ -225,7 +234,7 @@ export class ListService implements OnDestroy {
     }
 
     removeAllItemsFromList(shoppinglist_id: string) {
-        let url = this.listUrl + "/" + shoppinglist_id + "/item";
+        let url = this.legacyListUrl + "/" + shoppinglist_id + "/item";
         return this
             .httpClient
             .delete(url)
@@ -250,7 +259,7 @@ export class ListService implements OnDestroy {
     }
 
     private updateShoppingList(listId: string, shoppingList: IShoppingListPut) {
-        let url = this.listUrl + "/" + listId;
+        let url = this.legacyListUrl + "/" + listId;
         return this
             .httpClient
             .put(url,

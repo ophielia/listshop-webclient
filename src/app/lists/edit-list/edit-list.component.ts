@@ -8,7 +8,7 @@ import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
 import {LegacyCategory, ILegacyCategory} from "../../model/legacyCategory";
-import {IItem, Item} from "../../model/item";
+import {ILegacyItem, LegacyItem} from "../../model/legacyItem";
 import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {DishService} from "../../shared/services/dish.service";
@@ -50,7 +50,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     showItemLegends: boolean;
 
     shoppingList: LegacyShoppingList;
-    removedItems: IItem[] = [];
+    removedItems: ILegacyItem[] = [];
     selectedItems: string[] = [];
     tagNameToCreate: string;
     tagTypeToCreate: TagType;
@@ -156,7 +156,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
-    toggleItemSelected(item: Item, category: LegacyCategory) {
+    toggleItemSelected(item: LegacyItem, category: LegacyCategory) {
         item.is_selected = !item.is_selected;
         var inList = this.selectedContains(item.tag.tag_id)
         if (item.is_selected && !inList) {
@@ -174,7 +174,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         return inListString != null;
     }
 
-    showLegends(item: Item) {
+    showLegends(item: LegacyItem) {
         if (!this.showItemLegends) {
             return false;
         }
@@ -232,7 +232,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         });
     }
 
-    reAddItem(item: IItem) {
+    reAddItem(item: ILegacyItem) {
         this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id);
         if (item.tag) {
             this.addTagToList(item.tag);
