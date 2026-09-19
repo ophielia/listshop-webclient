@@ -18,11 +18,9 @@ export class EnvironmentLoaderService {
   isLoadingSubject: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(true);
 
   async loadEnvConfig(configPath: string): Promise<void> {
-    let promise = this.loadConfig(configPath).toPromise();
-    promise.then(data => {
-      this.envConfig = data;
-        this.isLoadingSubject.next(false);
-    })
+    let data = await this.loadConfig(configPath).toPromise();
+    this.envConfig = data;
+    this.isLoadingSubject.next(false);
   }
 
   loadConfig(configPath: string): Observable<EnvConfig> {

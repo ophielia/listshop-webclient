@@ -20,12 +20,16 @@ export default class MappingUtils {
     static showConsoleLogs: boolean = false;
 
     static toUser(r: any): User {
+        if (!r) {
+            return null;
+        }
+        let userSource = r.user ? r.user : r;
         return <User>({
-            email: r.user.email,
-            creation_date: r.user.creation_date,
-            user_name: r.user.user_name,
-            roles: r.user.roles,
-            token: r.user.token
+            email: userSource.email,
+            creation_date: userSource.creation_date,
+            user_name: userSource.user_name,
+            roles: userSource.roles,
+            token: userSource.token
 
         });
     }
@@ -113,14 +117,11 @@ export default class MappingUtils {
 
 
     static toUserProperty(r: any): UserProperty {
-        let userProperty = <UserProperty>({
-                key: r.key,
-                value: r.value
-            })
-        ;
-
-
-        return userProperty;
+        let source = r.user_property ? r.user_property : r;
+        return <UserProperty>({
+            key: source.key,
+            value: source.value
+        });
     }
 
     static toRatingUpdateInfo(r: any): RatingUpdateInfo {

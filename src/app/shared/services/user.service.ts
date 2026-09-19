@@ -67,8 +67,9 @@ export class UserService {
         return throwError(error);
     }
 
-    private static mapUserProperties(object: Object): UserProperty[] {
-        return object["user_properties"].map(MappingUtils.toUserProperty);
+    private static mapUserProperties(object: any): UserProperty[] {
+        let list = object.user_properties ? object.user_properties : object;
+        return list.map(MappingUtils.toUserProperty);
     }
 
     private static mapUserProperty(object: Object): UserProperty {
