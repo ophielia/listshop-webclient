@@ -9,7 +9,7 @@ export interface IShoppingList {
     legend: ILegendSource[];
     categories: Category[];
     user_id: string;
-    is_starter: boolean;
+    is_starter_list: boolean;
     name: string;
 }
 
@@ -24,7 +24,7 @@ export class ShoppingList implements IShoppingList {
     legend: ILegendSource[];
     categories: Category[];
     user_id: string;
-    is_starter: boolean;
+    is_starter_list: boolean;
     name: string;
 }
 

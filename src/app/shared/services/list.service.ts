@@ -222,7 +222,7 @@ export class ListService implements OnDestroy {
         let shoppingListPut = new ShoppingListPut();
 
         shoppingListPut.name = ListShopUtils.cleanInputForServer(shoppingList.name);
-        shoppingListPut.is_starter_list = shoppingList.is_starter;
+        shoppingListPut.is_starter_list = shoppingList.is_starter_list;
         return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
     }
 

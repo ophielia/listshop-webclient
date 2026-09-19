@@ -455,7 +455,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     private newEvaluateShowLegend() {
-        let thisListIsTheStarter = this.shoppingList.is_starter;
+        let thisListIsTheStarter = this.shoppingList.is_starter_list;
         if (thisListIsTheStarter) {
             return false;
         }
@@ -472,7 +472,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
 
     private adjustForStarter(list: IShoppingList) {
-        this.shoppingListIsStarter = list.is_starter;
+        this.shoppingListIsStarter = list.is_starter_list;
         if (this.shoppingListIsStarter) {
             this.showMakeStarter = false;
             this.frequentToggleAvailable = !this.shoppingListIsStarter;
