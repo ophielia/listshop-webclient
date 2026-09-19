@@ -51,8 +51,8 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
             .getAllMealplans()
             .subscribe(p => {
                 if (p) {
-                    this.mealPlans = p
-                    let ids = p.map(mp => mp.meal_plan_id);
+                    this.mealPlans = p.meal_plan_list;
+                    let ids = p.meal_plan_list.map(mp => mp.meal_plan_id);
                     this.mealPlanContext.setMealPlanIds(ids);
                     this.mealPlanIdToDelete = null;
                     this.isLoading = false;

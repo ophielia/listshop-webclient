@@ -8,7 +8,6 @@ export interface IMealPlan {
   slots: Slot[];
 }
 
-
 export class MealPlan implements IMealPlan {
   constructor() {
   }
@@ -21,3 +20,13 @@ export class MealPlan implements IMealPlan {
   slots: Slot[];
 }
 
+export interface IMealPlanList {
+  meal_plan_list: IMealPlan[];
+}
+
+export class MealPlanList implements IMealPlanList {
+  constructor() {
+  }
+
+  meal_plan_list: MealPlan[];
+}

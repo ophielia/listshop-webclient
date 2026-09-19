@@ -29,7 +29,7 @@ export class MealplanSelectComponent implements OnInit, OnDestroy {
         this.selectedMealplan = null;
         this.mealplanService.getAllMealplans()
             .subscribe(data => {
-                this.listOfMealplans = data;
+                this.listOfMealplans = data.meal_plan_list;
             })
     }
 

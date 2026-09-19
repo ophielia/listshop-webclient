@@ -360,17 +360,16 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let promise = this.mealPlanService.addDishesToMealPlan(dishIds, mealplanId);
-
-        promise.then(s => {
+        let $sub = this.mealPlanService.addDishesToMealPlan(dishIds, mealplanId)
+            .subscribe(s => {
                 this.displayId = mealplanId;
                 this.addToMealPlanModal.show();
-            }
+            },
+                (error) => {
+                    this.logger.debug("operation rejected with " + JSON.stringify(error));
+                }
         )
-            .catch((error) => {
-                this.logger.debug("Promise rejected with " + JSON.stringify(error));
-            });
-
+        this.unsubscribe.push($sub);
     }
 
     addDishesToNewMealplan() {
@@ -390,18 +389,21 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                 var location = headers.get("Location");
                 var splitlocation = location.split("/");
                 var id = splitlocation[splitlocation.length - 1];
-                var promise = this.mealPlanService.addDishesToMealPlan(dishIds, id);
-
-                promise.then(s => {
+                var $sub2 = this.mealPlanService.addDishesToMealPlan(dishIds, id)
+                    .subscribe(s => {
                         this.displayId = id;
                         this.addToMealPlanModal.show();
-                    }
+                    },
+                        (error) => {
+                            this.logger.debug("operation rejected with " + JSON.stringify(error));
+                        }
                 )
-                    .catch((error) => {
-                        this.logger.debug("Promise rejected with " + JSON.stringify(error));
-                    });
+                this.unsubscribe.push($sub2);
 
-            }
+            },
+                (error) => {
+                    this.logger.debug("operation rejected with " + JSON.stringify(error));
+                }
         );
         this.unsubscribe.push($sub);
     }
