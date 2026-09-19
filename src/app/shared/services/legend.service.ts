@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {LegacyLegendSource} from "../../model/legacy-legend-source";
+import {LegendSource} from "../../model/legend-source";
 import {LegendIconSource} from "../../model/legend-icon-source";
 import {LegendPoint} from "../../model/legend-point";
-import {LegendSource} from "../../model/legend-source";
+import {ApiLegendSource} from "../../model/api-legend-source";
 
 @Injectable({providedIn: 'root'})
 export class LegendService {
@@ -30,22 +30,24 @@ export class LegendService {
         return LegendService.instance;
     }
 
-    processLegend(sources: Array<LegendSource>): Map<string, LegendPoint> {
+    processLegend(sources: Array<ApiLegendSource>): Map<string, LegendPoint> {
         if (!sources) {
             return new Map();
         }
         var existingSources: Array<LegendIconSource> = [];
         var existingLegends:LegendPoint[] = [];
-        var apiToAdd: Array<LegacyLegendSource> = [];
+        var apiToAdd: Array<LegendSource> = [];
         // loop through new sources
         //   - pulling existing legends (and their icon sources, separately saved)
         //   - pulling out new sources to be saved
         for ( var i = 0; i < sources.length ; i++) {
             var newLegend = sources[i];
             var matchFound = false;
+            var keyPrefix = newLegend.source_type == "DISH" ? "d" : "l";
+            var apiKey = keyPrefix + newLegend.related_id;
 
             this.legendLookup.forEach((existing: LegendPoint, key: string) => {
-                if (!matchFound && existing.key == newLegend.related_id) {
+                if (!matchFound && existing.key == apiKey) {
                     matchFound = true;
                     let legendSource = new LegendIconSource();
                     legendSource.color = existing.color;
@@ -56,7 +58,10 @@ export class LegendService {
 
             });
             if (!matchFound) {
-               apiToAdd.push(newLegend);
+                var processedLegend = new LegendSource();
+                processedLegend.key = apiKey;
+                processedLegend.display = newLegend.display;
+               apiToAdd.push(processedLegend);
             }
         }
 

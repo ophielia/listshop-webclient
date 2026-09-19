@@ -4,7 +4,7 @@ import {LegacyCategory} from "./legacyCategory";
 import {LegacyItem} from "./legacyItem";
 import {ITag} from "./tag";
 import {Dish, IDish} from "./dish";
-import {ILegacyLegendSource, LegacyLegendSource} from "./legacy-legend-source";
+import {ILegacyLegendSource, LegendSource} from "./legend-source";
 import {MealPlan} from "./mealplan";
 import {Slot} from "./slot";
 import {RatingUpdateInfo} from "./rating-update-info";
@@ -223,7 +223,7 @@ export default class MappingUtils {
         return new Dish();
     }
 
-    private static _toLegend(r: any): LegacyLegendSource {
+    private static _toLegend(r: any): LegendSource {
 
         return <ILegacyLegendSource>({
             key: r.key,

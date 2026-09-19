@@ -1,4 +1,4 @@
-import {ILegendSource} from "./legend-source";
+import {ILegendSource} from "./api-legend-source";
 import {Category} from "./category";
 
 export interface IShoppingList {

@@ -1,6 +1,6 @@
 import {IItemSource} from "./item-source";
 import {LegacyCategory} from "./legacyCategory";
-import {ILegacyLegendSource} from "./legacy-legend-source";
+import {ILegacyLegendSource} from "./legend-source";
 
 export interface ILegacyShoppingList {
   is_starter: boolean;

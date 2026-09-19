@@ -1,13 +1,12 @@
-export interface ILegendSource {
-  related_id: string;
+export interface ILegacyLegendSource {
+  key: string;
   display: string;
-  source_type: string;
 }
 
-export class LegendSource implements ILegendSource {
+export class LegendSource implements ILegacyLegendSource {
   constructor() {
   }
-  related_id: string;
+
+  key: string;
   display: string;
-  source_type: string;
 }
