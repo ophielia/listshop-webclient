@@ -189,11 +189,11 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     }
 
     addMealPlanToList(list: ILegacyShoppingList) {
-        let promise = this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id);
-        promise.then(data => {
+        let $sub =  this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id).subscribe(data => {
             this.getMealPlan(this.mealPlan.meal_plan_id);
             this.showAddToList = false;
         })
+        this.unsubscribe.push($sub);
     }
 
     generateList() {
@@ -243,10 +243,10 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     }
 
     private determineIfUserHasStarter() {
-        let promise = this.listService.getAllListsAsPromise();
-        promise.then(data => {
-            var starter = data.filter( l => l.is_starter);
+        this.listService.getAllLists().subscribe(data => {
+            var starter = data.list_of_lists.filter( l => l.is_starter_list);
             this.userHasStarter = starter.length > 0;
         })
+
     }
 }

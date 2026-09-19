@@ -37,3 +37,20 @@ export class Item implements IItem {
 
   is_selected: boolean;
 }
+
+
+
+
+export interface IItemPost {
+  tag_id: string;
+  amount: IAmount;
+  raw_entry: string;
+}
+
+export class ItemPost implements IItemPost {
+  constructor() {
+  }
+  tag_id: string;
+  amount: IAmount;
+  raw_entry: string;
+}

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ILegacyShoppingList} from "../../../model/legacyShoppingList";
 import {ListService} from "../../services/list.service";
+import {INestedShoppingList} from "../../../model/shoppingList";
 
 
 @Component({
@@ -15,7 +16,7 @@ export class ListSelectComponent implements OnInit, OnDestroy {
     @Input() title: string = "Add From List";
 
 
-    listOfLists: ILegacyShoppingList[] = [];
+    listOfLists: INestedShoppingList[] = [];
     selectedList: any;
 
     constructor(private listService: ListService) {
@@ -24,9 +25,9 @@ export class ListSelectComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedList = null;
-        let promise = this.listService.getAllListsAsPromise();
-        promise.then(data => {
-            this.listOfLists = data.filter( l => l.list_id != this.currentListId);
+
+        this.listService.getAllLists().subscribe(data => {
+            this.listOfLists = data.list_of_lists.filter( l => l.list_id != this.currentListId);
         })
     }
 

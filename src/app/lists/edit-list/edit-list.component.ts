@@ -3,7 +3,6 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {ILegacyShoppingList, LegacyShoppingList} from "../../model/legacyShoppingList";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
@@ -16,6 +15,9 @@ import {OperationType} from "../../model/operation-type";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import TagType from "../../model/tag-type";
 import {IDish} from "../../model/dish";
+import {IShoppingList, ShoppingList} from "../../model/shoppingList";
+import {Category, ICategory} from "../../model/category";
+import {Item} from "../../model/Item";
 
 @Component({
     selector: 'app-edit-list',
@@ -49,7 +51,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     private highlightSourceId: string;
     showItemLegends: boolean;
 
-    shoppingList: LegacyShoppingList;
+    shoppingList: ShoppingList;
     removedItems: ILegacyItem[] = [];
     selectedItems: string[] = [];
     tagNameToCreate: string;
@@ -156,13 +158,13 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
-    toggleItemSelected(item: LegacyItem, category: LegacyCategory) {
+    toggleItemSelected(item: Item, category: Category) {
         item.is_selected = !item.is_selected;
         var inList = this.selectedContains(item.tag.tag_id)
         if (item.is_selected && !inList) {
             this.selectedItems.push(item.tag.tag_id);
         } else if (!item.is_selected && inList) {
-            this.selectedItems = this.selectedItems.filter(i => i == item.tag_id);
+            this.selectedItems = this.selectedItems.filter(i => i == item.tag.tag_id);
         }
         // check category for selected
         var oneSelected = category.items.filter(i => i.is_selected);
@@ -223,13 +225,11 @@ export class EditListComponent implements OnInit, OnDestroy {
         // add tag to list as item in back end
         this.logger.debug("adding tag [" + tagId + "] to list");
         this.addTagModel.hide();
-        let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tagId);
-
-        promise.then((data) => {
-            this.getShoppingList(this.shoppingList.list_id);
-        }).catch((error) => {
-            this.logger.debug("Promise rejected with " + JSON.stringify(error));
-        });
+        this.listService.addTagToShoppingList(this.shoppingList.list_id, tagId)
+            .subscribe(p => {
+                    this.getShoppingList(this.shoppingList.list_id);
+                },
+                e => this.errorMessage = e )
     }
 
     reAddItem(item: ILegacyItem) {
@@ -259,21 +259,21 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.unsubscribe.push($sub);
     }
 
-    addListToList(fromList: ILegacyShoppingList) {
+    addListToList(fromList: IShoppingList) {
         this.listLegendMap = null;
         this.showAddList = false;
-        let promise = this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id);
-        promise.then(data => {
-            this.highlightSourceId = "l" + fromList.list_id;
-            this.getShoppingList(this.shoppingList.list_id);
-            this.showAddList = false;
-        })
+        this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id)
+            .subscribe( data => {
+                this.highlightSourceId = "l" + fromList.list_id;
+                this.getShoppingList(this.shoppingList.list_id);
+                this.showAddList = false;
+            })
     }
 
     removeDishOrList(sourcekey: string) {
         this.hideAllAddInputs();
-        let promise = this.listService.removeItemsByDishOrList(this.shoppingList.list_id, sourcekey)
-        promise.then(data => {
+        let $sub = this.listService.removeItemsByDishOrList(this.shoppingList.list_id, sourcekey)
+            .subscribe(data => {
             this.getShoppingList(this.shoppingList.list_id);
         });
 
@@ -305,13 +305,14 @@ export class EditListComponent implements OnInit, OnDestroy {
     clearList() {
         this.highlightSourceId = null;
         this.showFrequent = false;
-        let promise = this.listService.removeAllItemsFromList(this.shoppingList.list_id);
-        promise.then(data => {
+        let $sub = this.listService.removeAllItemsFromList(this.shoppingList.list_id)
+        .subscribe(data => {
             this.getShoppingList(this.shoppingList.list_id)
         });
+        this.unsubscribe.push($sub);
     }
 
-    private processRetrievedShoppingList(p: ILegacyShoppingList) {
+    private processRetrievedShoppingList(p: IShoppingList) {
         this.handleCrossedOffAndSelected(p);
         this.prepareLegend(p);
         this.frequentItemsExist = this.frequentItemsPresent(p);
@@ -321,7 +322,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private prepareLegend(list: ILegacyShoppingList) {
+    private prepareLegend(list: IShoppingList) {
 
         let legendMap = this.legendService.processLegend(list.legend);
         var collectedValue: LegendPoint[] = [];
@@ -337,7 +338,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private filterForDisplay(shoppingList: ILegacyShoppingList): ILegacyShoppingList {
+    private filterForDisplay(shoppingList: IShoppingList): IShoppingList {
         if (shoppingList.categories.length == 0) {
             this.showFrequent = false;
             return shoppingList;
@@ -353,12 +354,12 @@ export class EditListComponent implements OnInit, OnDestroy {
         return shoppingList;
     }
 
-    private hideCrossedOff(category: ILegacyCategory) {
+    private hideCrossedOff(category: ICategory) {
         // process direct items
         category.items = category.items.filter(i => !i.crossed_off);
     }
 
-    private pullCategoryByTag(sourceId: string, shoppingList: ILegacyShoppingList) {
+    private pullCategoryByTag(sourceId: string, shoppingList: IShoppingList) {
         if (!sourceId) {
             return;
         }
@@ -367,11 +368,14 @@ export class EditListComponent implements OnInit, OnDestroy {
         var newCategories = [];
         var pulledItems = [];
         var pulledHasSelected = false;
+
+
+
         for (let category of shoppingList.categories) {
             var categoryItems = [];
             var hasSelected = false;
             for (let item of category.items) {
-                if (item.source_keys.includes(highlightId)) {
+                if (this.itemIncludesSource(item, highlightId)) {
                     pulledItems.push(item);
                     if (item.is_selected) {
                         pulledHasSelected = true;
@@ -408,12 +412,12 @@ export class EditListComponent implements OnInit, OnDestroy {
 
         }
         // to fill in name, items, is_frequent
-        var pulledCategory = new LegacyCategory(
+        var pulledCategory = new Category(
             name,
+            sourceId,
+            0,
             pulledItems,
-            null,
             pulledHasSelected,
-            "yes",
             is_frequent,
             true
         )
@@ -423,6 +427,23 @@ export class EditListComponent implements OnInit, OnDestroy {
         return newCategories;
     }
 
+    private itemIncludesSource(item: Item, highlightId: string) {
+        if (highlightId == LegendService.FREQUENT) {
+            // check sources
+            return item.sources.includes(highlightId);
+        }
+        var sourceIsDish = highlightId.startsWith("d");
+        var sourceId = highlightId.substr( 1);
+        for (let detail of item.details) {
+            if (sourceIsDish && detail.dish_id === sourceId ) {
+                return true;
+            }
+            if (!sourceIsDish && detail.list_id === sourceId ) {
+                return true;
+            }
+        }
+        return false;
+    }
     private defaultEmptySourceId() {
         // will be either null or frequent, depending upon frequent availabilty
         // and current frequent toggle state
@@ -450,7 +471,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
 
-    private adjustForStarter(list: ILegacyShoppingList) {
+    private adjustForStarter(list: IShoppingList) {
         this.shoppingListIsStarter = list.is_starter;
         if (this.shoppingListIsStarter) {
             this.showMakeStarter = false;
@@ -472,10 +493,10 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private handleCrossedOffAndSelected(shoppingList: ILegacyShoppingList) {
+    private handleCrossedOffAndSelected(shoppingList: IShoppingList) {
 
         if (!shoppingList.categories || shoppingList.categories.length == 0) {
-            return [];
+            return;
         }
 
         this.crossedOffExist = false;
@@ -494,7 +515,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         }
     }
 
-    removeSelectedInCategory(category: LegacyCategory) {
+    removeSelectedInCategory(category: Category) {
         var tagIdsToRemove = category.items.filter(i => i.is_selected).map(i => i.tag.tag_id);
         let $sub = this.listService.performOperationOnListItems(this.shoppingList.list_id,
             tagIdsToRemove, "Remove")
@@ -505,7 +526,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    toggleCrossedOffInCategory(category: LegacyCategory) {
+    toggleCrossedOffInCategory(category: Category) {
         var itemsToCrossOff = category.items.filter(i => i.is_selected);
         var itemTagIds = itemsToCrossOff.map(i => i.tag.tag_id);
         var allCrossedOff = (itemsToCrossOff.filter(itco => !itco.crossed_off)).length == 0
@@ -522,11 +543,11 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
-    private frequentItemsPresent(list: ILegacyShoppingList): boolean {
+    private frequentItemsPresent(list: IShoppingList): boolean {
 
         for (let category of list.categories) {
             for (let item of category.items) {
-                for (let sourceKey of item.source_keys) {
+                for (let sourceKey of item.sources) {
                     if (sourceKey == LegendService.FREQUENT) {
                         return true;
                     }
