@@ -48,7 +48,7 @@
                     </div>
                     <!-- start category loop -->
                     <div *ngFor="let category of shoppingList.categories, let i = index"
-                         class="col-sm-12 col-med-6 col-lg-6">
+                         class="col-sm-12 col-md-6 col-lg-6">
 
                         <div *ngIf="category.is_highlighted"
                              class="ls-list-column-header ls-list-column-header-special">
@@ -58,27 +58,51 @@
                             {{ category.name }}
                         </div>
                         <div class="row ls-ingredient-block">
-                            <div class="col-sm-12 col-med-12 col-lg-6"
-                                 *ngFor="let item of category.items"
-                                 (click)="toggleItemSelected(item, category)">
-                                <div>
+                            <ng-container *ngFor="let item of category.items; let itemIndex = index">
+                                <div class="col-sm-12 col-md-12 col-lg-6 position-relative"
+                                     [class.second-column]="itemIndex % 2 === 1"
+                                     (click)="toggleItemSelected(item, category)"
+                                     (contextmenu)="toggleItemDetail($event, item)">
+                                    <div>
                                     <span class="{{item.crossed_off ? 'itemCrossedOff': ''}}
                                                 {{item.is_selected ? 'itemSelected': ''}}">
                                         {{ item.tag.name }}</span>
-                                    <ng-container *ngIf="!(category.is_frequent)">
+                                        <ng-container *ngIf="!(category.is_frequent)">
                                         <span *ngIf="item.used_count > 1 && !showItemLegends">({{ item.used_count }}
                                             )</span>
-                                        <span *ngIf="showLegends(item)" class="legend-combined-box">
-                                        <ng-container *ngFor="let dishSource of item.source_keys">
-                                            <span *ngIf="iconSourceForKey(dishSource, false)" class="legend-box">
-                                            <img [src]="iconSourceForKey(dishSource, false)" width="15"
+                                            <span *ngIf="showLegends(item)" class="legend-combined-box">
+                                        <ng-container *ngFor="let detail of item.details">
+                                            <span *ngIf="iconSourceForDetail(detail, false)" class="legend-box">
+                                            <img [src]="iconSourceForDetail(detail, false)" width="15"
                                                  height="15"/></span>
                                         </ng-container>
+
                                     </span>
 
-                                    </ng-container>
+                                        </ng-container>
+                                    </div>
+
+                                    <!-- Detail Popup -->
+                                    <div *ngIf="displayInfoId === item.item_id" class="item-detail-popup" (click)="$event.stopPropagation()" (contextmenu)="$event.stopPropagation(); $event.preventDefault()">
+                                        <div class="popup-content">
+                                            <div class="popup-title">{{item.tag.name}}<span *ngIf="item.amount && item.amount.display" > - {{item.amount.display}}</span></div>
+                                            <ng-container *ngFor="let detail of item.details">
+                                                <div class="detail-row">
+                                                <img *ngIf="detail.key" [src]="detail.key" width="15" height="15"/>
+                                                {{detail.display}}
+                                                </div>
+                                                <div *ngIf="detail.amount" class="detail-amount">{{ detail.amount.display }}</div>
+                                            </ng-container>
+                                            <hr *ngIf="item.details && item.details.length > 0">
+                                            <div class="popup-actions">
+                                                <span class="selected-actions" (click)="crossOffItem(item)">Cross Off</span>
+                                                <span class="selected-actions" (click)="removeItem(item)">Remove</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </ng-container>
+                            <!-- item loop end -->
                             <div *ngIf="category.has_selected" class="ls-selected-actions">
                                 <span class="selected-label">Selected Items:</span>
                                 <span class="selected-actions"

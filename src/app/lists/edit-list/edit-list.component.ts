@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
@@ -18,6 +18,7 @@ import {IDish} from "../../model/dish";
 import {IShoppingList, ShoppingList} from "../../model/shoppingList";
 import {Category, ICategory} from "../../model/category";
 import {Item} from "../../model/Item";
+import {ItemDetails} from "../../model/Itemdetails";
 
 @Component({
     selector: 'app-edit-list',
@@ -50,6 +51,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     errorMessage: any;
     private highlightSourceId: string;
     showItemLegends: boolean;
+    displayInfoId: string;
 
     shoppingList: ShoppingList;
     removedItems: ILegacyItem[] = [];
@@ -170,17 +172,40 @@ export class EditListComponent implements OnInit, OnDestroy {
         var oneSelected = category.items.filter(i => i.is_selected);
         category.has_selected = (oneSelected != null && oneSelected.length > 0);
     }
+    toggleItemDetail(event: MouseEvent, item: Item) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.displayInfoId === item.item_id) {
+            this.displayInfoId = null;
+            return;
+        }
+
+        // fill keys and displays for details
+        item.details.forEach((detail) => {
+            let key = this.keyForDetail(detail);
+            let point = this.listLegendMap.get(key);
+            detail.key = this.iconSourceForDetail(detail, false);
+            detail.display = point.display;
+        });
+        // set displayInfoId
+        this.displayInfoId = item.item_id;
+    }
+
+    @HostListener('document:click', ['$event'])
+    onClickOutside(event: MouseEvent) {
+        this.displayInfoId = null;
+    }
 
     private selectedContains(tag_id: String): boolean {
         var inListString = this.selectedItems.find(s => s == tag_id);
         return inListString != null;
     }
 
-    showLegends(item: LegacyItem) {
+    showLegends(item: Item) {
         if (!this.showItemLegends) {
             return false;
         }
-        return item.source_keys && item.source_keys.length > 0;
+        return item.details && item.details.length > 0;
     }
 
     iconSourceForKey(key: string, withCircle: boolean): string {
@@ -191,6 +216,24 @@ export class EditListComponent implements OnInit, OnDestroy {
             return null;
         }
         return "assets/images/listshop/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
+    }
+
+    iconSourceForDetail(detail: ItemDetails, withCircle: boolean): string {
+        let circleOrColor = withCircle ? "circles" : "colors"
+        let key = this.keyForDetail(detail);
+        let point = this.listLegendMap.get(key);
+        if (!point) {
+            return null;
+        }
+        return "assets/images/listshop/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
+    }
+
+    isDishSource(detail: ItemDetails) : boolean {
+        let dishId = detail.dish_id;
+        if (dishId && dishId.trim().length > 0) {
+            return true;
+        }
+        return false;
     }
 
     clearRemoved() {
@@ -543,6 +586,32 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
+    crossOffItem(item: Item) {
+        var itemTagIds = [];
+        itemTagIds.push(item.tag.tag_id);
+        var currentlyCrossedOff = item.crossed_off != null;
+        var operation = currentlyCrossedOff ? OperationType.UnCrossOff : OperationType.CrossOff
+        let $sub = this.listService.performOperationOnListItems(this.shoppingList.list_id,
+            itemTagIds, operation)
+            .subscribe(() => {
+                this.getShoppingList(this.shoppingList.list_id);
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
+    removeItem(item: Item) {
+        var itemTagIds = [];
+        itemTagIds.push(item.tag.tag_id);
+        let $sub = this.listService.performOperationOnListItems(this.shoppingList.list_id,
+            itemTagIds, OperationType.Remove)
+            .subscribe(() => {
+                this.getShoppingList(this.shoppingList.list_id);
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
     private frequentItemsPresent(list: IShoppingList): boolean {
 
         for (let category of list.categories) {
@@ -562,5 +631,12 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.tagTypeToCreate = tag.tag_type;
         this.addTagModel.show();
 
+    }
+
+    private keyForDetail(detail: ItemDetails) {
+        let isDishSource = this.isDishSource(detail);
+        let keyPrefix = isDishSource ? "d" : "l";
+        let keyId = isDishSource ? detail.dish_id : detail.list_id;
+        return keyPrefix + keyId;
     }
 }

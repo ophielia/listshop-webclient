@@ -6,6 +6,9 @@ export interface IItemDetails {
   dish_id: string;
   list_id: string;
   contains_unspecified: boolean;
+
+  key: string;
+  display: string;
 }
 
 export class ItemDetails implements IItemDetails {
@@ -16,4 +19,7 @@ export class ItemDetails implements IItemDetails {
   dish_id: string;
   list_id: string;
   contains_unspecified: boolean;
+
+  key: string;
+  display: string;
 }
