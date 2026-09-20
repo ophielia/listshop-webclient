@@ -1,39 +1,39 @@
-import {IItem, Item} from "./item";
+import {IItem, Item} from "./Item";
 
 export interface ICategory {
-  override_class: string;
-  name: string;
-  items: Item[];
-  subcategories: ICategory[];
-  has_selected: boolean,
-  is_frequent: boolean;
-  is_highlighted: boolean;
-  dish_id: string;
-
-  allItems(): IItem[]
+    name: string;
+    category_id: string;
+    display_order: number;
+    items: IItem[];
 }
 
 
 export class Category implements ICategory {
-  constructor(
-      public name: string,
-      public items: Item[],
-      public subcategories: Category[],
-      public has_selected: boolean,
-      public override_class: string,
-      public is_frequent: boolean,
-      public is_highlighted: boolean,
-  ) {}
-
-  dish_id: string;
-
-  allItems(): IItem[] {
-    var allitems = [];
-    allitems = allitems.concat(this.items);
-    for (let cat of this.subcategories) {
-      allitems = allitems.concat(cat.allItems());
+    constructor(
+        name: string,
+        category_id: string,
+        display_order: number,
+        items: Item[],
+        has_selected: boolean,
+        is_frequent: boolean,
+        is_highlighted: boolean
+    ) {
+        this.name = name;
+        this.category_id = category_id;
+        this.display_order = display_order;
+        this.items = items;
+        this.has_selected = has_selected;
+        this.is_frequent = is_frequent;
+        this.is_highlighted = is_highlighted;
     }
-    return allitems;
-  }
+
+    name: string;
+    category_id: string;
+    display_order: number;
+    items: Item[];
+
+    has_selected: boolean;
+    is_frequent: boolean;
+    is_highlighted: boolean;
 }
 

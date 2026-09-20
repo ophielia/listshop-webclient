@@ -4,15 +4,13 @@ import {forkJoin, Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";
-import {IMealPlan, MealPlan} from "../../model/mealplan";
+import {IMealPlan, IMealPlanList, MealPlan} from "../../model/mealplan";
 import MealPlanType from "../../model/meal-plan-type";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 
 
 @Injectable()
 export class MealPlanService {
-    private authUrl;
-    private userUrl;
     private readonly mealplanUrl;
 
     constructor(
@@ -20,31 +18,19 @@ export class MealPlanService {
         private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.authUrl = envLoader.getEnvConfig().apiUrl + "auth";
-        this.userUrl = envLoader.getEnvConfig().apiUrl + "user";
-        this.mealplanUrl = envLoader.getEnvConfig().apiUrl + "mealplan";
+        this.mealplanUrl = envLoader.getEnvConfig().apiUrl + "v2/mealplan";
     }
 
-    getAllMealplans(): Observable<IMealPlan[]> {
+    getAllMealplans(): Observable<IMealPlanList> {
         this.logger.debug("Retrieving all mealplans for user.");
 
-        return this.httpClient.get(this.mealplanUrl)
-            .pipe(map((response: HttpResponse<any>) => {
-                // map and return
-                    return MealPlanService.mapMealPlans(response);
-                }),
-                catchError(this.handleError));
+        return this.httpClient.get<IMealPlanList>(this.mealplanUrl);
     }
 
     getMealPlan(planId: String): Observable<IMealPlan> {
         this.logger.debug("Retrieving  mealplans  " +  planId + " for user.");
 
-        return this.httpClient.get(this.mealplanUrl + "/" + planId)
-            .pipe(map((response: HttpResponse<any>) => {
-                    // map and return
-                    return MealPlanService.mapMealPlan(response);
-                }),
-                catchError(this.handleError));
+        return this.httpClient.get<IMealPlan>(this.mealplanUrl + "/" + planId);
     }
 
     deleteMealPlan(mealPlanId: string) {
@@ -73,14 +59,14 @@ export class MealPlanService {
 
     addDishesToMealPlan(dish_ids: string[], meal_plan_id: string) {
         if (dish_ids.length == 1) {
-            return this.addDishToMealPlan(dish_ids[0], meal_plan_id).toPromise();
+            return this.addDishToMealPlan(dish_ids[0], meal_plan_id);
         }
 
         const observablesForDishes = dish_ids.map(id => {
             return this.addDishToMealPlan(id, meal_plan_id)
         });
 
-        return forkJoin(observablesForDishes).toPromise();
+        return forkJoin(observablesForDishes);
 
     }
 
@@ -99,15 +85,6 @@ export class MealPlanService {
         return this
             .httpClient
             .delete(url);
-    }
-
-    private static mapMealPlans(object: Object): MealPlan[] {
-        let embeddedObj = object["_embedded"];
-        return embeddedObj["mealPlanResourceList"].map(MappingUtils.toMealPlan);
-    }
-
-    private static mapMealPlan(object: Object): MealPlan {
-        return MappingUtils.toMealPlan(object);
     }
 
     handleError(error: any) {

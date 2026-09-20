@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {LegendSource} from "../../model/legend-source";
 import {LegendIconSource} from "../../model/legend-icon-source";
 import {LegendPoint} from "../../model/legend-point";
+import {ApiLegendSource} from "../../model/api-legend-source";
 
 @Injectable({providedIn: 'root'})
 export class LegendService {
@@ -29,7 +30,7 @@ export class LegendService {
         return LegendService.instance;
     }
 
-    processLegend(sources: Array<LegendSource>): Map<string, LegendPoint> {
+    processLegend(sources: Array<ApiLegendSource>): Map<string, LegendPoint> {
         if (!sources) {
             return new Map();
         }
@@ -42,9 +43,11 @@ export class LegendService {
         for ( var i = 0; i < sources.length ; i++) {
             var newLegend = sources[i];
             var matchFound = false;
+            var keyPrefix = newLegend.source_type == "DISH" ? "d" : "l";
+            var apiKey = keyPrefix + newLegend.related_id;
 
             this.legendLookup.forEach((existing: LegendPoint, key: string) => {
-                if (!matchFound && existing.key == newLegend.key) {
+                if (!matchFound && existing.key == apiKey) {
                     matchFound = true;
                     let legendSource = new LegendIconSource();
                     legendSource.color = existing.color;
@@ -55,7 +58,10 @@ export class LegendService {
 
             });
             if (!matchFound) {
-                apiToAdd.push(newLegend);
+                var processedLegend = new LegendSource();
+                processedLegend.key = apiKey;
+                processedLegend.display = newLegend.display;
+               apiToAdd.push(processedLegend);
             }
         }
 

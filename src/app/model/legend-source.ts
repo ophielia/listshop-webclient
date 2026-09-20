@@ -1,9 +1,9 @@
-export interface ILegendSource {
+export interface ILegacyLegendSource {
   key: string;
   display: string;
 }
 
-export class LegendSource implements ILegendSource {
+export class LegendSource implements ILegacyLegendSource {
   constructor() {
   }
 

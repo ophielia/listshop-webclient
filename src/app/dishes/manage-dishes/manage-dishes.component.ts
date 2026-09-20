@@ -3,8 +3,7 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {IShoppingList} from "../../model/shoppinglist";
-import {Dish} from "../../model/dish";
+import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
@@ -15,8 +14,8 @@ import {GroupType} from "../../shared/services/tag-tree.object";
 import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
 import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
-import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
 import {DishContext} from "../dish-context/dish-context";
+import {Dish} from "../../model/dish";
 
 
 @Component({
@@ -57,7 +56,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     showAddToNewList: boolean;
     isLoading: boolean = true;
 
-    displayId: string ;
+    displayId: string;
 
     constructor(
         private fix: LandingFixService,
@@ -95,8 +94,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             this.filteredDishes = this.allDishes;
         }
 
-
-            if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
+        if (this.filteredDishes && this.lastSearchLength < this.searchValue.length) {
             let filterBy = this.searchValue.toLocaleLowerCase();
             this.filteredDishes = this.filteredDishes.filter((dish: Dish) =>
                 dish.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
@@ -117,7 +115,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
     isFiltered(): boolean {
-        return this.searchValue.length > 0 ||  this.filterTags.length > 0;
+        return this.searchValue.length > 0 || this.filterTags.length > 0;
     }
 
     getAllDishes() {
@@ -125,8 +123,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             this.dishService
                 .getAllDishes()
                 .subscribe(p => {
-                        this.sortDishes(p);
-                        this.allDishes = p;
+                        this.sortDishes(p.dish_list);
+                        this.allDishes = p.dish_list;
                         this.isLoading = false;
                         this.filterByDishname();
                         this.setFilteredIdsInContext();
@@ -138,8 +136,8 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             let $sub = this.dishService
                 .findByTags(includeTagList, excludeTagList)
                 .subscribe(p => {
-                        this.sortDishes(p);
-                        this.allDishes = p;
+                        this.sortDishes(p.dish_list);
+                        this.allDishes = p.dish_list;
                         this.isLoading = false;
                         this.filterByDishname();
                         this.setFilteredIdsInContext();
@@ -251,7 +249,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
     }
 
     editDish(dishId: String) {
-        var url = "dishes/edit/" +  dishId;
+        var url = "dishes/edit/" + dishId;
         this.router.navigateByUrl(url);
     }
 
@@ -326,7 +324,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     }
 
-    addDishesToList(list: IShoppingList) {
+    addDishesToList(list: ILegacyShoppingList) {
         this.logger.debug("add dishes to list");
         this.displayId = null;
         var listId = list.list_id;
@@ -340,7 +338,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         this.logger.debug("adding dishes [" + dishIds + "] to list [" + listId + "]");
         let promise = this.listService.addDishesToList(listId, dishIds);
 
-        promise.then( s => {
+        promise.then(s => {
                 this.logger.debug("made it here");
                 this.displayId = listId;
                 this.addToListModal.show();
@@ -362,17 +360,16 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let promise = this.mealPlanService.addDishesToMealPlan(dishIds, mealplanId);
-
-        promise.then(s => {
+        let $sub = this.mealPlanService.addDishesToMealPlan(dishIds, mealplanId)
+            .subscribe(s => {
                 this.displayId = mealplanId;
                 this.addToMealPlanModal.show();
-            }
+            },
+                (error) => {
+                    this.logger.debug("operation rejected with " + JSON.stringify(error));
+                }
         )
-            .catch((error) => {
-                this.logger.debug("Promise rejected with " + JSON.stringify(error));
-            });
-
+        this.unsubscribe.push($sub);
     }
 
     addDishesToNewMealplan() {
@@ -385,7 +382,6 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
         }
 
 
-
         var newMealPlan: any = this.mealPlanService.addMealPlan('');
         let $sub = newMealPlan.subscribe(
             (r) => {
@@ -393,18 +389,21 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                 var location = headers.get("Location");
                 var splitlocation = location.split("/");
                 var id = splitlocation[splitlocation.length - 1];
-                var promise = this.mealPlanService.addDishesToMealPlan(dishIds, id);
-
-                promise.then(s => {
+                var $sub2 = this.mealPlanService.addDishesToMealPlan(dishIds, id)
+                    .subscribe(s => {
                         this.displayId = id;
                         this.addToMealPlanModal.show();
-                    }
+                    },
+                        (error) => {
+                            this.logger.debug("operation rejected with " + JSON.stringify(error));
+                        }
                 )
-                    .catch((error) => {
-                        this.logger.debug("Promise rejected with " + JSON.stringify(error));
-                    });
+                this.unsubscribe.push($sub2);
 
-            }
+            },
+                (error) => {
+                    this.logger.debug("operation rejected with " + JSON.stringify(error));
+                }
         );
         this.unsubscribe.push($sub);
     }

@@ -4,23 +4,26 @@
         <div class="row">
             <div class="col-sm-12 col-md-8 col-lg-10">
                 <h2 class="title">
-                        <div *ngIf="showChangeName" class="change-name">
-                            <input type="text" class=""
-                                   placeholder="{{shoppingList.name}}"
-                                   [(ngModel)]="shoppingListName"
-                                   (keyup.enter)="saveListName()"
-                            />
-                            <span (click)="saveListName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/check.png"
-                                        alt="add" ></span>
-                            <span (click)="toggleShowChangeName()"><img  class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
-                                        alt="add" ></span>
+                    <div *ngIf="showChangeName" class="change-name">
+                        <input type="text" class=""
+                               placeholder="{{shoppingList.name}}"
+                               [(ngModel)]="shoppingListName"
+                               (keyup.enter)="saveListName()"
+                        />
+                        <span (click)="saveListName()"><img class="lg-button"
+                                                            src="../../../assets/images/listshop/icons/orangeround/large/check.png"
+                                                            alt="add"></span>
+                        <span (click)="toggleShowChangeName()"><img class="lg-button"
+                                                                    src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
+                                                                    alt="add"></span>
 
 
-                        </div>
+                    </div>
                     <ng-container *ngIf="!showChangeName">
-                        {{shoppingList ? shoppingList.name : 'none'}}
-                        <span><img *ngIf="shoppingListIsStarter" class="lg-button" src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
-                                   alt="add" >
+                        {{ shoppingList ? shoppingList.name : 'none' }}
+                        <span><img *ngIf="shoppingListIsStarter" class="lg-button"
+                                   src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
+                                   alt="add">
                 </span>
                     </ng-container>
 
@@ -41,15 +44,19 @@
             <div class="col-sm-12 col-md-8 col-lg-9">
                 <div *ngIf="shoppingList" class="row">
                     <div *ngIf="shoppingList.categories.length == 0"
-                    class="ls-flat-card empty-list">This list is (currently) empty.</div>
+                         class="ls-flat-card empty-list">This list is (currently) empty.
+                    </div>
                     <!-- start category loop -->
                     <div *ngFor="let category of shoppingList.categories, let i = index"
                          class="col-sm-12 col-med-6 col-lg-6">
 
-                        <div *ngIf="category.is_highlighted" class="ls-list-column-header ls-list-column-header-special" >
-                            {{category.name}}</div>
-                        <div *ngIf="!category.is_highlighted" class="ls-list-column-header" >
-                            {{category.name}}</div>
+                        <div *ngIf="category.is_highlighted"
+                             class="ls-list-column-header ls-list-column-header-special">
+                            {{ category.name }}
+                        </div>
+                        <div *ngIf="!category.is_highlighted" class="ls-list-column-header">
+                            {{ category.name }}
+                        </div>
                         <div class="row ls-ingredient-block">
                             <div class="col-sm-12 col-med-12 col-lg-6"
                                  *ngFor="let item of category.items"
@@ -57,9 +64,9 @@
                                 <div>
                                     <span class="{{item.crossed_off ? 'itemCrossedOff': ''}}
                                                 {{item.is_selected ? 'itemSelected': ''}}">
-                                        {{item.tag.name}}</span>
+                                        {{ item.tag.name }}</span>
                                     <ng-container *ngIf="!(category.is_frequent)">
-                                        <span *ngIf="item.used_count > 1 && !showItemLegends">({{item.used_count}}
+                                        <span *ngIf="item.used_count > 1 && !showItemLegends">({{ item.used_count }}
                                             )</span>
                                         <span *ngIf="showLegends(item)" class="legend-combined-box">
                                         <ng-container *ngFor="let dishSource of item.source_keys">
@@ -92,30 +99,36 @@
                 <div class="ls-flat-card ls-card-contents">
                     <ng-container *ngIf="showActions">
 
-                        <table  *ngIf="frequentToggleAvailable" class="display-frequent">
+                        <table *ngIf="frequentToggleAvailable" class="display-frequent">
                             <tr>
                                 <td class="display-frequent">Display Frequent</td>
-                                <td class="display-frequent"><p-inputSwitch [(ngModel)]="showFrequent" (onChange)="toggleShowFrequent()"></p-inputSwitch></td>
+                                <td class="display-frequent">
+                                    <p-inputSwitch [(ngModel)]="showFrequent"
+                                                   (onChange)="toggleShowFrequent()"></p-inputSwitch>
+                                </td>
                             </tr>
                         </table>
 
-                        <table  *ngIf="crossedOffExist" class="display-frequent">
+                        <table *ngIf="crossedOffExist" class="display-frequent">
                             <tr>
                                 <td class="display-frequent">Show Crossed Off</td>
-                                <td class="display-frequent"><p-inputSwitch [(ngModel)]="showCrossedOff" (onChange)="toggleShowCrossedOff()"></p-inputSwitch></td>
+                                <td class="display-frequent">
+                                    <p-inputSwitch [(ngModel)]="showCrossedOff"
+                                                   (onChange)="toggleShowCrossedOff()"></p-inputSwitch>
+                                </td>
                             </tr>
                         </table>
 
-                            <div *ngIf="!showAddList" (click)="toggleAddList()">
+                        <div *ngIf="!showAddList" (click)="toggleAddList()">
                             <span class="action-link">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>Add List
                             </span>
                         </div>
                         <div *ngIf="showAddList">
                             <app-list-select class="at-tag-select-style"
-                                            [currentListId]="shoppingList.list_id"
-                                            (listSelected)="addListToList($event)"
-                                            (cancelSelectList)="toggleAddList()"></app-list-select>
+                                             [currentListId]="shoppingList.list_id"
+                                             (listSelected)="addListToList($event)"
+                                             (cancelSelectList)="toggleAddList()"></app-list-select>
                         </div>
                         <div *ngIf="!showAddItem" (click)="toggleAddItem()">
                             <span class="action-link">
@@ -151,7 +164,7 @@
                         </div>
                         <div>
                             <span class="action-link" (click)="toggleShowChangeName()">
-                                <i class="fa fa-angle-right"  aria-hidden="true"></i>Change Name
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
                             </span>
                         </div>
                         <div *ngIf="!shoppingListIsStarter">
@@ -168,9 +181,11 @@
                     </ng-container>
                     <div class="action-button-right">
                         <a (click)="toggleShowActions()">
-                            <img *ngIf="showActions" class="sm-button" src="../../../assets/images/listshop/icons/orangeround/chevronsup.png"
+                            <img *ngIf="showActions" class="sm-button"
+                                 src="../../../assets/images/listshop/icons/orangeround/chevronsup.png"
                                  alt="add">
-                            <img *ngIf="!showActions" class="sm-button" src="../../../assets/images/listshop/icons/orangeround/chevronsdown.png"
+                            <img *ngIf="!showActions" class="sm-button"
+                                 src="../../../assets/images/listshop/icons/orangeround/chevronsdown.png"
                                  alt="add">
                         </a>
                     </div>
@@ -182,9 +197,10 @@
                         <li *ngFor="let source of legendList">
                             <table class="legend-table">
                                 <tr>
-                                    <td (click)="highlightSource(source.key)"><img [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
-                                    <td (click)="highlightSource(source.key)">{{source.display}}</td>
-                                    <td (click)="removeDishOrList(source.key);"><span class="fa-trash fa" ></span></td>
+                                    <td (click)="highlightSource(source.key)"><img
+                                            [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
+                                    <td (click)="highlightSource(source.key)">{{ source.display }}</td>
+                                    <td (click)="removeDishOrList(source.key);"><span class="fa-trash fa"></span></td>
                                 </tr>
                             </table>
                         </li>
@@ -197,7 +213,7 @@
                     <ul>
                         <li *ngFor="let item of removedItems" (dblclick)="reAddItem(item)">
                             {{
-                            item.tag.name
+                                item.tag.name
                             }}
 
                         </li>
@@ -212,7 +228,7 @@
 </section>
 <!-- list Section End -->
 
-<app-modal #addtag >
+<app-modal #addtag>
     <div class="app-modal-body">
         <app-create-tag-dialog
                 [tagName]="tagNameToCreate"

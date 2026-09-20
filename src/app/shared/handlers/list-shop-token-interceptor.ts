@@ -11,7 +11,7 @@ export class ListShopTokenInterceptor implements HttpInterceptor {
 
         // is login call
         console.dir(request);
-        let isLoginCall = request.url.endsWith("/auth") && request.method == "POST";
+        let isLoginCall = (request.url.endsWith("/auth") || request.url.endsWith("/v2/auth")) && request.method == "POST";
         if (token && !isLoginCall) {
             request = request.clone({
                 setHeaders: {

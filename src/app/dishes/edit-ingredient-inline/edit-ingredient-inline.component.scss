@@ -3,7 +3,7 @@
 .tag-display-edit-button {
   display: inline-block;
   text-transform: capitalize;
-vertical-align: top;
+  vertical-align: top;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 5px;
@@ -20,14 +20,14 @@ vertical-align: top;
 .done {
   @extend .tag-display-edit-button;
   text-transform: uppercase;
-  margin-left:16px;
+  margin-left: 16px;
   background-color: white;
   color: $color_basic_orange;
 }
 
 .cancel-ingredient {
   @extend .done;
-  margin-left:8px;
+  margin-left: 8px;
 }
 
 .squeeze-right {

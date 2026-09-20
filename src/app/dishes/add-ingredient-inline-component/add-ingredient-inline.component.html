@@ -15,7 +15,7 @@
                             (processAfterChange)="processTextInput($event)"></app-ingredient-input>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6 squeeze-left">
-                    <div class="tag-display-edit-button"  (click)="beginEditTag()">
+                    <div class="tag-display-edit-button" (click)="beginEditTag()">
                         {{ ingredientNameDisplay() }}
                     </div>
                     <div class="done" (click)="finalizeInput()">done</div>
@@ -41,7 +41,7 @@
             <div *ngIf="isShowErrors()" class="row">
                 <div class=" col-sm-12 col-md-12 col-lg-12">
                     <ul class="ingredient-error">
-                        <li *ngFor="let error of ingredientErrors">{{error}}</li>
+                        <li *ngFor="let error of ingredientErrors">{{ error }}</li>
                     </ul>
                 </div>
 

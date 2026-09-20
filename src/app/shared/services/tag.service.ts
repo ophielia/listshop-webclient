@@ -4,7 +4,7 @@ import {NGXLogger} from "ngx-logger";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import TagType from "../../model/tag-type";
-import {ITag} from "../../model/tag";
+import {ITag, ITagList} from "../../model/tag";
 import MappingUtils from "../../model/mapping-utils";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import ListShopUtils from "../utils/ListShopUtils";
@@ -19,21 +19,15 @@ export class TagService {
         private envLoader: EnvironmentLoaderService,
         private logger: NGXLogger
     ) {
-        this.tagUrl = envLoader.getEnvConfig().apiUrl + "tag";
+        this.tagUrl = envLoader.getEnvConfig().apiUrl + "v2/tag";
     }
 
-    getTagsForTagTree(): Promise<ITag[]> {
+    getTagsForTagTree(): Observable<ITagList> {
         this.logger.debug("Retrieving all tags");
-        var url = `${this.tagUrl}/user`;
-
+        var url = `${this.tagUrl}`;
 
         return this.httpClient
-            .get(url)
-            .pipe(map((response: HttpResponse<any>) => {
-                    return TagService.mapTagsClient(response);
-                }),
-                catchError(TagService.handleError))
-            .toPromise();
+            .get<ITagList>(url);
 
     }
 
@@ -48,21 +42,6 @@ export class TagService {
             .post(url,
                 JSON.stringify(newTag), {observe: 'response'});
 
-    }
-
-    static mapTagsClient(object: Object): ITag[] {
-        let embeddedObj = object["_embedded"];
-        return embeddedObj["tagResourceList"].map(MappingUtils.toTag);
-    }
-
-    static handleError(error: any) {
-        // log error
-        // could be something more sophisticated
-        let errorMsg = error.message || `Yikes! There was a problem with our hyperdrive device and we couldn't retrieve your data!`
-        console.error(errorMsg);
-
-        // throw an application level error
-        return throwError(error);
     }
 
 }

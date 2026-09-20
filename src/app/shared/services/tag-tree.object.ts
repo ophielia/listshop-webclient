@@ -35,6 +35,7 @@ export class TagTree {
         baseDisplay.name = "All";
     }
 
+
     private addTagToParentNode(tag: ITag) {
         let parentId = tag.parent_id ? tag.parent_id : TagTree.BASE_GROUP;
         // pull parent node

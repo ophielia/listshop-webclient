@@ -1,25 +1,19 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
 import {Subscription} from "rxjs";
-import {LegendService} from "../../shared/services/legend.service";
-import {LegendPoint} from "../../model/legend-point";
-import {Category, ICategory} from "../../model/category";
-import {IItem, Item} from "../../model/item";
-import {ITag, Tag} from "../../model/tag";
+import {ITag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
-import {Dish, IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
-import {IMealPlan, MealPlan} from "../../model/mealplan";
+import {MealPlan} from "../../model/mealplan";
 import {SortKey} from "../../model/sort-key";
 import {DishSort} from "../../model/dish-sort";
 import {SortDirection} from "../../model/sort-direction";
 import {GroupType} from "../../shared/services/tag-tree.object";
-import {GenerateListComponent} from "../../shared/components/generate-list/generate-list.component";
+import {Dish} from "../../model/dish";
 
 @Component({
     selector: 'app-add-dish-to-plan',
@@ -56,7 +50,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     showAddToNewList: boolean;
     isLoading: boolean = true;
 
-    displayId: string ;
+    displayId: string;
     mealPlan: MealPlan;
     planDishes: Dish[];
     initialLoad: boolean = true;
@@ -95,7 +89,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                 this.mealPlan = p;
                 this.planDishes = [];
-                this.mealPlan.slots.forEach( s => this.planDishes.push(s.dish));
+                this.mealPlan.slots.forEach(s => this.planDishes.push(s.dish));
                 this.hasSelected = this.planDishes.length > 0;
 
             });
@@ -155,8 +149,8 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
             this.dishService
                 .getAllDishes()
                 .subscribe(p => {
-                        this.sortDishes(p);
-                        this.allDishes = p;
+                        this.sortDishes(p.dish_list);
+                        this.allDishes = p.dish_list;
                         this.isLoading = false;
                         this.resetFilter();
                     },
@@ -167,10 +161,10 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
             let $sub = this.dishService
                 .findByTags(includeTagList, excludeTagList)
                 .subscribe(p => {
-                        this.sortDishes(p);
-                        this.allDishes = p;
+                        this.sortDishes(p.dish_list);
+                        this.allDishes = p.dish_list;
                         this.isLoading = false;
-                        this.filteredDishes = p;
+                        this.filteredDishes = p.dish_list;
                     },
                     e => this.errorMessage = e);
             this.unsubscribe.push($sub);
@@ -276,7 +270,6 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
 
-
     toggleAddTag() {
         this.showAddTag = !this.showAddTag;
 
@@ -287,7 +280,7 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
     }
 
     backToMealPlanEdit() {
-        var url = "mealplans/edit/" +  this.mealPlan.meal_plan_id;
+        var url = "mealplans/edit/" + this.mealPlan.meal_plan_id;
         this.router.navigateByUrl(url);
     }
 }

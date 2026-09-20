@@ -3,18 +3,15 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {Dish} from "../../model/dish";
+
 import {DishService} from "../../shared/services/dish.service";
-import {ITag, Tag} from "../../model/tag";
+import {ITag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {ListService} from "../../shared/services/list.service";
-import {MealPlanService} from "../../shared/services/meal-plan.service";
 import TagType from "../../model/tag-type";
-import {IRatingInfo, RatingInfo} from "../../model/rating-info";
-import {DishRatingInfo} from "../../model/dish-rating-info";
-import {GroupType} from "../../shared/services/tag-tree.object";
-import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
+import {Dish} from "../../model/dish";
+import {IIngredient, Ingredient} from "../../model/Ingredient";
 
 
 @Component({
@@ -42,13 +39,13 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     showPlainTag: boolean = false;
     showAddDishType: boolean = false;
 
-    dishName: string ;
-    dishDescription : string;
-    dishReference : string;
+    dishName: string;
+    dishDescription: string;
+    dishReference: string;
 
     private errorMessage: string;
-     tagNameToCreate: string;
-     tagTypeToCreate: TagType;
+    tagNameToCreate: string;
+    tagTypeToCreate: TagType;
 
     constructor(
         private fix: LandingFixService,
@@ -77,6 +74,21 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
+    legacyAddNewIngredient(ingredient: Ingredient) {
+        console.log("adding a new ingredient");
+        // check for duplicate
+        let $sub = this.dishService
+            .addIngredient(this.dish.dish_id, ingredient)
+            .subscribe(p => {
+                this.getDish(this.dish.dish_id);  //MM swap out later for get ingredients
+                this.editId = "0";
+                this.selectedIngredient = new Ingredient();
+            });
+        this.unsubscribe.push($sub);
+
+    }
+
+
     addNewIngredient(ingredient: Ingredient) {
         console.log("adding a new ingredient");
         // check for duplicate
@@ -99,8 +111,8 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
                     this.isLoading = false;
                     this.ingredientTags = this.dish.ingredients;
                     this.ingredientTags.sort((a, b) => {
-                        let aNum = parseInt(a.id, 10);
-                        let bNum = parseInt(b.id, 10);
+                        let aNum = parseInt(a.item_id, 10);
+                        let bNum = parseInt(b.item_id, 10);
                         if (aNum < bNum) return -1;
                         else if (aNum > bNum) return 1;
                         else return 0;
@@ -117,7 +129,7 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
     private determineLiquids(ingredients: IIngredient[]) {
         // loop through ingredients, setting is liquid
         for (let ingredient of ingredients) {
-            let tag = this.tagTreeService.retrieveTag(ingredient.tag_id);
+            let tag = this.tagTreeService.retrieveTag(ingredient.tag.tag_id);
             ingredient.is_liquid = tag.is_liquid;
         }
     }
@@ -160,29 +172,29 @@ export class AddDishIngredientComponent implements OnInit, OnDestroy {
         if (ingredient.original_tag_id && ingredient.original_tag_id.trim().length > 0) {
             return this.editId == ingredient.original_tag_id;
         }
-        return this.editId == ingredient.tag_id;
+        return this.editId == ingredient.tag.tag_id;
     }
 
     ingredientDisplay(ingredient: Ingredient) {
         if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
-            return ingredient.raw_entry + " " + ingredient.tag_display;
+            return ingredient.raw_entry + " " + ingredient.tag.name;
         }
-        return ingredient.tag_display;
+        return ingredient.tag.name;
     }
 
 
     showEditIngredient(ingredient: Ingredient) {
-        this.editId = ingredient.tag_id;
+        this.editId = ingredient.tag.tag_id;
         this.selectedIngredient = ingredient;
         this.showAddIngredient = false;
     }
 
     removeIngredientFromDish(ingredient: Ingredient) {
         // remove ingredient from dish
-        this.logger.debug("removing ingredient [" + ingredient.tag_id + "] from dish");
+        this.logger.debug("removing ingredient [" + ingredient.tag.tag_id + "] from dish");
 
         let $sub = this.dishService
-            .removeIngredientFromDish(this.dish.dish_id, ingredient.id)
+            .removeIngredientFromDish(this.dish.dish_id, ingredient.item_id)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);
             });

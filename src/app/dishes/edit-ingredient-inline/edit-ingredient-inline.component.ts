@@ -4,18 +4,12 @@ import {TextAndSelection} from "../ingredient-input/text-and-selection";
 import {ISuggestion} from "../../model/suggestion";
 import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
-import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {BehaviorSubject, Subject, Subscription} from "rxjs";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {Tag} from "../../model/tag";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {ITokenList, TokenList} from "./token-list";
-
-let allSuggestions: ISuggestion[] = [];
-let currentSuggestions: ISuggestion[] = [];
-let doubleSuggestions: ISuggestion[] = [];
-let tokenList: ITokenList = new TokenList();
-let doubleTokenStart: string;
+import {IIngredient, Ingredient} from "../../model/Ingredient";
 
 @Component({
     selector: 'app-edit-ingredient-inline',
@@ -23,12 +17,19 @@ let doubleTokenStart: string;
     styleUrls: ['./edit-ingredient-inline.component.scss']
 })
 export class EditIngredientInlineComponent implements OnInit, OnDestroy {
+    private allSuggestions: ISuggestion[] = [];
+    private doubleSuggestions: ISuggestion[] = [];
+    private doubleTokenStart: string;
+    public tokenList: ITokenList = new TokenList();
     private keyLock: boolean = false;
 
     @Input() set ingredient(value: Ingredient) {
-        if (!this._ingredient || !this._ingredient.tag_id ||
-            (value.tag_id != this._ingredient.tag_id ||
-                (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id))) {
+        if (!value) {
+            return;
+        }
+        if (!this._ingredient || !this._ingredient.tag || !this._ingredient.tag.tag_id ||
+            (value.tag && this._ingredient.tag && value.tag.tag_id != this._ingredient.tag.tag_id) ||
+            (this._ingredient.original_tag_id && this._ingredient.original_tag_id != value.original_tag_id)) {
             this.clearDecksForNewIngredient();
             // console.log("new ingredient here");
             this.initializeForNewIngredient(value);
@@ -89,11 +90,11 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
     getSuggestionsForTag() {
         let promise = this.foodService
-            .getSuggestionsForTag(this._ingredient.tag_id, this._ingredient.is_liquid);
+            .getSuggestionsForTag(this._ingredient.tag.tag_id, this._ingredient.is_liquid);
         promise.then(data => {
             // console.log("received suggestions: " + this.currentSuggestions);
-            doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
-            allSuggestions = data.sort((a,b) => {
+            this.doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
+            this.allSuggestions = data.sort((a, b) => {
                 const lowerA = a.text.trim().toLowerCase();
                 const lowerB = b.text.trim().toLowerCase();
                 if (lowerA < lowerB) return -1;
@@ -101,25 +102,25 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
                 return 0;
             });
 
-            currentSuggestions = allSuggestions;
+            this.currentSuggestions = this.allSuggestions;
         })
     }
 
     // input / callback
-    mapSuggestions(stringToMatch: string, lastToken: string) {
+    mapSuggestions = (stringToMatch: string, lastToken: string) => {
 
         //// console.log("inner map suggestions suggestions: " + this.currentSuggestions);
         // console.log("inner map suggestions stringToMatch:" + stringToMatch + "; lasttoken:" + lastToken);
         let suggestions: string[] = new Array();
-        if (lastToken && doubleSuggestions != null && doubleSuggestions.length > 0) {
+        if (lastToken && this.doubleSuggestions != null && this.doubleSuggestions.length > 0) {
             // console.log("inner map suggestions last token suggestions:");
-            let doubleTokenSearch = doubleTokenStart + " " + stringToMatch.trim();
-            let doubleTokenResults = doubleSuggestions
+            let doubleTokenSearch = this.doubleTokenStart + " " + stringToMatch.trim();
+            let doubleTokenResults = this.doubleSuggestions
                 .filter(s => s.text.toLowerCase().startsWith(doubleTokenSearch.toLowerCase().trim()))
                 .map(s => s.text);
             suggestions = suggestions.concat(doubleTokenResults);
         }
-        let results = currentSuggestions
+        let results = this.currentSuggestions
             .filter(s => s.text.toLowerCase().startsWith(stringToMatch.toLowerCase().trim()))
             .map(s => s.text);
         suggestions = suggestions.concat(results);
@@ -138,8 +139,6 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         // console.log("IN EDIT " + lastEntry);
         this.lastEntry = lastEntry;
     }
-
-    public tokenList = tokenList;
 
     private clearDecksForNewIngredient() {
         if (!this._ingredient) {
@@ -163,11 +162,11 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         var processingString = " " + textAndSelection.text + " ";
         var newTokenList = new Array<Token>();
         // remove all processed tokens from string
-        if (tokenList && tokenList.listOfTokens.length > 0) {
+        if (this.tokenList && this.tokenList.listOfTokens.length > 0) {
             var list = processingString.split(' ')
                 .filter(i => i.trim().length > 0)
 
-            for (let token of tokenList.listOfTokens) {
+            for (let token of this.tokenList.listOfTokens) {
                 if (token.text.indexOf(" ") < 0) {
                     if (list.includes(token.text)) {
                         processingString = processingString.replace(token.matchingText, " ");
@@ -205,15 +204,15 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     checkDoubleToken(processedText: string, value: string) {
-        // console.log("check double token: " + doubleTokenStart);
+        // console.log("check double token: " + this.doubleTokenStart);
         // clear the token, and potentially set new token
         // look for double token starting with string
-        var checkExistance = doubleSuggestions
+        var checkExistance = this.doubleSuggestions
             .filter(dt => dt.text.trim().startsWith(value.trim() + " "));
         if (checkExistance && checkExistance.length > 0 && value.trim().indexOf(" ") < 0) {
-            doubleTokenStart = value.trim();
+            this.doubleTokenStart = value.trim();
         } else {
-            doubleTokenStart = undefined;
+            this.doubleTokenStart = undefined;
         }
 
 
@@ -229,7 +228,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
         }
         // put existing tokens in map
-        for (let existing of tokenList.listOfTokens) {
+        for (let existing of this.tokenList.listOfTokens) {
             if (existing.text.trim().length > 0 &&
                 processingString.indexOf(existing.text.trim()) >= 0) {
                 processingString = processingString.replace(existing.matchingText, " ");
@@ -238,7 +237,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         }
 
 
-        tokenList.listOfTokens = newTokenList;
+        this.tokenList.listOfTokens = newTokenList;
 
     }
 
@@ -270,15 +269,15 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
             token.matchingText = " " + token.text + " ";
             token.type = TokenType.WholeNumber;
             return token;
-        } else if (doubleTokenStart && doubleTokenStart != text.trim()) {
+        } else if (this.doubleTokenStart && this.doubleTokenStart != text.trim()) {
             // console.log("createTokenForText - double: text:" + text);
             // first attempt with double token
-            var token = this.mapTextToToken(doubleTokenStart.trim() + " " + text.trim());
+            var token = this.mapTextToToken(this.doubleTokenStart.trim() + " " + text.trim());
             // console.log("createTokenForText - double: token:" + token);
             if (!token) {
                 token = this.mapTextToToken(text.trim());
             }
-            doubleTokenStart = null;
+            this.doubleTokenStart = null;
             return this.tokenOrDefault(token, text.trim());
         } else {
             // check suggestions
@@ -306,7 +305,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         if (this.singleResult(caseInsensitive)) {
             return Token.fromSuggestion(this.singleResult(caseInsensitive));
         } else if (caseInsensitive && caseInsensitive.length > 1) {
-            var caseSensitive  = this.caseSensitiveMatches(text);
+            var caseSensitive = this.caseSensitiveMatches(text);
             if (this.singleResult(caseSensitive)) {
                 return Token.fromSuggestion(this.singleResult(caseSensitive));
             }
@@ -317,16 +316,16 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
     private singleResult(suggestionArray: ISuggestion[]) {
         if (suggestionArray && suggestionArray.length == 1)
-        return suggestionArray[0];
+            return suggestionArray[0];
     }
 
     caseInsensitiveMatches(text: string) {
-        return allSuggestions
+        return this.allSuggestions
             .filter(t => t.text.toLowerCase().trim() == text.toLowerCase().trim());
     }
 
     caseSensitiveMatches(text: string) {
-        return allSuggestions
+        return this.allSuggestions
             .filter(t => t.text.trim() == text.trim());
     }
 
@@ -342,42 +341,42 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
         for (let token of list) {
             switch (token.type) {
                 case TokenType.WholeNumber:
-                    if (!ingredient.whole_quantity) {
+                    if (!ingredient.amount.whole_quantity) {
                         quantityExists = true;
-                        ingredient.whole_quantity = Number(token.text);
+                        ingredient.amount.whole_quantity = Number(token.text);
                     }
                     break;
                 case TokenType.Range:
-                    if (!ingredient.whole_quantity) {
+                    if (!ingredient.amount.whole_quantity) {
                         quantityExists = true;
                         var rangeValues = token.text.split("-");
                         var upperRange = rangeValues[rangeValues.length - 1].trim();
-                        ingredient.whole_quantity = Number(upperRange);
+                        ingredient.amount.whole_quantity = Number(upperRange);
                     }
                     break;
                 case TokenType.DecimalNumber:
-                    if (!ingredient.quantity) {
+                    if (!ingredient.amount.quantity) {
                         quantityExists = true;
                         partialCount += 1;
-                        ingredient.quantity = Number(token.text);
-                        if (ingredient.quantity <= 0.10) {
+                        ingredient.amount.quantity = Number(token.text);
+                        if (ingredient.amount.quantity <= 0.10) {
                             errors.set(this.ERROR_TOO_SMALL, "Please enter a larger quantity");
                         }
                     }
                     break;
                 case TokenType.Fraction:
-                    if (ingredient.fractional_quantity == "") {
+                    if (ingredient.amount.fractional_quantity == "") {
                         quantityExists = true;
                         partialCount += 1;
-                        ingredient.fractional_quantity = token.text;
+                        ingredient.amount.fractional_quantity = token.text;
                         if (!this.isFractionValid(token.text)) {
                             errors.set(this.ERROR_BAD_FRACTION, "Please use a denominator of 2, 3, 4 or 8");
                         }
                     }
                     break;
                 case TokenType.Unit:
-                    if (ingredient.unit_id == "") {
-                        ingredient.unit_id = token.id;
+                    if (ingredient.amount.unit_id == "") {
+                        ingredient.amount.unit_id = token.id;
                     }
                     break;
                 case TokenType.UnitSize, TokenType.Marker:
@@ -425,9 +424,9 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
 
     clearedIngredient() {
         var newIngredient = Ingredient.clone(this._ingredient);
-        newIngredient.whole_quantity = undefined;
-        newIngredient.fractional_quantity = "";
-        newIngredient.unit_id = "";
+        newIngredient.amount.whole_quantity = undefined;
+        newIngredient.amount.fractional_quantity = "";
+        newIngredient.amount.unit_id = "";
         newIngredient.raw_modifiers = [];
         newIngredient.raw_entry = "";
 
@@ -435,7 +434,7 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     saveFromTag() {
-        if (!this._ingredient || !this._ingredient.tag_id || this._ingredient.tag_id == "0") {
+        if (!this._ingredient || !this._ingredient.tag.tag_id || this._ingredient.tag.tag_id == "0") {
             this.cancelAddIngredient()
             return;
         }
@@ -483,34 +482,44 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     changeTag(tag: Tag) {
         // console.log("skipping first key press");
         this.skipFirstKeyPress = true;
+        if (!this._ingredient) {
+            this._ingredient = new Ingredient();
+        }
         if (!this._ingredient.original_tag_id ||
             this._ingredient.original_tag_id.trim().length == 0) {
-            this._ingredient.original_tag_id = this._ingredient.tag_id;
+            this._ingredient.original_tag_id = this._ingredient.tag.tag_id;
         }
-        this._ingredient.tag_id = tag.tag_id;
-        this._ingredient.tag_display = tag.name;
+        this._ingredient.tag = {
+            tag_id: tag.tag_id,
+            name: tag.name,
+            tag_type: tag.tag_type
+        };
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
-        this._ingredient.is_liquid = lookupTag.is_liquid;
+        this._ingredient.is_liquid = lookupTag ? lookupTag.is_liquid : false;
         this.getSuggestionsForTag();
         // console.log("edit amount true 3");
         this.isEditAmount.next(true);
     }
 
     showDone() {
-        return (this._ingredient && this._ingredient.tag_display
-            && this._ingredient.tag_display.length > 0);
+        return (this._ingredient && this._ingredient.tag.name
+            && this._ingredient.tag.name.length > 0);
 
     }
+
     setTag(tag: Tag) {
         // console.log("addIngredient")
         this.skipFirstKeyPress = true
         if (!this._ingredient) {
             this._ingredient = new Ingredient();
         }
-        this._ingredient.tag_id = tag.tag_id;
-        this._ingredient.tag_display = tag.name;
+        this._ingredient.tag = {
+            tag_id: tag.tag_id,
+            name: tag.name,
+            tag_type: tag.tag_type
+        };
         let lookupTag = this.tagTreeService.retrieveTag(tag.tag_id);
-        this._ingredient.is_liquid = lookupTag.is_liquid;
+        this._ingredient.is_liquid = lookupTag ? lookupTag.is_liquid : false;
         this.getSuggestionsForTag();
         // console.log("edit amount true 4");
         this.isEditAmount.next(true);
@@ -518,27 +527,27 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     ingredientNameDisplay() {
-        if (this._ingredient && this._ingredient.tag_display
-            && this._ingredient.tag_display.length > 0) {
+        if (this._ingredient && this._ingredient.tag.name
+            && this._ingredient.tag.name.length > 0) {
 
-            return this._ingredient.tag_display;
+            return this._ingredient.tag.name;
         }
         return "Enter Ingredient";
     }
 
     private initializeForNewIngredient(ingredient: Ingredient) {
-        if (!ingredient || !ingredient.raw_entry || !ingredient.tag_id ||
+        if (!ingredient || !ingredient.raw_entry || !ingredient.tag.tag_id ||
             ingredient.raw_entry.trim().length == 0) {
             return;
         }
 
         let promise = this.foodService
-            .getSuggestionsForTag(ingredient.tag_id, ingredient.is_liquid);
+            .getSuggestionsForTag(ingredient.tag.tag_id, ingredient.is_liquid);
         promise.then(data => {
             // console.log("received suggestions: " + this.currentSuggestions);
-            doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
-            allSuggestions = data;
-            currentSuggestions = data;
+            this.doubleSuggestions = data.filter(s => s.text.trim().indexOf(" ") > 0);
+            this.allSuggestions = data;
+            this.currentSuggestions = data;
             // split entry into tokens, and process each
             var stringTokens = ingredient.raw_entry.split(" ");
             var builtString = "";
@@ -562,10 +571,10 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     }
 
     tagPlaceholder() {
-        if (this._ingredient && this._ingredient.tag_display
-            && this._ingredient.tag_display.length > 0) {
+        if (this._ingredient && this._ingredient.tag.name
+            && this._ingredient.tag.name.length > 0) {
 
-            return this._ingredient.tag_display;
+            return this._ingredient.tag.name;
         }
         return "Ingredient";
     }

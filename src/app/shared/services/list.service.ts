@@ -3,21 +3,20 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, Subscription, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import MappingUtils from "../../model/mapping-utils";
-import {IShoppingList} from "../../model/shoppinglist";
+import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {NGXLogger} from "ngx-logger";
-import {IItem, Item} from "../../model/item";
 import {ItemOperationPut} from "../../model/item-operation-put";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
 import {IListAddProperties} from "../../model/listaddproperties";
 import {IListGenerateProperties, ListGenerateProperties} from "../../model/listgenerateproperties";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import ListShopUtils from "../utils/ListShopUtils";
+import {IListOfShoppingLists, IShoppingList} from "../../model/shoppingList";
+import {ItemPost} from "../../model/Item";
 
 
 @Injectable()
 export class ListService implements OnDestroy {
-    private authUrl;
-    private userUrl;
     private listUrl;
 
     unsubscribe: Subscription[] = [];
@@ -37,9 +36,7 @@ export class ListService implements OnDestroy {
             .getEnvConfigWhenReady()
             .subscribe(config => {
                 if (config) {
-                    this.authUrl =  config.apiUrl + "auth";
-                    this.userUrl = config.apiUrl + "user";
-                    this.listUrl = config.apiUrl + "shoppinglist";
+                    this.listUrl = config.apiUrl + "v2/shoppinglist";
                 }
             });
         this.unsubscribe.push(sub$);
@@ -49,7 +46,13 @@ export class ListService implements OnDestroy {
         this.unsubscribe.forEach(s => s.unsubscribe());
     }
 
-    getAllLists(): Observable<IShoppingList[]> {
+    getAllLists(): Observable<IListOfShoppingLists> {
+        this.logger.debug("Retrieving all shopping lists for user.");
+
+        return this.httpClient.get<IListOfShoppingLists>(this.listUrl);
+    }
+
+    legacyGetAllLists(): Observable<ILegacyShoppingList[]> {
         this.logger.debug("Retrieving all shopping lists for user.");
 
         return this.httpClient.get(this.listUrl)
@@ -60,28 +63,12 @@ export class ListService implements OnDestroy {
                 catchError(this.handleError));
     }
 
-    getAllListsAsPromise(): Promise<IShoppingList[]> {
-        this.logger.debug("Retrieving all shopping mealPlans for user.");
-
-        return this.httpClient.get(this.listUrl)
-            .pipe(map((response: HttpResponse<any>) => {
-                    // map and return
-                    return this.mapShoppingLists(response);
-                }),
-                catchError(this.handleError))
-            .toPromise();
-    }
 
     getById(shoppingListId: string): Observable<IShoppingList> {
         this.logger.debug("Retrieving shopping mealPlans for id:" + shoppingListId);
         var url = this.listUrl + "/" + shoppingListId;
 
-        return this.httpClient.get(url)
-            .pipe(map((response: HttpResponse<any>) => {
-                    // map and return
-                    return this.mapShoppingList(response);
-                }),
-                catchError(this.handleError));
+        return this.httpClient.get<IShoppingList>(url);
     }
 
     deleteList(list_id: string) {
@@ -98,14 +85,7 @@ export class ListService implements OnDestroy {
     }
 
     createListFromMealPlan(mealPlanId: string, include_starter: boolean): Observable<HttpResponse<Object>> {
-        var properties = new ListGenerateProperties();
-        properties.add_from_starter = include_starter;
-        properties.meal_plan_source = mealPlanId;
-
-        return this.httpClient.post(this.listUrl,
-            JSON.stringify(properties),
-            {observe: 'response'}
-        );
+        return this.createListFromParameters([], mealPlanId, include_starter, false)
     }
 
     createListFromParameters(dishIds: string[], mealPlanId: string,
@@ -147,11 +127,13 @@ export class ListService implements OnDestroy {
         return this.httpClient.put(url, payload);
     }
 
-    addTagItemToShoppingList(shoppingList_id: string, tagId: string): Promise<Object> {
-        let item: Item = <Item>{tag_id: tagId};
-        let url = this.listUrl + "/" + shoppingList_id + "/tag/" + tagId;
+    addTagToShoppingList(shoppingList_id: string, tagId: string): Observable<Object> {
+        let item: ItemPost = <ItemPost>{tag_id: tagId, amount: null, raw_entry: null};
 
-        return this.httpClient.post(url, item).toPromise();
+
+        let url = this.listUrl + "/" + shoppingList_id + "/item"
+
+        return this.httpClient.post(url, item);
     }
 
     addDishToShoppingList(shoppingList_id: string, dish_id: string): Observable<Object> {
@@ -177,22 +159,20 @@ export class ListService implements OnDestroy {
 
     }
 
-    addListToShoppingList(shoppingList_id: string, list_id: string): Promise<Object> {
+    addListToShoppingList(shoppingList_id: string, list_id: string): Observable<Object> {
         let url = this.listUrl + "/" + shoppingList_id + "/list/" + list_id;
         return this
             .httpClient
             .post(url,
-                null)
-            .toPromise();
+                null);
     }
 
-    addMealPlanToShoppingList(mealplan_id: string, list_id: string): Promise<Object> {
+    addMealPlanToShoppingList(mealplan_id: string, list_id: string): Observable<Object> {
         let url = this.listUrl + "/" + list_id + "/mealplan/" + mealplan_id;
         return this
             .httpClient
             .put(url,
                 null)
-            .toPromise();
     }
 
     removeItemsByDishOrList(list_or_dish_id: string, sourceTag: string) {
@@ -212,24 +192,21 @@ export class ListService implements OnDestroy {
         let url = this.listUrl + "/" + list_id + "/dish/" + id;
         return this
             .httpClient
-            .delete(url)
-            .toPromise();
+            .delete(url);
     }
 
     removeListItems(list_id: string, fromListId: string) {
         let url = this.listUrl + "/" + list_id + "/list/" + fromListId;
         return this
             .httpClient
-            .delete(url)
-            .toPromise();
+            .delete(url);
     }
 
     removeAllItemsFromList(shoppinglist_id: string) {
         let url = this.listUrl + "/" + shoppinglist_id + "/item";
         return this
             .httpClient
-            .delete(url)
-            .toPromise();
+            .delete(url);
     }
 
     updateShoppingListStarterStatus(shoppingList: IShoppingList) {
@@ -245,7 +222,7 @@ export class ListService implements OnDestroy {
         let shoppingListPut = new ShoppingListPut();
 
         shoppingListPut.name = ListShopUtils.cleanInputForServer(shoppingList.name);
-        shoppingListPut.is_starter_list = shoppingList.is_starter;
+        shoppingListPut.is_starter_list = shoppingList.is_starter_list;
         return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
     }
 
@@ -268,7 +245,7 @@ export class ListService implements OnDestroy {
         return throwError(error);
     }
 
-    mapShoppingLists(object: Object): IShoppingList[] {
+    mapShoppingLists(object: Object): ILegacyShoppingList[] {
         let embeddedObj = object["_embedded"];
         if (embeddedObj) {
             return embeddedObj["shoppingListResourceList"].map(MappingUtils.toShoppingList);
@@ -276,7 +253,7 @@ export class ListService implements OnDestroy {
         return null;
     }
 
-    mapShoppingList(object: Object): IShoppingList {
+    mapShoppingList(object: Object): ILegacyShoppingList {
         if (object) {
             return MappingUtils.toShoppingList(object);
         }

@@ -18,15 +18,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 ">
+
                 <div class="row ">
                     <div *ngFor="let list of lists"
                          class="col-lg-4 col-md-6">
+                        <!-- test
+                        <div>TEST - {{list.name}}</div>-->
                         <!-- single list element -->
                         <app-single-list-element
                                 [itemCount]="list.item_count"
                                 [listName]="list.name"
                                 [listId]="list.list_id"
-                                [listIsStarter]="list.is_starter"
+                                [listIsStarter]="list.is_starter_list"
                                 (delete)="deleteShoppingList($event)"
                                 (edit)="editShoppingList($event)"></app-single-list-element>
                         <!-- single list element -->

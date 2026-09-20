@@ -50,7 +50,7 @@
                                         <span class="ls-tag-group-subtitle">Name:
                                         </span>
                                     <div class="ls-input-error">
-                                        <div *ngIf="dishNameError">{{dishNameError}}</div>
+                                        <div *ngIf="dishNameError">{{ dishNameError }}</div>
                                         <span>
                                             <input type="text" class="form-control ls-inline-input"
                                                    [(ngModel)]="dishName"
@@ -62,10 +62,10 @@
                                         <span class="ls-tag-group-subtitle">Description:
                                         </span>
                                     <div class="ls-input-error">
-                                        <div *ngIf="dishDescriptionError">{{dishDescriptionError}}</div>
+                                        <div *ngIf="dishDescriptionError">{{ dishDescriptionError }}</div>
                                         <span>
                                             <textarea type="text" class="form-control ls-inline-input"
-                                                   [(ngModel)]="dishDescription"
+                                                      [(ngModel)]="dishDescription"
                                             ></textarea>
                                             </span>
                                     </div>
@@ -76,7 +76,7 @@
                                         <span class="ls-tag-group-subtitle">Reference:
                                         </span>
                                     <div class="ls-input-error">
-                                        <div *ngIf="dishReferenceError">{{dishReferenceError}}</div>
+                                        <div *ngIf="dishReferenceError">{{ dishReferenceError }}</div>
                                         <span>
                                             <input type="text" class="form-control searchbox ls-inline-input"
                                                    aria-describedby="search-query"
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class=" ls-group-of-buttons">
                                     <span *ngFor="let tag of dishTypeList" class="ls-list-span-buttons"
-                                          (click)="createDish(tag)">{{tag.name}}</span>
+                                          (click)="createDish(tag)">{{ tag.name }}</span>
                                 </div>
 
 
