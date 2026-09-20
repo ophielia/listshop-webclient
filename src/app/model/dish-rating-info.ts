@@ -1,17 +1,20 @@
 import {IRatingInfo} from "./rating-info";
+import {INestedTag} from "./tag";
 
 export interface IDishRatingInfo {
-  dish_id: number;
-  dish_name: string;
-  ratings: IRatingInfo[];
+  tag: INestedTag;
+  power: number;
+  max_power: number;
+  original_power: number;
 }
 
 export class DishRatingInfo implements IDishRatingInfo {
   constructor() {
   }
 
-  dish_id: number;
-  dish_name: string;
-  ratings: IRatingInfo[];
+  tag: INestedTag;
+  power: number;
+  max_power: number;
+  original_power: number;
 }
 

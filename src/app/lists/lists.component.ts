@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 
-import { Router, Event, NavigationStart, RoutesRecognized,
-  RouteConfigLoadStart, RouteConfigLoadEnd,
-  NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import {Event, NavigationEnd, NavigationStart, Router} from '@angular/router';
 
 @Component({
-  selector: 'app-lists',
-  templateUrl: './lists.component.html',
-  styleUrls: ['./lists.component.scss']
+    selector: 'app-lists',
+    templateUrl: './lists.component.html',
+    styleUrls: ['./lists.component.scss']
 })
 export class ListsComponent implements OnInit {
     ngOnInit(): void {
@@ -16,20 +14,19 @@ export class ListsComponent implements OnInit {
     }
 
 
+    constructor(private router: Router) {
+        router.events.subscribe((event: Event) => {
+            if (event instanceof NavigationStart) {
+                // Navigation started.
+            } else if (event instanceof NavigationEnd) {
+                // Navigation Ended Successfully.
+                /*
+                  this.isLogin = event.url.includes("login");
+                  this.isSignup = !this.isLogin;
+                 */
+            }
 
-  constructor(private router: Router) {
-    router.events.subscribe( (event: Event) => {
-    if (event instanceof NavigationStart) {
-      // Navigation started.
-    } else if (event instanceof NavigationEnd) {
-      // Navigation Ended Successfully.
-    /*
-      this.isLogin = event.url.includes("login");
-      this.isSignup = !this.isLogin;
-     */
+        });
     }
-
-  });
-}
 
 }

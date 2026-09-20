@@ -13,9 +13,9 @@ import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {AddDishComponent} from "./add-dish/add-dish.component";
 import {AddDishIngredientComponent} from "./add-dish/add-dish-ingredient.component";
 import {DishContext} from "./dish-context/dish-context";
-import { IngredientInputComponent } from './ingredient-input/ingredient-input.component';
-import { EditIngredientInlineComponent } from './edit-ingredient-inline/edit-ingredient-inline.component';
-import { AddIngredientInlineComponent } from './add-ingredient-inline-component/add-ingredient-inline.component';
+import {IngredientInputComponent} from './ingredient-input/ingredient-input.component';
+import {EditIngredientInlineComponent} from './edit-ingredient-inline/edit-ingredient-inline.component';
+import {AddIngredientInlineComponent} from './add-ingredient-inline-component/add-ingredient-inline.component';
 
 
 @NgModule({

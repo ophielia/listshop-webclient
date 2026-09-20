@@ -1,5 +1,3 @@
-
-
 export interface ITextAndSelection {
     text: string;
     selected: string;

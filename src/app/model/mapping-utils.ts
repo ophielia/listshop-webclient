@@ -1,10 +1,10 @@
 import {User} from "./user";
-import {IShoppingList} from "./shoppinglist";
-import {Category} from "./category";
-import {Item} from "./item";
+import {ILegacyShoppingList} from "./legacyShoppingList";
+import {LegacyCategory} from "./legacyCategory";
+import {LegacyItem} from "./legacyItem";
 import {ITag} from "./tag";
-import {Dish} from "./dish";
-import {ILegendSource, LegendSource} from "./legend-source";
+import {Dish, IDish} from "./dish";
+import {ILegacyLegendSource, LegendSource} from "./legend-source";
 import {MealPlan} from "./mealplan";
 import {Slot} from "./slot";
 import {RatingUpdateInfo} from "./rating-update-info";
@@ -13,7 +13,6 @@ import {DishRatingInfo, IDishRatingInfo} from "./dish-rating-info";
 import {UserProperty} from "./userproperty";
 import {Celebration} from "./celebration";
 import {ISuggestion} from "./suggestion";
-import {IIngredient} from "./Ingredient";
 
 
 export default class MappingUtils {
@@ -21,18 +20,22 @@ export default class MappingUtils {
     static showConsoleLogs: boolean = false;
 
     static toUser(r: any): User {
+        if (!r) {
+            return null;
+        }
+        let userSource = r.user ? r.user : r;
         return <User>({
-            email: r.user.email,
-            creation_date: r.user.creation_date,
-            user_name: r.user.user_name,
-            roles: r.user.roles,
-            token: r.user.token
+            email: userSource.email,
+            creation_date: userSource.creation_date,
+            user_name: userSource.user_name,
+            roles: userSource.roles,
+            token: userSource.token
 
         });
     }
 
-    static toShoppingList(jsonResult: any): IShoppingList {
-        let shoppingList = <IShoppingList>({
+    static toShoppingList(jsonResult: any): ILegacyShoppingList {
+        let shoppingList = <ILegacyShoppingList>({
             list_id: jsonResult.shopping_list.list_id,
             name: jsonResult.shopping_list.name,
             user_id: jsonResult.shopping_list.user_id,
@@ -81,7 +84,7 @@ export default class MappingUtils {
     }
 
     static toDish(r: any): Dish {
-        let dish = MappingUtils._toDish(r.dish);
+        let dish = new Dish()
 
         if (MappingUtils.showConsoleLogs) {
             console.log('Parsed dish:', dish);
@@ -114,14 +117,11 @@ export default class MappingUtils {
 
 
     static toUserProperty(r: any): UserProperty {
-        let userProperty = <UserProperty>({
-                key: r.key,
-                value: r.value
-            })
-        ;
-
-
-        return userProperty;
+        let source = r.user_property ? r.user_property : r;
+        return <UserProperty>({
+            key: source.key,
+            value: source.value
+        });
     }
 
     static toRatingUpdateInfo(r: any): RatingUpdateInfo {
@@ -160,19 +160,11 @@ export default class MappingUtils {
     }
 
     static _toDishRatingInfo(r: any): IDishRatingInfo {
-        let dishRatingInfo = <DishRatingInfo>({
-            dish_id: r.dish_id,
-            dish_name: r.dish_name,
-            ratings: r.ratings.map(MappingUtils._toRatingInfo)
-        });
-        if (MappingUtils.showConsoleLogs) {
-            console.log('Parsed dish rating info:', dishRatingInfo);
-        }
-        return dishRatingInfo;
+        return new DishRatingInfo();
     }
 
-    private static _toCategory(jsonResult: any): Category {
-        let category = <Category>({
+    private static _toCategory(jsonResult: any): LegacyCategory {
+        let category = <LegacyCategory>({
             name: jsonResult.name,
             items: jsonResult.items.map(MappingUtils._toItem),
             //category_type: jsonResult.category_type,
@@ -188,8 +180,8 @@ export default class MappingUtils {
         return category;
     }
 
-    private static _toItem(jsonResult: any): Item {
-        let item = <Item>({
+    private static _toItem(jsonResult: any): LegacyItem {
+        let item = <LegacyItem>({
             list_id: jsonResult.list_id,
             item_id: jsonResult.item_id,
             source_keys: jsonResult.source_keys,
@@ -226,40 +218,15 @@ export default class MappingUtils {
         })
     }
 
-    private static _toIngredients(jsonResult: any): IIngredient {
-        return <IIngredient>({
-            id: jsonResult.id,
-            tag_id: jsonResult.tag_id,
-            tag_display: jsonResult.tag_display,
-            whole_quantity: jsonResult.whole_quantity,
-            fractional_quantity: jsonResult.fractional_quantity,
-            quantity_display: jsonResult.quantity_display,
-            unit_id: jsonResult.unit_id,
-            unit_name: jsonResult.unit_name,
-            raw_modifiers: jsonResult.raw_modifiers,
-            unit_display: jsonResult.unit_display,
-            raw_entry: jsonResult.raw_entry
-        })
-    }
 
     private static _toDish(jsonResult: any): Dish {
         var ratings = MappingUtils.toRatingUpdateInfo(jsonResult.ratings);
-        return <Dish>({
-            dish_id: jsonResult.dish_id,
-            name: jsonResult.name,
-            description: jsonResult.description,
-            reference: jsonResult.reference,
-            user_id: jsonResult.user_id,
-            last_added: jsonResult.last_added,
-            tags: jsonResult.tags.map(MappingUtils._toTag),
-            ingredients: jsonResult.ingredients.map(MappingUtils._toIngredients),
-            ratings: ratings
-        });
+        return new Dish();
     }
 
     private static _toLegend(r: any): LegendSource {
 
-        return <ILegendSource>({
+        return <ILegacyLegendSource>({
             key: r.key,
             display: r.display
         });

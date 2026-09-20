@@ -16,7 +16,7 @@ export class SingleDishElementComponent implements OnInit {
     @Input() showViewLink: boolean = true;
     @Input() selectLabel: String = "select";
     @Output() edit: EventEmitter<String> = new EventEmitter<String>();
-    @Output() select: EventEmitter<Dish> = new EventEmitter<Dish>();
+    @Output() select: EventEmitter<IDish> = new EventEmitter<Dish>();
 
     constructor(
         private fix: LandingFixService,

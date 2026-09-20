@@ -3,14 +3,13 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import TagType from "../../model/tag-type";
 import {ContentType, GroupType, TagTree} from "../../shared/services/tag-tree.object";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
-import TagSelectType from "../../model/tag-select-type";
+import {Dish} from "../../model/dish";
 
 
 @Component({
@@ -31,9 +30,9 @@ export class AddDishComponent implements OnInit, OnDestroy {
     dish: Dish;
     dishTypeTags: Tag[] = [];
 
-    dishName: string ;
-    dishDescription : string;
-    dishReference : string;
+    dishName: string;
+    dishDescription: string;
+    dishReference: string;
 
     private errorMessage: string;
 
@@ -48,8 +47,8 @@ export class AddDishComponent implements OnInit, OnDestroy {
         private router: Router,
         private title: Title,
         private meta: Meta,
-        private tagTreeService: TagTreeService ,
-        private dishService: DishService ,
+        private tagTreeService: TagTreeService,
+        private dishService: DishService,
         private logger: NGXLogger
     ) {
     }
@@ -59,7 +58,7 @@ export class AddDishComponent implements OnInit, OnDestroy {
         this.title.setTitle(this.route.snapshot.data['title']);
 
         let $sub = this.tagTreeService.allContentList(TagTree.BASE_GROUP,
-            ContentType.All, GroupType.All, [TagType.DishType] )
+            ContentType.All, GroupType.All, [TagType.DishType])
             .subscribe(data => {
                 this.logger.debug("in subscribe in tag-select. data: " + data.length)
                 this.dishTypeList = data;
@@ -81,9 +80,9 @@ export class AddDishComponent implements OnInit, OnDestroy {
 
     createDish(dishTypeTag: ITag) {
         this.validateEntry();
-       if (this.hasErrors()) {
-           return;
-       }
+        if (this.hasErrors()) {
+            return;
+        }
 
         this.logger.debug("Creating new dish [" + this.dishName + "] with tag [" + dishTypeTag + "]");
         // put tags in dish
@@ -111,18 +110,18 @@ export class AddDishComponent implements OnInit, OnDestroy {
         this.dishDescriptionError = null;
         this.dishNameError = null;
 
-        if (this.dishName == null || (this.dishName.trim())=="") {
+        if (this.dishName == null || (this.dishName.trim()) == "") {
             this.logger.debug("Invalid - no name for the dish");
             this.dishNameError = "Disn name is required.";
-        } else if (this.dishName != null && this.dishName.length > 255)  {
+        } else if (this.dishName != null && this.dishName.length > 255) {
             this.logger.debug("Invalid - dish name too long");
             this.dishNameError = "This dish name is too long";
         }
-        if (this.dishDescription != null && this.dishDescription.length > 255)  {
+        if (this.dishDescription != null && this.dishDescription.length > 255) {
             this.logger.debug("Invalid - dish description is too long");
             this.dishDescriptionError = "This dish description is too long";
         }
-        if (this.dishReference != null && this.dishReference.length > 255)  {
+        if (this.dishReference != null && this.dishReference.length > 255) {
             this.logger.debug("Invalid - dish reference is too long");
             this.dishReferenceError = "The dish reference is too long";
         }

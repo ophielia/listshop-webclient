@@ -3,19 +3,16 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {Subject, Subscription} from "rxjs";
-import {Dish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
-import {Tag} from "../../model/tag";
+import {NestedTag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import TagType from "../../model/tag-type";
-import {RatingInfo} from "../../model/rating-info";
 import {DishRatingInfo} from "../../model/dish-rating-info";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import {DishContext} from "../dish-context/dish-context";
-
-import {RatingUpdateInfo} from "../../model/rating-update-info";
-import {IIngredient, Ingredient} from "../../model/Ingredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
+import {Dish} from "../../model/dish";
+import {IIngredient, Ingredient} from "../../model/Ingredient";
 
 
 @Component({
@@ -35,10 +32,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
     editId = "0";
 
     dish: Dish;
-    dishTypeTags: Tag[] = [];
+    dishTypeTags: NestedTag[] = [];
     ingredientTags: Ingredient[] = [];
-    ratingTags: Tag[] = [];
-    plainOldTags: Tag[] = [];
+    ratingTags: NestedTag[] = [];
+    plainOldTags: NestedTag[] = [];
 
     showAddIngredient: boolean = false;
     showPlainTag: boolean = false;
@@ -59,8 +56,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
     tagNameToCreate: string;
     tagTypeToCreate: TagType;
 
-    private dishRatingInfo: DishRatingInfo;
-    private ratingsMap = new Map<number, RatingInfo>();
+    private dishRatingInfo: DishRatingInfo[];
+    private ratingsMap = new Map<string, DishRatingInfo>();
 
     private errorMessage: string;
     previousDishId: string;
@@ -103,8 +100,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.harvestTagTypesForDish();
                     this.ingredientTags = this.dish.ingredients;
                     this.ingredientTags.sort((a, b) => {
-                        let aNum = parseInt(a.id, 10);
-                        let bNum = parseInt(b.id, 10);
+                        let aNum = parseInt(a.item_id, 10);
+                        let bNum = parseInt(b.item_id, 10);
                         if (aNum < bNum) return -1;
                         else if (aNum > bNum) return 1;
                         else return 0;
@@ -115,16 +112,18 @@ export class EditDishComponent implements OnInit, OnDestroy {
                     this.mapRatings(this.dish.ratings);
                     this.determineLiquids(this.dish.ingredients);
                 },
-                e => this.errorMessage = e);
+                e => {
+                    this.errorMessage = e
+                });
         this.unsubscribe.push($sub);
     }
 
-    mapRatings(ratingUpdateInfo: RatingUpdateInfo) {
-        if (ratingUpdateInfo.dish_ratings != null) {
-            this.dishRatingInfo = ratingUpdateInfo.dish_ratings[0];
-            this.dishRatingInfo.ratings.forEach(r => {
-                r.orig_power = r.power;
-                this.ratingsMap.set(r.rating_tag_id, r);
+    mapRatings(ratingUpdateInfo: DishRatingInfo[]) {
+        if (ratingUpdateInfo != null && ratingUpdateInfo.length > 0) {
+            this.dishRatingInfo = ratingUpdateInfo;
+            this.dishRatingInfo.forEach(r => {
+                r.original_power = r.power;
+                this.ratingsMap.set(r.tag.tag_id, r);
             });
         }
     }
@@ -151,7 +150,9 @@ export class EditDishComponent implements OnInit, OnDestroy {
     }
 
     stringFieldEmpty(testField) {
-        if (testField == null) {
+        if (!testField) {
+            return true;
+        } else if (testField == null) {
             return true
         }
         return testField.trim().length == 0;
@@ -163,6 +164,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
             this.showPlainTag = false;
             this.showAddDishType = false;
             this.editId = "0";
+            this.selectedIngredient = new Ingredient();
         }
     }
 
@@ -196,7 +198,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     showEditIngredient(ingredient: Ingredient) {
         this.editedIngredient.next(ingredient);
-        this.editId = ingredient.tag_id;
+        this.editId = ingredient.tag.tag_id;
         this.selectedIngredient = ingredient;
         this.showAddIngredient = false;
     }
@@ -254,10 +256,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     removeIngredientFromDish(ingredient: Ingredient) {
         // remove ingredient from dish
-        this.logger.debug("removing ingredient [" + ingredient.tag_id + "] from dish");
+        this.logger.debug("removing ingredient [" + ingredient.tag.tag_id + "] from dish");
 
         let $sub = this.dishService
-            .removeIngredientFromDish(this.dish.dish_id, ingredient.id)
+            .removeIngredientFromDish(this.dish.dish_id, ingredient.item_id)
             .subscribe(p => {
                 this.getDish(this.dish.dish_id);
             });
@@ -266,14 +268,14 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
     }
 
-    changeTheRating(ratingInfo: RatingInfo) {
+    changeTheRating(ratingInfo: DishRatingInfo) {
         if (ratingInfo) {
             this.logger.debug("the rating is still raging: " + ratingInfo.power);
-            this.logger.debug("but this time with a tag" + ratingInfo.rating_tag_id);
+            this.logger.debug("but this time with a tag" + ratingInfo.tag.tag_id);
 
-            if (ratingInfo.orig_power < ratingInfo.power) {
+            if (ratingInfo.original_power < ratingInfo.power) {
                 this.logger.debug("going up");
-            } else if (ratingInfo.orig_power > ratingInfo.power) {
+            } else if (ratingInfo.original_power > ratingInfo.power) {
                 this.logger.debug("going down");
 
             } else {
@@ -281,8 +283,8 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
             }
 
-            this.dishService.setDishRating(this.dish.dish_id, ratingInfo.rating_tag_id, ratingInfo.power).subscribe();
-            ratingInfo.orig_power = ratingInfo.power;
+            this.dishService.setDishRating(this.dish.dish_id, ratingInfo.tag.tag_id, ratingInfo.power).subscribe();
+            ratingInfo.original_power = ratingInfo.power;
         }
 
     }
@@ -339,7 +341,7 @@ export class EditDishComponent implements OnInit, OnDestroy {
     private determineLiquids(ingredients: IIngredient[]) {
         // loop through ingredients, setting is liquid
         for (let ingredient of ingredients) {
-            let tag = this.tagTreeService.retrieveTag(ingredient.tag_id);
+            let tag = this.tagTreeService.retrieveTag(ingredient.tag.tag_id);
             ingredient.is_liquid = tag.is_liquid;
         }
     }
@@ -369,10 +371,10 @@ export class EditDishComponent implements OnInit, OnDestroy {
 
 
     ingredientDisplay(ingredient: Ingredient) {
-        if (ingredient.raw_entry && ingredient.raw_entry.trim().length > 0) {
-            return ingredient.raw_entry + " " + ingredient.tag_display;
+        if (ingredient.display && ingredient.display.trim().length > 0) {
+            return ingredient.display;
         }
-        return ingredient.tag_display;
+        return ingredient.tag.name;
     }
 
     isCurrentEdit(ingredient: Ingredient) {
@@ -382,8 +384,9 @@ export class EditDishComponent implements OnInit, OnDestroy {
         if (ingredient.original_tag_id && ingredient.original_tag_id.trim().length > 0) {
             return this.editId == ingredient.original_tag_id;
         }
-        return this.editId == ingredient.tag_id;
+        return this.editId == ingredient.tag.tag_id;
     }
+
 
     addNewIngredient(ingredient: Ingredient) {
         console.log("adding a new ingredient");

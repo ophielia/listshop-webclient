@@ -4,8 +4,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
-import {ShoppingList} from "../../model/shoppinglist";
+import {LegacyShoppingList} from "../../model/legacyShoppingList";
 import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
+import {NestedShoppingList} from "../../model/shoppingList";
 
 @Component({
     selector: 'app-manage-lists',
@@ -15,7 +16,7 @@ import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service
 export class ManageListsComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
 
-    lists: ShoppingList[];
+    lists: NestedShoppingList[];
 
     constructor(
         private fix: LandingFixService,
@@ -45,7 +46,7 @@ export class ManageListsComponent implements OnInit, OnDestroy {
             .getAllLists()
             .subscribe(p => {
                 if (p) {
-                    this.lists = p
+                    this.lists = p.list_of_lists;
                 }
             });
         this.unsubscribe.push(sub$);
@@ -53,8 +54,11 @@ export class ManageListsComponent implements OnInit, OnDestroy {
 
     deleteShoppingList(listId: string) {
         this.confirmDialogService.confirmThis("Are you sure you'd like to delete this list?",
-            () => {this.doDeleteShoppingList(listId);},
-            function () { })
+            () => {
+                this.doDeleteShoppingList(listId);
+            },
+            function () {
+            })
     }
 
     doDeleteShoppingList(listId: string) {
@@ -65,7 +69,7 @@ export class ManageListsComponent implements OnInit, OnDestroy {
     }
 
     editShoppingList(listId: String) {
-        var url = "lists/edit/" +  listId;
+        var url = "lists/edit/" + listId;
         this.router.navigateByUrl(url);
 
     }

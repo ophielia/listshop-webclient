@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {EditIngredientInlineComponent} from "../edit-ingredient-inline/edit-ingredient-inline.component";
 import {FoodService} from "../../shared/services/food.service";
 import {NGXLogger} from "ngx-logger";
-import {Ingredient} from "../../model/Ingredient";
 import {TagTreeService} from "../../shared/services/tag-tree.service";
+import {Ingredient} from "../../model/Ingredient";
 
 @Component({
     selector: 'app-add-ingredient-inline',

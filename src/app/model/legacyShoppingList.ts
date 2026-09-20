@@ -1,32 +1,32 @@
 import {IItemSource} from "./item-source";
-import {Category} from "./category";
-import {ILegendSource} from "./legend-source";
+import {LegacyCategory} from "./legacyCategory";
+import {ILegacyLegendSource} from "./legend-source";
 
-export interface IShoppingList {
+export interface ILegacyShoppingList {
   is_starter: boolean;
   list_id: string;
-  categories: Category[];
+  categories: LegacyCategory[];
   user_id: string;
   created: number;
   updated: number;
   list_type: string;
   item_count: number;
   name: string;
-  legend: ILegendSource[];
+  legend: ILegacyLegendSource[];
 }
 
-export class ShoppingList implements IShoppingList {
+export class LegacyShoppingList implements ILegacyShoppingList {
   constructor() {
   }
   is_starter: boolean;
   list_id: string;
-  categories: Category[];
+  categories: LegacyCategory[];
   user_id: string;
   created: number;
   updated: number;
   list_type: string;
   item_count: number;
   name: string;
-  legend: ILegendSource[];
+  legend: ILegacyLegendSource[];
 }
 

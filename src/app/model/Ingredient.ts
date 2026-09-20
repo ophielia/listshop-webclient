@@ -1,55 +1,91 @@
-import {ITag} from "./tag";
+import {INestedTag, ITag, NestedTag} from "./tag";
+import {Amount, IAmount} from "./Amount";
+
 
 export interface IIngredient {
+  item_id: string;
+  display: string;
+  tag: INestedTag;
+  amount: IAmount;
+  is_liquid: boolean;
+
+  raw_entry: string;
   original_tag_id: string;
+  raw_modifiers
+}
+
+export interface IPutIngredient {
   id: string;
   tag_id: string;
   tag_display: string;
-  whole_quantity: number;
-  quantity: number;
-  fractional_quantity: string;
-  quantity_display: string;
-  unit_id: string;
-  unit_name: string;
-  raw_modifiers: string[];
-  unit_display: string;
   raw_entry: string;
-  is_liquid: boolean;
+  amount: IAmount;
+
+
 }
 
 export class Ingredient implements IIngredient {
   constructor() {
+    this.tag = new NestedTag();
+    this.amount = new Amount();
+    this.raw_modifiers = [];
   }
 
-  id: string;
-  tag_id: string;
-  original_tag_id: string;
-  tag_display: string;
-  whole_quantity: number;
-  quantity: number;
-  fractional_quantity: string;
-  quantity_display: string;
-  unit_id: string;
-  unit_name: string;
-  raw_modifiers: string[];
-  unit_display: string;
-  raw_entry: string;
+  item_id: string;
+  display: string;
+  tag: INestedTag;
+  amount: IAmount;
   is_liquid: boolean;
+
+  raw_entry: string;
+  original_tag_id: string;
+  raw_modifiers
 
   static clone(ingredient: IIngredient) {
     var newIngredient = new Ingredient();
-    newIngredient.id = ingredient.id;
-    newIngredient.tag_id = ingredient.tag_id;
-    newIngredient.tag_display = ingredient.tag_display;
-    newIngredient.whole_quantity = ingredient.whole_quantity;
-    newIngredient.fractional_quantity = ingredient.fractional_quantity;
-    newIngredient.quantity_display = ingredient.quantity_display;
-    newIngredient.unit_id = ingredient.unit_id;
-    newIngredient.unit_name = ingredient.unit_name;
-    newIngredient.raw_modifiers = ingredient.raw_modifiers;
-    newIngredient.unit_display = ingredient.unit_display;
-    newIngredient.raw_entry = ingredient.raw_entry;
-    newIngredient.is_liquid = ingredient.is_liquid;
+    newIngredient.item_id = ingredient.item_id;
+    var tag = new NestedTag()
+    tag.tag_id = ingredient.tag.tag_id;
+    tag.name = ingredient.tag.name;
+    newIngredient.tag = tag;
+    var amount = new Amount();
+
+
+    amount.whole_quantity = ingredient.amount.whole_quantity;
+    amount.fractional_quantity = ingredient.amount.fractional_quantity;
+    amount.quantity_display = ingredient.amount.quantity_display;
+    amount.unit_id = ingredient.amount.unit_id;
+    amount.modifiers = ingredient.amount.modifiers;
+    amount.unit_display = ingredient.amount.unit_display;
+    amount.display = ingredient.amount.display;
+    newIngredient.amount = amount;
+
+    //MM missing, incomplete, otherwise problematic
+//    newIngredient.tag_display = ingredient.tag_display;
+//    amount.unit_name = ingredient.amount.unit_name;
+//    amount.is_liquid = ingredient.is_liquid;
     return newIngredient;
   }
 }
+
+export class PutIngredient implements IPutIngredient {
+  id: string;
+  tag_id: string;
+  tag_display: string;
+  raw_entry: string;
+  amount: IAmount;
+
+    static from(ingredient: IIngredient) {
+      var newIngredient = new PutIngredient();
+      newIngredient.id = ingredient.item_id;
+      var tag = new NestedTag()
+      newIngredient.tag_id = ingredient.tag.tag_id;
+      newIngredient.tag_display = ingredient.tag.name;
+      newIngredient.raw_entry = ingredient.raw_entry;
+      var amount = Amount.clone(ingredient.amount);
+newIngredient.amount = amount;
+      return newIngredient;
+    }
+}
+
+

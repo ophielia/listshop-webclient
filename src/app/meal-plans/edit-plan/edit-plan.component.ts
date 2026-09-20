@@ -3,7 +3,7 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList} from "../../model/shoppinglist";
+import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {Subscription} from "rxjs";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
@@ -89,7 +89,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     getAllDishes() {
         this.dishService.getAllDishes()
             .subscribe(p => {
-                    this.allDishes = p;
+                    this.allDishes = p.dish_list;
                 },
                 e => this.errorMessage = e);
 
@@ -188,12 +188,12 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.showAddDish = !this.showAddDish;
     }
 
-    addMealPlanToList(list: IShoppingList) {
-        let promise = this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id);
-        promise.then(data => {
+    addMealPlanToList(list: ILegacyShoppingList) {
+        let $sub =  this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id).subscribe(data => {
             this.getMealPlan(this.mealPlan.meal_plan_id);
             this.showAddToList = false;
         })
+        this.unsubscribe.push($sub);
     }
 
     generateList() {
@@ -243,10 +243,10 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     }
 
     private determineIfUserHasStarter() {
-        let promise = this.listService.getAllListsAsPromise();
-        promise.then(data => {
-            var starter = data.filter( l => l.is_starter);
+        this.listService.getAllLists().subscribe(data => {
+            var starter = data.list_of_lists.filter( l => l.is_starter_list);
             this.userHasStarter = starter.length > 0;
         })
+
     }
 }

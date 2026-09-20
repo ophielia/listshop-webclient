@@ -1,6 +1,6 @@
 import {ITag} from "./tag";
 
-export interface IItem {
+export interface ILegacyItem {
   list_id: string;
   item_id: string;
   source_keys: string[];
@@ -14,7 +14,7 @@ export interface IItem {
   tag: ITag;
 }
 
-export class Item implements IItem {
+export class LegacyItem implements ILegacyItem {
   constructor() {
   }
 

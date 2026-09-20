@@ -74,32 +74,45 @@ export class AuthenticationService implements OnDestroy {
     }
 
     checkAuthenticationOnInitialize(): Observable<boolean> {
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        var token = currentUser && currentUser.token;
-        if (!token) {
-            this.userIsAuthenticated = false;
-            return of(false);
-        }
-        // prepare device info
-        this.lastTokenCheck = new Date().getTime();
-        var deviceInfo = this.createDeviceInfo();
-        var url = this.authUrl + "/authenticate";
-        return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
-            .pipe(map((response: HttpResponse<any>) => {
-                var status = response.status;
-                console.log("status is: " + status);
-                if (status >= 200 && status < 300) {
-                    this.userIsAuthenticated = true;
-                    return true;
+        return this.envLoader.getEnvConfigWhenReady().pipe(
+            switchMap(config => {
+                this.authUrl = config.apiUrl + "auth";
+                this.userUrl = config.apiUrl + "user";
+
+                var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                var token = currentUser && currentUser.token;
+                if (!token) {
+                    this.userIsAuthenticated = false;
+                    return of(false);
                 }
-                    this.userIsAuthenticated = false;
-                    localStorage.removeItem('currentUser');
-                                    return false;
+                // prepare device info
+                this.lastTokenCheck = new Date().getTime();
+                var deviceInfo = this.createDeviceInfo();
+                var url = this.authUrl + "/authenticate";
+                return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
+                    .pipe(map((response: HttpResponse<any>) => {
+                        var status = response.status;
+                        if (status >= 200 && status < 300) {
+                            let user = MappingUtils.toUser(response.body);
+                            if (user) {
+                                if (!user.token || user.token === "") {
+                                    user.token = token;
+                                }
+                                localStorage.setItem('currentUser', JSON.stringify(user));
+                                this.userIsAuthenticated = true;
+                                return true;
+                            }
+                        }
+                        this.userIsAuthenticated = false;
+                        localStorage.removeItem('currentUser');
+                        return false;
 
-            }),
-                catchError(this.handleAuthenticationError));
+                    }),
+                        catchError(this.handleAuthenticationError));
+            })
+        );
     }
-    checkAuthentication(): Promise<boolean>  {
+    checkAuthentication(): Promise<boolean> {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
         if (!token) {
@@ -109,24 +122,37 @@ export class AuthenticationService implements OnDestroy {
         // prepare device info
         this.lastTokenCheck = new Date().getTime();
         var deviceInfo = this.createDeviceInfo();
-        var url = this.authUrl + "/authenticate";
-        return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
-            .pipe(map((response: HttpResponse<any>) => {
-                    var status = response.status;
-                    console.log("status is: " + status);
-                    if (status >= 200 && status < 300) {
-                        this.userIsAuthenticated = true;
-                        return true;
-                    }
-                    this.userIsAuthenticated = false;
-                    localStorage.removeItem('currentUser');
-                    return false;
 
-                }),
-                catchError(this.handleAuthenticationError)).toPromise();
+        return this.envLoader.getEnvConfigWhenReady().pipe(
+            switchMap(config => {
+                this.authUrl = config.apiUrl + "auth";
+                this.userUrl = config.apiUrl + "user";
+                var url = this.authUrl + "/authenticate";
+                return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
+                    .pipe(map((response: HttpResponse<any>) => {
+                        var status = response.status;
+                        if (status >= 200 && status < 300) {
+                            let user = MappingUtils.toUser(response.body);
+                            if (user) {
+                                if (!user.token || user.token === "") {
+                                    user.token = token;
+                                }
+                                localStorage.setItem('currentUser', JSON.stringify(user));
+                                this.userIsAuthenticated = true;
+                                return true;
+                            }
+                        }
+                        this.userIsAuthenticated = false;
+                        localStorage.removeItem('currentUser');
+                        return false;
+
+                    }),
+                        catchError(this.handleAuthenticationError));
+            })
+        ).toPromise();
 
     }
-    checkAuthenticationAndKickout(): Promise<boolean>  {
+    checkAuthenticationAndKickout(): Promise<boolean> {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         var token = currentUser && currentUser.token;
         if (!token) {
@@ -136,22 +162,36 @@ export class AuthenticationService implements OnDestroy {
         // prepare device info
         this.lastTokenCheck = new Date().getTime();
         var deviceInfo = this.createDeviceInfo();
-        var url = this.authUrl + "/authenticate";
-        return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
-            .pipe(map((response: HttpResponse<any>) => {
-                    var status = response.status;
-                    this.logger.debug("authentication status is: " + status);
-                    if (status >= 200 && status < 300) {
-                        this.userIsAuthenticated = true;
-                        return true;
-                    }
-                    this.userIsAuthenticated = false;
-                    localStorage.removeItem('currentUser');
 
-                    this.router.navigate(['/user/login']);
+        return this.envLoader.getEnvConfigWhenReady().pipe(
+            switchMap(config => {
+                this.authUrl = config.apiUrl + "auth";
+                this.userUrl = config.apiUrl + "user";
+                var url = this.authUrl + "/authenticate";
+                return this.httpClient.post(url, JSON.stringify(deviceInfo), {observe: 'response'})
+                    .pipe(map((response: HttpResponse<any>) => {
+                        var status = response.status;
+                        this.logger.debug("authentication status is: " + status);
+                        if (status >= 200 && status < 300) {
+                            let user = MappingUtils.toUser(response.body);
+                            if (user) {
+                                if (!user.token || user.token === "") {
+                                    user.token = token;
+                                }
+                                localStorage.setItem('currentUser', JSON.stringify(user));
+                                this.userIsAuthenticated = true;
+                                return true;
+                            }
+                        }
+                        this.userIsAuthenticated = false;
+                        localStorage.removeItem('currentUser');
 
-                }),
-                catchError(this.handleAuthenticationError)).toPromise();
+                        this.router.navigate(['/user/login']);
+
+                    }),
+                        catchError(this.handleAuthenticationError));
+            })
+        ).toPromise();
 
     }
 

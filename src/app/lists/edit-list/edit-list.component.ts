@@ -3,19 +3,21 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {IShoppingList, ShoppingList} from "../../model/shoppinglist";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
-import {Category, ICategory} from "../../model/category";
-import {IItem, Item} from "../../model/item";
+import {LegacyCategory, ILegacyCategory} from "../../model/legacyCategory";
+import {ILegacyItem, LegacyItem} from "../../model/legacyItem";
 import {ITag, Tag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
-import {IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
 import {OperationType} from "../../model/operation-type";
 import {GroupType} from "../../shared/services/tag-tree.object";
 import TagType from "../../model/tag-type";
+import {IDish} from "../../model/dish";
+import {IShoppingList, ShoppingList} from "../../model/shoppingList";
+import {Category, ICategory} from "../../model/category";
+import {Item} from "../../model/Item";
 
 @Component({
     selector: 'app-edit-list',
@@ -40,7 +42,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     showChangeName: boolean = false;
     shoppingListIsStarter: boolean = false;
     private originalName: string = null;
-    groupTypeNoGroups : GroupType = GroupType.ExcludeGroups;
+    groupTypeNoGroups: GroupType = GroupType.ExcludeGroups;
     shoppingListName: string = "";
     frequentToggleAvailable: boolean = true;
     frequentItemsExist: boolean = false;
@@ -50,7 +52,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     showItemLegends: boolean;
 
     shoppingList: ShoppingList;
-    removedItems: IItem[] = [];
+    removedItems: ILegacyItem[] = [];
     selectedItems: string[] = [];
     tagNameToCreate: string;
     tagTypeToCreate: TagType;
@@ -162,7 +164,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         if (item.is_selected && !inList) {
             this.selectedItems.push(item.tag.tag_id);
         } else if (!item.is_selected && inList) {
-            this.selectedItems = this.selectedItems.filter(i => i == item.tag_id);
+            this.selectedItems = this.selectedItems.filter(i => i == item.tag.tag_id);
         }
         // check category for selected
         var oneSelected = category.items.filter(i => i.is_selected);
@@ -174,7 +176,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         return inListString != null;
     }
 
-    showLegends(item: Item) {
+    showLegends(item: LegacyItem) {
         if (!this.showItemLegends) {
             return false;
         }
@@ -223,16 +225,14 @@ export class EditListComponent implements OnInit, OnDestroy {
         // add tag to list as item in back end
         this.logger.debug("adding tag [" + tagId + "] to list");
         this.addTagModel.hide();
-        let promise = this.listService.addTagItemToShoppingList(this.shoppingList.list_id, tagId);
-
-        promise.then((data) => {
-            this.getShoppingList(this.shoppingList.list_id);
-        }).catch((error) => {
-            this.logger.debug("Promise rejected with " + JSON.stringify(error));
-        });
+        this.listService.addTagToShoppingList(this.shoppingList.list_id, tagId)
+            .subscribe(p => {
+                    this.getShoppingList(this.shoppingList.list_id);
+                },
+                e => this.errorMessage = e )
     }
 
-    reAddItem(item: IItem) {
+    reAddItem(item: ILegacyItem) {
         this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id);
         if (item.tag) {
             this.addTagToList(item.tag);
@@ -242,7 +242,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     getAllDishes() {
         this.dishService.getAllDishes()
             .subscribe(p => {
-                    this.allDishes = p;
+                    this.allDishes = p.dish_list;
                 },
                 e => this.errorMessage = e);
 
@@ -262,18 +262,18 @@ export class EditListComponent implements OnInit, OnDestroy {
     addListToList(fromList: IShoppingList) {
         this.listLegendMap = null;
         this.showAddList = false;
-        let promise = this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id);
-        promise.then(data => {
-            this.highlightSourceId = "l" + fromList.list_id;
-            this.getShoppingList(this.shoppingList.list_id);
-            this.showAddList = false;
-        })
+        this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id)
+            .subscribe( data => {
+                this.highlightSourceId = "l" + fromList.list_id;
+                this.getShoppingList(this.shoppingList.list_id);
+                this.showAddList = false;
+            })
     }
 
     removeDishOrList(sourcekey: string) {
         this.hideAllAddInputs();
-        let promise = this.listService.removeItemsByDishOrList(this.shoppingList.list_id, sourcekey)
-        promise.then(data => {
+        let $sub = this.listService.removeItemsByDishOrList(this.shoppingList.list_id, sourcekey)
+            .subscribe(data => {
             this.getShoppingList(this.shoppingList.list_id);
         });
 
@@ -305,10 +305,11 @@ export class EditListComponent implements OnInit, OnDestroy {
     clearList() {
         this.highlightSourceId = null;
         this.showFrequent = false;
-        let promise = this.listService.removeAllItemsFromList(this.shoppingList.list_id);
-        promise.then(data => {
+        let $sub = this.listService.removeAllItemsFromList(this.shoppingList.list_id)
+        .subscribe(data => {
             this.getShoppingList(this.shoppingList.list_id)
         });
+        this.unsubscribe.push($sub);
     }
 
     private processRetrievedShoppingList(p: IShoppingList) {
@@ -367,11 +368,14 @@ export class EditListComponent implements OnInit, OnDestroy {
         var newCategories = [];
         var pulledItems = [];
         var pulledHasSelected = false;
+
+
+
         for (let category of shoppingList.categories) {
             var categoryItems = [];
             var hasSelected = false;
             for (let item of category.items) {
-                if (item.source_keys.includes(highlightId)) {
+                if (this.itemIncludesSource(item, highlightId)) {
                     pulledItems.push(item);
                     if (item.is_selected) {
                         pulledHasSelected = true;
@@ -410,10 +414,10 @@ export class EditListComponent implements OnInit, OnDestroy {
         // to fill in name, items, is_frequent
         var pulledCategory = new Category(
             name,
+            sourceId,
+            0,
             pulledItems,
-            null,
             pulledHasSelected,
-            "yes",
             is_frequent,
             true
         )
@@ -423,6 +427,23 @@ export class EditListComponent implements OnInit, OnDestroy {
         return newCategories;
     }
 
+    private itemIncludesSource(item: Item, highlightId: string) {
+        if (highlightId == LegendService.FREQUENT) {
+            // check sources
+            return item.sources.includes(highlightId);
+        }
+        var sourceIsDish = highlightId.startsWith("d");
+        var sourceId = highlightId.substr( 1);
+        for (let detail of item.details) {
+            if (sourceIsDish && detail.dish_id === sourceId ) {
+                return true;
+            }
+            if (!sourceIsDish && detail.list_id === sourceId ) {
+                return true;
+            }
+        }
+        return false;
+    }
     private defaultEmptySourceId() {
         // will be either null or frequent, depending upon frequent availabilty
         // and current frequent toggle state
@@ -434,7 +455,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     }
 
     private newEvaluateShowLegend() {
-        let thisListIsTheStarter = this.shoppingList.is_starter;
+        let thisListIsTheStarter = this.shoppingList.is_starter_list;
         if (thisListIsTheStarter) {
             return false;
         }
@@ -451,7 +472,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
 
     private adjustForStarter(list: IShoppingList) {
-        this.shoppingListIsStarter = list.is_starter;
+        this.shoppingListIsStarter = list.is_starter_list;
         if (this.shoppingListIsStarter) {
             this.showMakeStarter = false;
             this.frequentToggleAvailable = !this.shoppingListIsStarter;
@@ -475,7 +496,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     private handleCrossedOffAndSelected(shoppingList: IShoppingList) {
 
         if (!shoppingList.categories || shoppingList.categories.length == 0) {
-            return [];
+            return;
         }
 
         this.crossedOffExist = false;
@@ -526,7 +547,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
         for (let category of list.categories) {
             for (let item of category.items) {
-                for (let sourceKey of item.source_keys) {
+                for (let sourceKey of item.sources) {
                     if (sourceKey == LegendService.FREQUENT) {
                         return true;
                     }

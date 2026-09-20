@@ -76,19 +76,17 @@ export class TagTreeService implements OnDestroy {
         this.isLoadingSubject.next(true);
 
 
-        const promise = this.tagService.getTagsForTagTree();
-        console.log(promise);
-        promise.then((data) => {
-            this.logger.debug("tag data retrieved, building TagTree");
-            this._tagTree = new TagTree(data);
-            this._lastLoaded = new Date().getTime();
-            this.isLoadingSubject.next(false);
-
-        }).catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
+        this.tagService.getTagsForTagTree().subscribe({
+            next: (response) => {
+                let tagList = response.tag_list;
+                this._tagTree = new TagTree(tagList);
+                this._lastLoaded = new Date().getTime();
+                this.isLoadingSubject.next(false);
+            },
+            error: (error) => {
+                console.log("Promise rejected with " + JSON.stringify(error));
+            }
         });
-
-
     }
 
     refreshTagTreeIfNeeded() {

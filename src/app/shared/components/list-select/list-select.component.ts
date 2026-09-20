@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {IShoppingList} from "../../../model/shoppinglist";
+import {ILegacyShoppingList} from "../../../model/legacyShoppingList";
 import {ListService} from "../../services/list.service";
+import {INestedShoppingList} from "../../../model/shoppingList";
 
 
 @Component({
@@ -9,13 +10,13 @@ import {ListService} from "../../services/list.service";
     styleUrls: ['./list-select.component.scss']
 })
 export class ListSelectComponent implements OnInit, OnDestroy {
-    @Output() listSelected: EventEmitter<IShoppingList> = new EventEmitter<IShoppingList>();
+    @Output() listSelected: EventEmitter<ILegacyShoppingList> = new EventEmitter<ILegacyShoppingList>();
     @Output() cancelSelectList: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() currentListId: string;
     @Input() title: string = "Add From List";
 
 
-    listOfLists: IShoppingList[] = [];
+    listOfLists: INestedShoppingList[] = [];
     selectedList: any;
 
     constructor(private listService: ListService) {
@@ -24,9 +25,9 @@ export class ListSelectComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedList = null;
-        let promise = this.listService.getAllListsAsPromise();
-        promise.then(data => {
-            this.listOfLists = data.filter( l => l.list_id != this.currentListId);
+
+        this.listService.getAllLists().subscribe(data => {
+            this.listOfLists = data.list_of_lists.filter( l => l.list_id != this.currentListId);
         })
     }
 
