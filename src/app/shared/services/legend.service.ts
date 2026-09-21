@@ -6,7 +6,7 @@ import {ApiLegendSource} from "../../model/api-legend-source";
 
 @Injectable({providedIn: 'root'})
 export class LegendService {
-    static FREQUENT = "sfrequent"
+    static FREQUENT = "frequent"
     static ICON_COLORS = ["orange", "blue", "red", "vanilla"];
     static ICON_IMAGES = ["saltandpepper", "skimmer", "spatula2", "grill", "bowl", "cutting board", "fork", "grater", "grill", "ketchup bottle", "knife", "ladle", "measuring cup", "pot", "rollingpin"];
     static instance: LegendService;
