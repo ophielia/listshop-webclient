@@ -586,6 +586,13 @@ export class EditListComponent implements OnInit, OnDestroy {
 
     }
 
+    detailAmountDisplay(detail: ItemDetails, item: Item) {
+        if (detail.amount && detail.amount.unit_display && detail.amount.unit_display === 'unit') {
+            return detail.amount.display + " " + item.tag.name;
+        }
+        return detail.amount.display;
+    }
+
     crossOffItem(item: Item) {
         var itemTagIds = [];
         itemTagIds.push(item.tag.tag_id);

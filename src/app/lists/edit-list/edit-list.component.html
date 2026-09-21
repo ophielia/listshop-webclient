@@ -91,7 +91,7 @@
                                                 <img *ngIf="detail.key" [src]="detail.key" width="15" height="15"/>
                                                 {{detail.display}}
                                                 </div>
-                                                <div *ngIf="detail.amount" class="detail-amount">{{ detail.amount.display }}</div>
+                                                <div *ngIf="detail.amount" class="detail-amount">{{detailAmountDisplay(detail,item)}}</div>
                                             </ng-container>
                                             <hr *ngIf="item.details && item.details.length > 0">
                                             <div class="popup-actions">
