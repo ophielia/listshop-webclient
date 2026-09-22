@@ -3,10 +3,7 @@ import {Observable, Subscription} from "rxjs";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import {NGXLogger} from "ngx-logger";
-import {ILegacyShoppingList} from "../../model/legacyShoppingList";
-import {catchError, map} from "rxjs/operators";
 import {CampaignFeedback} from "../../model/campaignfeedback";
-import {toPromise} from "rxjs-compat/operator/toPromise";
 
 @Injectable()
 export class FeedbackService {

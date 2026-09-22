@@ -222,9 +222,9 @@
     "semantic_hash": "5ca330ac28b1aa56b9d3b4a2701b1655"
   },
   "src/app/dishes/manage-dishes/manage-dishes.component.ts": {
-    "mtime": 1790047792.6980786,
-    "seen": 1790047811.509341,
-    "ast_hash": "d17f30750acc7d89432e10fc04a4f52c",
+    "mtime": 1789896961.1117418,
+    "seen": 1789896997.296992,
+    "ast_hash": "29dc3bca1d70799e6d7d0bfabe771945",
     "semantic_hash": ""
   },
   "src/app/dishes/mealplan-select/mealplan-select.component.ts": {
@@ -330,9 +330,9 @@
     "semantic_hash": "0ab2c51e664b6bb4da629d2c45ea3bac"
   },
   "src/app/lists/edit-list/edit-list.component.ts": {
-    "mtime": 1790047709.1372597,
-    "seen": 1790047811.5093918,
-    "ast_hash": "06ddcd50c23a4293053289b14f8b4e65",
+    "mtime": 1789896961.113403,
+    "seen": 1789896997.297025,
+    "ast_hash": "1dcbe84a238b21f133c09e41b33fac82",
     "semantic_hash": ""
   },
   "src/app/lists/lists-routing.module.ts": {
@@ -360,9 +360,9 @@
     "semantic_hash": "428014bc4feaf01d33854ed1f73422ee"
   },
   "src/app/lists/manage-lists/manage-lists.component.ts": {
-    "mtime": 1790047709.143139,
-    "seen": 1790047811.509405,
-    "ast_hash": "98374f5b5e204d2ce92323c589d1c28c",
+    "mtime": 1789896961.1148703,
+    "seen": 1789896997.297033,
+    "ast_hash": "7d6aaaefddd5a26aec05aed7b0a73c50",
     "semantic_hash": ""
   },
   "src/app/lists/single-list-element/single-list-element.component.spec.ts": {
@@ -384,15 +384,15 @@
     "semantic_hash": "ed1b3a69221c6989c1fb4dc6d7fdd757"
   },
   "src/app/meal-plans/edit-plan/edit-plan.component.ts": {
-    "mtime": 1790047792.7138803,
-    "seen": 1790047811.5094159,
-    "ast_hash": "7e716f7a1b280a38429c79a1b71242c2",
+    "mtime": 1789896961.1158903,
+    "seen": 1789896997.297039,
+    "ast_hash": "b4b45360d37de46d0c972640b9bb0171",
     "semantic_hash": ""
   },
   "src/app/meal-plans/manage-mealplans/manage-meal-plans.component.ts": {
-    "mtime": 1790047792.7065308,
-    "seen": 1790047811.509418,
-    "ast_hash": "6dc3854a34d07151c0d6df5a34f42d53",
+    "mtime": 1789896961.1160724,
+    "seen": 1789896997.297041,
+    "ast_hash": "956ec0e1d9e781771657bcd1ef43ac9f",
     "semantic_hash": ""
   },
   "src/app/meal-plans/meal-plans-routing.module.ts": {
@@ -456,9 +456,9 @@
     "semantic_hash": "fad1097cc5ff709b62d38c2e712cf319"
   },
   "src/app/model/campaignfeedback.ts": {
-    "mtime": 1789965071.0278695,
-    "seen": 1790047811.509456,
-    "ast_hash": "d837c60b7901ac8a867e60f80a6099fb",
+    "mtime": 1789896961.1177845,
+    "seen": 1789896997.297066,
+    "ast_hash": "a297747c11ba89770a6025c831504780",
     "semantic_hash": ""
   },
   "src/app/model/category.ts": {
@@ -534,9 +534,9 @@
     "semantic_hash": "f966375e43a5bc54a4749a1bb4a7c5bf"
   },
   "src/app/model/item-operation-put.ts": {
-    "mtime": 1790047709.1555154,
-    "seen": 1790047811.509491,
-    "ast_hash": "568df2019741e3dbec1a0e03cc34645d",
+    "mtime": 1789896961.1188295,
+    "seen": 1789896997.297087,
+    "ast_hash": "e56e6a84685f08d83f9b03716f4ea55f",
     "semantic_hash": ""
   },
   "src/app/model/item-source.ts": {
@@ -558,9 +558,9 @@
     "semantic_hash": "ceb31f9995c659d992688c2e67260df5"
   },
   "src/app/model/legend-source.ts": {
-    "mtime": 1790047709.161557,
-    "seen": 1790047811.509501,
-    "ast_hash": "1dfce094f360448309353f8e4b85d576",
+    "mtime": 1789896961.119844,
+    "seen": 1789896997.297098,
+    "ast_hash": "149a1a2f65c173110089e954b76d4fb9",
     "semantic_hash": ""
   },
   "src/app/model/list-shop-error.ts": {
@@ -588,9 +588,9 @@
     "semantic_hash": "de49afe570ffcf505b889a63176d0d96"
   },
   "src/app/model/mapping-utils.ts": {
-    "mtime": 1790047709.1176429,
-    "seen": 1790047811.509513,
-    "ast_hash": "eefc165d0aea0d96bfb9922ddcc7270f",
+    "mtime": 1789896961.1201067,
+    "seen": 1789896997.297106,
+    "ast_hash": "378cf0c8e73b93b8181429b3a453e2a2",
     "semantic_hash": ""
   },
   "src/app/model/meal-plan-type.ts": {
@@ -768,9 +768,9 @@
     "semantic_hash": "8701dbaa404d344a60da7d779765e0a1"
   },
   "src/app/shared/components/list-select/list-select.component.ts": {
-    "mtime": 1789965142.6575508,
-    "seen": 1790047811.5095968,
-    "ast_hash": "28912744a010f760e0d7a2b734f6a96f",
+    "mtime": 1789896961.121374,
+    "seen": 1789896997.297158,
+    "ast_hash": "531990427bd1e211bf06c17f1102bfee",
     "semantic_hash": ""
   },
   "src/app/shared/components/list-shop-header/list-shop-header.component.spec.ts": {
@@ -954,9 +954,9 @@
     "semantic_hash": ""
   },
   "src/app/shared/services/feedback.service.ts": {
-    "mtime": 1789965071.0711973,
-    "seen": 1790047811.509682,
-    "ast_hash": "00066474eaa5f7fad2b78266320810e5",
+    "mtime": 1789896961.1228786,
+    "seen": 1789896997.2972102,
+    "ast_hash": "4f5874037d8de59734b5261761ccb9fb",
     "semantic_hash": ""
   },
   "src/app/shared/services/food-service.service.spec.ts": {
@@ -978,15 +978,15 @@
     "semantic_hash": "0c1335b54ead6b668b0e5cfad52e9576"
   },
   "src/app/shared/services/legend.service.ts": {
-    "mtime": 1789964552.7196653,
-    "seen": 1790047811.509693,
-    "ast_hash": "bc8c3456a7c6513bd0c3bf56336795cd",
+    "mtime": 1789896961.1230693,
+    "seen": 1789896997.297218,
+    "ast_hash": "e6faf90a2448099df2223cff85b033ea",
     "semantic_hash": ""
   },
   "src/app/shared/services/list.service.ts": {
-    "mtime": 1790047709.1694312,
-    "seen": 1790047811.509696,
-    "ast_hash": "825f3de514c89383df872aa79fa45212",
+    "mtime": 1789896961.1233318,
+    "seen": 1789896997.297219,
+    "ast_hash": "a53a90968f5c1c77c0e84490287c25d2",
     "semantic_hash": ""
   },
   "src/app/shared/services/meal-plan.service.ts": {
@@ -1284,15 +1284,33 @@
     "semantic_hash": ""
   },
   "src/app/model/Itemdetails.ts": {
-    "mtime": 1789914912.559945,
-    "seen": 1790047811.5094452,
-    "ast_hash": "92e1a01485c5a4bf4956c78242648513",
+    "mtime": 1789896961.117215,
+    "seen": 1789896997.297058,
+    "ast_hash": "de238f17075226aecc9df3353f8f860d",
     "semantic_hash": ""
   },
   "src/app/model/api-legend-source.ts": {
     "mtime": 1789896961.1174664,
     "seen": 1789896997.297062,
     "ast_hash": "adf878e1fb3c64ae0ffb3aff13b8fe81",
+    "semantic_hash": ""
+  },
+  "src/app/model/legacyCategory.ts": {
+    "mtime": 1789896961.1190958,
+    "seen": 1789896997.29709,
+    "ast_hash": "86d7752b561a3f07c080709d69f82d44",
+    "semantic_hash": ""
+  },
+  "src/app/model/legacyItem.ts": {
+    "mtime": 1789896961.1192977,
+    "seen": 1789896997.2970922,
+    "ast_hash": "7bd6d86e99f5b897ea5662e809284f60",
+    "semantic_hash": ""
+  },
+  "src/app/model/legacyShoppingList.ts": {
+    "mtime": 1789896961.119507,
+    "seen": 1789896997.2970932,
+    "ast_hash": "e7659d8569399adf1aabcf651a3a2188",
     "semantic_hash": ""
   },
   "src/app/model/shoppingList.ts": {
@@ -1518,9 +1536,9 @@
     "semantic_hash": ""
   },
   "src/app/lists/edit-list/edit-list.component.html": {
-    "mtime": 1789964016.9473255,
-    "seen": 1790047811.509929,
-    "ast_hash": "69386538853ab867a7ee0ea847f70eea",
+    "mtime": 1789896961.1127028,
+    "seen": 1789896997.2973492,
+    "ast_hash": "d24336cc62228eeb121f8fcd2f69a0dd",
     "semantic_hash": ""
   },
   "src/app/lists/lists.component.html": {
@@ -3123,18 +3141,6 @@
     "mtime": 1647072075.904596,
     "seen": 1789896997.297715,
     "ast_hash": "ad9025f70ae02a9f5ec23f6ca33fa938",
-    "semantic_hash": ""
-  },
-  ".junie/plans/add-item-detail-popup-under-right-click.md": {
-    "mtime": 1789916656.0767403,
-    "seen": 1790047811.509831,
-    "ast_hash": "dc98af5e63fcbdd73a0f2c58c0c0bca2",
-    "semantic_hash": ""
-  },
-  ".junie/plans/modify-experiment-div-styling.md": {
-    "mtime": 1789911637.7586539,
-    "seen": 1790047811.509839,
-    "ast_hash": "41b7f90a9d9427fee8cad287788793dc",
     "semantic_hash": ""
   }
 }

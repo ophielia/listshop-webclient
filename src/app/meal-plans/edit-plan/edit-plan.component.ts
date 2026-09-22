@@ -3,7 +3,6 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
-import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {Subscription} from "rxjs";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
@@ -11,6 +10,7 @@ import {DishService} from "../../shared/services/dish.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {MealPlan} from "../../model/mealplan";
 import {PlanContext} from "../plan-context/plan-context";
+import {IShoppingList} from "../../model/shoppingList";
 
 @Component({
     selector: 'app-edit-plan',
@@ -188,8 +188,8 @@ export class EditPlanComponent implements OnInit, OnDestroy {
         this.showAddDish = !this.showAddDish;
     }
 
-    addMealPlanToList(list: ILegacyShoppingList) {
-        let $sub =  this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id).subscribe(data => {
+    addMealPlanToList(list: IShoppingList) {
+        let $sub = this.listService.addMealPlanToShoppingList(this.mealPlan.meal_plan_id, list.list_id).subscribe(data => {
             this.getMealPlan(this.mealPlan.meal_plan_id);
             this.showAddToList = false;
         })
@@ -244,7 +244,7 @@ export class EditPlanComponent implements OnInit, OnDestroy {
 
     private determineIfUserHasStarter() {
         this.listService.getAllLists().subscribe(data => {
-            var starter = data.list_of_lists.filter( l => l.is_starter_list);
+            var starter = data.list_of_lists.filter(l => l.is_starter_list);
             this.userHasStarter = starter.length > 0;
         })
 

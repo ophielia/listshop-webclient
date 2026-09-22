@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ILegacyShoppingList} from "../../../model/legacyShoppingList";
 import {ListService} from "../../services/list.service";
-import {INestedShoppingList} from "../../../model/shoppingList";
+import {INestedShoppingList, IShoppingList} from "../../../model/shoppingList";
 
 
 @Component({
@@ -10,7 +9,7 @@ import {INestedShoppingList} from "../../../model/shoppingList";
     styleUrls: ['./list-select.component.scss']
 })
 export class ListSelectComponent implements OnInit, OnDestroy {
-    @Output() listSelected: EventEmitter<ILegacyShoppingList> = new EventEmitter<ILegacyShoppingList>();
+    @Output() listSelected: EventEmitter<IShoppingList> = new EventEmitter<IShoppingList>();
     @Output() cancelSelectList: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() currentListId: string;
     @Input() title: string = "Add From List";

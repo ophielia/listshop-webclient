@@ -2,9 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
-import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
-import {LegacyShoppingList} from "../../model/legacyShoppingList";
 import {MealPlan} from "../../model/mealplan";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {PlanContext} from "../plan-context/plan-context";
@@ -64,8 +62,12 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
     deleteMealPlan(mealPlanId: string) {
         this.mealPlanIdToDelete = mealPlanId;
         this.confirmDialogService.confirmThis("Are you sure you'd like to delete this meal plan?",
-            () => {console.log("dummy"); this.doDeleteMealPlan();},
-            function () { })
+            () => {
+                console.log("dummy");
+                this.doDeleteMealPlan();
+            },
+            function () {
+            })
 
     }
 
@@ -80,9 +82,9 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
     }
 
     editMealPlan(listId: String) {
-       // console.log("planId + " + planId)
-        var url = "mealplans/edit/" +  listId;
-        console.log("to this url" +this.router.navigateByUrl(url));
+        // console.log("planId + " + planId)
+        var url = "mealplans/edit/" + listId;
+        console.log("to this url" + this.router.navigateByUrl(url));
 
     }
 

@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
-import {LegacyShoppingList} from "../../model/legacyShoppingList";
 import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service";
 import {NestedShoppingList} from "../../model/shoppingList";
 

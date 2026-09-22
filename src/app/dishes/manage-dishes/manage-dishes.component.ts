@@ -3,7 +3,6 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {DishService} from "../../shared/services/dish.service";
 import {ITag} from "../../model/tag";
 import {DishSort} from "../../model/dish-sort";
@@ -16,6 +15,7 @@ import {ListService} from "../../shared/services/list.service";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {DishContext} from "../dish-context/dish-context";
 import {Dish} from "../../model/dish";
+import {ShoppingList} from "../../model/shoppingList";
 
 
 @Component({
@@ -324,7 +324,7 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
     }
 
-    addDishesToList(list: ILegacyShoppingList) {
+    addDishesToList(list: ShoppingList) {
         this.logger.debug("add dishes to list");
         this.displayId = null;
         var listId = list.list_id;
@@ -362,13 +362,13 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
 
         let $sub = this.mealPlanService.addDishesToMealPlan(dishIds, mealplanId)
             .subscribe(s => {
-                this.displayId = mealplanId;
-                this.addToMealPlanModal.show();
-            },
+                    this.displayId = mealplanId;
+                    this.addToMealPlanModal.show();
+                },
                 (error) => {
                     this.logger.debug("operation rejected with " + JSON.stringify(error));
                 }
-        )
+            )
         this.unsubscribe.push($sub);
     }
 
@@ -391,19 +391,19 @@ export class ManageDishesComponent implements OnInit, OnDestroy {
                 var id = splitlocation[splitlocation.length - 1];
                 var $sub2 = this.mealPlanService.addDishesToMealPlan(dishIds, id)
                     .subscribe(s => {
-                        this.displayId = id;
-                        this.addToMealPlanModal.show();
-                    },
+                            this.displayId = id;
+                            this.addToMealPlanModal.show();
+                        },
                         (error) => {
                             this.logger.debug("operation rejected with " + JSON.stringify(error));
                         }
-                )
+                    )
                 this.unsubscribe.push($sub2);
 
             },
-                (error) => {
-                    this.logger.debug("operation rejected with " + JSON.stringify(error));
-                }
+            (error) => {
+                this.logger.debug("operation rejected with " + JSON.stringify(error));
+            }
         );
         this.unsubscribe.push($sub);
     }

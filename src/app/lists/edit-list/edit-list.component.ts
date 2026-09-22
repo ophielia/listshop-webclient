@@ -6,9 +6,7 @@ import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
 import {LegendService} from "../../shared/services/legend.service";
 import {LegendPoint} from "../../model/legend-point";
-import {LegacyCategory, ILegacyCategory} from "../../model/legacyCategory";
-import {ILegacyItem, LegacyItem} from "../../model/legacyItem";
-import {ITag, Tag} from "../../model/tag";
+import {ITag, NestedTag} from "../../model/tag";
 import {NGXLogger} from "ngx-logger";
 import {DishService} from "../../shared/services/dish.service";
 import {OperationType} from "../../model/operation-type";
@@ -17,7 +15,7 @@ import TagType from "../../model/tag-type";
 import {IDish} from "../../model/dish";
 import {IShoppingList, ShoppingList} from "../../model/shoppingList";
 import {Category, ICategory} from "../../model/category";
-import {Item} from "../../model/Item";
+import {IItem, Item} from "../../model/Item";
 import {ItemDetails} from "../../model/Itemdetails";
 
 @Component({
@@ -54,7 +52,7 @@ export class EditListComponent implements OnInit, OnDestroy {
     displayInfoId: string;
 
     shoppingList: ShoppingList;
-    removedItems: ILegacyItem[] = [];
+    removedItems: IItem[] = [];
     selectedItems: string[] = [];
     tagNameToCreate: string;
     tagTypeToCreate: TagType;
@@ -172,6 +170,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         var oneSelected = category.items.filter(i => i.is_selected);
         category.has_selected = (oneSelected != null && oneSelected.length > 0);
     }
+
     toggleItemDetail(event: MouseEvent, item: Item) {
         event.preventDefault();
         event.stopPropagation();
@@ -228,7 +227,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         return "assets/images/listshop/legend/" + circleOrColor + "/" + point.color + "/" + point.icon + ".png";
     }
 
-    isDishSource(detail: ItemDetails) : boolean {
+    isDishSource(detail: ItemDetails): boolean {
         let dishId = detail.dish_id;
         if (dishId && dishId.trim().length > 0) {
             return true;
@@ -259,7 +258,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         }
     }
 
-    addTagToList(tag: Tag) {
+    addTagToList(tag: NestedTag) {
         // add tag to list as item in back end
         this.addTagToListById(tag.tag_id);
     }
@@ -272,10 +271,10 @@ export class EditListComponent implements OnInit, OnDestroy {
             .subscribe(p => {
                     this.getShoppingList(this.shoppingList.list_id);
                 },
-                e => this.errorMessage = e )
+                e => this.errorMessage = e)
     }
 
-    reAddItem(item: ILegacyItem) {
+    reAddItem(item: IItem) {
         this.removedItems = this.removedItems.filter(i => i.item_id != item.item_id);
         if (item.tag) {
             this.addTagToList(item.tag);
@@ -306,7 +305,7 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.listLegendMap = null;
         this.showAddList = false;
         this.listService.addListToShoppingList(this.shoppingList.list_id, fromList.list_id)
-            .subscribe( data => {
+            .subscribe(data => {
                 this.highlightSourceId = "l" + fromList.list_id;
                 this.getShoppingList(this.shoppingList.list_id);
                 this.showAddList = false;
@@ -317,8 +316,8 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.hideAllAddInputs();
         let $sub = this.listService.removeItemsByDishOrList(this.shoppingList.list_id, sourcekey)
             .subscribe(data => {
-            this.getShoppingList(this.shoppingList.list_id);
-        });
+                this.getShoppingList(this.shoppingList.list_id);
+            });
 
         if (this.highlightSourceId == sourcekey) {
             this.highlightSourceId = this.defaultEmptySourceId();
@@ -349,9 +348,9 @@ export class EditListComponent implements OnInit, OnDestroy {
         this.highlightSourceId = null;
         this.showFrequent = false;
         let $sub = this.listService.removeAllItemsFromList(this.shoppingList.list_id)
-        .subscribe(data => {
-            this.getShoppingList(this.shoppingList.list_id)
-        });
+            .subscribe(data => {
+                this.getShoppingList(this.shoppingList.list_id)
+            });
         this.unsubscribe.push($sub);
     }
 
@@ -411,7 +410,6 @@ export class EditListComponent implements OnInit, OnDestroy {
         var newCategories = [];
         var pulledItems = [];
         var pulledHasSelected = false;
-
 
 
         for (let category of shoppingList.categories) {
@@ -476,17 +474,18 @@ export class EditListComponent implements OnInit, OnDestroy {
             return item.sources.includes(highlightId);
         }
         var sourceIsDish = highlightId.startsWith("d");
-        var sourceId = highlightId.substr( 1);
+        var sourceId = highlightId.substr(1);
         for (let detail of item.details) {
-            if (sourceIsDish && detail.dish_id === sourceId ) {
+            if (sourceIsDish && detail.dish_id === sourceId) {
                 return true;
             }
-            if (!sourceIsDish && detail.list_id === sourceId ) {
+            if (!sourceIsDish && detail.list_id === sourceId) {
                 return true;
             }
         }
         return false;
     }
+
     private defaultEmptySourceId() {
         // will be either null or frequent, depending upon frequent availabilty
         // and current frequent toggle state

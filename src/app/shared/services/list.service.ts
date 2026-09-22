@@ -1,9 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, Subscription, throwError} from "rxjs";
-import {catchError, map} from "rxjs/operators";
-import MappingUtils from "../../model/mapping-utils";
-import {ILegacyShoppingList} from "../../model/legacyShoppingList";
 import {NGXLogger} from "ngx-logger";
 import {ItemOperationPut} from "../../model/item-operation-put";
 import {IShoppingListPut, ShoppingListPut} from "../../model/shoppinglistput";
@@ -50,17 +47,6 @@ export class ListService implements OnDestroy {
         this.logger.debug("Retrieving all shopping lists for user.");
 
         return this.httpClient.get<IListOfShoppingLists>(this.listUrl);
-    }
-
-    legacyGetAllLists(): Observable<ILegacyShoppingList[]> {
-        this.logger.debug("Retrieving all shopping lists for user.");
-
-        return this.httpClient.get(this.listUrl)
-            .pipe(map((response: HttpResponse<any>) => {
-                    // map and return
-                    return this.mapShoppingLists(response);
-                }),
-                catchError(this.handleError));
     }
 
 
@@ -244,21 +230,5 @@ export class ListService implements OnDestroy {
         // throw an application level error
         return throwError(error);
     }
-
-    mapShoppingLists(object: Object): ILegacyShoppingList[] {
-        let embeddedObj = object["_embedded"];
-        if (embeddedObj) {
-            return embeddedObj["shoppingListResourceList"].map(MappingUtils.toShoppingList);
-        }
-        return null;
-    }
-
-    mapShoppingList(object: Object): ILegacyShoppingList {
-        if (object) {
-            return MappingUtils.toShoppingList(object);
-        }
-        return null;
-    }
-
 
 }

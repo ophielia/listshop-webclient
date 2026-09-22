@@ -1,10 +1,7 @@
 import {User} from "./user";
-import {ILegacyShoppingList} from "./legacyShoppingList";
-import {LegacyCategory} from "./legacyCategory";
-import {LegacyItem} from "./legacyItem";
 import {ITag} from "./tag";
 import {Dish, IDish} from "./dish";
-import {ILegacyLegendSource, LegendSource} from "./legend-source";
+import {ILegendSource, LegendSource} from "./legend-source";
 import {MealPlan} from "./mealplan";
 import {Slot} from "./slot";
 import {RatingUpdateInfo} from "./rating-update-info";
@@ -32,27 +29,6 @@ export default class MappingUtils {
             token: userSource.token
 
         });
-    }
-
-    static toShoppingList(jsonResult: any): ILegacyShoppingList {
-        let shoppingList = <ILegacyShoppingList>({
-            list_id: jsonResult.shopping_list.list_id,
-            name: jsonResult.shopping_list.name,
-            user_id: jsonResult.shopping_list.user_id,
-            created: jsonResult.shopping_list.created,
-            list_type: jsonResult.shopping_list.list_type,
-            item_count: jsonResult.shopping_list.item_count,
-            updated: jsonResult.shopping_list.updated,
-            is_starter: jsonResult.shopping_list.is_starter_list,
-            categories: jsonResult.shopping_list.categories != null ? jsonResult.shopping_list.categories.map(MappingUtils._toCategory) : null,
-            legend: jsonResult.shopping_list.legend != null ? jsonResult.shopping_list.legend.map(MappingUtils._toLegend) : []
-        });
-
-        if (MappingUtils.showConsoleLogs) {
-            console.log('Parsed list:', shoppingList);
-        }
-        return shoppingList;
-
     }
 
     static toSuggestion(jsonResult: any): ISuggestion {
@@ -163,44 +139,7 @@ export default class MappingUtils {
         return new DishRatingInfo();
     }
 
-    private static _toCategory(jsonResult: any): LegacyCategory {
-        let category = <LegacyCategory>({
-            name: jsonResult.name,
-            items: jsonResult.items.map(MappingUtils._toItem),
-            //category_type: jsonResult.category_type,
-            subcategories: jsonResult.subcategories ? jsonResult.subcategories.map(MappingUtils._toCategory) : null
 
-        });
-
-        if (MappingUtils.showConsoleLogs) {
-            console.log('Parsed category:', category);
-
-        }
-
-        return category;
-    }
-
-    private static _toItem(jsonResult: any): LegacyItem {
-        let item = <LegacyItem>({
-            list_id: jsonResult.list_id,
-            item_id: jsonResult.item_id,
-            source_keys: jsonResult.source_keys,
-            added: jsonResult.added,
-            tag_id: jsonResult.tag_id,
-            used_count: jsonResult.used_count,
-            free_text: jsonResult.free_text,
-            crossed_off_ts: jsonResult.crossed_off,
-            crossed_off: (jsonResult.crossed_off != null),
-            is_selected: false,
-            tag: MappingUtils._toTag(jsonResult.tag)
-        });
-
-        if (MappingUtils.showConsoleLogs) {
-            console.log('Parsed tag:', item);
-
-        }
-        return item;
-    }
 
     private static _toTag(jsonResult: any): ITag {
         return <ITag>({
@@ -226,7 +165,7 @@ export default class MappingUtils {
 
     private static _toLegend(r: any): LegendSource {
 
-        return <ILegacyLegendSource>({
+        return <ILegendSource>({
             key: r.key,
             display: r.display
         });

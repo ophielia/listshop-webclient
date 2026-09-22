@@ -1,21 +1,21 @@
-# Graph Report - listshop-webclient  (2026-09-22)
+# Graph Report - listshop-webclient  (2026-09-20)
 
 ## Corpus Check
-- 225 files · ~311,288 words
+- 226 files · ~310,170 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1870 nodes · 3930 edges · 127 communities (94 shown, 24 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 148 edges (avg confidence: 0.8)
+- 1845 nodes · 3955 edges · 124 communities (88 shown, 26 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 146 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7bf66245`
+- Built from commit: `3bd8e990`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- UserDeviceInfo
+- authentication.service.ts
 - package.json
 - EditListComponent
 - AlertService
@@ -24,28 +24,28 @@
 - @angular/core
 - home.module.ts
 - ManageDishesComponent
-- HeaderComponent
-- MainPitchComponent
 - AuthenticationService
+- feedback.service.ts
+- user.module.ts
 - app.module.ts
 - IngredientInputComponent
 - EditPlanComponent
-- rxjs
+- edit-list.component.ts
 - shoppingList.ts
-- Dish
+- AddDishToPlanComponent
 - devDependencies
-- EditDishComponent
+- Ingredient
 - beta-campaign.module.ts
-- EnvironmentLoaderService
+- EditDishComponent
 - TagTreeService
 - CelebrationService
-- mapping-utils.ts
+- Dish
 - compilerOptions
-- UserProperty
-- ManageListsComponent
+- EnvironmentLoaderService
+- ManageMealPlansComponent
 - scripts
 - MealPlanService
-- BrowserWindowRef
+- @angular/common
 - manage-dishes.component.ts
 - list.service.ts
 - ErrorType
@@ -56,21 +56,21 @@
 - ListService
 - LandingFixService
 - production
-- Requirements
-- Technical Design
-- FoodService
+- UserModule
+- DishService
+- food.service.ts
 - legend.service.ts
-- IShoppingList
-- meal-plan.service.ts
+- ILegacyShoppingList
+- manage-lists.component.ts
 - PasswordTokenComponent
 - prerender
 - Token
-- edit-list.component.ts
+- IAmount
 - Proposed Changes
 - ITag
 - architect
 - options
-- IDish
+- DishContext
 - SingleDishElementComponent
 - TagSelectInlineComponent
 - TagSelectComponent
@@ -81,8 +81,9 @@
 - .isValid
 - app.server.module.ts
 - server.ts
+- PlanContext
 - XLModalComponent
-- authentication-interceptor.ts
+- AddDishComponent
 - SingleListElementComponent
 - AGENTS.md
 - LoginComponent
@@ -98,9 +99,8 @@
 - ModalComponent
 - ResetPasswordComponent
 - angular.json
-- .isValidAndVerified
 - tsconfig.spec.json
-- ContentHeaderComponent
+- HomeThreeComponent
 - tsconfig.app.json
 - e2e
 - tslint.json
@@ -110,12 +110,11 @@
 - ListShopTokenInterceptor
 - [2.3.0] June 2022
 - [2.5.1] July 2023
-- DeleteUserComponent
-- PitchFeaturesComponent
-- ListShopPayload
+- ISuggestion
+- MealPlansComponent
+- TokenGatewayComponent
 - pace.min.js
 - [2.1.0] April 2022
-- user-header.component.ts
 - ContactForm
 - ListShopError
 - [2.4.4] January 2023
@@ -130,21 +129,18 @@
 - [2.6.1] March 2025
 - [2.0.1] April 2022
 - [2.5.3] July 2023
-- FeedbackService
-- AppComponent
-- IntroTwoComponent
 
 ## God Nodes (most connected - your core abstractions)
 1. `@angular/core` - 109 edges
 2. `AuthenticationService` - 65 edges
-3. `EditListComponent` - 62 edges
-4. `@angular/router` - 52 edges
-5. `EditIngredientInlineComponent` - 51 edges
-6. `ITag` - 51 edges
+3. `ITag` - 55 edges
+4. `EditListComponent` - 54 edges
+5. `@angular/router` - 52 edges
+6. `EditIngredientInlineComponent` - 51 edges
 7. `LandingFixService` - 49 edges
-8. `ManageDishesComponent` - 44 edges
-9. `Dish` - 43 edges
-10. `ListService` - 43 edges
+8. `ListService` - 47 edges
+9. `ManageDishesComponent` - 44 edges
+10. `Dish` - 43 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `AddDishIngredientComponent` --references--> `Dish`  [EXTRACTED]
@@ -153,154 +149,142 @@
   src/app/dishes/add-dish/add-dish-ingredient.component.ts → src/app/model/tag-type.ts
 - `AddDishComponent` --references--> `Dish`  [EXTRACTED]
   src/app/dishes/add-dish/add-dish.component.ts → src/app/model/dish.ts
-- `AddIngredientInlineComponent` --inherits--> `EditIngredientInlineComponent`  [EXTRACTED]
-  src/app/dishes/add-ingredient-inline-component/add-ingredient-inline.component.ts → src/app/dishes/edit-ingredient-inline/edit-ingredient-inline.component.ts
-- `DishContext` --references--> `ITag`  [EXTRACTED]
-  src/app/dishes/dish-context/dish-context.ts → src/app/model/tag.ts
+- `AddDishComponent` --references--> `ITag`  [EXTRACTED]
+  src/app/dishes/add-dish/add-dish.component.ts → src/app/model/tag.ts
+- `AddDishComponent` --references--> `Tag`  [EXTRACTED]
+  src/app/dishes/add-dish/add-dish.component.ts → src/app/model/tag.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (127 total, 24 thin omitted)
+## Communities (124 total, 26 thin omitted)
 
-### Community 0 - "UserDeviceInfo"
-Cohesion: 0.14
-Nodes (14): AuthorizePost, IAuthorizePost, ChangePasswordPost, IChangePasswordPost, CreateListPost, ICreateListPost, CreateUserPost, CreatUserStatus (+6 more)
+### Community 0 - "authentication.service.ts"
+Cohesion: 0.07
+Nodes (23): AuthorizePost, IAuthorizePost, ChangePasswordPost, IChangePasswordPost, CreateListPost, ICreateListPost, CreateUserPost, CreatUserStatus (+15 more)
 
 ### Community 1 - "package.json"
 Cohesion: 0.04
 Nodes (48): name, private, version, @angular/animations, @angular/cdk, @angular/cli, @angular/compiler, @angular/compiler-cli (+40 more)
 
 ### Community 2 - "EditListComponent"
-Cohesion: 0.08
-Nodes (4): EditListComponent, Component, HostListener, ViewChild
+Cohesion: 0.09
+Nodes (6): EditListComponent, Component, ViewChild, Category, IShoppingList, ShoppingList
 
 ### Community 3 - "AlertService"
-Cohesion: 0.09
-Nodes (14): Alert, AlertType, Error, Info, Success, Warning, AlertComponent, Component (+6 more)
+Cohesion: 0.07
+Nodes (18): Alert, AlertType, Error, Info, Success, Warning, AlertComponent, Component (+10 more)
 
 ### Community 4 - "dependencies"
 Cohesion: 0.05
 Nodes (39): dependencies, @angular/animations, @angular/cdk, @angular/common, @angular/compiler, @angular/core, @angular/forms, @angular/localize (+31 more)
 
 ### Community 5 - "EditIngredientInlineComponent"
-Cohesion: 0.09
+Cohesion: 0.10
 Nodes (4): EditIngredientInlineComponent, Component, Input, Output
 
 ### Community 6 - "@angular/core"
-Cohesion: 0.12
-Nodes (14): @angular/core, @angular/platform-browser, @angular/router, routes, routes, MealPlansModule, NgModule, MealPlansRoutingModule (+6 more)
+Cohesion: 0.16
+Nodes (9): @angular/core, @angular/platform-browser, @angular/router, MealPlansModule, NgModule, MealPlansRoutingModule, routes, NgModule (+1 more)
 
 ### Community 7 - "home.module.ts"
 Cohesion: 0.06
-Nodes (22): @ng-bootstrap/ng-bootstrap, AboutmeComponent, Component, AnonymousBetaTestComponent, Component, PartyComponent, Component, AboutComponent (+14 more)
+Nodes (24): @ng-bootstrap/ng-bootstrap, AboutmeComponent, Component, AnonymousBetaTestComponent, Component, PartyComponent, Component, AboutComponent (+16 more)
 
 ### Community 8 - "ManageDishesComponent"
-Cohesion: 0.08
+Cohesion: 0.10
 Nodes (3): ManageDishesComponent, Component, ViewChild
 
-### Community 9 - "HeaderComponent"
-Cohesion: 0.11
-Nodes (7): ListShopHeaderComponent, Component, Inject, HeaderComponent, Component, HostListener, Inject
+### Community 9 - "AuthenticationService"
+Cohesion: 0.07
+Nodes (11): ContentHeaderComponent, Component, Inject, Component, UserHeaderComponent, HeaderComponent, Component, HostListener (+3 more)
 
-### Community 10 - "MainPitchComponent"
-Cohesion: 0.11
-Nodes (8): CampaignFeedbackDialogComponent, Component, Output, MainPitchComponent, Component, ViewChild, CampaignFeedback, ICampaignFeedback
+### Community 10 - "feedback.service.ts"
+Cohesion: 0.14
+Nodes (9): CampaignFeedbackDialogComponent, Component, Output, CampaignFeedback, ICampaignFeedback, IItemOperationPut, ItemOperationPut, IItemSource (+1 more)
 
-### Community 11 - "AuthenticationService"
-Cohesion: 0.11
-Nodes (18): @angular/forms, ngx-spinner, CreateUserStatus, ITokenRequest, TokenRequest, TokenType, PasswordReset, AuthenticationService (+10 more)
+### Community 11 - "user.module.ts"
+Cohesion: 0.23
+Nodes (9): @angular/forms, ngx-spinner, EmailValidator, PasswordValidator, ResetConfirmComponent, Component, routes, NgModule (+1 more)
 
 ### Community 12 - "app.module.ts"
-Cohesion: 0.06
-Nodes (25): rootRouterConfig, DishesComponent, Component, DishesModule, NgModule, DishesRoutingModule, NgModule, HomeComponent (+17 more)
+Cohesion: 0.10
+Nodes (15): rootRouterConfig, DishesComponent, Component, DishesModule, NgModule, HomeComponent, Component, ListsComponent (+7 more)
 
 ### Community 13 - "IngredientInputComponent"
 Cohesion: 0.12
 Nodes (10): EntryEvent, IEntryEvent, IngredientInputComponent, Component, HostListener, Input, Output, ViewChild (+2 more)
 
 ### Community 14 - "EditPlanComponent"
-Cohesion: 0.09
+Cohesion: 0.13
 Nodes (3): EditPlanComponent, Component, ViewChild
 
-### Community 15 - "rxjs"
-Cohesion: 0.24
-Nodes (12): ngx-logger, rxjs, TagType, TagService, Injectable, ContentType, All, Direct (+4 more)
+### Community 15 - "edit-list.component.ts"
+Cohesion: 0.30
+Nodes (11): ngx-logger, rxjs, IIngredient, TagType, ContentType, All, Direct, GroupType (+3 more)
 
 ### Community 16 - "shoppingList.ts"
-Cohesion: 0.15
-Nodes (10): IItemSource, ItemSource, IListOfShoppingLists, INestedShoppingList, ListOfShoppingLists, NestedShoppingList, ListSelectComponent, Component (+2 more)
-
-### Community 17 - "Dish"
-Cohesion: 0.12
-Nodes (4): AddDishToPlanComponent, Component, Dish, ISlot
+Cohesion: 0.17
+Nodes (7): IListOfShoppingLists, INestedShoppingList, ListOfShoppingLists, ListSelectComponent, Component, Input, Output
 
 ### Community 18 - "devDependencies"
 Cohesion: 0.08
 Nodes (25): devDependencies, @angular/cli, @angular/compiler-cli, @angular-devkit/build-angular, @angular/language-service, @angular/platform-browser-dynamic, codelyzer, jasmine-core (+17 more)
 
-### Community 19 - "EditDishComponent"
-Cohesion: 0.06
-Nodes (9): AddDishIngredientComponent, Component, ViewChild, EditDishComponent, Component, ViewChild, Ingredient, DishService (+1 more)
+### Community 19 - "Ingredient"
+Cohesion: 0.13
+Nodes (4): AddDishIngredientComponent, Component, ViewChild, Ingredient
 
 ### Community 20 - "beta-campaign.module.ts"
-Cohesion: 0.21
-Nodes (7): BetaCampaignModule, NgModule, LandingRoutingModule, routes, NgModule, LandingComponent, Component
+Cohesion: 0.08
+Nodes (19): BetaCampaignModule, NgModule, LandingRoutingModule, routes, NgModule, LandingComponent, Component, LandingPartyComponent (+11 more)
 
-### Community 21 - "EnvironmentLoaderService"
-Cohesion: 0.16
-Nodes (4): initAppConfig(), EnvConfig, EnvironmentLoaderService, Injectable
+### Community 21 - "EditDishComponent"
+Cohesion: 0.13
+Nodes (3): EditDishComponent, Component, ViewChild
 
 ### Community 22 - "TagTreeService"
-Cohesion: 0.15
-Nodes (4): ITagList, TagList, TagTreeService, Injectable
+Cohesion: 0.13
+Nodes (6): ITagList, TagList, TagService, Injectable, TagTreeService, Injectable
 
 ### Community 23 - "CelebrationService"
 Cohesion: 0.06
-Nodes (14): Directive, canvas-confetti, LandingPartyComponent, Component, Celebration, ICelebration, CelebrateService, CelebrationComponent (+6 more)
+Nodes (16): Directive, canvas-confetti, MainPitchComponent, Component, ViewChild, Celebration, ICelebration, CelebrationComponent (+8 more)
 
-### Community 24 - "mapping-utils.ts"
-Cohesion: 0.23
-Nodes (7): DishRatingInfo, IDishRatingInfo, MappingUtils, IRatingInfo, RatingInfo, IRatingUpdateInfo, RatingUpdateInfo
+### Community 24 - "Dish"
+Cohesion: 0.06
+Nodes (29): MealplanSelectComponent, Component, Input, Output, Dish, DishList, IDish, IDishList (+21 more)
 
 ### Community 25 - "compilerOptions"
 Cohesion: 0.25
 Nodes (7): compilerOptions, module, outDir, target, types, extends, ../tsconfig.json
 
-### Community 26 - "UserProperty"
-Cohesion: 0.15
-Nodes (9): BetaTestComponent, Component, ViewChild, IUserPropertiesPost, UserPropertiesPost, IUserProperty, UserProperty, Injectable (+1 more)
-
-### Community 27 - "ManageListsComponent"
-Cohesion: 0.10
-Nodes (4): ManageListsComponent, Component, ManageMealPlansComponent, Component
+### Community 26 - "EnvironmentLoaderService"
+Cohesion: 0.07
+Nodes (15): initAppConfig(), BetaTestComponent, Component, ViewChild, EnvConfig, IUserPropertiesPost, UserPropertiesPost, IUserProperty (+7 more)
 
 ### Community 28 - "scripts"
 Cohesion: 0.11
 Nodes (19): scripts, build, build:client-and-server-bundles_bak, build:ssr, build:ssr_bak, build:ssrr, compile:server_bak, dev:sass (+11 more)
 
-### Community 29 - "MealPlanService"
-Cohesion: 0.11
-Nodes (6): MealplanSelectComponent, Component, Input, Output, MealPlanService, Injectable
-
-### Community 30 - "BrowserWindowRef"
-Cohesion: 0.33
-Nodes (3): BrowserWindowRef, Injectable, WindowRef
+### Community 30 - "@angular/common"
+Cohesion: 0.12
+Nodes (11): @angular/common, ListShopHeaderComponent, Component, Inject, browserWindowProvider, BrowserWindowRef, Injectable, WINDOW (+3 more)
 
 ### Community 31 - "manage-dishes.component.ts"
-Cohesion: 0.14
-Nodes (10): DishContext, Injectable, DishSort, SortDirection, Down, Up, SortKey, CreatedOn (+2 more)
+Cohesion: 0.28
+Nodes (8): DishSort, SortDirection, Down, Up, SortKey, CreatedOn, LastUsed, Name
 
 ### Community 32 - "list.service.ts"
-Cohesion: 0.17
-Nodes (9): IItemOperationPut, ItemOperationPut, IListAddProperties, ListAddProperties, IListGenerateProperties, ListGenerateProperties, IShoppingListPut, ShoppingListPut (+1 more)
+Cohesion: 0.13
+Nodes (7): IListAddProperties, ListAddProperties, IListGenerateProperties, ListGenerateProperties, IShoppingListPut, ShoppingListPut, ListShopUtils
 
 ### Community 33 - "ErrorType"
-Cohesion: 0.18
-Nodes (11): ErrorType, badVerificationMatch, cantHaveSpaces, EmailNotFound, emailTaken, generalError, InvalidEmail, isRequired (+3 more)
+Cohesion: 0.12
+Nodes (13): ErrorType, badVerificationMatch, cantHaveSpaces, EmailNotFound, emailTaken, generalError, InvalidEmail, isRequired (+5 more)
 
 ### Community 35 - "CreateTagDialogComponent"
-Cohesion: 0.15
+Cohesion: 0.17
 Nodes (4): CreateTagDialogComponent, Component, Input, Output
 
 ### Community 36 - "Technical Design"
@@ -312,56 +296,48 @@ Cohesion: 0.11
 Nodes (17): compileOnSave, compilerOptions, allowSyntheticDefaultImports, baseUrl, declaration, emitDecoratorMetadata, experimentalDecorators, lib (+9 more)
 
 ### Community 39 - "LandingFixService"
-Cohesion: 0.10
-Nodes (5): HomeThreeComponent, Component, LandingFixService, Inject, Injectable
+Cohesion: 0.12
+Nodes (3): LandingFixService, Inject, Injectable
 
 ### Community 40 - "production"
 Cohesion: 0.13
 Nodes (15): production, aot, browserTarget, budgets, buildOptimizer, devServerTarget, extractCss, extractLicenses (+7 more)
 
-### Community 41 - "Requirements"
-Cohesion: 0.11
-Nodes (17): Architecture Diagram, Current Implementation, Delivery Steps, EditList Styles (`src/app/lists/edit-list/edit-list.component.scss`), EditList Template (`src/app/lists/edit-list/edit-list.component.html`), EditListComponent (`src/app/lists/edit-list/edit-list.component.ts`), Functional Requirements, Key Decisions (+9 more)
-
-### Community 42 - "Technical Design"
-Cohesion: 0.11
-Nodes (17): Architecture Diagram, Current Implementation, Delivery Steps, Key Decisions, Key Scenarios, Overview & Goals, Proposed Changes, Requirements (+9 more)
-
-### Community 43 - "FoodService"
-Cohesion: 0.14
-Nodes (5): AddIngredientInlineComponent, Component, ISuggestion, FoodService, Injectable
+### Community 43 - "food.service.ts"
+Cohesion: 0.18
+Nodes (4): AddIngredientInlineComponent, Component, FoodService, Injectable
 
 ### Community 44 - "legend.service.ts"
-Cohesion: 0.15
-Nodes (10): ApiLegendSource, ILegendSource, ILegendIconSource, LegendIconSource, ILegendPoint, LegendPoint, ILegendSource, LegendSource (+2 more)
+Cohesion: 0.20
+Nodes (8): ApiLegendSource, ILegendSource, ILegendIconSource, LegendIconSource, ILegendPoint, LegendPoint, LegendService, Injectable
 
-### Community 45 - "IShoppingList"
+### Community 45 - "ILegacyShoppingList"
 Cohesion: 0.15
-Nodes (4): Category, Item, IShoppingList, ShoppingList
+Nodes (8): ILegacyCategory, LegacyCategory, ILegacyItem, LegacyItem, ILegacyShoppingList, LegacyShoppingList, ILegacyLegendSource, LegendSource
 
-### Community 46 - "meal-plan.service.ts"
-Cohesion: 0.23
-Nodes (6): MealPlanType, IMealPlan, IMealPlanList, MealPlan, MealPlanList, Slot
+### Community 46 - "manage-lists.component.ts"
+Cohesion: 0.24
+Nodes (3): ManageListsComponent, Component, NestedShoppingList
 
 ### Community 48 - "prerender"
 Cohesion: 0.15
 Nodes (14): extract-i18n, prerender, serve-ssr, builder, options, browserTarget, routes, serverTarget (+6 more)
 
 ### Community 49 - "Token"
-Cohesion: 0.21
+Cohesion: 0.19
 Nodes (5): IToken, ITokenList, TokenList, Token, Suggestion
 
-### Community 50 - "edit-list.component.ts"
+### Community 50 - "IAmount"
 Cohesion: 0.15
-Nodes (17): Amount, IAmount, ICategory, DishList, IDishList, IUpdateDish, UpdateDish, IIngredient (+9 more)
+Nodes (12): Amount, IAmount, ICategory, IPutIngredient, PutIngredient, IItem, IItemPost, Item (+4 more)
 
 ### Community 51 - "Proposed Changes"
 Cohesion: 0.12
 Nodes (15): 1. Model Initialization, 2. State Management, 3. Component Robustness, 4. Parent Component Logic, Current Implementation, Delivery Steps, File Structure Changes, Overview & Goals (+7 more)
 
 ### Community 52 - "ITag"
-Cohesion: 0.15
-Nodes (7): AddDishComponent, Component, ViewChild, ITag, Tag, TagTree, TagTreeNode
+Cohesion: 0.26
+Nodes (4): ITag, Tag, TagTree, TagTreeNode
 
 ### Community 53 - "architect"
 Cohesion: 0.15
@@ -371,20 +347,16 @@ Nodes (13): build, serve, server, test, builder, configurations, builder, config
 Cohesion: 0.24
 Nodes (13): options, aot, assets, index, karmaConfig, main, outputPath, polyfills (+5 more)
 
-### Community 55 - "IDish"
-Cohesion: 0.18
-Nodes (5): IDish, DishSelectComponent, Component, Input, Output
-
 ### Community 56 - "SingleDishElementComponent"
 Cohesion: 0.15
 Nodes (4): SingleDishElementComponent, Component, Input, Output
 
 ### Community 57 - "TagSelectInlineComponent"
-Cohesion: 0.18
+Cohesion: 0.19
 Nodes (4): TagSelectInlineComponent, Component, Input, Output
 
 ### Community 58 - "TagSelectComponent"
-Cohesion: 0.16
+Cohesion: 0.18
 Nodes (4): TagSelectComponent, Component, Input, Output
 
 ### Community 59 - "Changelog - The List Shop - Web Client"
@@ -404,8 +376,8 @@ Cohesion: 0.18
 Nodes (5): FooterComponent, Component, HostListener, ColorPickerService, Injectable
 
 ### Community 64 - "app.server.module.ts"
-Cohesion: 0.19
-Nodes (9): @angular/platform-browser-dynamic, @angular/platform-server, classlist.js, web-animations-js, AppModule, NgModule, AppServerModule, NgModule (+1 more)
+Cohesion: 0.17
+Nodes (9): @angular/platform-browser-dynamic, @angular/platform-server, AppComponent, Component, AppModule, NgModule, AppServerModule, NgModule (+1 more)
 
 ### Community 65 - "server.ts"
 Cohesion: 0.20
@@ -415,9 +387,9 @@ Nodes (10): express, localstorage-polyfill, @nguniversal/express-engine, app(), 
 Cohesion: 0.24
 Nodes (4): Component, Input, Output, XLModalComponent
 
-### Community 68 - "authentication-interceptor.ts"
-Cohesion: 0.22
-Nodes (4): AuthenticationInterceptor, Injectable, RouteMessageService, Injectable
+### Community 68 - "AddDishComponent"
+Cohesion: 0.24
+Nodes (3): AddDishComponent, Component, ViewChild
 
 ### Community 69 - "SingleListElementComponent"
 Cohesion: 0.20
@@ -471,10 +443,6 @@ Nodes (6): cli, analytics, defaultProject, newProjectRoot, $schema, version
 Cohesion: 0.25
 Nodes (7): compilerOptions, outDir, types, extends, files, include, ../tsconfig.json
 
-### Community 86 - "ContentHeaderComponent"
-Cohesion: 0.29
-Nodes (3): ContentHeaderComponent, Component, Inject
-
 ### Community 87 - "tsconfig.app.json"
 Cohesion: 0.29
 Nodes (6): compilerOptions, outDir, types, extends, files, ../tsconfig.json
@@ -496,8 +464,8 @@ Cohesion: 0.40
 Nodes (5): [2.2.0] June 2022, Added, Changed, Deprecated, Fixed
 
 ### Community 92 - "shared.module.ts"
-Cohesion: 0.11
-Nodes (11): @angular/common, ConfirmDialogComponent, Component, LoaderComponent, Component, ConfirmDialogService, Injectable, browserWindowProvider (+3 more)
+Cohesion: 0.15
+Nodes (6): ConfirmDialogComponent, Component, LoaderComponent, Component, ConfirmDialogService, Injectable
 
 ### Community 94 - "[2.3.0] June 2022"
 Cohesion: 0.50
@@ -506,6 +474,10 @@ Nodes (4): [2.3.0] June 2022, Added, Changed, Fixed
 ### Community 95 - "[2.5.1] July 2023"
 Cohesion: 0.50
 Nodes (4): [2.5.1] July 2023, Added, Changed, Fixed
+
+### Community 99 - "pace.min.js"
+Cohesion: 0.29
+Nodes (4): classlist.js, web-animations-js, a(), b()
 
 ### Community 100 - "[2.1.0] April 2022"
 Cohesion: 0.67
@@ -540,24 +512,24 @@ Cohesion: 0.67
 Nodes (3): [2.6.1] March 2025, Added, Fixed
 
 ## Knowledge Gaps
-- **377 isolated node(s):** `$schema`, `analytics`, `version`, `newProjectRoot`, `root` (+372 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 804 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **352 isolated node(s):** `$schema`, `analytics`, `version`, `newProjectRoot`, `root` (+347 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 780 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `@angular/core` connect `@angular/core` to `package.json`, `AlertService`, `home.module.ts`, `MainPitchComponent`, `AuthenticationService`, `app.module.ts`, `IngredientInputComponent`, `rxjs`, `shoppingList.ts`, `beta-campaign.module.ts`, `CelebrationService`, `UserProperty`, `manage-dishes.component.ts`, `list.service.ts`, `legend.service.ts`, `meal-plan.service.ts`, `edit-list.component.ts`, `IDish`, `app.server.module.ts`, `XLModalComponent`, `authentication-interceptor.ts`, `shared.module.ts`, `PitchFeaturesComponent`, `user-header.component.ts`?**
-  _High betweenness centrality (0.157) - this node is a cross-community bridge._
+- **Why does `@angular/core` connect `@angular/core` to `authentication.service.ts`, `package.json`, `AlertService`, `home.module.ts`, `AuthenticationService`, `feedback.service.ts`, `user.module.ts`, `app.module.ts`, `IngredientInputComponent`, `edit-list.component.ts`, `shoppingList.ts`, `beta-campaign.module.ts`, `Dish`, `EnvironmentLoaderService`, `@angular/common`, `manage-dishes.component.ts`, `list.service.ts`, `food.service.ts`, `legend.service.ts`, `manage-lists.component.ts`, `app.server.module.ts`, `XLModalComponent`, `shared.module.ts`?**
+  _High betweenness centrality (0.153) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `package.json`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
-- **Why does `EditIngredientInlineComponent` connect `EditIngredientInlineComponent` to `FoodService`, `app.module.ts`, `rxjs`, `Token`, `edit-list.component.ts`, `EditDishComponent`?**
-  _High betweenness centrality (0.040) - this node is a cross-community bridge._
+  _High betweenness centrality (0.050) - this node is a cross-community bridge._
+- **Why does `EditIngredientInlineComponent` connect `EditIngredientInlineComponent` to `ISuggestion`, `food.service.ts`, `app.module.ts`, `edit-list.component.ts`, `Token`, `Ingredient`?**
+  _High betweenness centrality (0.041) - this node is a cross-community bridge._
 - **What connects `$schema`, `analytics`, `version` to the rest of the system?**
-  _377 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `UserDeviceInfo` be split into smaller, more focused modules?**
-  _Cohesion score 0.14245014245014245 - nodes in this community are weakly interconnected._
+  _352 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `authentication.service.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.07138047138047138 - nodes in this community are weakly interconnected._
 - **Should `package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
 - **Should `EditListComponent` be split into smaller, more focused modules?**
-  _Cohesion score 0.080338266384778 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0851063829787234 - nodes in this community are weakly interconnected._

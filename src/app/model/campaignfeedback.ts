@@ -1,6 +1,3 @@
-import {IItemSource} from "./item-source";
-import {LegacyCategory} from "./legacyCategory";
-import {ILegacyLegendSource} from "./legend-source";
 
 export interface ICampaignFeedback {
   campaign: string;
