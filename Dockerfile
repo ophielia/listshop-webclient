@@ -1,5 +1,5 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
-FROM tiangolo/node-frontend:10 as build-stage
+FROM node:16-bullseye AS build-stage
 
 WORKDIR /listshop-webclient
 
@@ -13,13 +13,21 @@ COPY ./ /listshop-webclient/
 RUN npm run build -- --output-path=./dist/out --prod
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-FROM nginx:1.15
+FROM nginx:1.21
+RUN apt-get update && apt-get install -y gettext-base && rm -rf /var/lib/apt/lists/*
 COPY --from=build-stage /listshop-webclient/dist/out/ /usr/share/nginx/html
 
-# Copy the default nginx.conf provided by tiangolo/node-frontend
-COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
+# Copy a default nginx.conf for Angular apps
+RUN echo 'server { \
+    listen 80; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html =404; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
 COPY ./build/entryPoint.sh /
 RUN chmod +x entryPoint.sh
 ENTRYPOINT ["sh","/entryPoint.sh"]
-CMD ["nginx", "-g", "daemon off;”]
+CMD ["nginx", "-g", "daemon off;"]
