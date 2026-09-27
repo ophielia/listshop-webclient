@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] September 2026
+### Added
+- show amounts in list
+- special handling for ingredient units
+
+### Changed
+- migration to v2 API endpoints
+- graphify updates and cleanup
+- updated dependencies (node-forge, angular-devkit)
+
+### Fixed
+- bug when creating list from meal plan
+- crossing off list items now correctly hides popup
+- fixing issues with frequent items
+
 ## [2.6.3] December 2025
 ### Fixed
 - plural units shown after singular units
