@@ -50,14 +50,16 @@ export class Ingredient implements IIngredient {
     newIngredient.tag = tag;
     var amount = new Amount();
 
+if (ingredient.amount) {
+  amount.whole_quantity = ingredient.amount.whole_quantity;
+  amount.fractional_quantity = ingredient.amount.fractional_quantity;
+  amount.quantity_display = ingredient.amount.quantity_display;
+  amount.unit_id = ingredient.amount.unit_id;
+  amount.modifiers = ingredient.amount.modifiers;
+  amount.unit_display = ingredient.amount.unit_display;
+  amount.display = ingredient.amount.display;
 
-    amount.whole_quantity = ingredient.amount.whole_quantity;
-    amount.fractional_quantity = ingredient.amount.fractional_quantity;
-    amount.quantity_display = ingredient.amount.quantity_display;
-    amount.unit_id = ingredient.amount.unit_id;
-    amount.modifiers = ingredient.amount.modifiers;
-    amount.unit_display = ingredient.amount.unit_display;
-    amount.display = ingredient.amount.display;
+}
     newIngredient.amount = amount;
 
     //MM missing, incomplete, otherwise problematic

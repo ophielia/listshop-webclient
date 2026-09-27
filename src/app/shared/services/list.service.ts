@@ -71,7 +71,19 @@ export class ListService implements OnDestroy {
     }
 
     createListFromMealPlan(mealPlanId: string, include_starter: boolean): Observable<HttpResponse<Object>> {
-        return this.createListFromParameters([], mealPlanId, include_starter, false)
+        var properties: IListGenerateProperties = <IListGenerateProperties>({
+            dish_sources: [],
+            meal_plan_source: mealPlanId,
+            add_from_starter: include_starter,
+            generate_mealplan: false,
+            list_name: ListService.DEFAULT_LIST_NAME
+
+        });
+        var url = this.listUrl + "/mealplan/" + mealPlanId;
+        return this
+            .httpClient
+            .post(url,
+                JSON.stringify(properties), {observe: 'response'});
     }
 
     createListFromParameters(dishIds: string[], mealPlanId: string,
