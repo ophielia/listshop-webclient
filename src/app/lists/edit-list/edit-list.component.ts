@@ -601,6 +601,7 @@ export class EditListComponent implements OnInit, OnDestroy {
             itemTagIds, operation)
             .subscribe(() => {
                 this.getShoppingList(this.shoppingList.list_id);
+                this.displayInfoId = null;
             });
         this.unsubscribe.push($sub);
 
