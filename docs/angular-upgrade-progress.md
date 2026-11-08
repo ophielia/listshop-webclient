@@ -54,3 +54,7 @@ Graphify's CLI launcher points at a deleted Python interpreter; preparation read
 1. Stop for user review of Angular 12 and the two lint-discovered bug fixes. All validation processes have finished.
 2. Manual product checks remain useful: list generation with a chosen name, ingredient quantities/modifiers, dishes, meal plans and beta flows. Broader gaps are listed above and in e2e/README.md.
 3. Resume only after user authorization for Angular 12 → 13. Node 14.21.3 will be needed under the planned toolchain route; it is not installed yet. Read this record and inspect Git before executing migrations.
+
+## Follow-up: development asset casing collision
+
+User reported ng serve failing on Contact.png vs contact.png. The default image and color-4 image are distinct files, flattened by development stylesheet resource emission; production output hashing had hidden the collision. Renamed src/assets/images/Contact.png to contact-default.png and updated its SCSS variable reference. Added a development build to CI and future checkpoint checks. Verification ng serve on 127.0.0.1:4202 compiled successfully. HTTP checks confirmed both emitted images return 200 and exactly match their distinct source bytes (19,283 and 49,930 bytes). The verification server was stopped (exit 130 from intentional Ctrl-C). Log: /private/tmp/listshop-angular12-serve.log. User's src/environments/environment.ts change (API port 8888) and .junie/ remain untouched.

@@ -24,7 +24,7 @@ Within an authorized checkpoint, resolve routine compatibility problems autonomo
 
 ## Validation
 
-Every major: clean installation, production build, unit tests, lint, smoke tests, and visual comparison. Cover login/logout/session expiry, protected routes, password flows, list editing, dishes/ingredients, meal planning, generated shopping lists, shared autocomplete/dialogs/loaders, landing carousel/scrolling, and beta feedback. Compare desktop and mobile layouts. Baseline failures must be documented separately from regressions.
+Every major: clean installation, development build/server startup, production build, maintained unit tests, lint, smoke tests, and visual comparison. Cover login/logout/session expiry, protected routes, password flows, list editing, dishes/ingredients, meal planning, generated shopping lists, shared autocomplete/dialogs/loaders, landing carousel/scrolling, and beta feedback. Compare desktop and mobile layouts. Baseline failures must be documented separately from regressions.
 
 Preparation supplies initial browser coverage, not full product acceptance. Remaining workflows are listed in `e2e/README.md`; expand coverage alongside each affected subsystem. The user confirmed that legacy generated component tests were never maintained. Their known failures remain documented and are not upgrade gates. Passing gates are the production build, new browser checks, focused meaningful unit tests, and the new lint configuration. Expand coverage as affected features are upgraded.
 
