@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import {logger} from "codelyzer/util/logger";
 import { Router, Event, NavigationStart, RoutesRecognized,
   RouteConfigLoadStart, RouteConfigLoadEnd,
   NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';

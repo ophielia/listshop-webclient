@@ -6,14 +6,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 The Angular upgrade is tracked in [the plan](docs/angular-upgrade-plan.md) and
 [the progress record](docs/angular-upgrade-progress.md). The current checkpoint
-is Angular 11 preparation; Angular 12 has not started.
+is Angular 12; see the progress record for validation and review status.
 
 Use the existing nvm installation (no Homebrew nvm required):
 
 ```sh
 nvm use
-npx --package npm@7.24.2 npm ci
-npx --package npm@7.24.2 npm start
+npx --package npm@8.19.4 npm ci
+npx --package npm@8.19.4 npm start
 ```
 
 `.nvmrc` selects Node 12.22.12 for this historical checkpoint. On Apple Silicon,
@@ -31,11 +31,26 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use `--configuration production` for a production build.
 
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+Generated legacy component specs were never maintained and remain a documented
+failing baseline. The upgrade gate uses focused behavioral tests instead:
+
+```sh
+nvm use
+npx --package npm@8.19.4 npm run test:upgrade
+npx --package npm@8.19.4 npm run lint
+```
+
+Lint checks explicitly selected correctness rules in TypeScript and templates.
+Quotes, semicolons, whitespace, `var`/`const`, and loose equality are not enforced.
+The negated-async rule is intentionally omitted: existing ingredient views negate
+synchronously emitting boolean BehaviorSubjects, which is valid for those views.
+Formatting cleanup can be reviewed in a separate change.
 
 ## Running end-to-end tests
 

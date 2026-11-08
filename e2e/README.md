@@ -1,13 +1,13 @@
 # Browser regression checks
 
-The Angular 11 app builds on Node 12.22.12 / npm 7.24.2. Current Playwright runs separately on Node 24.15.0. Neither command changes nvm's default alias.
+The Angular 12 app builds on Node 12.22.12 / npm 8.19.4. Current Playwright runs separately on Node 24.15.0. Neither command changes nvm's default alias.
 
 From the repository root, build the app first:
 
 ```sh
 nvm use
-npx --package npm@7.24.2 npm ci
-npx --package npm@7.24.2 npm run build -- --configuration production
+npx --package npm@8.19.4 npm ci
+npx --package npm@8.19.4 npm run build -- --configuration production
 ```
 
 Then install and run browser checks in this directory:

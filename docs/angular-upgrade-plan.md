@@ -11,7 +11,7 @@ Upgrade Angular 11 through each major to Angular 22, selecting stable patch rele
 3. Explicit visual review at Bootstrap 5 and PrimeNG theme migrations; pause for product decisions if a replacement materially changes behavior.
 4. Final staging acceptance: actual Docker image, runtime configuration, routing, assets, and backend integration. Production deployment requires explicit authorization; retain the old image for rollback.
 
-Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is currently authorized; Angular 12 is not yet authorized.
+Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is committed as bb34f66. Angular 11 → 12 with the lint migration is authorized; stop before Angular 13.
 
 ## Implementation constraints
 
@@ -26,11 +26,11 @@ Within an authorized checkpoint, resolve routine compatibility problems autonomo
 
 Every major: clean installation, production build, unit tests, lint, smoke tests, and visual comparison. Cover login/logout/session expiry, protected routes, password flows, list editing, dishes/ingredients, meal planning, generated shopping lists, shared autocomplete/dialogs/loaders, landing carousel/scrolling, and beta feedback. Compare desktop and mobile layouts. Baseline failures must be documented separately from regressions.
 
-Preparation supplies initial browser coverage, not full product acceptance. Remaining workflows are listed in `e2e/README.md`; expand coverage alongside each affected subsystem. The legacy unit suite and lint currently fail; resolve or explicitly agree how to handle their recorded baseline before treating the Angular 12 gates as passed.
+Preparation supplies initial browser coverage, not full product acceptance. Remaining workflows are listed in `e2e/README.md`; expand coverage alongside each affected subsystem. The user confirmed that legacy generated component tests were never maintained. Their known failures remain documented and are not upgrade gates. Passing gates are the production build, new browser checks, focused meaningful unit tests, and the new lint configuration. Expand coverage as affected features are upgraded.
 
-Toolchain route (check exact target minor requirements before every hop): Node 12.22.12 for Angular 11–12; Node 14.21.3 for 13–15; existing Node 18.19.1 for 16–19; Node 24.15.0 for 20–22. Node 14 is not installed yet. Use a supported npm for each checkpoint and preserve lockfile reproducibility. Current npm is 7.24.2, invoked through a temporary tool installation or `npx --package npm@7.24.2 npm ...` after `nvm use`.
+Toolchain route (check exact target minor requirements before every hop): Node 12.22.12 for Angular 11–12; Node 14.21.3 for 13–15; existing Node 18.19.1 for 16–19; Node 24.15.0 for 20–22. Node 14 is not installed yet. Use a supported npm for each checkpoint and preserve lockfile reproducibility. Current npm for Angular 12 is 8.19.4, invoked through a temporary tool installation or `npx --package npm@8.19.4 npm ...` after `nvm use`.
 
-The Playwright package is isolated in `e2e/` on Node 24.15.0 and uses installed Chrome. Do not install current Playwright into Angular 11's dependency tree. Candidate versions and peer-range evidence are saved in `docs/angular-upgrade-dependencies.md` and `.json`; recheck package APIs and the other peer ranges before selecting a future version. The matrix deliberately reports candidates rather than promising runtime compatibility from peer metadata alone.
+The Playwright package is isolated in `e2e/` on Node 24.15.0 and uses installed Chrome. Keep current Playwright outside the app's historical dependency tree. Candidate versions and peer-range evidence are saved in `docs/angular-upgrade-dependencies.md` and `.json`; recheck package APIs and the other peer ranges before selecting a future version. The matrix deliberately reports candidates rather than promising runtime compatibility from peer metadata alone.
 
 ## Pause and resume
 
@@ -49,3 +49,7 @@ After a crash, reconcile Git and the installed toolchain with the record before 
 - https://angular.dev/update-guide
 - https://angular.dev/tools/cli/build-system-migration
 - https://v18.primeng.org/guides/migration
+
+## Agreed lint policy
+
+Replace TSLint/Codelyzer with version-matched angular-eslint at Angular 12. Start with explicitly selected correctness rules, fix meaningful findings with behavior review, and defer stylistic enforcement. Do not auto-change loose equality or var scoping across the app. Do not enable a large recommended preset merely to disable its findings afterward. Keep pre-existing generated tests visible as legacy failures; do not spend this upgrade repairing creation-only scaffolding or silently mark the full suite green.

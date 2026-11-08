@@ -166,13 +166,13 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
             var list = processingString.split(' ')
                 .filter(i => i.trim().length > 0)
 
-            for (let token of this.tokenList.listOfTokens) {
-                if (token.text.indexOf(" ") < 0) {
-                    if (list.includes(token.text)) {
-                        processingString = processingString.replace(token.matchingText, " ");
+            for (let existingToken of this.tokenList.listOfTokens) {
+                if (existingToken.text.indexOf(" ") < 0) {
+                    if (list.includes(existingToken.text)) {
+                        processingString = processingString.replace(existingToken.matchingText, " ");
                     }
                 } else {
-                    processingString = processingString.replace(token.text, " ");
+                    processingString = processingString.replace(existingToken.text, " ");
                 }
             }
         }
@@ -379,7 +379,8 @@ export class EditIngredientInlineComponent implements OnInit, OnDestroy {
                         ingredient.amount.unit_id = token.id;
                     }
                     break;
-                case TokenType.UnitSize, TokenType.Marker:
+                case TokenType.UnitSize:
+                case TokenType.Marker:
                     ingredient.raw_modifiers.push(token.text);
             }
         }

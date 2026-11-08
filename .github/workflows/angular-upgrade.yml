@@ -12,8 +12,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '12.22.12'
-      - run: npm install --global npm@7.24.2
+      - run: npm install --global npm@8.19.4
       - run: npm ci --strict-peer-deps
+      - run: npm run lint
+      - run: npm run test:upgrade
       - run: npm run build -- --configuration production
       - uses: actions/setup-node@v4
         with:

@@ -2,49 +2,55 @@
 
 ## Current checkpoint
 
-Preparation implementation is ready for review, with the recorded legacy unit/lint failures and product acceptance limits below. **Angular remains 11.2.14; Angular 12 has not started or been authorized.**
+**Angular 12 implementation and automated checkpoint checks are complete; awaiting user review. Angular 13 has not started or been authorized.**
 
 - Branch: `chore/angular-upgrade`.
-- Starting commit: `4db41f1032fae67d7435caf78aff73eb4c545dfa`.
-- Preparation commit: use `git log -1` after the preparation commit is created; all work is on the branch above.
-- Existing unrelated untracked `.junie/` is untouched.
-- Resume by reading this file and `docs/angular-upgrade-plan.md`, then inspecting Git before changing anything.
+- Preparation commit: `bb34f66`; starting application commit: `4db41f1`.
+- Angular 12 checkpoint commit: use `git log -1` after committing this checkpoint. Existing unrelated untracked `.junie/` remains untouched.
+- User approved a minimal correctness-focused ESLint migration. Generated legacy tests were never maintained; their existing failures are accepted as a baseline and are not upgrade gates.
 
-## Completed changes
+## Angular 12 changes
 
-- Saved the plan, resume protocol, and Angular 11–22 compatibility candidate matrix with npm peer evidence (`angular-upgrade-dependencies.md` / `.json`). Regenerate using Node 24: `node scripts/angular-upgrade-audit.cjs` after installing root dependencies. Candidates require additional API/peer verification at each future hop.
-- Removed unused Universal dependencies, server entrypoints and backup files, SSR targets/scripts, server transition bootstrap, and server-only polyfill. Browser deployment and runtime configuration remain in place.
-- Removed unused Angular 13 `@nicky-lenaers/ngx-scroll-to` dependency (no source references).
-- Aligned used UI packages to Angular 11: CDK 11.2.13, PrimeNG 11.4.5, carousel 5.1.2, spinner 11.0.2; Codelyzer 6.0.2 fixes its Angular compiler/core peer mismatch. Bootstrap remains 4 and ng-bootstrap remains 9. No peer-bypass flags used.
-- Pinned app Node 12.22.12 / npm 7.24.2, `.nvmrc`, and lockfile; repaired `npm start`. Docker build stage uses these versions, `npm ci --strict-peer-deps`, and a `.dockerignore` that prevents host modules overwriting Linux modules.
-- Replaced the incomplete Protractor entry point with an isolated current Playwright package on Node 24.15.0 (`e2e/`). Root `npm run e2e` delegates there; run using Node 24 as documented. Protractor remains a transitive Angular 11 builder dependency until later upgrades.
-- Added mocked browser journeys for login validation, successful login, stored session/reload, list rendering, mobile menu/logout, expired API session, and password-reset navigation. Original production-bundle screenshots of login and lists are saved for desktop/mobile; the cleaned-up bundle matches them.
-- Corrected five pre-existing nonexistent component imports/class names in user specs. Repaired the configuration service test's missing HTTP provider and added a runtime initialization/readiness test.
-- Added a PR/manual CI workflow for production build and functional browser smoke checks. macOS screenshots are compared locally; CI excludes the login screenshot-only case and skips list snapshots on Linux. The workflow has not been run on GitHub.
-- Updated README/AGENTS instructions; `e2e/README.md` contains exact commands and the remaining product acceptance coverage.
+- Core framework 12.2.17, CLI/build tooling 12.2.18, CDK 12.2.13, TypeScript 4.3.5, Zone 0.11.8, tslib 2.3.1.
+- Compatible UI dependencies: PrimeNG 12.2.3, ng-bootstrap 10.0.0, carousel 6.0.3, spinner 12.0.0. The fresh lockfile also resolves allowed ranges to Bootstrap 4.6.2, ngx-logger 4.3.3, and jQuery 3.7.1. Bootstrap 5 migration is deferred.
+- Official CLI, core and CDK migrations completed. CLI updated build defaults/options and Zone import paths. Framework/CDK migrations completed without additional source rewrites. Other upgraded UI packages do not declare ng-update migrations.
+- TSLint/Codelyzer and their configs removed. `.eslintrc.json` uses explicit correctness rules with angular-eslint 12.7.0, ESLint 7.32.0 and TypeScript ESLint 4.28.2. No formatting preset or broad autofix was applied. Quotes, semicolons, whitespace, var/const and loose equality are deferred.
+- Removed unused Codelyzer import from UserComponent and obsolete TSLint comments. Four scoped variable renames remove shadowing; a comma-expression assignment in DishService was split into equivalent assignments.
+- Fixed two concrete bugs caught by lint: generated list names were overwritten by an assignment in a condition; UnitSize ingredient modifiers were skipped by a comma-separated switch label. Focused tests cover supplied/default list names and preservation of size/marker modifiers.
+- Added `npm run test:upgrade`, selecting five maintained behavioral tests (runtime configuration, generated list payloads, ingredient modifiers). Full `npm test` still exposes legacy scaffolding failures; no fixtures were skipped to make it appear green.
+- CI now gates lint and maintained tests as well as production build and browser smoke checks. The GitHub workflow has not run remotely. Docker build stage uses npm 8 and `--configuration production`.
 
-## Local tooling
+## Toolchain and installation
 
-Host is Apple Silicon (`arm64`). Existing standalone nvm 0.39.7 remains unchanged; no Homebrew nvm was installed. Added only Node 12.22.12 (x64 through Rosetta) and Node 24.15.0 (native arm64). Download checksums matched. Default nvm alias still resolves to Node 18.19.1; shell startup files are unchanged. Node 14 for Angular 13–15 is not installed yet.
+- App: Node 12.22.12 (Rosetta x64 on this Mac), npm **8.19.4**, `.nvmrc` unchanged. Angular 12 explicitly accepts npm >=8; npm 7 failed resolution against the old builder and then selected incompatible modern wildcard ESLint peers.
+- Existing standalone nvm 0.39.7 and shell config are unchanged. Node 18.19.1 remains the default; E2E package uses native Node 24.15.0. No Homebrew nvm installation.
+- Use `nvm use`, then `npx --package npm@8.19.4 npm ci --strict-peer-deps`. Session commands use temporary npm at `/private/tmp/listshop-upgrade-tools/node_modules/npm/bin/npm-cli.js`; recreate it after a restart rather than relying on temporary files.
+- The official updater wrote target versions but its npm 7 installation failed before migrations. npm 8 resolved a fresh v2 lockfile with strict peer checks, followed by successful clean installation including ngcc. No force/legacy-peer-deps flags were used.
+- Old lockfile: Git `bb34f66:package-lock.json`, plus `/private/tmp/listshop-angular11-package-lock-1794121771.json`. The updater removed old node_modules before its failed install; there is no node_modules backup. Official migrations were subsequently run using explicit package targets and `--migrate-only` with the original from-versions.
+- `npm ls --all --json` reports no dependency-tree errors. Fresh historical dependencies emit deprecation notices and engine warnings for tmp 0.2.7 (Node >=14.14) and node-releases 2.0.63 (Node >=18); final build/test outcomes determine current practical compatibility. Do not install unbounded new packages into this historical toolchain.
 
-Node 12's bundled npm is still 6.14.16. Commands in this session used a temporary npm 7.24.2 at `/private/tmp/listshop-upgrade-tools/node_modules/npm/bin/npm-cli.js` with Node 12 explicitly. Recreate portably with `nvm use` then `npx --package npm@7.24.2 npm ci`. Do not rely on the temporary tools surviving a restart. E2E commands use the Node version in `e2e/.nvmrc`.
+## Validation
 
-## Validation evidence (2026-11-08)
+- Clean strict-peer installation: passed. Manifest and lockfile dependency/engine metadata match.
+- `npm run lint`: **passed**, no lint errors/warnings.
+- `npm run test:upgrade`: **5/5 passed** in ChromeHeadless under Node 12.
+- Local production build: **passed** after removing an unused Codelyzer import. Initial total 2.13 MB (prepared Angular 11: 1.85 MB). Existing style-budget warnings and newer Sass/CSS diagnostic warnings remain. Log: `/private/tmp/listshop-angular12-build.log`.
+- Docker build stage: **passed**, including clean strict-peer installation, ngcc and production compilation. Image `listshop-angular12-checkpoint:local`, ID `64dc384c38288f46771a4308f25c73827022afa955040baf7482c02c2fa8e5bd`. Log: `/private/tmp/listshop-angular12-docker.log`.
+- Angular 12 browser suite: **10/10 passed** in 25.4 seconds, including all four original Angular 11 desktop/mobile login/list screenshot comparisons. No baselines were changed. Log: `/private/tmp/listshop-angular12-browser.log`.
+- Temporary migration logs: `/private/tmp/listshop-angular12-cli-migrations.log`, `...-core-migrations.log`, `...-cdk-migrations.log`. All three have successful completion output.
 
-- Original bundle built on Node 12, initial total 1.80 MB. Node 18 build failed with `ERR_OSSL_EVP_UNSUPPORTED`; no workaround was added. Sandbox font-inlining DNS failure was resolved by rerunning with network access.
-- Clean `npm ci --strict-peer-deps` including ngcc passed on Node 12/npm 7 after UI alignment. After Codelyzer alignment, `npm ls --all --json` reports no dependency-tree errors. No `--force` / `--legacy-peer-deps` used for installation.
-- Cleaned-up local production build passed, initial total 1.85 MB. Existing component style-budget warnings persist (ingredient-input 15.41 kB and edit-dish 17.45 kB). Bundle growth accompanies the compatible UI library releases.
-- Browser suite: final **10/10 passed** (28.6 seconds) against the cleaned-up production bundle, including all four original login/list screenshots. The expiry fixture establishes a successful session before returning 401 on reload.
-- Focused runtime-configuration Karma tests: **2/2 passed**, Node 12, ChromeHeadless, `--include=src/app/shared/services/environment-loader.service.spec.ts --source-map=false`.
-- Legacy full suite: corrected imports allow compilation, but it fails on missing Router/ActivatedRoute providers (AlertService, ResetConfirm, ResetPassword observed), then Chrome disconnects after 3/27 failing tests. Other legacy fixtures are not certified; no tests have been skipped to hide failures. Temporary detailed log: `/private/tmp/listshop-unit-baseline.log`.
-- Lint: fails with **2,314 errors / 17 warnings**, predominantly pre-existing style/deprecation issues; temporary log `/private/tmp/listshop-lint-final.log`. Codelyzer itself now declares compatible peers. The Angular 12 checkpoint includes ESLint migration; this is not a passing lint baseline.
-- Final-state Linux Docker build-stage validation **passed** (exit 0), including clean strict-peer installation, ngcc, production compilation and font inlining. Local image: `listshop-angular11-preparation:local`, ID `5e050c429b7de4c72c3d4750c601204e5e05088c349c68dc5b7cf78342d6617d`. Log: `/private/tmp/listshop-docker-final.log`. No image was published or deployed. Nginx runtime stage is not validated yet.
-- Old dependencies emit deprecation messages and a transitive `node-releases@2.0.57` Node >=18 engine warning under Node 12. Production compilation still passes; revisit the old builder's transitive tooling as Angular is upgraded.
-- Graphify launcher is broken (deleted Python interpreter path); existing graph JSON was used directly. SharedModule is imported across the major feature modules. No graph rebuild/repair was attempted.
+## Earlier preparation and known limits
 
-## Next checkpoint / unresolved work
+Preparation removed unused Universal support, retained browser/Nginx deployment, saved the version compatibility candidate matrix and added isolated Playwright checks. Its production and Docker build-stage checks passed; 10 browser tests and 2 focused runtime-config tests passed. Four screenshots (login/lists, desktop/mobile) were captured from the original Angular 11 bundle and matched the prepared bundle.
 
-1. Stop for user review of the preparation commit. All validation processes have finished. Nothing has been pushed, published or deployed.
-2. Review desktop/mobile login/list screenshots and dependency alignment. Preparation exposes baseline exceptions; it does not assert all legacy tests or product journeys pass.
-3. Before calling Angular 12 gates passed, resolve or explicitly agree how to handle existing unit-fixture and lint failures. Extend coverage for list edits, dishes/ingredients, meal-plan generation, reset submission and beta feedback; verify against a real backend. These remain unverified, as listed in `e2e/README.md`.
-4. On explicit authorization, start only Angular 11 → 12, using the official adjacent-major guide and pinned compatible libraries. Stop again before Angular 13.
+The generated full unit suite originally failed on nonexistent component imports. After those imports were corrected it compiled, then reported missing Router/ActivatedRoute providers and Chrome disconnected after 3/27 failures. The user confirmed these tests were generated and unmaintained. Earlier TSLint reported 2,314 errors/17 warnings; this has been replaced with the passing selected-rule configuration, not a wholesale formatting rewrite.
+
+Broader acceptance remains unverified: real backend integration, list editing/deletion, dish autocomplete, meal-plan generation, reset submission, beta feedback and landing-page visuals. See `e2e/README.md`. Nginx runtime-stage validation and production deployment remain later checkpoints. Nothing has been pushed, published or deployed.
+
+Graphify's CLI launcher points at a deleted Python interpreter; preparation read the existing graph directly. No graph rebuild/repair was attempted.
+
+## Resume / next action
+
+1. Stop for user review of Angular 12 and the two lint-discovered bug fixes. All validation processes have finished.
+2. Manual product checks remain useful: list generation with a chosen name, ingredient quantities/modifiers, dishes, meal plans and beta flows. Broader gaps are listed above and in e2e/README.md.
+3. Resume only after user authorization for Angular 12 → 13. Node 14.21.3 will be needed under the planned toolchain route; it is not installed yet. Read this record and inspect Git before executing migrations.

@@ -5,13 +5,13 @@ WORKDIR /listshop-webclient
 
 COPY package*.json /listshop-webclient/
 
-RUN npm install --global npm@7.24.2
+RUN npm install --global npm@8.19.4
 RUN npm ci --strict-peer-deps
 
 COPY ./ /listshop-webclient/
 #ARG configuration=production
 
-RUN npm run build -- --output-path=./dist/out --prod
+RUN npm run build -- --output-path=./dist/out --configuration production
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.21

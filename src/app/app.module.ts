@@ -44,7 +44,6 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
         SharedModule,
         UserModule,
         ListsModule,
-        // tslint:disable-next-line: max-line-length
         RouterModule.forRoot(rootRouterConfig, {
             useHash: false,
             anchorScrolling: 'enabled',

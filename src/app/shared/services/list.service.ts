@@ -90,7 +90,7 @@ export class ListService implements OnDestroy {
                              addBase: boolean,
                              generatePlan: boolean, listName: string = ""): Observable<HttpResponse<Object>> {
 
-        if (listName = "") {
+        if (listName === "") {
             listName = ListService.DEFAULT_LIST_NAME;
         }
         var properties: IListGenerateProperties = <IListGenerateProperties>({

@@ -40,7 +40,6 @@ export class FooterComponent {
   onWindowScroll() {
     if ((window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) > this.showScrollHeight) {
       this.showScroll = true;
-    // tslint:disable-next-line: max-line-length
     } else if (this.showScroll && (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) < this.hideScrollHeight) {
       this.showScroll = false;
     }

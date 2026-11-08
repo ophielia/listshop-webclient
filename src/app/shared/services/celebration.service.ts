@@ -90,8 +90,8 @@ export class CelebrationService implements OnDestroy {
                 this.stopCelebration();
             } else {
                 var cel = currentFromConfig[0];
-                var end = new Date(cel.end_date);
-                if ((new Date().getTime()) > end.getTime()) {
+                var existingCelebrationEnd = new Date(cel.end_date);
+                if ((new Date().getTime()) > existingCelebrationEnd.getTime()) {
                     this.stopCelebration();
                 }
             }

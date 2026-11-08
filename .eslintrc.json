@@ -1,0 +1,69 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "dist/**",
+    "node_modules/**",
+    "graphify-out/**",
+    "e2e/**"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+      },
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "env": {
+        "browser": true,
+        "es2020": true
+      },
+      "rules": {
+        "no-async-promise-executor": "error",
+        "no-cond-assign": [
+          "error",
+          "except-parens"
+        ],
+        "no-constant-condition": [
+          "error",
+          {
+            "checkLoops": false
+          }
+        ],
+        "no-debugger": "error",
+        "no-duplicate-case": "error",
+        "no-eval": "error",
+        "no-new-func": "error",
+        "no-sequences": "error",
+        "no-sparse-arrays": "error",
+        "no-unsafe-finally": "error",
+        "no-unsafe-negation": "error",
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/no-unused-expressions": [
+          "error",
+          {
+            "allowShortCircuit": true,
+            "allowTernary": true
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "parser": "@angular-eslint/template-parser",
+      "plugins": [
+        "@angular-eslint/template"
+      ],
+      "rules": {
+        "@angular-eslint/template/banana-in-box": "error"
+      }
+    }
+  ]
+}

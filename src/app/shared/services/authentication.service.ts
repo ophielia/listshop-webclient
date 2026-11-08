@@ -259,12 +259,12 @@ export class AuthenticationService implements OnDestroy {
             .pipe(map((response: HttpResponse<any>) => {
 
                     // login successful if there's a jwt token in the response
-                    let user = MappingUtils.toUser(response);
+                    let registeredUser = MappingUtils.toUser(response);
 
-                    if (user) {
+                    if (registeredUser) {
                         this.userIsAuthenticated = true;
                         // store username and jwt token in local storage to keep user logged in between page refreshes
-                        localStorage.setItem('currentUser', JSON.stringify(user));
+                        localStorage.setItem('currentUser', JSON.stringify(registeredUser));
 
                         // create list, and return true
 

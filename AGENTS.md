@@ -7,9 +7,9 @@ This project is a client for a REST service designed to access a shopping list a
 - Support beta testing campaigns.
 
 ### Technology Stack
-- **Frontend Framework**: Angular 11.2.14
+- **Frontend Framework**: Angular 12.2.17
 - **State Management**: RxJS based services.
-- **UI Components**: PrimeNG 10, Ng-bootstrap 9, Bootstrap 4.
+- **UI Components**: PrimeNG 12, Ng-bootstrap 10, Bootstrap 4.
 - **Styling**: SASS / SCSS.
 - **Rendering**: Browser app served by Nginx; unused Angular Universal support removed during upgrade preparation.
 - **Logging**: ngx-logger.
@@ -34,11 +34,12 @@ This project is a client for a REST service designed to access a shopping list a
 - **Environment**: Backend API typically runs on `http://localhost:8182/` in development.
 
 ### Development Workflow
-- **Node Version**: Node 12.22.12 / npm 7.24.2 for the Angular 11 checkpoint (see `.nvmrc`); isolated Playwright checks use Node 24.15.0 in `e2e/`.
+- **Node Version**: Node 12.22.12 / npm 8.19.4 for the Angular 12 checkpoint (see `.nvmrc`); isolated Playwright checks use Node 24.15.0 in `e2e/`.
 - **Build Commands**:
   - `ng serve`: Development server.
   - `ng build`: Production build.
 - **Testing**:
   - `ng test`: Unit tests using Karma/Jasmine.
   - Browser checks: See `e2e/README.md` for Playwright commands.
-- **Linting**: Uses TSLint.
+- **Linting**: `npm run lint` uses angular-eslint with explicit correctness rules; formatting is deferred.
+- **Upgrade tests**: `npm run test:upgrade` runs focused behavioral tests. Generated legacy component specs remain an accepted failing baseline.

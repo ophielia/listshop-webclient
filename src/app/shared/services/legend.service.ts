@@ -49,10 +49,10 @@ export class LegendService {
             this.legendLookup.forEach((existing: LegendPoint, key: string) => {
                 if (!matchFound && existing.key == apiKey) {
                     matchFound = true;
-                    let legendSource = new LegendIconSource();
-                    legendSource.color = existing.color;
-                    legendSource.icon = existing.icon;
-                    existingSources.push(legendSource);
+                    let matchedSource = new LegendIconSource();
+                    matchedSource.color = existing.color;
+                    matchedSource.icon = existing.icon;
+                    existingSources.push(matchedSource);
                     existingLegends.push(existing);
                 }
 

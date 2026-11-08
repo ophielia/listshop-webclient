@@ -141,8 +141,8 @@ export class DishService {
         amount.modifiers = ingredient.raw_modifiers;
 
         var putIngredient = new PutIngredient();
-        putIngredient.id = ingredient.item_id,
-            putIngredient.tag_id = ingredient.tag.tag_id;
+        putIngredient.id = ingredient.item_id;
+        putIngredient.tag_id = ingredient.tag.tag_id;
         putIngredient.tag_display = ingredient.tag.name;
         putIngredient.raw_entry = ingredient.raw_entry;
         putIngredient.amount = amount;
