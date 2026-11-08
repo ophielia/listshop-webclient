@@ -3,7 +3,7 @@ import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
 import {Subscription} from "rxjs";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms";
 import {ErrorType} from "../../model/error-type";
 import EmailValidator from "../../shared/validators/email-validator";
 import PasswordValidator from "../../shared/validators/password-validator";
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
     private unsubscribe: Subscription[] = [];
     show: boolean;
-    signInForm: FormGroup;
+    signInForm: UntypedFormGroup;
 
     passwordErrors: ErrorType[] = [];
     emailErrors: ErrorType[] = [];
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
                 private title: Title,
                 private meta: Meta,
                 private router: Router,
-                private fb: FormBuilder,
+                private fb: UntypedFormBuilder,
                 private authenticationService: AuthenticationService) {
         // initialize variable value
         this.show = false;

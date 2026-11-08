@@ -2,55 +2,53 @@
 
 ## Current checkpoint
 
-**Angular 13 implementation and automated checkpoint checks are complete; awaiting user review. Angular 14 has not started or been authorized.**
+**Angular 14 implementation and automated checks are complete; awaiting Bootstrap 5 visual review before Angular 15.**
 
-- Branch: `chore/angular-upgrade`.
-- Starting commit: `74499f7` (user committed local API port changes).
-- Angular 13 checkpoint is the commit containing this record; find it with git log.
-- Earlier checkpoints: preparation `bb34f66`, Angular 12 `c1b6f4b`, development asset collision fix `574dc84`.
-- Existing unrelated `.junie/` is untouched. API configuration remains `http://localhost:8888/`.
-- User accepts generated legacy component tests as an unmaintained failing baseline. Upgrade gates use maintained tests, explicit correctness lint rules, development server/build, production build and browser checks.
+- Branch: chore/angular-upgrade. Starting commit a1e5547 (validated Angular 13).
+- Earlier checkpoints: Angular 12 c1b6f4b, casing fix 574dc84, local API settings 74499f7.
+- Unrelated .junie/ remains untouched. API URLs remain localhost:8888; no config/environment edits.
+- User accepts generated legacy component tests as a failing historical baseline. Gates are selected correctness lint, maintained tests, development/production builds, browser journeys and visual comparisons.
 
-## Angular 13 implementation
+## Angular 14 changes
 
-- Framework 13.4.0, CLI/build tooling 13.3.11, CDK 13.3.9, TypeScript 4.6.4, angular-eslint 13.5.0, TypeScript ESLint 5.27.1. ESLint 7.32.0, RxJS 6 and Zone 0.11.8 retained.
-- UI updates: PrimeNG 13.4.1, ng-bootstrap 11.0.1, carousel 7.0.5, page-scroll/core 8.0.0, spinner 13.1.1. Chose ng-bootstrap 11 rather than 12 to retain Bootstrap 4.6.2 and defer Bootstrap 5 migration/visual review. No application behavior rewrite intended.
-- Official CLI/core/CDK 12→13 migrations completed. CLI removed classlist/web-animations dependencies and imports for unsupported IE, removed extractCss, and ignored .angular/cache. Core migration explicitly preserves old TestBed teardown behavior. CDK migration completed without additional app edits.
-- Added .angular to .dockerignore so the CLI's new disk cache is not copied into build images.
-- Added a desktop/mobile browser journey checking landing carousel initialization, section scrolling and the connect dropdown, because those libraries changed. Existing four login/list screenshots remain unchanged.
-- Scoped npm override: nx@13.1.3 → @nrwl/cli 13.1.3. angular-eslint builder pins devkit 13.1.3, which pulls Nx 13.1.3 with a wildcard CLI dependency. Fresh resolution otherwise selected CLI/Nx 15.9.3 and a Yarn parser requiring Node 18. The scoped override keeps this internal tooling consistent and removes that parser; revisit/remove when lint tooling changes at a later checkpoint.
+- Core 14.3.0, CLI/build tooling 14.2.13, CDK 14.2.7, TypeScript 4.8.4, angular-eslint 14.4.0, TypeScript ESLint 5.43.0. RxJS 6, ESLint 7.32.0 and Zone 0.11.8 retained.
+- PrimeNG 14.2.3, carousel 14.0.2, page-scroll/core 9.0.0, spinner 14.0.0. Required UI transition: ng-bootstrap 13.1.1, Bootstrap 5.2.3 and @popperjs/core 2.11.8. Removed old popper.js and obsolete scoped Nx override; angular-eslint 14 builder no longer depends on Nx.
+- Official CLI/core/CDK migrations completed. CLI updated target to ES2020. Core converted forms to UntypedFormBuilder/UntypedFormGroup/etc. to preserve existing behavior. NgModules and existing form semantics retained.
+- CLI 14 migrate-only requires unversioned package names. Ran installed CLI/core/CDK migrations with NG_DISABLE_VERSION_CHECK=true to prevent CLI self-bootstrap beyond this checkpoint; dependency peer checks were never bypassed. Initial version-suffixed attempts did not run migrations and were followed by successful commands.
+- Removed router initialNavigation 'enabled' alias; replaced with enabledBlocking after verifying that Angular 13 maps both values to the same implementation. Authentication/browser checks confirm preserved behavior.
+- Migrated used Bootstrap directional utilities to start/end names and navbar data attributes to data-bs-*. Alert dismiss control is now a native Bootstrap 5 close button with an accessible label.
+- Added _bootstrap-settings.scss and targeted global layout rules to preserve old container widths, 30px gutters, control radii, form-group spacing and navbar geometry. Disabled Bootstrap-native smooth scrolling because it interfered with ngx-page-scroll's existing animation. Retained original menu-icon sizing.
+- Corrected legacy 'and(' media-query syntax rejected by the newer Sass compiler, and removed obsolete tilde imports from app.scss. Other existing CSS/Sass warnings were not broadly reformatted.
+- Added desktop/mobile confirmation-dialog browser coverage: No cancels without a DELETE; Yes deletes through a mocked API and removes the card. No real backend data is modified by tests.
 
-## Toolchain / installation
+## Installation / toolchain
 
-- App Node 14.21.3 (x64 under Rosetta), npm 8.19.4. .nvmrc, engines, Docker and CI updated. Node was added through existing standalone nvm, download checksum verified; shell configuration and default Node alias were not changed. Browser tests remain isolated on native Node 24.15.0 in e2e/.
-- Use `nvm use`, then `npx --package npm@8.19.4 npm ci --strict-peer-deps`. Current session uses temporary npm at /private/tmp/listshop-upgrade-tools/node_modules/npm/bin/npm-cli.js; recreate it if missing after restart.
-- The official updater selected target versions but its install stopped against the old Angular 12 builder in the lockfile before migrations. Old lockfile is preserved at /private/tmp/listshop-angular12-package-lock-1794130904.json and in Git 74499f7. The updater removed old node_modules. Resolved a fresh lockfile and installed cleanly with strict peer checks; no force/legacy-peer-deps flags.
-- Ran official migrate-only with explicit package targets after installing: CLI from 12.2.18 to 13.3.11; core from 12.2.17 to 13.4.0; CDK from 12.2.13 to 13.3.9. Logs are /private/tmp/listshop-angular13-{cli,core,cdk}-migrations.log. Other upgraded UI packages do not declare migrations.
-- `npm ls --all --json` reports no dependency-tree errors. Historical dependencies still emit deprecation notices and node-releases engine warnings; record practical validation below.
+- Node 14.21.3 (Rosetta x64 on this Mac), npm 8.19.4 unchanged. Browser checks remain isolated on Node 24.15.0. Existing standalone nvm and default alias are preserved.
+- Use nvm use, then npx --package npm@8.19.4 npm ci --strict-peer-deps. Temporary npm path used here: /private/tmp/listshop-upgrade-tools/node_modules/npm/bin/npm-cli.js.
+- Prior majors repeatedly encountered stale builder resolution, so this checkpoint resolved all compatible versions jointly from a fresh lockfile and clean installation. Angular 13 lockfile/modules preserved at /private/tmp/listshop-angular13-package-lock.json-1794136089 and /private/tmp/listshop-angular13-node_modules-1794136089; Git a1e5547 is the durable fallback. No force/legacy-peer-deps flags used.
+- Strict-peer resolution, clean install including ngcc and migration package updates passed. npm ls --all --json reports no tree errors; manifest/lockfile dependencies and engines match.
+- Logs: /private/tmp/listshop-angular14-{resolution,install,cli-migrations,core-migrations,cdk-migrations,tree-errors}.log (tree JSON is ...-tree.json).
 
 ## Validation
 
-- Strict-peer resolution and clean install including ngcc: passed. A subsequent install applied the scoped Nx override, followed by CLI migration dependency cleanup.
-- Lint: **passed** after migrations; log /private/tmp/listshop-angular13-lint.log.
-- Maintained tests: **5/5 passed** in ChromeHeadless on Node 14. Log /private/tmp/listshop-angular13-tests.log.
-- Development server: **compiled successfully** on 127.0.0.1:4202. Both contact-default.png and contact.png returned HTTP 200 and exact source-image bytes. Verification server was stopped intentionally; log /private/tmp/listshop-angular13-serve.log.
-- Docker build stage: **passed**, including clean strict-peer installation, ngcc and production compilation. Local image listshop-angular13-checkpoint:local, ID e4d7972e32fa4393715e012e4279608e53c59a757df267768c61e2b5b8010408. Log /private/tmp/listshop-angular13-docker.log.
-- Local production build: **passed**, initial total 1.58 MB (Angular 12: 2.13 MB), estimated transfer 334.22 kB. Existing component style-budget warnings remain (edit-dish 17.71 kB, ingredient-input 15.67 kB), along with Sass/CSS warnings. Log /private/tmp/listshop-angular13-build.log.
-- Browser suite: **12/12 passed** in 32 seconds, including desktop/mobile landing carousel/scrolling/connect checks and all four original Angular 11 screenshot comparisons. No screenshot baselines changed. Log /private/tmp/listshop-angular13-browser.log.
-- Nothing pushed, published or deployed; GitHub workflow has not run remotely. No Angular 14 work has started.
+- Lint: **passed** after all source changes; log /private/tmp/listshop-angular14-lint.log.
+- Maintained tests: **5/5 passed**, log /private/tmp/listshop-angular14-tests.log.
+- Final local production build: **passed**, initial total 1.50 MB, estimated transfer 329.79 kB (Angular 13: 1.58 MB). Existing style-budget warnings remain: edit-dish 17.71 kB, ingredient-input 15.67 kB. Existing invalid CSS declarations and Sass diagnostics remain deferred. Log /private/tmp/listshop-angular14-build.log.
+- Browser suite: **14/14 passed** in 38.9 seconds. All four original Angular 11 login/list screenshots match, without updating baselines. Covers login, stored session/reload/logout, expiry, reset navigation, carousel, section scrolling, connect menu and deletion confirmation. Log /private/tmp/listshop-angular14-browser.log.
+- Initial browser run exposed native smooth-scroll interference and a 1px mobile header shift. Compared computed dimensions with the local Angular 13 build: restored navbar outer padding, collapsed-container padding and icon background sizing. Final tests pass with the original images.
+- Docker build stage: **passed**, clean strict-peer install, ngcc and production build. Local image listshop-angular14-checkpoint:local, ID d3431ea706b31fcb2fa0e8958d720a75a0d570dba18f0a9d8913058967b9b01d. Log /private/tmp/listshop-angular14-docker.log.
+- Development server: **compiled successfully** on 127.0.0.1:4202. Both contact image URLs returned HTTP 200 and exact source-image bytes. Verification server stopped intentionally; log /private/tmp/listshop-angular14-serve.log.
+- Temporary Angular 13/reference and Angular 14 static comparison servers on ports 4203/4201 were stopped. Reference assets extracted from the local Angular 13 image to /private/tmp/listshop-angular13-reference; no apps were published or deployed.
 
-## Accepted baseline / remaining limits
+## Review / accepted limits
 
-Generated full unit fixtures are not functional and are not an upgrade gate. The maintained suite covers runtime configuration, preservation/defaulting of generated list names and ingredient unit-size/marker parsing. Original TSLint was replaced by selected correctness checks; formatting, var/const and loose equality cleanup remain deferred.
+Bootstrap 5 needs user visual review before Angular 15. Automated screenshots cover login/list views only; manually inspect other forms, dropdowns, alerts and dialogs. Remaining integration/coverage gaps: real backend behavior, dish autocomplete, meal-plan generation, reset submission, beta feedback and broad visuals. The added dialog test uses mocked requests. See e2e/README.md.
 
-Earlier Angular 12 checks passed: five maintained tests, ten browser checks, four original screenshot comparisons, development server/asset checks and production/Docker build stage. The earlier casing collision between distinct Contact.png/contact.png assets was fixed by renaming the default image to contact-default.png. Keep that fix and verify both resource responses during this checkpoint.
+Generated full unit fixtures remain unmaintained and are not declared passing. Maintained tests cover runtime configuration, generated list names and ingredient unit-size/marker parsing. Formatting and broad var/equality cleanup remain deferred. Nginx runtime-stage validation and deployment are later checkpoints. GitHub workflow has not run remotely; nothing pushed or deployed.
 
-Broader acceptance remains unverified: real backend integration, list editing/deletion, dish autocomplete, meal-plan generation, reset submission, beta feedback and broad visuals. The new landing journey adds functional coverage, not a complete redesign/visual audit. See e2e/README.md. Full Nginx runtime-stage validation and production deployment remain later checkpoints.
-
-Graphify launcher points at a deleted Python interpreter. Earlier architecture analysis used the existing graph JSON; no graph repair/rebuild was attempted.
+The prior Contact.png/contact.png development collision remains fixed by contact-default.png; verify both asset responses below. Graphify launcher remains broken (deleted Python interpreter); no graph repair/rebuild attempted.
 
 ## Resume / next action
 
-1. Stop for user review of Angular 13. All validation processes have finished; the temporary development server is stopped.
-2. For manual checks, run nvm use (Node 14.21.3) before starting ng serve. API settings still point to localhost:8888. Review key list/dish/meal-plan flows; remaining coverage gaps are listed above.
-3. Start Angular 13 → 14 only on explicit authorization. Keep Node 14/npm 8 unless target package requirements change; reassess ng-bootstrap/Bootstrap compatibility and plan the explicit Bootstrap 5 visual checkpoint when required. Preserve the scoped Nx override only while Nx 13.1.3 remains in the graph.
+1. Stop for user visual review of Bootstrap 5 forms, menus, alerts and dialogs. All validation processes are finished and temporary servers stopped. Find the Angular 14 checkpoint with git log; it is the commit containing this record.
+2. Start Angular 14 → 15 only on explicit authorization. Retain Node 14.21.3/npm 8.19.4 unless target package requirements change; preserve the documented baseline exceptions and original screenshot comparisons.

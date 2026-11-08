@@ -1,9 +1,31 @@
 // Bootstrap Layout scss
-@import '~bootstrap/scss/bootstrap';
+@import 'scss/bootstrap-settings';
+@import 'bootstrap/scss/bootstrap';
+
+// These are application layout conventions; Bootstrap 5 no longer supplies them.
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.row > .col,
+.row > [class*="col-"] {
+  position: relative;
+}
+
+.navbar-toggler-icon {
+  background-size: 100% 100%;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-expand-lg > .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 
 // Owl-Carousel css
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 
 // Page loader Topbar
 @import "pace/pace-theme-min.css";

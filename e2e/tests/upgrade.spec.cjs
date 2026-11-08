@@ -93,3 +93,31 @@ test('landing carousel, section scrolling and connect menu work', async ({page})
   await expect(page).toHaveURL(/\/user\/login$/);
   await expect(page.getByRole('button', {name: 'Login', exact: true})).toBeVisible();
 });
+
+test('shopping-list confirmation cancels and confirms deletion', async ({page}) => {
+  let deleted = false;
+  await page.route('**/test-api/v2/shoppinglist', route => route.fulfill({json: {
+    list_of_lists: deleted ? [] : [{list_id: '101', name: 'Upgrade groceries', item_count: 3, is_starter_list: false}]
+  }}));
+  await page.route('**/test-api/v2/shoppinglist/101', route => {
+    expect(route.request().method()).toBe('DELETE');
+    deleted = true;
+    return route.fulfill({json: {}});
+  });
+  await page.goto('/user/login');
+  await page.locator('[formControlName="email"]').fill('upgrade@example.com');
+  await page.getByPlaceholder('password', {exact: true}).fill('UpgradePassword123');
+  await page.getByRole('button', {name: 'Login', exact: true}).click();
+  await expect(page.getByText('Upgrade groceries', {exact: true})).toBeVisible();
+  await page.getByText('delete', {exact: true}).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', {name: 'No', exact: true}).click();
+  await expect(dialog).toHaveCount(0);
+  expect(deleted).toBe(false);
+  await page.getByText('delete', {exact: true}).click();
+  await dialog.getByRole('button', {name: 'Yes', exact: true}).click();
+  await expect(page.getByText('Upgrade groceries', {exact: true})).toHaveCount(0);
+  await expect(dialog).toHaveCount(0);
+  expect(deleted).toBe(true);
+});

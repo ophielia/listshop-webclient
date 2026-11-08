@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, UntypedFormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TokenType} from "../../model/token-request";
 
 
@@ -22,7 +22,7 @@ export class TokenGatewayComponent implements OnInit {
                 private title: Title,
                 private meta: Meta,
                 private router: Router,
-                private fb: FormBuilder,
+                private fb: UntypedFormBuilder,
                 private authenticationService: AuthenticationService) {
         // initialize variable value
         this.show = false;

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {Subscription} from "rxjs";
 import {ErrorType} from "../../model/error-type";
 import PasswordValidator from "../../shared/validators/password-validator";
@@ -17,7 +17,7 @@ export class ChangePasswordComponent implements OnInit {
 
     private unsubscribe: Subscription[] = [];
     show: boolean;
-    signUpForm: FormGroup;
+    signUpForm: UntypedFormGroup;
 
     passwordErrors: ErrorType[] = [];
     emailErrors: ErrorType[] = [];
@@ -29,7 +29,7 @@ export class ChangePasswordComponent implements OnInit {
                 private title: Title,
                 private meta: Meta,
                 private router: Router,
-                private fb: FormBuilder,
+                private fb: UntypedFormBuilder,
                 private authenticationService: AuthenticationService) {
         // initialize variable value
         this.show = false;

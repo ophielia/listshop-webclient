@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {Subscription} from "rxjs";
 import EmailValidator from "../../shared/validators/email-validator";
 import {ErrorType} from "../../model/error-type";
@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit {
 
     private unsubscribe: Subscription[] = [];
     show: boolean;
-    signUpForm: FormGroup;
+    signUpForm: UntypedFormGroup;
 
     passwordErrors: ErrorType[] = [];
     emailErrors: ErrorType[] = [];
@@ -32,7 +32,7 @@ export class SignUpComponent implements OnInit {
                 private title: Title,
                 private meta: Meta,
                 private router: Router,
-                private fb: FormBuilder,
+                private fb: UntypedFormBuilder,
                 private listService: ListService,
                 private authenticationService: AuthenticationService) {
         // initialize variable value

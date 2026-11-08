@@ -1,0 +1,19 @@
+// Keep Tovo's existing geometry while moving the underlying widgets to Bootstrap 5.
+$enable-rfs: false;
+$enable-smooth-scroll: false; // ngx-page-scroll owns the existing section animation.
+$grid-gutter-width: 30px;
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px
+);
+$border-radius: .25rem;
+$border-radius-sm: .2rem;
+$border-radius-lg: .3rem;
+$input-btn-focus-width: .2rem;
+$navbar-light-color: rgba(0, 0, 0, .5);
+$navbar-padding-x: 1rem;
+$navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='rgba(0, 0, 0, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+$link-color: #007bff;
+$link-decoration: none;

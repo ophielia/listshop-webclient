@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../../shared/services/authentication.service";
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import PasswordValidator from "../../shared/validators/password-validator";
 import {ErrorType} from "../../model/error-type";
 
@@ -15,7 +15,7 @@ export class PasswordTokenComponent implements OnInit {
 
 
     show: boolean;
-    signUpForm: FormGroup;
+    signUpForm: UntypedFormGroup;
     token: string;
     passwordErrors: ErrorType[] = [];
 
@@ -27,7 +27,7 @@ export class PasswordTokenComponent implements OnInit {
                 private title: Title,
                 private meta: Meta,
                 private router: Router,
-                private fb: FormBuilder,
+                private fb: UntypedFormBuilder,
                 private authenticationService: AuthenticationService) {
         // initialize variable value
         this.show = false;
@@ -82,7 +82,7 @@ export class PasswordTokenComponent implements OnInit {
                 });
     }
 
-    validatePasswordConfirmation(group: FormGroup): any {
+    validatePasswordConfirmation(group: UntypedFormGroup): any {
         var pw = group.controls['userPassword'];
         var pw2 = group.controls['confirmPassword'];
 

@@ -5,13 +5,13 @@
       <div class="ls-logo-img"></div>
       <div class="ls-logo-title">the list shop</div>
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
             (click)="isOpenMobile=!isOpenMobile">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse default-nav" id="navbarSupportedContent" [class.show]="isOpenMobile">
-      <ul class="navbar-nav ml-auto" id="mymenu">
+      <ul class="navbar-nav ms-auto" id="mymenu">
         <li class="nav-item">
           <a class="nav-link" #home href="#home" (click)="active('home')"
              [ngClass]="{'active show': activeClass == 'home' }" [pageScrollOffset]="80" pageScroll>Home</a>

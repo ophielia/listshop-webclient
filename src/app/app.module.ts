@@ -49,7 +49,7 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
             anchorScrolling: 'enabled',
             scrollPositionRestoration: 'enabled',
             enableTracing: false,
-            initialNavigation: 'enabled'
+            initialNavigation: 'enabledBlocking'
         })
     ],
     providers: [

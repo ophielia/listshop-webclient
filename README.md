@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 The Angular upgrade is tracked in [the plan](docs/angular-upgrade-plan.md) and
 [the progress record](docs/angular-upgrade-progress.md). The current checkpoint
-is Angular 13; see the progress record for validation and review status.
+is Angular 14; see the progress record for validation and review status.
 
 Use the existing nvm installation (no Homebrew nvm required):
 
