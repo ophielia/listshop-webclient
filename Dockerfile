@@ -1,5 +1,5 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
-FROM node:12.22.12-bullseye AS build-stage
+FROM node:14.21.3-bullseye AS build-stage
 
 WORKDIR /listshop-webclient
 

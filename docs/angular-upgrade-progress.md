@@ -2,59 +2,55 @@
 
 ## Current checkpoint
 
-**Angular 12 implementation and automated checkpoint checks are complete; awaiting user review. Angular 13 has not started or been authorized.**
+**Angular 13 implementation and automated checkpoint checks are complete; awaiting user review. Angular 14 has not started or been authorized.**
 
 - Branch: `chore/angular-upgrade`.
-- Preparation commit: `bb34f66`; starting application commit: `4db41f1`.
-- Angular 12 checkpoint commit: use `git log -1` after committing this checkpoint. Existing unrelated untracked `.junie/` remains untouched.
-- User approved a minimal correctness-focused ESLint migration. Generated legacy tests were never maintained; their existing failures are accepted as a baseline and are not upgrade gates.
+- Starting commit: `74499f7` (user committed local API port changes).
+- Angular 13 checkpoint is the commit containing this record; find it with git log.
+- Earlier checkpoints: preparation `bb34f66`, Angular 12 `c1b6f4b`, development asset collision fix `574dc84`.
+- Existing unrelated `.junie/` is untouched. API configuration remains `http://localhost:8888/`.
+- User accepts generated legacy component tests as an unmaintained failing baseline. Upgrade gates use maintained tests, explicit correctness lint rules, development server/build, production build and browser checks.
 
-## Angular 12 changes
+## Angular 13 implementation
 
-- Core framework 12.2.17, CLI/build tooling 12.2.18, CDK 12.2.13, TypeScript 4.3.5, Zone 0.11.8, tslib 2.3.1.
-- Compatible UI dependencies: PrimeNG 12.2.3, ng-bootstrap 10.0.0, carousel 6.0.3, spinner 12.0.0. The fresh lockfile also resolves allowed ranges to Bootstrap 4.6.2, ngx-logger 4.3.3, and jQuery 3.7.1. Bootstrap 5 migration is deferred.
-- Official CLI, core and CDK migrations completed. CLI updated build defaults/options and Zone import paths. Framework/CDK migrations completed without additional source rewrites. Other upgraded UI packages do not declare ng-update migrations.
-- TSLint/Codelyzer and their configs removed. `.eslintrc.json` uses explicit correctness rules with angular-eslint 12.7.0, ESLint 7.32.0 and TypeScript ESLint 4.28.2. No formatting preset or broad autofix was applied. Quotes, semicolons, whitespace, var/const and loose equality are deferred.
-- Removed unused Codelyzer import from UserComponent and obsolete TSLint comments. Four scoped variable renames remove shadowing; a comma-expression assignment in DishService was split into equivalent assignments.
-- Fixed two concrete bugs caught by lint: generated list names were overwritten by an assignment in a condition; UnitSize ingredient modifiers were skipped by a comma-separated switch label. Focused tests cover supplied/default list names and preservation of size/marker modifiers.
-- Added `npm run test:upgrade`, selecting five maintained behavioral tests (runtime configuration, generated list payloads, ingredient modifiers). Full `npm test` still exposes legacy scaffolding failures; no fixtures were skipped to make it appear green.
-- CI now gates lint and maintained tests as well as production build and browser smoke checks. The GitHub workflow has not run remotely. Docker build stage uses npm 8 and `--configuration production`.
+- Framework 13.4.0, CLI/build tooling 13.3.11, CDK 13.3.9, TypeScript 4.6.4, angular-eslint 13.5.0, TypeScript ESLint 5.27.1. ESLint 7.32.0, RxJS 6 and Zone 0.11.8 retained.
+- UI updates: PrimeNG 13.4.1, ng-bootstrap 11.0.1, carousel 7.0.5, page-scroll/core 8.0.0, spinner 13.1.1. Chose ng-bootstrap 11 rather than 12 to retain Bootstrap 4.6.2 and defer Bootstrap 5 migration/visual review. No application behavior rewrite intended.
+- Official CLI/core/CDK 12→13 migrations completed. CLI removed classlist/web-animations dependencies and imports for unsupported IE, removed extractCss, and ignored .angular/cache. Core migration explicitly preserves old TestBed teardown behavior. CDK migration completed without additional app edits.
+- Added .angular to .dockerignore so the CLI's new disk cache is not copied into build images.
+- Added a desktop/mobile browser journey checking landing carousel initialization, section scrolling and the connect dropdown, because those libraries changed. Existing four login/list screenshots remain unchanged.
+- Scoped npm override: nx@13.1.3 → @nrwl/cli 13.1.3. angular-eslint builder pins devkit 13.1.3, which pulls Nx 13.1.3 with a wildcard CLI dependency. Fresh resolution otherwise selected CLI/Nx 15.9.3 and a Yarn parser requiring Node 18. The scoped override keeps this internal tooling consistent and removes that parser; revisit/remove when lint tooling changes at a later checkpoint.
 
-## Toolchain and installation
+## Toolchain / installation
 
-- App: Node 12.22.12 (Rosetta x64 on this Mac), npm **8.19.4**, `.nvmrc` unchanged. Angular 12 explicitly accepts npm >=8; npm 7 failed resolution against the old builder and then selected incompatible modern wildcard ESLint peers.
-- Existing standalone nvm 0.39.7 and shell config are unchanged. Node 18.19.1 remains the default; E2E package uses native Node 24.15.0. No Homebrew nvm installation.
-- Use `nvm use`, then `npx --package npm@8.19.4 npm ci --strict-peer-deps`. Session commands use temporary npm at `/private/tmp/listshop-upgrade-tools/node_modules/npm/bin/npm-cli.js`; recreate it after a restart rather than relying on temporary files.
-- The official updater wrote target versions but its npm 7 installation failed before migrations. npm 8 resolved a fresh v2 lockfile with strict peer checks, followed by successful clean installation including ngcc. No force/legacy-peer-deps flags were used.
-- Old lockfile: Git `bb34f66:package-lock.json`, plus `/private/tmp/listshop-angular11-package-lock-1794121771.json`. The updater removed old node_modules before its failed install; there is no node_modules backup. Official migrations were subsequently run using explicit package targets and `--migrate-only` with the original from-versions.
-- `npm ls --all --json` reports no dependency-tree errors. Fresh historical dependencies emit deprecation notices and engine warnings for tmp 0.2.7 (Node >=14.14) and node-releases 2.0.63 (Node >=18); final build/test outcomes determine current practical compatibility. Do not install unbounded new packages into this historical toolchain.
+- App Node 14.21.3 (x64 under Rosetta), npm 8.19.4. .nvmrc, engines, Docker and CI updated. Node was added through existing standalone nvm, download checksum verified; shell configuration and default Node alias were not changed. Browser tests remain isolated on native Node 24.15.0 in e2e/.
+- Use `nvm use`, then `npx --package npm@8.19.4 npm ci --strict-peer-deps`. Current session uses temporary npm at /private/tmp/listshop-upgrade-tools/node_modules/npm/bin/npm-cli.js; recreate it if missing after restart.
+- The official updater selected target versions but its install stopped against the old Angular 12 builder in the lockfile before migrations. Old lockfile is preserved at /private/tmp/listshop-angular12-package-lock-1794130904.json and in Git 74499f7. The updater removed old node_modules. Resolved a fresh lockfile and installed cleanly with strict peer checks; no force/legacy-peer-deps flags.
+- Ran official migrate-only with explicit package targets after installing: CLI from 12.2.18 to 13.3.11; core from 12.2.17 to 13.4.0; CDK from 12.2.13 to 13.3.9. Logs are /private/tmp/listshop-angular13-{cli,core,cdk}-migrations.log. Other upgraded UI packages do not declare migrations.
+- `npm ls --all --json` reports no dependency-tree errors. Historical dependencies still emit deprecation notices and node-releases engine warnings; record practical validation below.
 
 ## Validation
 
-- Clean strict-peer installation: passed. Manifest and lockfile dependency/engine metadata match.
-- `npm run lint`: **passed**, no lint errors/warnings.
-- `npm run test:upgrade`: **5/5 passed** in ChromeHeadless under Node 12.
-- Local production build: **passed** after removing an unused Codelyzer import. Initial total 2.13 MB (prepared Angular 11: 1.85 MB). Existing style-budget warnings and newer Sass/CSS diagnostic warnings remain. Log: `/private/tmp/listshop-angular12-build.log`.
-- Docker build stage: **passed**, including clean strict-peer installation, ngcc and production compilation. Image `listshop-angular12-checkpoint:local`, ID `64dc384c38288f46771a4308f25c73827022afa955040baf7482c02c2fa8e5bd`. Log: `/private/tmp/listshop-angular12-docker.log`.
-- Angular 12 browser suite: **10/10 passed** in 25.4 seconds, including all four original Angular 11 desktop/mobile login/list screenshot comparisons. No baselines were changed. Log: `/private/tmp/listshop-angular12-browser.log`.
-- Temporary migration logs: `/private/tmp/listshop-angular12-cli-migrations.log`, `...-core-migrations.log`, `...-cdk-migrations.log`. All three have successful completion output.
+- Strict-peer resolution and clean install including ngcc: passed. A subsequent install applied the scoped Nx override, followed by CLI migration dependency cleanup.
+- Lint: **passed** after migrations; log /private/tmp/listshop-angular13-lint.log.
+- Maintained tests: **5/5 passed** in ChromeHeadless on Node 14. Log /private/tmp/listshop-angular13-tests.log.
+- Development server: **compiled successfully** on 127.0.0.1:4202. Both contact-default.png and contact.png returned HTTP 200 and exact source-image bytes. Verification server was stopped intentionally; log /private/tmp/listshop-angular13-serve.log.
+- Docker build stage: **passed**, including clean strict-peer installation, ngcc and production compilation. Local image listshop-angular13-checkpoint:local, ID e4d7972e32fa4393715e012e4279608e53c59a757df267768c61e2b5b8010408. Log /private/tmp/listshop-angular13-docker.log.
+- Local production build: **passed**, initial total 1.58 MB (Angular 12: 2.13 MB), estimated transfer 334.22 kB. Existing component style-budget warnings remain (edit-dish 17.71 kB, ingredient-input 15.67 kB), along with Sass/CSS warnings. Log /private/tmp/listshop-angular13-build.log.
+- Browser suite: **12/12 passed** in 32 seconds, including desktop/mobile landing carousel/scrolling/connect checks and all four original Angular 11 screenshot comparisons. No screenshot baselines changed. Log /private/tmp/listshop-angular13-browser.log.
+- Nothing pushed, published or deployed; GitHub workflow has not run remotely. No Angular 14 work has started.
 
-## Earlier preparation and known limits
+## Accepted baseline / remaining limits
 
-Preparation removed unused Universal support, retained browser/Nginx deployment, saved the version compatibility candidate matrix and added isolated Playwright checks. Its production and Docker build-stage checks passed; 10 browser tests and 2 focused runtime-config tests passed. Four screenshots (login/lists, desktop/mobile) were captured from the original Angular 11 bundle and matched the prepared bundle.
+Generated full unit fixtures are not functional and are not an upgrade gate. The maintained suite covers runtime configuration, preservation/defaulting of generated list names and ingredient unit-size/marker parsing. Original TSLint was replaced by selected correctness checks; formatting, var/const and loose equality cleanup remain deferred.
 
-The generated full unit suite originally failed on nonexistent component imports. After those imports were corrected it compiled, then reported missing Router/ActivatedRoute providers and Chrome disconnected after 3/27 failures. The user confirmed these tests were generated and unmaintained. Earlier TSLint reported 2,314 errors/17 warnings; this has been replaced with the passing selected-rule configuration, not a wholesale formatting rewrite.
+Earlier Angular 12 checks passed: five maintained tests, ten browser checks, four original screenshot comparisons, development server/asset checks and production/Docker build stage. The earlier casing collision between distinct Contact.png/contact.png assets was fixed by renaming the default image to contact-default.png. Keep that fix and verify both resource responses during this checkpoint.
 
-Broader acceptance remains unverified: real backend integration, list editing/deletion, dish autocomplete, meal-plan generation, reset submission, beta feedback and landing-page visuals. See `e2e/README.md`. Nginx runtime-stage validation and production deployment remain later checkpoints. Nothing has been pushed, published or deployed.
+Broader acceptance remains unverified: real backend integration, list editing/deletion, dish autocomplete, meal-plan generation, reset submission, beta feedback and broad visuals. The new landing journey adds functional coverage, not a complete redesign/visual audit. See e2e/README.md. Full Nginx runtime-stage validation and production deployment remain later checkpoints.
 
-Graphify's CLI launcher points at a deleted Python interpreter; preparation read the existing graph directly. No graph rebuild/repair was attempted.
+Graphify launcher points at a deleted Python interpreter. Earlier architecture analysis used the existing graph JSON; no graph repair/rebuild was attempted.
 
 ## Resume / next action
 
-1. Stop for user review of Angular 12 and the two lint-discovered bug fixes. All validation processes have finished.
-2. Manual product checks remain useful: list generation with a chosen name, ingredient quantities/modifiers, dishes, meal plans and beta flows. Broader gaps are listed above and in e2e/README.md.
-3. Resume only after user authorization for Angular 12 → 13. Node 14.21.3 will be needed under the planned toolchain route; it is not installed yet. Read this record and inspect Git before executing migrations.
-
-## Follow-up: development asset casing collision
-
-User reported ng serve failing on Contact.png vs contact.png. The default image and color-4 image are distinct files, flattened by development stylesheet resource emission; production output hashing had hidden the collision. Renamed src/assets/images/Contact.png to contact-default.png and updated its SCSS variable reference. Added a development build to CI and future checkpoint checks. Verification ng serve on 127.0.0.1:4202 compiled successfully. HTTP checks confirmed both emitted images return 200 and exactly match their distinct source bytes (19,283 and 49,930 bytes). The verification server was stopped (exit 130 from intentional Ctrl-C). Log: /private/tmp/listshop-angular12-serve.log. User's src/environments/environment.ts change (API port 8888) and .junie/ remain untouched.
+1. Stop for user review of Angular 13. All validation processes have finished; the temporary development server is stopped.
+2. For manual checks, run nvm use (Node 14.21.3) before starting ng serve. API settings still point to localhost:8888. Review key list/dish/meal-plan flows; remaining coverage gaps are listed above.
+3. Start Angular 13 → 14 only on explicit authorization. Keep Node 14/npm 8 unless target package requirements change; reassess ng-bootstrap/Bootstrap compatibility and plan the explicit Bootstrap 5 visual checkpoint when required. Preserve the scoped Nx override only while Nx 13.1.3 remains in the graph.

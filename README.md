@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 The Angular upgrade is tracked in [the plan](docs/angular-upgrade-plan.md) and
 [the progress record](docs/angular-upgrade-progress.md). The current checkpoint
-is Angular 12; see the progress record for validation and review status.
+is Angular 13; see the progress record for validation and review status.
 
 Use the existing nvm installation (no Homebrew nvm required):
 
@@ -16,7 +16,7 @@ npx --package npm@8.19.4 npm ci
 npx --package npm@8.19.4 npm start
 ```
 
-`.nvmrc` selects Node 12.22.12 for this historical checkpoint. On Apple Silicon,
+`.nvmrc` selects Node 14.21.3 for this historical checkpoint. On Apple Silicon,
 this version runs through Rosetta. Keep it isolated to the migration; the final
 toolchain will move forward with Angular. Browser checks use a separate Node 24
 toolchain; see [e2e instructions](e2e/README.md).

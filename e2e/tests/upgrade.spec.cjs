@@ -78,3 +78,18 @@ test('login layout baseline', async ({page}) => {
   await page.evaluate(() => document.fonts.ready);
   await expect(page).toHaveScreenshot('login.png', {fullPage: true, animations: 'disabled'});
 });
+
+test('landing carousel, section scrolling and connect menu work', async ({page}) => {
+  await page.goto('/home');
+  await expect(page.getByRole('heading', {name: 'The List Shop', exact: true})).toBeVisible();
+  await expect(page.locator('owl-carousel-o .owl-item.active')).not.toHaveCount(0);
+  await page.evaluate(() => document.fonts.ready);
+  const mobileMenu = page.getByRole('button', {name: 'Toggle navigation'});
+  if (await mobileMenu.isVisible()) await mobileMenu.click();
+  await page.locator('app-header a[href="#about"]').click();
+  await expect.poll(() => page.locator('#about').evaluate(element => Math.round(element.getBoundingClientRect().top))).toBe(80);
+  await page.getByRole('button', {name: 'connect', exact: true}).click();
+  await page.locator('app-header').getByRole('link', {name: 'sign in', exact: true}).click();
+  await expect(page).toHaveURL(/\/user\/login$/);
+  await expect(page.getByRole('button', {name: 'Login', exact: true})).toBeVisible();
+});
