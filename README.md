@@ -2,10 +2,24 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
-## running in weird version
+## Upgrade checkpoint toolchain
 
-nvm use 16
-ng serve
+The Angular upgrade is tracked in [the plan](docs/angular-upgrade-plan.md) and
+[the progress record](docs/angular-upgrade-progress.md). The current checkpoint
+is Angular 11 preparation; Angular 12 has not started.
+
+Use the existing nvm installation (no Homebrew nvm required):
+
+```sh
+nvm use
+npx --package npm@7.24.2 npm ci
+npx --package npm@7.24.2 npm start
+```
+
+`.nvmrc` selects Node 12.22.12 for this historical checkpoint. On Apple Silicon,
+this version runs through Rosetta. Keep it isolated to the migration; the final
+toolchain will move forward with Angular. Browser checks use a separate Node 24
+toolchain; see [e2e instructions](e2e/README.md).
 
 ## Development server
 
@@ -25,7 +39,9 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+See [browser regression checks](e2e/README.md) for Playwright setup and commands.
+The application is deployed as browser assets through Nginx; unused Universal
+server rendering has been removed.
 
 ## Further help
 

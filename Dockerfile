@@ -1,11 +1,12 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
-FROM node:16-bullseye AS build-stage
+FROM node:12.22.12-bullseye AS build-stage
 
 WORKDIR /listshop-webclient
 
 COPY package*.json /listshop-webclient/
 
-RUN npm install
+RUN npm install --global npm@7.24.2
+RUN npm ci --strict-peer-deps
 
 COPY ./ /listshop-webclient/
 #ARG configuration=production

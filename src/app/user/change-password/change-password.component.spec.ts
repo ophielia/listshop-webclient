@@ -1,8 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ChangePasswordComponent} from './sign-up.component';
+import {ChangePasswordComponent} from './change-password.component';
 
-describe('SignUpComponent', () => {
+describe('ChangePasswordComponent', () => {
   let component: ChangePasswordComponent;
   let fixture: ComponentFixture<ChangePasswordComponent>;
 

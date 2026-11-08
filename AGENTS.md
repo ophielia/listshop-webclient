@@ -11,7 +11,7 @@ This project is a client for a REST service designed to access a shopping list a
 - **State Management**: RxJS based services.
 - **UI Components**: PrimeNG 10, Ng-bootstrap 9, Bootstrap 4.
 - **Styling**: SASS / SCSS.
-- **Server-Side Rendering (SSR)**: Angular Universal (@nguniversal).
+- **Rendering**: Browser app served by Nginx; unused Angular Universal support removed during upgrade preparation.
 - **Logging**: ngx-logger.
 - **Service**: Calls on a Spring Boot REST application (in-house development).
 
@@ -34,12 +34,11 @@ This project is a client for a REST service designed to access a shopping list a
 - **Environment**: Backend API typically runs on `http://localhost:8182/` in development.
 
 ### Development Workflow
-- **Node Version**: Recommended Node 16 (as per README).
+- **Node Version**: Node 12.22.12 / npm 7.24.2 for the Angular 11 checkpoint (see `.nvmrc`); isolated Playwright checks use Node 24.15.0 in `e2e/`.
 - **Build Commands**:
   - `ng serve`: Development server.
   - `ng build`: Production build.
-  - `npm run ssrbuild`: Build and serve with SSR.
 - **Testing**:
   - `ng test`: Unit tests using Karma/Jasmine.
-  - `ng e2e`: End-to-end tests using Protractor.
+  - Browser checks: See `e2e/README.md` for Playwright commands.
 - **Linting**: Uses TSLint.

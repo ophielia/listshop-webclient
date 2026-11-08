@@ -1,0 +1,29 @@
+name: Angular upgrade checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  browser-build-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '12.22.12'
+      - run: npm install --global npm@7.24.2
+      - run: npm ci --strict-peer-deps
+      - run: npm run build -- --configuration production
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.15.0'
+      - run: npm ci
+        working-directory: e2e
+      - run: npm test -- --grep-invert 'layout baseline'
+        working-directory: e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-test-results
+          path: e2e/test-results/

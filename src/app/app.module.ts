@@ -31,7 +31,7 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
         UserComponent
     ],
     imports: [
-        BrowserModule.withServerTransition({appId: 'serverApp'}),
+        BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
         NgxSpinnerModule,

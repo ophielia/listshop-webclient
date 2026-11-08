@@ -1,0 +1,10 @@
+{
+  "name": "listshop-browser-checks",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "screenshots": "playwright test --update-snapshots"
+  },
+  "engines": { "node": "24.15.0" },
+  "devDependencies": { "@playwright/test": "1.65.0" }
+}
