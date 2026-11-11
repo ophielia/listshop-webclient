@@ -1,6 +1,6 @@
 # Browser regression checks
 
-The Angular 14 app builds on Node 14.21.3 / npm 8.19.4. Current Playwright runs separately on Node 24.15.0. Neither command changes nvm's default alias.
+The Angular 15 app builds on Node 14.21.3 / npm 8.19.4. Current Playwright runs separately on Node 24.15.0. Neither command changes nvm's default alias.
 
 From the repository root, build the app first:
 

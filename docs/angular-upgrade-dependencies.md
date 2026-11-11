@@ -19,3 +19,21 @@ A missing candidate blocks that dependency until it is replaced or removed. Neve
 | 20.3.35 | 20.2.14 | 20.4.0 | 19.0.1 | 5.0.3 | 20.1.1 | 15.0.1 | 15.0.1 | 22.0.1 |
 | 21.2.26 | 21.2.14 | 21.1.10 | 20.0.0 | 5.0.3 | 21.0.3 | 17.0.0 | 17.0.0 | 22.0.1 |
 | 22.2.5 | 22.2.6 | 22.1.4 | 21.0.0 | 5.0.3 | 22.0.0 | 17.0.0 | 17.0.0 | 22.0.1 |
+
+## Angular 15 selected versions
+
+Rechecked registry metadata at the Angular 15 checkpoint: core 15.2.10,
+CLI/build tooling 15.2.11, CDK 15.2.9, angular-eslint 15.2.1,
+PrimeNG 15.4.1, ng-bootstrap 14.2.0, carousel 15.0.2,
+page-scroll/core 10.0.0 and spinner 15.0.1. Bootstrap 5.2.3,
+Popper 2.11.8, TypeScript 4.8.4, RxJS 6 and Zone 0.11.8 remain compatible.
+The spinner candidate table above is historical; 15.0.1 is the selected
+Angular 15 release (15.0.0 declares Angular 14 peers).
+
+The `node-releases` override pins 2.0.27 because the currently resolved 2.0.63
+requires Node >=18. Version 2.0.27 stays within the requesting packages' 2.x
+ranges and works with this checkpoint's Node 14.21.3. Revisit the override
+when changing the Node checkpoint. Strict peer resolution is required.
+
+Official references: [Angular version compatibility](https://angular.dev/reference/versions)
+and [Angular 15 upgrade recommendations](https://github.com/angular/angular-update-guide/blob/main/src/app/recommendations.ts).

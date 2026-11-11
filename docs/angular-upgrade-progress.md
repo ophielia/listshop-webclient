@@ -1,6 +1,39 @@
 # Angular upgrade progress
 
-## Current checkpoint
+## Current checkpoint — Angular 15
+
+**Angular 15 implementation and automated validation complete; stop for review before Angular 16.**
+
+- Branch: `chore/angular-upgrade`; started from Angular 14 commit `e5899c0`.
+- The user explicitly requested Angular 15, authorizing continuation past the prior pause. This does not claim broader Bootstrap 5 visual acceptance.
+- Core 15.2.10, CLI/build tooling 15.2.11, CDK 15.2.9, angular-eslint 15.2.1, PrimeNG 15.4.1, ng-bootstrap 14.2.0, carousel 15.0.2, page-scroll/core 10.0.0, spinner 15.0.1. Bootstrap 5.2.3, RxJS 6, Zone 0.11.8 and TypeScript 4.8.4 retained.
+- Node 14.21.3 / npm 8.19.4 retained; Playwright remains isolated on Node 24.15.0. No default nvm alias changes. `node-releases` pinned to 2.0.27 because current 2.0.63 requires Node >=18; revisit at the Node 18 checkpoint.
+- Official CLI/core/CDK migrate-only commands ran from the installed CLI with `NG_DISABLE_VERSION_CHECK=true`, unversioned package names, `--allow-dirty` and explicit previous/target versions. CLI removed obsolete `require.context` test discovery and set ES2022 / `useDefineForClassFields: false`. Core and CDK required no source edits. Reviewed Angular 15 recommendations for router options, keyframes, forms value accessors, iframe bindings and removed APIs; no additional application edits required.
+- Added two integration tests using the actual PrimeNG autocomplete with Angular Forms: typing/filtering/selecting/clearing, and unmatched text/create affordance/cancel. Test setup focuses the input and drains overlay timers. These are included in `test:upgrade`; legacy generated specs remain excluded and unmaintained.
+
+### Angular 15 validation
+
+- Clean `npm ci --strict-peer-deps`: **passed**, including ngcc. Resolution used a fresh lockfile after npm hit the known stale-builder conflict; no force or legacy-peer-deps flags. The lockfile-only initial command reached postinstall without installed ngcc; final resolution used `--ignore-scripts`, followed by the full clean installation with scripts enabled.
+- `npm ls --all --json`: **passed**, no dependency errors after removing the generated ngcc entry-point cache file that npm classified as extraneous.
+- Correctness lint: **passed**.
+- Maintained tests: **7/7 passed**. On this Apple Silicon Mac, Chrome inherited Rosetta from Node 14 and did not connect to Karma. Set `CHROME_BIN=/private/tmp/listshop-chrome-arm64`; that executable runs `/usr/bin/arch -arm64 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" "$@"`. No repository launcher or CI changes needed.
+- Production build: **passed**, initial total 1.62 MB / estimated transfer 354.32 kB. Existing component style budgets warn at edit-dish 17.60 kB and ingredient-input 15.55 kB. Existing Sass/CSS diagnostics remain deferred; index generation also reports a skipped `legend+*` selector.
+- Development server: **compiled successfully** on 127.0.0.1:4202; root HTTP 200. Both `assets/images/contact-default.png` and `assets/images/color/color-4/contact.png` returned HTTP 200 and exact source bytes. Server stopped after verification.
+- Playwright: **14/14 passed** in 1.3 minutes, including all original desktop/mobile login/list screenshots without baseline updates. Mocked auth/session/logout/expiry, navigation, carousel/scrolling/dropdowns and confirmation dialogs pass.
+- Docker build stage: **passed**, local image `listshop-angular15-checkpoint:local`, ID `6bff1be8525bb9615aa41879d3390a09bde955d6ce1bd4131a4a94c92aeca6f3`. Includes clean strict-peer installation, ngcc and production build.
+- Logs: `/private/tmp/listshop-angular15-{resolution-final,install-final,cli-migrations,core-migrations,cdk-migrations,lint-final,tests-final,build,browser,serve,docker}.log`; tree data in `...-tree.json` and errors in `...-tree-errors.log`.
+
+### Review and next action
+
+Review Angular 15 before authorizing Angular 16. Broader manual visual and real-backend acceptance remain outstanding: dishes/ingredients, meal-plan generation, password-reset submission, beta feedback and other forms/menus/alerts. Autocomplete now has component integration coverage, not a full dish browser journey. Nginx runtime validation and deployment remain later checkpoints. Nothing pushed or deployed; remote CI has not run.
+
+Before Angular 16, move to the agreed Node 18.19.1 runtime, check Ivy support and upgrade/replace ngx-logger 4 (currently compiled by ngcc), then remove the ngcc postinstall only once all used libraries support Ivy. Recheck dependencies and run the adjacent-major migrations.
+
+Unrelated `.junie/` remains untouched. API configuration, localStorage contracts and screenshot baselines unchanged. Graphify launcher remains broken due to a deleted Python interpreter; no graph rebuild attempted. Angular 14 installation and lockfile were preserved at `/private/tmp/listshop-angular14-node_modules-before15` and `/private/tmp/listshop-angular14-lock-before15.json`; Git `e5899c0` is the durable fallback.
+
+---
+
+## Previous Angular 14 checkpoint
 
 **Angular 14 implementation and automated checks are complete; awaiting Bootstrap 5 visual review before Angular 15.**
 
