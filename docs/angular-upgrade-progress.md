@@ -1,6 +1,40 @@
 # Angular upgrade progress
 
-## Current checkpoint — Angular 15
+## Current checkpoint — Angular 16
+
+**Angular 16 implementation and automated validation complete; stop for review before Angular 17.**
+
+- Branch `chore/angular-upgrade`; started from Angular 15 commit `af15f48`. User explicitly authorized Angular 16. Stop for review before Angular 17.
+- Core 16.2.12, CLI/build tooling 16.2.16, CDK 16.2.14, angular-eslint 16.3.1, TypeScript ESLint 5.62.0, TypeScript 4.9.5, Zone 0.13.3. PrimeNG 16.9.1, ng-bootstrap 15.1.2, carousel 16.0.1, page-scroll/core 11.0.0, spinner 16.0.2, ngx-logger 5.0.12. Bootstrap 5.2.3, Popper 2.11.8, RxJS 6 and ESLint 7.32.0 retained.
+- Node 18.19.1 / npm 10.2.4 pinned in `.nvmrc`, package engines, Docker and CI. Uses the existing ARM64 Node 18 installation and its bundled npm; no default nvm alias or installation changes. Playwright remains isolated on Node 24.15.0. Removed the Node 14 `node-releases` override. npm 10 regenerated the lockfile in version 3 format.
+- Upgraded ngx-logger 4 to Ivy-compatible 5.0.12. Verified partial-Ivy declarations in the logger and used UI library entry points, including PrimeNG autocomplete/inputswitch. Removed `postinstall: ngcc`; clean installation/builds no longer need the removed compatibility compiler.
+- Official installed CLI/core/CDK migrate-only commands ran with unversioned package names, explicit previous/target versions, `--allow-dirty` and `NG_DISABLE_VERSION_CHECK=true`. Core removed deprecated CanActivate imports/implements from the two guards; methods, routes and behavior remain unchanged. CLI/CDK required no file edits. Reviewed the Angular 16 recommendations for router events, removed APIs, module metadata and rendering; no other application compatibility changes required.
+- Fixed a real PrimeNG 16 regression caught by the maintained tests: autocomplete `onSelect` now emits `{originalEvent, value}`. All three shared templates pass `$event.value` to their existing handlers. Direct Enter-key selection continues to pass tags directly. Application outputs remain tag/dish entities.
+- Expanded the actual PrimeNG control tests to cover tag/inline-tag/dish pointer selection, tag/inline-tag Enter selection and unmatched text/cancel. Added real logger integration checks for ERROR filtering, console output without HTTP logging and authentication error alerts. Legacy generated specs remain excluded and unmaintained.
+
+### Angular 16 validation
+
+- Fresh lockfile resolution and final clean `npm ci --strict-peer-deps`: **passed**. No force or legacy-peer-deps flags. TypeScript ESLint aligned to angular-eslint's 5.62.0 dependencies for TypeScript 4.9 support, followed by another clean installation.
+- `npm ls --all --json`: **passed**, no dependency problems. Manifest and lockfile engines/dependencies checked.
+- Correctness lint: **passed**.
+- Maintained tests: **14/14 passed**. Native ARM64 Node 18 starts Chrome normally; no temporary Chrome launcher override needed. Initial autocomplete failures exposed the selection-event regression; final tests preserve entity assertions. Updated test fixture completeness and drained new PrimeNG overlay timers.
+- Final production build: **passed**, initial total 1.56 MB / estimated transfer 341.54 kB. Existing style-budget warnings: edit-dish 17.64 kB, ingredient-input 15.59 kB. Existing invalid CSS/Sass diagnostics remain deferred.
+- Development server: **compiled successfully** on 127.0.0.1:4202; root HTTP 200. Both contact-default.png and color/color-4/contact.png asset URLs returned HTTP 200 and exact source bytes. Server stopped intentionally after verification.
+- Playwright: **14/14 passed** in 50.7 seconds. All original desktop/mobile login/list screenshots match without baseline updates. Mocked auth/session/logout/expiry, navigation, carousel/scrolling/dropdowns and confirmation dialogs pass.
+- Docker build stage: **passed**, including clean strict-peer installation and production build without ngcc. Local image `listshop-angular16-checkpoint:local`, ID `34e382b7b52dacfaee0b387b53b81c05669f85ac72bf55e6929181f2e0a7031d`.
+- Logs: `/private/tmp/listshop-angular16-{resolution,install-final,eslint-install,cli-migrations,core-migrations,cdk-migrations,lint-final,tests-final,build-final,browser,serve,docker}.log`. Dependency tree: `...-tree.json`, errors: `...-tree-errors.log`.
+
+### Review and next action
+
+Stop before Angular 17 for user review. Broader manual visual and real-backend acceptance remain outstanding: dishes/ingredients, meal-plan generation, password-reset submission, beta feedback and other forms/menus/alerts. The shared autocomplete checks are component integration tests, not full dish browser journeys. Nginx runtime validation and deployment remain later checkpoints. Nothing pushed or deployed; remote CI has not run.
+
+Retain Node 18.19.1 for Angular 17; recheck TypeScript, Zone and all UI dependencies, then run the adjacent-major migrations. Signals, standalone conversion, RxJS 7 and the application-builder migration remain separate work.
+
+Unrelated `.junie/` remains untouched; API configuration and screenshot baselines unchanged. Graphify launcher still points to a deleted Python interpreter; no graph rebuild attempted. Angular 15 installation/lockfile preserved at `/private/tmp/listshop-angular15-node_modules-before16` and `/private/tmp/listshop-angular15-lock-before16.json`; Git `af15f48` is the durable fallback.
+
+---
+
+## Previous Angular 15 checkpoint
 
 **Angular 15 implementation and automated validation complete; stop for review before Angular 16.**
 

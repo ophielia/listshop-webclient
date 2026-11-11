@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
 import {AuthenticationService} from "../services/authentication.service";
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import {CelebrationService} from "../services/celebration.service";
 
 @Injectable({providedIn: "root"})
-export class PartyGuardHandler implements CanActivate {
+export class PartyGuardHandler  {
 
   constructor(public celebrationService: CelebrationService, public router: Router) {
   }

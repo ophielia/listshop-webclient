@@ -13,7 +13,7 @@
                     focus=true
                     [delay]="200"
                     [field]="name"
-                    (onSelect)="bingo($event)"
+                    (onSelect)="bingo($event.value)"
                     (keyup.enter)="checkSearchEnter(focusanchor)"
                     (keyup.escape)="cancelSelectTag()"
                     placeholder="{{placeholderText}}" [minLength]="1" #focusanchor>

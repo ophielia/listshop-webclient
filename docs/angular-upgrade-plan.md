@@ -11,7 +11,7 @@ Upgrade Angular 11 through each major to Angular 22, selecting stable patch rele
 3. Explicit visual review at Bootstrap 5 and PrimeNG theme migrations; pause for product decisions if a replacement materially changes behavior.
 4. Final staging acceptance: actual Docker image, runtime configuration, routing, assets, and backend integration. Production deployment requires explicit authorization; retain the old image for rollback.
 
-Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is committed as bb34f66. Angular 15 is authorized by the user’s continuation request. Validate this checkpoint and stop for review before Angular 16.
+Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is committed as bb34f66. Angular 16 is authorized by the user’s continuation request. Validate this checkpoint and stop for review before Angular 17.
 
 ## Implementation constraints
 
@@ -28,7 +28,7 @@ Every major: clean installation, development build/server startup, production bu
 
 Preparation supplies initial browser coverage, not full product acceptance. Remaining workflows are listed in `e2e/README.md`; expand coverage alongside each affected subsystem. The user confirmed that legacy generated component tests were never maintained. Their known failures remain documented and are not upgrade gates. Passing gates are the production build, new browser checks, focused meaningful unit tests, and the new lint configuration. Expand coverage as affected features are upgraded.
 
-Toolchain route (check exact target minor requirements before every hop): Node 12.22.12 for Angular 11–12; Node 14.21.3 for 13–15; existing Node 18.19.1 for 16–19; Node 24.15.0 for 20–22. Node 14.21.3 is installed for Angular 13–15. Use a supported npm for each checkpoint and preserve lockfile reproducibility. Current checkpoint npm is 8.19.4, invoked through a temporary tool installation or `npx --package npm@8.19.4 npm ...` after `nvm use`.
+Toolchain route (check exact target minor requirements before every hop): Node 12.22.12 for Angular 11–12; Node 14.21.3 for 13–15; existing Node 18.19.1 for 16–19; Node 24.15.0 for 20–22. Node 14.21.3 is installed for Angular 13–15. Use a supported npm for each checkpoint and preserve lockfile reproducibility. Current checkpoint is Node 18.19.1 / npm 10.2.4 (bundled with the installed Node 18 runtime), pinned in `.nvmrc`, package engines, Docker and CI. Earlier Node 14 checkpoints used npm 8.19.4.
 
 The Playwright package is isolated in `e2e/` on Node 24.15.0 and uses installed Chrome. Keep current Playwright outside the app's historical dependency tree. Candidate versions and peer-range evidence are saved in `docs/angular-upgrade-dependencies.md` and `.json`; recheck package APIs and the other peer ranges before selecting a future version. The matrix deliberately reports candidates rather than promising runtime compatibility from peer metadata alone.
 

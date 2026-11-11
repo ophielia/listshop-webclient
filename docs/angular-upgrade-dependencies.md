@@ -37,3 +37,25 @@ when changing the Node checkpoint. Strict peer resolution is required.
 
 Official references: [Angular version compatibility](https://angular.dev/reference/versions)
 and [Angular 15 upgrade recommendations](https://github.com/angular/angular-update-guide/blob/main/src/app/recommendations.ts).
+
+## Angular 16 selected versions
+
+Rechecked registry metadata for core 16.2.12, CLI/build tooling 16.2.16,
+CDK 16.2.14, angular-eslint 16.3.1, TypeScript ESLint 5.62.0,
+TypeScript 4.9.5, Zone 0.13.3, PrimeNG 16.9.1, ng-bootstrap 15.1.2,
+carousel 16.0.1, page-scroll/core 11.0.0 and spinner 16.0.2.
+Node 18.19.1 / npm 10.2.4 are pinned. Bootstrap 5.2.3, Popper 2.11.8,
+ESLint 7.32.0 and RxJS 6 are retained.
+
+The historical logger 5.0.3 candidate above is insufficient for Angular 16:
+[ngx-logger's changelog](https://github.com/dbfannin/ngx-logger/blob/master/CHANGELOG.md)
+records Ivy support starting at 5.0.4. Selected 5.0.12 and verified partial-Ivy
+metadata in its distributed module. All used Angular UI entry points also
+contain Ivy declarations. Removed `postinstall: ngcc` because Angular 16
+no longer supports it. The Node 14 `node-releases` override is removed on Node 18.
+
+PrimeNG 16 selection events wrap the selected entity in `event.value`.
+All three shared autocomplete templates now unwrap the value before calling
+the existing application handlers, preserving direct tag/dish outputs and
+the existing Enter-key selection path. Integration tests exercise all three
+actual PrimeNG controls, plus the upgraded logger and error handler.
