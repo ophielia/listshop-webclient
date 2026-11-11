@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import {AuthenticationService} from "../services/authentication.service";
 import {Router} from "@angular/router";
 import {RouteMessageService} from "../services/route-message.service";

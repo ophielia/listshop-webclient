@@ -1,6 +1,40 @@
 # Angular upgrade progress
 
-## Current checkpoint — Angular 17 (intermediate to authorized Angular 18)
+## Current checkpoint — Angular 18
+
+**Angular 18 implementation and automated validation complete; stop for review before Angular 19.**
+
+- Branch `chore/angular-upgrade`. Angular 17 intermediate checkpoint committed as `d41d9de` after all gates passed (including Docker). Both adjacent hops were authorized by the user's request to reach Angular 18. Stop for review before Angular 19.
+- Core/CDK 18.2.14, CLI/build tooling 18.2.21, angular-eslint 18.4.3, ng-bootstrap 17.0.1, carousel 18.0.1, spinner 18.0.0, page-scroll/core 13.0.0. Retained PrimeNG 17.18.15, Bootstrap 5.3.3, TypeScript 5.4.5, Zone 0.14.10, ESLint 8.57.0, TypeScript ESLint 7.11.0, RxJS 6 and ngx-logger 5.0.12.
+- Node 18.19.1 retained. npm **10.9.4** now pinned in engines, Docker and CI. Local npm is isolated at `/private/tmp/listshop-angular18-tools/node_modules/npm/bin/npm-cli.js`; use that with Node 18 or `npx --package npm@10.9.4 npm ...`. Existing nvm default/Node installation unchanged. Playwright remains on Node 24.15.0.
+- npm 10.2.4 generated a chokidar/readdirp lockfile inconsistent with clean installation, including after a full install. npm 10.9.4 regenerated the tree and passed `npm ci --strict-peer-deps`. Explicit @typescript-eslint/types/utils 7.11.0 pins satisfy angular-eslint 18 peers and avoid npm choosing current 8.x dependencies with Node 20-only transitives. No force or legacy-peer flags.
+- Page-scroll/core 14.0.0 advertises Angular 18 peers but publishes unbuilt source without module/types entry points. The build caught this; 13.0.0 targets Angular 18 and publishes compiled modules. Switched to 13.0.0 and repeated clean installation. The historical candidate matrix is not proof of runtime/package compatibility; selected versions are recorded in angular-upgrade-dependencies.md.
+- Official installed CLI/core/CDK adjacent migrations completed with explicit previous/target versions, `--allow-dirty`, `NG_DISABLE_VERSION_CHECK=true` and noninteractive CI mode. CLI offered only the optional application-builder migration; deliberately skipped it. Core replaced HttpClientModule with `provideHttpClient(withInterceptorsFromDi())`, migrated HTTP test providers and adjusted HTTP imports. Invalid-binding/afterRender/server migrations required no application edits. CDK required no edits. NgModules and browser builder retained.
+- Angular 18 removed the `async` testing alias. Updated imports/calls to `waitForAsync` in 16 generated specs so TypeScript can compile the maintained gate; their existing fixture/dependency failures remain an accepted baseline. Did not repair or claim the generated full suite passing.
+- Browser mocks now assert login requests omit Authorization and authenticated shopping-list requests contain `Bearer upgrade-test-token`, validating the HTTP provider migration alongside existing session/reload/logout/expiry flows.
+- PrimeNG 17 intentionally retained: it supports Angular 18 and preserves the resource theme. PrimeNG 18's separate theme migration, signals, standalone conversion, RxJS 7 and application-builder migration remain deferred.
+
+### Angular 18 validation
+
+- Final clean `npm ci --strict-peer-deps`: **passed**, no engine warnings. `npm ls --all --json`: **passed**, no dependency problems. Manifest/lockfile dependency and engine fields match.
+- Correctness lint: **passed**. Maintained tests: **15/15 passed**, including runtime config, list generation, ingredient parsing, all three autocompletes, logger/error handling and InputSwitch.
+- Final production build: **passed**, initial 1.71 MB / estimated transfer 362.42 kB. Existing style warnings now display edit-dish 18.02 kB, ingredient-input 15.92 kB (CLI 18 displays byte units differently). Existing invalid CSS/Sass diagnostics remain deferred; critical-CSS processing skips two `.form-floating>~label` rules.
+- Development server: **compiled successfully**, root HTTP 200. Both contact assets returned HTTP 200 and exact source bytes. Server intentionally stopped after verification.
+- Browser suite: **14/14 passed** in 36.4s. Original desktop/mobile login/list screenshots unchanged. Auth header assertions, session/reload/logout/expiry, navigation, carousel/scrolling, dropdowns and confirmation dialogs all pass.
+- Docker build stage: **passed**, including clean strict-peer install with npm 10.9.4 and production build. Local image `listshop-angular18-checkpoint:local`, ID `b57f7a81df6631e01925ab470acf368dce966f6aa7d47efeaf25e092c850f323`.
+- Logs: `/private/tmp/listshop-angular18-{resolution-final,ci-final,scroll-install,cli-migrations,core-migrations,cdk-migrations,lint-final,tests-final,build-final,serve-final,browser,docker-final}.log`; tree `...-tree.json` / `...-tree-errors.log`. Earlier failed attempts are preserved in the same directory without `-final` suffixes.
+
+### Review / next action
+
+Stop at Angular 18 for user review before Angular 19. Broader manual visual and real-backend acceptance remains outstanding: dishes/ingredients, meal-plan generation, password-reset submission, beta feedback and other forms/menus/alerts. Shared control integration checks do not cover full dish browser journeys. Nginx runtime-stage validation and deployment remain later checkpoints; remote CI not run and nothing pushed or deployed.
+
+Before Angular 19, recheck TypeScript/Zone/UI dependencies. PrimeNG 17's peer range ends at Angular 18, so the next step needs a deliberate PrimeNG/theme migration and desktop/mobile visual review. Keep the application-builder migration separate from framework checkpoints.
+
+Unrelated `.junie/`, API configuration and original screenshot baselines untouched. Graphify launcher remains broken; no graph rebuild attempted. Angular 17 modules/lockfile preserved at `/private/tmp/listshop-angular17-node_modules-before18` and `/private/tmp/listshop-angular17-lock-before18.json`; Git `d41d9de` is the durable fallback.
+
+---
+
+## Previous Angular 17 checkpoint
 
 **Angular 17 automated validation complete.** User authorized both adjacent hops in this request; continue to Angular 18.
 

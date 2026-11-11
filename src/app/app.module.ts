@@ -1,7 +1,7 @@
 import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from './shared/shared.module';
@@ -25,15 +25,12 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
     return () => envService.loadEnvConfig('/assets/config/config.json');
 };
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         UserComponent
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         ReactiveFormsModule,
-        HttpClientModule,
         NgxSpinnerModule,
         LoggerModule.forRoot({
             level: NgxLoggerLevel.ERROR,
@@ -50,13 +47,11 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
             scrollPositionRestoration: 'enabled',
             enableTracing: false,
             initialNavigation: 'enabledBlocking'
-        })
-    ],
-    providers: [
+        })], providers: [
         AlertService,
-        {provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true},
-        {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
-        {provide: ErrorHandler, useClass: ListShopErrorHandler},
+        { provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
+        { provide: ErrorHandler, useClass: ListShopErrorHandler },
         EnvironmentLoaderService,
         {
             provide: APP_INITIALIZER,
@@ -65,10 +60,9 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
             deps: [EnvironmentLoaderService]
         },
         AuthGuardHandler,
-        PartyGuardHandler
-    ],
-    bootstrap: [AppComponent]
-})
+        PartyGuardHandler,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {
 
 }

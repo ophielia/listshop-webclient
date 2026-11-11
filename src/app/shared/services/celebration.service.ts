@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {TagService} from "./tag.service";
 import {NGXLogger} from "ngx-logger";
 import {Celebration, ICelebration} from "../../model/celebration";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import MappingUtils from "../../model/mapping-utils";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 

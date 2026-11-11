@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import {NGXLogger} from "ngx-logger";
 import {CampaignFeedback} from "../../model/campaignfeedback";

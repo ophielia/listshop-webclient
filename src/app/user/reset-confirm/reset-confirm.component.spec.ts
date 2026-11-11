@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ResetConfirmComponent} from './reset-confirm.component';
 
@@ -6,7 +6,7 @@ describe('ResetConfirmComponent', () => {
   let component: ResetConfirmComponent;
   let fixture: ComponentFixture<ResetConfirmComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ResetConfirmComponent]
     })

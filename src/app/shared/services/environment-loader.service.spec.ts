@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { EnvironmentLoaderService } from './environment-loader.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('EnvironmentLoaderService', () => {
   let service: EnvironmentLoaderService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({imports: [HttpClientTestingModule]});
+    TestBed.configureTestingModule({ imports: [], providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()] });
     service = TestBed.inject(EnvironmentLoaderService);
   });
 

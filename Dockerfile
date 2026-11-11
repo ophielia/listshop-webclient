@@ -5,7 +5,7 @@ WORKDIR /listshop-webclient
 
 COPY package*.json /listshop-webclient/
 
-RUN npm install --global npm@10.2.4
+RUN npm install --global npm@10.9.4
 RUN npm ci --strict-peer-deps
 
 COPY ./ /listshop-webclient/

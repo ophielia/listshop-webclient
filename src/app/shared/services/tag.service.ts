@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {catchError, map} from "rxjs/operators";
 import {NGXLogger} from "ngx-logger";
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import TagType from "../../model/tag-type";
 import {ITag, ITagList} from "../../model/tag";

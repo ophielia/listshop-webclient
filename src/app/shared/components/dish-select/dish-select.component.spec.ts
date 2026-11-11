@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DishSelectComponent} from './dish-select.component';
 
@@ -6,7 +6,7 @@ describe('DishSelectComponent', () => {
   let component: DishSelectComponent;
   let fixture: ComponentFixture<DishSelectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DishSelectComponent]
     })

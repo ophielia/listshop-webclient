@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {EnvConfig} from "../../model/env-config";
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {filter, map} from "rxjs/operators";
 import {NGXLogger} from "ngx-logger";

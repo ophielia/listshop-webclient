@@ -75,3 +75,27 @@ PrimeNG 17 selects autocomplete options on mousedown. Updated the real-control
 integration tests to dispatch that pointer event; entity/clearing assertions
 remain unchanged. Added a real InputSwitch/Angular Forms test for toggling,
 change-event values and disabled state used by lists/meal planning.
+
+## Angular 18 selected versions
+
+Core/CDK 18.2.14, CLI/build 18.2.21, angular-eslint 18.4.3,
+ng-bootstrap 17.0.1, carousel 18.0.1, page-scroll/core **13.0.0** and
+spinner 18.0.0. PrimeNG 17.18.15, Bootstrap 5.3.3, TypeScript 5.4.5,
+Zone 0.14.10, TypeScript ESLint 7.11.0, ESLint 8.57.0, RxJS 6 and
+ngx-logger 5.0.12 retained. Node 18.19.1 retained; npm updated to 10.9.4.
+
+Pin page-scroll/core 13.0.0 specifically: it targets Angular 18 and publishes compiled entry points. The 14.0.0 tarballs advertise Angular 18 peers but ship unbuilt source without module/type entry points; 14.0.1 targets Angular 19.
+Pin @typescript-eslint/types/utils 7.11.0 explicitly to satisfy angular-eslint
+18's new peer dependencies with the existing parser/plugin family. Automatic
+peer selection chose current 8.x packages with Node 20-only transitives.
+
+npm 10.2.4 produced an inconsistent chokidar/readdirp lockfile even after a
+full install. npm 10.9.4 supports Node 18, regenerated the lockfile and passed
+clean strict-peer installation. Docker/CI/package engines now pin 10.9.4;
+local commands use an isolated temporary npm installation or npx, preserving
+the existing Node installation/default nvm alias.
+
+Retaining PrimeNG 17 is deliberate: Angular 18 does not require PrimeNG 18,
+and 17.18.15 declares compatible peers. Its separate theme migration remains
+pending for a later library checkpoint. The browser builder remains in use;
+the Angular CLI 18 optional application-builder migration is deferred.

@@ -1,6 +1,6 @@
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {HttpErrorResponse} from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {LoggerModule, NGXLogger, NgxLoggerLevel} from 'ngx-logger';
 import {ListShopErrorHandler} from './list-shop-error-handler';
 import {AlertService} from '../services/alert.service';
@@ -11,16 +11,13 @@ describe('Application error handling with the Ivy logger', () => {
   beforeEach(() => {
     alerts = {error: jasmine.createSpy('error')};
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        LoggerModule.forRoot({
-          level: NgxLoggerLevel.ERROR,
-          serverLogLevel: NgxLoggerLevel.ERROR,
-          disableConsoleLogging: false
-        })
-      ],
-      providers: [ListShopErrorHandler, {provide: AlertService, useValue: alerts}]
-    });
+    imports: [LoggerModule.forRoot({
+            level: NgxLoggerLevel.ERROR,
+            serverLogLevel: NgxLoggerLevel.ERROR,
+            disableConsoleLogging: false
+        })],
+    providers: [ListShopErrorHandler, { provide: AlertService, useValue: alerts }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
   });
 
   afterEach(() => TestBed.inject(HttpTestingController).verify());

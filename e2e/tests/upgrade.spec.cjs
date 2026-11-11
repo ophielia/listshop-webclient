@@ -10,11 +10,15 @@ test.beforeEach(async ({page}) => {
     const pathname = new URL(route.request().url()).pathname;
     if (pathname.endsWith('/celebrations')) return route.fulfill({json: {celebrations: []}});
     if (pathname.endsWith('/auth') || pathname.endsWith('/auth/authenticate')) {
+      if (pathname.endsWith('/auth')) expect(route.request().headers().authorization).toBeUndefined();
       return route.fulfill({json: {user: {email: 'upgrade@example.com', token: 'upgrade-test-token', roles: []}}});
     }
-    if (pathname.endsWith('/v2/shoppinglist')) return route.fulfill({json: {list_of_lists: [
-      {list_id: '101', name: 'Upgrade groceries', item_count: 3, is_starter_list: false}
-    ]}});
+    if (pathname.endsWith('/v2/shoppinglist')) {
+      expect(route.request().headers().authorization).toBe('Bearer upgrade-test-token');
+      return route.fulfill({json: {list_of_lists: [
+        {list_id: '101', name: 'Upgrade groceries', item_count: 3, is_starter_list: false}
+      ]}});
+    }
     if (pathname.endsWith('/auth/logout')) return route.fulfill({json: {}});
     throw new Error('Unmocked API request: ' + pathname);
   });

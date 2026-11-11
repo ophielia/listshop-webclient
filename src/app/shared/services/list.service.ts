@@ -1,5 +1,5 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import {Observable, Subscription, throwError} from "rxjs";
 import {NGXLogger} from "ngx-logger";
 import {ItemOperationPut} from "../../model/item-operation-put";

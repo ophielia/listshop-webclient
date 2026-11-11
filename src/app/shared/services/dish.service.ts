@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import {forkJoin, Observable, throwError} from "rxjs";
 import MappingUtils from "../../model/mapping-utils";
 import {NGXLogger} from "ngx-logger";

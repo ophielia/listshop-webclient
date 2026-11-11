@@ -1,5 +1,5 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import {UserDeviceInfo} from "../../model/user-device-info";
 import {AuthorizePost} from "../../model/authorize-post";
 import {from, Observable, of, Subscription, throwError} from "rxjs";

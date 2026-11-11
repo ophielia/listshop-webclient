@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {Subscription, throwError} from "rxjs";
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import {EnvironmentLoaderService} from "./environment-loader.service";
 import {NGXLogger} from "ngx-logger";
 import MappingUtils from "../../model/mapping-utils";

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import {SingleDishElementComponent} from "./single-dish-element.component";
 
 
@@ -7,7 +7,7 @@ describe('ManageListsComponent', () => {
   let component: SingleDishElementComponent;
   let fixture: ComponentFixture<SingleDishElementComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SingleDishElementComponent ]
     })

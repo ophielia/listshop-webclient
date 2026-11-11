@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
-import {HttpClient} from '@angular/common/http';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {of} from 'rxjs';
 import {ListService} from './list.service';
 import {EnvironmentLoaderService} from './environment-loader.service';
@@ -11,7 +11,7 @@ describe('Shopping list generation request', () => {
   let http: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({imports: [HttpClientTestingModule]});
+    TestBed.configureTestingModule({ imports: [], providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()] });
     http = TestBed.inject(HttpTestingController);
     const config = {getEnvConfigWhenReady: () => of({apiUrl: '/test-api/'})};
     service = new ListService(TestBed.inject(HttpClient), config as EnvironmentLoaderService, {} as NGXLogger);
