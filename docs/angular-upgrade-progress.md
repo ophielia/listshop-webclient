@@ -1,6 +1,25 @@
 # Angular upgrade progress
 
-## Current checkpoint — Angular 16
+## Current checkpoint — Angular 17 (intermediate to authorized Angular 18)
+
+**Angular 17 automated validation complete.** User authorized both adjacent hops in this request; continue to Angular 18.
+
+- Started from Angular 16 `e8a6020`, branch `chore/angular-upgrade`. Core 17.3.12, CLI/build 17.3.17, CDK 17.3.10, TypeScript 5.4.5, Zone 0.14.10, angular-eslint 17.5.3, TypeScript ESLint 7.11.0, ESLint 8.57.0. PrimeNG 17.18.15, ng-bootstrap 16.0.0, Bootstrap 5.3.3, carousel 17.0.1, page-scroll/core 12.0.0, spinner 17.0.0. Node 18.19.1/npm 10.2.4 and RxJS 6 retained.
+- Selected PrimeNG 17 because its peers support both Angular 17 and 18. Retains the existing resource theme; the PrimeNG 18 theme migration remains separate. Bootstrap 5.3.3 aligns with ng-bootstrap 16's documented Bootstrap 5.3 support.
+- Official installed CLI/core/CDK migrate-only commands completed with explicit adjacent versions, `--allow-dirty` and `NG_DISABLE_VERSION_CHECK=true`. CLI migrated browserTarget to buildTarget. Core escaped literal @ text in footer/reset confirmation templates. Retained NgModules, existing control-flow syntax and browser builder. No signals/standalone/builder conversion.
+- Reviewed Angular 17 recommendations: no application NgSwitch, deep Zone imports, signals, hydration, dynamic ngDoCheck or removed router-option assignments requiring changes. Existing navigation checks pass with automatic component-style cleanup.
+- PrimeNG now selects autocomplete options on mousedown; adapted actual-control tests to that event while keeping tag/dish output and clearing assertions. Added InputSwitch integration coverage for list/meal-plan toggles, change events and disabled behavior.
+- Clean strict-peer install and `npm ls --all --json`: passed; manifest/lockfile match. No force or legacy-peer flags. Maintained tests: **15/15 passed**. Correctness lint: **passed**.
+- Production build: **passed**, initial 1.62 MB / estimated transfer 352.22 kB. Existing style budgets: edit-dish 17.63 kB and ingredient-input 15.58 kB. Deferred CSS/Sass diagnostics remain; critical-CSS processing skips two `.form-floating>~label` rules.
+- Development server: **compiled successfully**, root HTTP 200 and both contact assets returned exact source bytes. Verification server stopped.
+- Browser suite: **14/14 passed** in 44.4s; original desktop/mobile screenshots unchanged, including Bootstrap 5.3. Broader manual and real-backend acceptance remains outstanding as previously documented.
+- Docker build stage: **passed**, clean strict-peer install and production build. Local image `listshop-angular17-checkpoint:local`, ID `cd90da1596f060a07ac327e2f10555438fef8b3a8bca22b5226881e9fe1ff171`.
+- Logs: `/private/tmp/listshop-angular17-{resolution,install,cli-migrations,core-migrations,cdk-migrations,lint-final,tests-final,build,serve,browser,docker}.log`; tree `...-tree.json` / `...-tree-errors.log`.
+- Angular 16 modules/lockfile saved at `/private/tmp/listshop-angular16-node_modules-before17` and `/private/tmp/listshop-angular16-lock-before17.json`; Git `e8a6020` is the durable fallback. Unrelated `.junie/`, API configuration and baseline screenshots untouched. Nothing pushed or deployed; remote CI not run.
+
+---
+
+## Previous Angular 16 checkpoint
 
 **Angular 16 implementation and automated validation complete; stop for review before Angular 17.**
 

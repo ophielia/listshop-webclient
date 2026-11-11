@@ -59,3 +59,19 @@ All three shared autocomplete templates now unwrap the value before calling
 the existing application handlers, preserving direct tag/dish outputs and
 the existing Enter-key selection path. Integration tests exercise all three
 actual PrimeNG controls, plus the upgraded logger and error handler.
+
+## Angular 17 selected versions
+
+Core 17.3.12, CLI/build 17.3.17, CDK 17.3.10, TypeScript 5.4.5,
+Zone 0.14.10, angular-eslint 17.5.3, TypeScript ESLint 7.11.0 and ESLint 8.57.0.
+PrimeNG 17.18.15 declares Angular 17 **or 18** peers and retains the legacy
+resource theme. Use it for both checkpoints; defer the PrimeNG 18 theme migration.
+ng-bootstrap 16.0.0 targets Angular 17 and documents Bootstrap 5.3.2;
+selected Bootstrap 5.3.3 / Popper 2.11.8. Carousel 17.0.1, page-scroll/core
+12.0.0 and spinner 17.0.0 complete the strict-peer installation.
+Node 18.19.1/npm 10.2.4, RxJS 6 and ngx-logger 5.0.12 retained.
+
+PrimeNG 17 selects autocomplete options on mousedown. Updated the real-control
+integration tests to dispatch that pointer event; entity/clearing assertions
+remain unchanged. Added a real InputSwitch/Angular Forms test for toggling,
+change-event values and disabled state used by lists/meal planning.

@@ -1,6 +1,6 @@
 # Browser regression checks
 
-The Angular 16 app builds on Node 18.19.1 / npm 10.2.4. Current Playwright runs separately on Node 24.15.0. Neither command changes nvm's default alias.
+The Angular 17 app builds on Node 18.19.1 / npm 10.2.4. Current Playwright runs separately on Node 24.15.0. Neither command changes nvm's default alias.
 
 From the repository root, build the app first:
 
