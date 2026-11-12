@@ -1,4 +1,4 @@
 <app-loader></app-loader>
-<ng-container *ngIf="!loading">
-<router-outlet ></router-outlet>
-</ng-container>
+@if (!loading) {
+  <router-outlet ></router-outlet>
+}

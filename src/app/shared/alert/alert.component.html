@@ -1,5 +1,7 @@
-<div *ngFor="let alert of alerts" class="{{ cssClass(alert) }} alert-dismissable">
+@for (alert of alerts; track alert) {
+  <div class="{{ cssClass(alert) }} alert-dismissable">
     {{alert.message}}
     <button type="button" class="btn-close float-end" aria-label="Close" (click)="removeAlert(alert)"></button>
-</div>
+  </div>
+}
 

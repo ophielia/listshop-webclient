@@ -1,6 +1,40 @@
 # Angular upgrade progress
 
-## Current checkpoint — Angular 20
+## Current checkpoint — Angular 21
+
+**Angular 21 implementation and automated validation complete. Stop for review before Angular 22.**
+
+- Branch `chore/angular-upgrade`, starting from validated Angular 20 commit `d9a7e15`. User authorized the next adjacent upgrade, Angular 21. No Angular 22 work started.
+- Core 21.2.26, CLI/build 21.2.30, CDK 21.2.14, angular-eslint 21.4.0. PrimeNG 21.1.10, @primeuix/themes 2.0.3, ng-bootstrap 20.0.0, carousel 21.0.3 and page-scroll/core 16.0.0. Retained TypeScript 5.9.3, Zone 0.15.1, RxJS 6, spinner 19.0.0, logger 5.0.12, Bootstrap 5.3.3, ESLint 8.57.0, TypeScript ESLint 8.72.2 and @types/node 24.19.2.
+- Node 24.15.0 / npm 11.21.2 retained in `.nvmrc`, engines, Docker and CI. Local commands prepend the existing Node 24 bin directory and invoke `/private/tmp/listshop-angular20-tools/node_modules/npm/bin/npm-cli.js`. Existing nvm installations/default alias unchanged.
+- Rechecked official Angular compatibility and adjacent update recommendations plus npm package peers. Resolved a fresh lockfile with Angular 20 modules/lock preserved. No force or legacy-peer flags. Clean installation reports npm 11's install-script approval notices for six transitive packages; local and Docker compilation both succeed with the pinned npm defaults. Install audit reports 29 moderate findings; broad dependency remediation remains separate.
+- Official installed CLI/core/CDK migrations completed with explicit previous/target versions, `--migrate-only --allow-dirty`, `CI=true` and `NG_DISABLE_VERSION_CHECK=true`. CLI removed the old ES2017 lib override (ES2022 target defaults now apply). Core added `provideZoneChangeDetection()` to bootstrap application providers, preserving the app's existing mode despite Angular 21's zoneless default.
+- Angular 21's automatic core migration also converted 39 HTML templates to block control flow. Reviewed representative list/dish/meal-plan loops and conditional templates: existing identity tracking, event bindings and conditions retained. This broadens manual review beyond the automated browser coverage. NgModules, browser builder and RxJS retained; optional application-builder/router-current-navigation migrations and signals/standalone conversion deferred.
+- Stricter host-binding compilation caught a scroll listener passing `$event` to a zero-argument method. Removed the unused decorator argument; scroll behavior remains unchanged. The initial unit run exposed the test environment's new zoneless default; added explicit Zone providers in the shared test setup to match production. No errors suppressed or assertions weakened.
+- Reviewed v21 guidance for audio sanitization, removed module/interpolation/config/bootstrap APIs, router signals/timing, custom signal elements, formArray, host checks and declaration emission. No other applicable application changes found; SSR remains unused/removed.
+
+### Angular 21 validation
+
+- Fresh strict-peer lockfile resolution and clean `npm ci --strict-peer-deps`: **passed**. `npm ls --all --json`: **passed**, no dependency problems. Manifest/lockfile dependencies, devDependencies and engines match.
+- Final correctness lint: **passed**. Maintained tests: **15/15 passed** after matching the Zone test environment. Full generated legacy suite remains outside the maintained gate and is not claimed passing.
+- Final production build: **passed**, initial 1.82 MB / estimated transfer 404.42 kB. Existing Sass @import/division and invalid CSS diagnostics remain deferred. Component style budgets warn at edit-dish 18.04 kB and ingredient-input 15.96 kB.
+- Development server: **compiled successfully** on 127.0.0.1:4202. Root HTTP 200; contact-default.png and color/color-4/contact.png returned HTTP 200 and exact source bytes. Verification server stopped.
+- Browser suite: **16/16 passed** in 47.2s. Original desktop/mobile login/list screenshots unchanged and matching. Includes auth/session/headers, navigation/carousel/scrolling, dialogs, switches and dish selection through mocked APIs.
+- Inspected both desktop/mobile PrimeNG control review images under ignored `e2e/test-results/`. Switch colors, labels and overlay bounds remain intact. Compared with saved Angular 20 images: small differences confined to autocomplete overlay/shadow (2,968 desktop pixels, 4,354 mobile pixels); original baseline images were not updated. Broader product visual acceptance remains outstanding.
+- Docker build stage: **passed**, including clean strict-peer installation and production build. Local image `listshop-angular21-checkpoint:local`, ID `dbd96c6c1a389644ada83c4faeba34f0df46ec4eda8e1f68434d5c0c5bab1b87`.
+- Logs: `/private/tmp/listshop-angular21-{resolution,ci,cli-migrations,core-migrations,cdk-migrations,lint-final,tests-final,build-final,serve,browser,docker}.log`; dependency tree `...-tree.json` / `...-tree-errors.log`. Initial failed test/build logs are retained without the final suffix and are superseded by final passing runs.
+
+### Review / next action
+
+Stop before Angular 22 for user review. Broader manual/real-backend acceptance remains outstanding: full dish/ingredient and meal-plan workflows, password-reset submission, beta feedback and other forms/menus/alerts, including the automatically migrated templates. Browser checks use mocked APIs. Nginx runtime validation, remote CI and deployment remain later checkpoints. Nothing pushed or deployed.
+
+Before Angular 22, retain Node 24.15.0, recheck TypeScript 6 and UI peers, and review the new component change-detection and router defaults. Keep signals/standalone/RxJS and application-builder conversions separate.
+
+Unrelated `.junie/`, API configuration and original screenshot baselines untouched. Graphify query failed because its launcher still references a deleted interpreter; source inspection used without rebuilding. Angular 20 modules/lockfile preserved at `/private/tmp/listshop-angular20-node_modules-before21` and `/private/tmp/listshop-angular20-lock-before21.json`; Git `d9a7e15` is the durable fallback.
+
+---
+
+## Previous Angular 20 checkpoint
 
 **Angular 20 implementation and automated validation complete. Stop for review before Angular 21.**
 

@@ -9,7 +9,8 @@
       <div class="col-lg-10 offset-lg-1">
         <!-- If images array is dynamically changing pass this array to [items] input -->
         <owl-carousel-o [options]="testimonialCarousel" class="testimonial-carousel">
-            <ng-template carouselSlide *ngFor="let testimonials of testimonial">
+          @for (testimonials of testimonial; track testimonials) {
+            <ng-template carouselSlide>
               <div class="testimonial-block">
                 <div class="testimonial-avtar">
                   <img [src]="testimonials.image" alt="">
@@ -20,6 +21,7 @@
                 </div>
               </div>
             </ng-template>
+          }
         </owl-carousel-o>
       </div>
     </div>

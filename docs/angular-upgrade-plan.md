@@ -11,7 +11,7 @@ Upgrade Angular 11 through each major to Angular 22, selecting stable patch rele
 3. Explicit visual review at Bootstrap 5 and PrimeNG theme migrations; pause for product decisions if a replacement materially changes behavior.
 4. Final staging acceptance: actual Docker image, runtime configuration, routing, assets, and backend integration. Production deployment requires explicit authorization; retain the old image for rollback.
 
-Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is committed as bb34f66. The user has now authorized Angular 20 from the validated Angular 19 checkpoint. Validate and commit Angular 20, then stop for review before Angular 21. The Angular 19 checkpoint included the PrimeNG theme migration; continue desktop/mobile visual checks at this checkpoint.
+Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is committed as bb34f66. The user has now authorized Angular 21 from the validated Angular 20 checkpoint. Validate and commit Angular 21, then stop for review before Angular 22. The Angular 19 checkpoint included the PrimeNG theme migration; continue desktop/mobile visual checks at this checkpoint.
 
 ## Implementation constraints
 

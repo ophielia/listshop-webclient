@@ -1,6 +1,6 @@
 # Browser regression checks
 
-The Angular 20 app builds on Node 24.15.0 / npm 11.21.2. Playwright remains in a separate dependency tree on Node 24.15.0. Neither command changes nvm's default alias.
+The Angular 21 app builds on Node 24.15.0 / npm 11.21.2. Playwright remains in a separate dependency tree on Node 24.15.0. Neither command changes nvm's default alias.
 
 From the repository root, build the app first:
 

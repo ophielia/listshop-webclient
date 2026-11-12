@@ -1,337 +1,340 @@
 <!--title start-->
 <div class="titlebar-bg">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-sm-6 col-text-center d-align-left">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-text-center d-align-left">
 
-            </div>
-            <div class="col-md-6 col-sm-6 col-text-end">
-            </div>
-        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-text-end">
+      </div>
     </div>
+  </div>
 </div>
 <!--title end -->
 <!--breadcrumb start-->
 <div class="breadcrumb-bg breadcrumb-for-bar">
-    <div class="container dish-toolbar">
-        <div class="row">
-            <div class=" col-sm-6 col-md-8 col-lg-8">
-                <h2 class="title"><span>{{ dish ? dish.name : "" }}</span></h2>
-            </div>
-            <div class="col-md-4 col-sm-6 col-text-end">
-                <div class="title-bar-action">
-                    <a class="nav-link" [routerLink]="'/dishes'">All Dishes</a>
-                </div>
-            </div>
-
+  <div class="container dish-toolbar">
+    <div class="row">
+      <div class=" col-sm-6 col-md-8 col-lg-8">
+        <h2 class="title"><span>{{ dish ? dish.name : "" }}</span></h2>
+      </div>
+      <div class="col-md-4 col-sm-6 col-text-end">
+        <div class="title-bar-action">
+          <a class="nav-link" [routerLink]="'/dishes'">All Dishes</a>
         </div>
+      </div>
+
     </div>
+  </div>
 
 </div>
 <!--breadcrumb end -->
 <!--navigation start -->
 <div class="navigation-bg">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-8 col-lg-10">
-                <div>
-                    <div class="straddling-button">
-                        <a *ngIf="previousDishId" [routerLink]="['/dishes/edit', previousDishId]">
-                            <img class="lg-button"
-                                 src="../../../assets/images/listshop/icons/whitewithborder/@backarrow.png"
-                                 alt="add">
-
-                        </a>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
-                <div>
-                    <div class="straddling-button">
-                        <a *ngIf="nextDishId" [routerLink]="['/dishes/edit', nextDishId]">
-                            <img class="lg-button"
-                                 src="../../../assets/images/listshop/icons/whitewithborder/@rightarrow.png"
-                                 alt="add">
-
-                        </a>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-lg-10">
+        <div>
+          <div class="straddling-button">
+            @if (previousDishId) {
+              <a [routerLink]="['/dishes/edit', previousDishId]">
+                <img class="lg-button"
+                  src="../../../assets/images/listshop/icons/whitewithborder/@backarrow.png"
+                  alt="add">
+              </a>
+            }
+          </div>
         </div>
+
+
+      </div>
+      <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
+        <div>
+          <div class="straddling-button">
+            @if (nextDishId) {
+              <a [routerLink]="['/dishes/edit', nextDishId]">
+                <img class="lg-button"
+                  src="../../../assets/images/listshop/icons/whitewithborder/@rightarrow.png"
+                  alt="add">
+              </a>
+            }
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <!--navigation end -->
 <!--content start-->
 <section>
-    <div class="container">
-        <div class="row">
-            <div *ngIf="isLoading" class="col-md-12 loading-box">
-                <div class="loading-text">loading dish...</div>
-            </div>
-            <ng-container *ngIf="!isLoading">
-                <div class="col-md-12 ">
-                    <div class="row ">
-                        <!-- left top row element, eckdaten -->
-                        <div class="col-lg-8 col-md-6">
-                            <!-- description and reference-->
-                            <div class="ls-card">
-
-                                <ng-container *ngIf="!showEditMainInfo">
-                                    <div>
-                                        <span class="ls-tag-group-subtitle">Description:
-                                        </span>
-                                        <span *ngIf="stringFieldEmpty(dish.description)"
-                                              class="ls-empty-info-span">empty</span>
-                                        <span>{{ dish.description }}</span>
-
-
-                                    </div>
-                                    <div>
-                                    <span class="ls-tag-group-subtitle">Reference:
-                                    </span>
-                                        <span *ngIf="stringFieldEmpty(dish.reference)"
-                                              class="ls-empty-info-span">empty</span>
-                                        {{ dish.reference }}
-                                    </div>
-                                    <div>
-<span class="ls-tag-group-subtitle">Dish Type:
-</span>
-                                        <span *ngIf="!showAddDishType"><a class="inline-add-button"
-                                                                          (click)="toggleShowAddDishTypeTag()">
-<img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
-
-                                        <span *ngFor="let tag of dishTypeTags"
-                                              (click)="removeTagFromDish(tag)"
-                                              class="ls-list-comma">{{ tag.name }}</span>
-                                        <ng-container *ngIf="showAddDishType">
-                                            <div class="ls-inline-block">
-                                                <app-tag-select class="at-tag-select-style"
-                                                                [tagTypes]="'DishType'"
-                                                                [groupType]="groupTypeDishType"
-                                                                [allowAdd]="false"
-                                                                [showCancelButton]="true"
-                                                                [placeholderText]="'Add Dish Type'"
-                                                                (tagSelected)="addTagToDish($event)"
-                                                                (cancelAddTag)="toggleShowAddDishTypeTag()"></app-tag-select>
-                                            </div>
-                                        </ng-container>
-
-                                    </div>
-                                    <div class="ls-card-link-block"><a
-                                            class="ls-card-link" (click)="toggleEditMainInfo()">edit</a></div>
-                                    <div class="clearfix"></div>
-                                </ng-container>
-
-                                <ng-container *ngIf="showEditMainInfo">
-                                    <div>
-                                        <span class="ls-tag-group-subtitle">Name:
-                                        </span>
-                                        <div class="ls-input-error">
-                                            <div *ngIf="dishNameError">{{ dishNameError }}</div>
-                                            <span>
-                                            <input type="text" class="form-control searchbox ls-inline-input"
-                                                   aria-describedby="search-query"
-                                                   [(ngModel)]="dishName"
-                                                   (keyup.enter)="saveAllEdits()"
-                                            />
-
-                                        </span>
-                                        </div>
-
-
-                                    </div>
-                                    <div>
-                                        <span class="ls-tag-group-subtitle">Description:
-                                        </span>
-                                        <div class="ls-input-error">
-                                            <div *ngIf="dishDescriptionError">{{ dishDescriptionError }}</div>
-                                            <span>
-                                            <textarea type="text" class="form-control ls-inline-input"
-                                                      [(ngModel)]="dishDescription"
-                                            ></textarea>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span class="ls-tag-group-subtitle">Reference:
-                                        </span>
-
-                                        <div class="ls-input-error">
-                                            <div *ngIf="dishReferenceError">{{ dishReferenceError }}</div>
-                                            <span>
-                                            <input type="text" class="form-control searchbox ls-inline-input"
-                                                   aria-describedby="search-query"
-                                                   [(ngModel)]="dishReference"
-                                            />
-                                            </span>
-                                        </div>
-
-                                    </div>
-
-                                    <div>
-<span class="ls-tag-group-subtitle">Dish Type:
-</span>
-
-                                        <span *ngFor="let tag of dishTypeTags"
-                                              (click)="removeTagFromDish(tag)"
-                                              class="ls-list-comma">{{ tag.name }}</span>
-                                        <ng-container *ngIf="showAddDishType">
-                                            <div style="display:inline-block; width: 100%">
-                                                <app-tag-select class="at-tag-select-style"
-                                                                [tagTypes]="'DishType'"
-                                                                [groupType]="groupTypeNoGroups"
-                                                                [allowAdd]="false"
-                                                                [showCancelButton]="true"
-                                                                [placeholderText]="'Add Dish Type'"
-                                                                (tagSelected)="addTagToDish($event)"
-                                                                (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
-                                            </div>
-                                        </ng-container>
-
-                                    </div>
-                                    <div class="ls-card-link-block"><a
-                                            class="ls-card-link" (click)="saveAllEdits()">done</a></div>
-                                    <div class="clearfix"></div>
-                                </ng-container>
-
-
-                            </div>
-                            <!-- description -->
-                            <div class="ls-card-ingredient">
-                                <div class="ls-tag-group-subtitle">Ingredients:
-                                    <div *ngIf="!this.showAddIngredient" class="ls-add-ingredient-block">
-<span><a (click)="toggleAddIngredient()">
-<img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
-
-
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-
-                                <div>
-                                    <div *ngIf="this.showAddIngredient" class="ingredient-block-content">
-                                        <app-add-ingredient-inline
-                                                [ingredient]="selectedIngredient"
-                                                [showCancel]="true"
-                                                (editedIngredient)="addNewIngredient($event)"
-                                                (cancelEdit)="cancelIngredientAdd($event)"
-                                        >
-                                        </app-add-ingredient-inline>
-                                    </div>
-                                </div>
-
-                                <div class="ls-ingredient-item" *ngFor="let ingredient of ingredientTags">
-                                    <ng-container *ngIf="!isCurrentEdit(ingredient)">
-                                        <div class="ls-ingredient-display">{{ ingredientDisplay(ingredient) }}</div>
-                                        <div *ngIf="editId == '0'" class="ls-ingredient-edit">
-                                            <span (click)="showEditIngredient(ingredient)"
-                                                  class="ls-card-link">Edit</span>
-                                            <span (click)="removeIngredientFromDish(ingredient)" class="ls-card-link">Delete</span>
-                                        </div>
-                                    </ng-container>
-                                    <ng-container *ngIf="isCurrentEdit(ingredient)">
-                                        <app-edit-ingredient-inline
-                                                [ingredient]="selectedIngredient"
-                                                (editedIngredient)="saveIngredientChanges($event)"
-                                                (cancelEdit)="cancelIngredientEdit($event)"
-                                        >
-                                        </app-edit-ingredient-inline>
-                                    </ng-container>
-                                </div>
-                                <!--<span *ngFor="let tag of ingredientTags" class="ls-list-span"
-                                      (click)="removeTagFromDish(tag)">{{tag.name}}!</span>-->
-
-
-                            </div>
-
-                        </div>
-                        <!-- left top row element, eckdaten -->
-                        <!-- right top row element, tags -->
-                        <div class="col-lg-4 col-md-6">
-                            <div class="ls-card">
-                                <div class="ls-tag-group-subtitle">Tags:
-                                </div>
-                                <div>
-<span *ngFor="let tag of plainOldTags" class="ls-list-span"
-      (click)="removeTagFromDish(tag)">{{ tag.name }}</span>
-
-                                    <div>
-                                        <div *ngIf="this.showPlainTag" class="ls-add-tag">
-
-                                            <app-tag-select class="at-tag-select-style"
-                                                            [tagTypes]="'TagType'"
-                                                            [groupType]="groupTypeNoGroups"
-                                                            [allowAdd]="false"
-                                                            [showCancelButton]="true"
-                                                            [placeholderText]="'Add Tag'"
-                                                            (tagSelected)="addTagToDish($event)"
-                                                            (cancelAddTag)="toggleShowPlainTag()"></app-tag-select>
-
-                                        </div>
-                                        <div *ngIf="!this.showPlainTag" class="ls-card-link-block">
-<span><a class="add-button" (click)="toggleShowPlainTag()">
-<img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="ls-card">
-                                <div class="ls-tag-group-subtitle">Ratings:
-                                </div>
-                                <div *ngIf="dishRatingInfo != null && dishRatingInfo.length > 0">
-                                    <ng-container *ngFor="let rating of dishRatingInfo, let i = index">
-                                        <div class="ls-rating">
-                                            {{ rating.tag.name }} :
-                                            <ngb-rating [max]="5" [readonly]="false" [(rate)]="rating.power"
-                                                        (rateChange)="changeTheRating(rating)">
-                                                <ng-template let-fill="fill">
-<span [class.filled]="fill === 100" [class.notfilled]="fill === 0">
-★
-</span>
-                                                </ng-template>
-
-                                            </ngb-rating>
-                                        </div>
-
-
-                                    </ng-container>
-
-                                </div>
-                            </div>
-                            <!-- description -->
-
-
-                        </div>
-                        <!-- right top row element, tags -->
-                    </div>
-                </div>
-            </ng-container>
+  <div class="container">
+    <div class="row">
+      @if (isLoading) {
+        <div class="col-md-12 loading-box">
+          <div class="loading-text">loading dish...</div>
         </div>
-    </div>
-</section>
+      }
+      @if (!isLoading) {
+        <div class="col-md-12 ">
+          <div class="row ">
+            <!-- left top row element, eckdaten -->
+            <div class="col-lg-8 col-md-6">
+              <!-- description and reference-->
+              <div class="ls-card">
+                @if (!showEditMainInfo) {
+                  <div>
+                    <span class="ls-tag-group-subtitle">Description:
+                    </span>
+                    @if (stringFieldEmpty(dish.description)) {
+                      <span
+                      class="ls-empty-info-span">empty</span>
+                    }
+                    <span>{{ dish.description }}</span>
+                  </div>
+                  <div>
+                    <span class="ls-tag-group-subtitle">Reference:
+                    </span>
+                    @if (stringFieldEmpty(dish.reference)) {
+                      <span
+                      class="ls-empty-info-span">empty</span>
+                    }
+                    {{ dish.reference }}
+                  </div>
+                  <div>
+                    <span class="ls-tag-group-subtitle">Dish Type:
+                    </span>
+                    @if (!showAddDishType) {
+                      <span><a class="inline-add-button"
+                        (click)="toggleShowAddDishTypeTag()">
+                        <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
+                      }
+                      @for (tag of dishTypeTags; track tag) {
+                        <span
+                          (click)="removeTagFromDish(tag)"
+                        class="ls-list-comma">{{ tag.name }}</span>
+                      }
+                      @if (showAddDishType) {
+                        <div class="ls-inline-block">
+                          <app-tag-select class="at-tag-select-style"
+                            [tagTypes]="'DishType'"
+                            [groupType]="groupTypeDishType"
+                            [allowAdd]="false"
+                            [showCancelButton]="true"
+                            [placeholderText]="'Add Dish Type'"
+                            (tagSelected)="addTagToDish($event)"
+                          (cancelAddTag)="toggleShowAddDishTypeTag()"></app-tag-select>
+                        </div>
+                      }
+                    </div>
+                    <div class="ls-card-link-block"><a
+                    class="ls-card-link" (click)="toggleEditMainInfo()">edit</a></div>
+                    <div class="clearfix"></div>
+                  }
+                  @if (showEditMainInfo) {
+                    <div>
+                      <span class="ls-tag-group-subtitle">Name:
+                      </span>
+                      <div class="ls-input-error">
+                        @if (dishNameError) {
+                          <div>{{ dishNameError }}</div>
+                        }
+                        <span>
+                          <input type="text" class="form-control searchbox ls-inline-input"
+                            aria-describedby="search-query"
+                            [(ngModel)]="dishName"
+                            (keyup.enter)="saveAllEdits()"
+                            />
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="ls-tag-group-subtitle">Description:
+                      </span>
+                      <div class="ls-input-error">
+                        @if (dishDescriptionError) {
+                          <div>{{ dishDescriptionError }}</div>
+                        }
+                        <span>
+                          <textarea type="text" class="form-control ls-inline-input"
+                            [(ngModel)]="dishDescription"
+                          ></textarea>
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="ls-tag-group-subtitle">Reference:
+                      </span>
+                      <div class="ls-input-error">
+                        @if (dishReferenceError) {
+                          <div>{{ dishReferenceError }}</div>
+                        }
+                        <span>
+                          <input type="text" class="form-control searchbox ls-inline-input"
+                            aria-describedby="search-query"
+                            [(ngModel)]="dishReference"
+                            />
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="ls-tag-group-subtitle">Dish Type:
+                      </span>
+                      @for (tag of dishTypeTags; track tag) {
+                        <span
+                          (click)="removeTagFromDish(tag)"
+                        class="ls-list-comma">{{ tag.name }}</span>
+                      }
+                      @if (showAddDishType) {
+                        <div style="display:inline-block; width: 100%">
+                          <app-tag-select class="at-tag-select-style"
+                            [tagTypes]="'DishType'"
+                            [groupType]="groupTypeNoGroups"
+                            [allowAdd]="false"
+                            [showCancelButton]="true"
+                            [placeholderText]="'Add Dish Type'"
+                            (tagSelected)="addTagToDish($event)"
+                          (cancelAddTag)="toggleAddIngredient()"></app-tag-select>
+                        </div>
+                      }
+                    </div>
+                    <div class="ls-card-link-block"><a
+                    class="ls-card-link" (click)="saveAllEdits()">done</a></div>
+                    <div class="clearfix"></div>
+                  }
+                </div>
+                <!-- description -->
+                <div class="ls-card-ingredient">
+                  <div class="ls-tag-group-subtitle">Ingredients:
+                    @if (!this.showAddIngredient) {
+                      <div class="ls-add-ingredient-block">
+                        <span><a (click)="toggleAddIngredient()">
+                          <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
+                        </div>
+                      }
+                      <div class="clearfix"></div>
+                    </div>
+                    <div>
+                      @if (this.showAddIngredient) {
+                        <div class="ingredient-block-content">
+                          <app-add-ingredient-inline
+                            [ingredient]="selectedIngredient"
+                            [showCancel]="true"
+                            (editedIngredient)="addNewIngredient($event)"
+                            (cancelEdit)="cancelIngredientAdd($event)"
+                            >
+                          </app-add-ingredient-inline>
+                        </div>
+                      }
+                    </div>
+                    @for (ingredient of ingredientTags; track ingredient) {
+                      <div class="ls-ingredient-item">
+                        @if (!isCurrentEdit(ingredient)) {
+                          <div class="ls-ingredient-display">{{ ingredientDisplay(ingredient) }}</div>
+                          @if (editId == '0') {
+                            <div class="ls-ingredient-edit">
+                              <span (click)="showEditIngredient(ingredient)"
+                              class="ls-card-link">Edit</span>
+                              <span (click)="removeIngredientFromDish(ingredient)" class="ls-card-link">Delete</span>
+                            </div>
+                          }
+                        }
+                        @if (isCurrentEdit(ingredient)) {
+                          <app-edit-ingredient-inline
+                            [ingredient]="selectedIngredient"
+                            (editedIngredient)="saveIngredientChanges($event)"
+                            (cancelEdit)="cancelIngredientEdit($event)"
+                            >
+                          </app-edit-ingredient-inline>
+                        }
+                      </div>
+                    }
+                    <!--<span *ngFor="let tag of ingredientTags" class="ls-list-span"
+                  (click)="removeTagFromDish(tag)">{{tag.name}}!</span>-->
+                </div>
+              </div>
+              <!-- left top row element, eckdaten -->
+              <!-- right top row element, tags -->
+              <div class="col-lg-4 col-md-6">
+                <div class="ls-card">
+                  <div class="ls-tag-group-subtitle">Tags:
+                  </div>
+                  <div>
+                    @for (tag of plainOldTags; track tag) {
+                      <span class="ls-list-span"
+                      (click)="removeTagFromDish(tag)">{{ tag.name }}</span>
+                    }
+                    <div>
+                      @if (this.showPlainTag) {
+                        <div class="ls-add-tag">
+                          <app-tag-select class="at-tag-select-style"
+                            [tagTypes]="'TagType'"
+                            [groupType]="groupTypeNoGroups"
+                            [allowAdd]="false"
+                            [showCancelButton]="true"
+                            [placeholderText]="'Add Tag'"
+                            (tagSelected)="addTagToDish($event)"
+                          (cancelAddTag)="toggleShowPlainTag()"></app-tag-select>
+                        </div>
+                      }
+                      @if (!this.showPlainTag) {
+                        <div class="ls-card-link-block">
+                          <span><a class="add-button" (click)="toggleShowPlainTag()">
+                            <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a></span>
+                          </div>
+                        }
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ls-card">
+                    <div class="ls-tag-group-subtitle">Ratings:
+                    </div>
+                    @if (dishRatingInfo != null && dishRatingInfo.length > 0) {
+                      <div>
+                        @for (rating of dishRatingInfo; track rating; let i = $index) {
+                          <div class="ls-rating">
+                            {{ rating.tag.name }} :
+                            <ngb-rating [max]="5" [readonly]="false" [(rate)]="rating.power"
+                              (rateChange)="changeTheRating(rating)">
+                              <ng-template let-fill="fill">
+                                <span [class.filled]="fill === 100" [class.notfilled]="fill === 0">
+                                  ★
+                                </span>
+                              </ng-template>
+                            </ngb-rating>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <!-- description -->
+                </div>
+                <!-- right top row element, tags -->
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
 
-<!--content End-->
-<app-modal #addtag>
-    <div class="app-modal-body">
+    <!--content End-->
+    <app-modal #addtag>
+      <div class="app-modal-body">
         <app-create-tag-dialog
-                [tagName]="tagNameToCreate"
-                [addTargetString]="'dish'"
-                [tagType]="tagTypeToCreate"
-                (createdTagId)="addTagToDishById($event)">
+          [tagName]="tagNameToCreate"
+          [addTargetString]="'dish'"
+          [tagType]="tagTypeToCreate"
+          (createdTagId)="addTagToDishById($event)">
         </app-create-tag-dialog>
-    </div>
-</app-modal>
+      </div>
+    </app-modal>
 
-<app-xlmodal #edittag>
-    <div class="app-modal-body">
+    <app-xlmodal #edittag>
+      <div class="app-modal-body">
         <!--  <app-add-ingredient-dialog
-          [ingredient]="selectedIngredient">
-          </app-add-ingredient-dialog>-->
+        [ingredient]="selectedIngredient">
+      </app-add-ingredient-dialog>-->
     </div>
-</app-xlmodal>
+  </app-xlmodal>
 
 

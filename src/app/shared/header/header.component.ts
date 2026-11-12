@@ -44,7 +44,7 @@ export class HeaderComponent implements AfterViewInit {
     }
 
     // @HostListener Decorator
-    @HostListener('window:scroll', ['$event'])
+    @HostListener('window:scroll')
     onWindowScroll() {
         const number = this.window.pageYOffset || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
         if (number >= 60) {

@@ -1,26 +1,26 @@
 
 <table>
-    <tr>
-        <td>
-            <p-autoComplete [(ngModel)]="autoSelectedDish"
-                            [suggestions]="filteredDishList"
-                            (completeMethod)="filterDishes($event)"
-                            optionLabel="name"
-                            inputStyleClass="autocomplete-input"
-                            panelStyleClass="autocomplete-panel"
-                            styleClass="ls-autocomplete"
-                            (onSelect)="bingo($event.value)"
+  <tr>
+    <td>
+      <p-autoComplete [(ngModel)]="autoSelectedDish"
+        [suggestions]="filteredDishList"
+        (completeMethod)="filterDishes($event)"
+        optionLabel="name"
+        inputStyleClass="autocomplete-input"
+        panelStyleClass="autocomplete-panel"
+        styleClass="ls-autocomplete"
+        (onSelect)="bingo($event.value)"
 
-                            placeholder="{{showText}}" [minLength]="1" > -->
-            </p-autoComplete>
-        </td>
-<ng-container *ngIf="showCancelButton">
-        <td  class="cancel-button" (click)="cancelDishInput()">X</td>
-</ng-container>
-        <ng-container *ngIf="!showCancelButton">
-            <td class="no-cancel-button"></td>
-        </ng-container>
+        placeholder="{{showText}}" [minLength]="1" > -->
+      </p-autoComplete>
+    </td>
+    @if (showCancelButton) {
+      <td  class="cancel-button" (click)="cancelDishInput()">X</td>
+    }
+    @if (!showCancelButton) {
+      <td class="no-cancel-button"></td>
+    }
     <tr>
-</table>
+    </table>
 
 

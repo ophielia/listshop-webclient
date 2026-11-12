@@ -1,264 +1,311 @@
 <!--breadcrumb start-->
 <div class="breadcrumb-bg">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-8 col-lg-10">
-                <h2 class="title">
-                    <div *ngIf="showChangeName" class="change-name">
-                        <input type="text" class=""
-                               placeholder="{{shoppingList.name}}"
-                               [(ngModel)]="shoppingListName"
-                               (keyup.enter)="saveListName()"
-                        />
-                        <span (click)="saveListName()"><img class="lg-button"
-                                                            src="../../../assets/images/listshop/icons/orangeround/large/check.png"
-                                                            alt="add"></span>
-                        <span (click)="toggleShowChangeName()"><img class="lg-button"
-                                                                    src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
-                                                                    alt="add"></span>
-
-
-                    </div>
-                    <ng-container *ngIf="!showChangeName">
-                        {{ shoppingList ? shoppingList.name : 'none' }}
-                        <span><img *ngIf="shoppingListIsStarter" class="lg-button"
-                                   src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
-                                   alt="add">
-                </span>
-                    </ng-container>
-
-                </h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-lg-10">
+        <h2 class="title">
+          @if (showChangeName) {
+            <div class="change-name">
+              <input type="text" class=""
+                placeholder="{{shoppingList.name}}"
+                [(ngModel)]="shoppingListName"
+                (keyup.enter)="saveListName()"
+                />
+              <span (click)="saveListName()"><img class="lg-button"
+                src="../../../assets/images/listshop/icons/orangeround/large/check.png"
+              alt="add"></span>
+              <span (click)="toggleShowChangeName()"><img class="lg-button"
+                src="../../../assets/images/listshop/icons/orangeround/large/xmarksthespot.png"
+              alt="add"></span>
             </div>
-            <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
-                <a class="nav-link" [routerLink]="'/lists/manage'">All Lists</a>
-            </div>
-        </div>
+          }
+          @if (!showChangeName) {
+            {{ shoppingList ? shoppingList.name : 'none' }}
+            <span>@if (shoppingListIsStarter) {
+              <img class="lg-button"
+                src="../../../assets/images/listshop/icons/orangeround/large/zap.png"
+                alt="add">
+            }
+          </span>
+        }
+
+      </h2>
     </div>
+    <div class="col-md-4 col-lg-2 order-md-last title-bar-action">
+      <a class="nav-link" [routerLink]="'/lists/manage'">All Lists</a>
+    </div>
+  </div>
+</div>
 </div>
 <!--breadcrumb end -->
 <!-- list Section starts -->
 <section>
-    <div class="container">
-        <div class="row">
-            <!-- shopping list starts -->
-            <div class="col-sm-12 col-md-8 col-lg-9">
-                <div *ngIf="shoppingList" class="row">
-                    <div *ngIf="shoppingList.categories.length == 0"
-                         class="ls-flat-card empty-list">This list is (currently) empty.
-                    </div>
-                    <!-- start category loop -->
-                    <div *ngFor="let category of shoppingList.categories, let i = index"
-                         class="col-sm-12 col-md-6 col-lg-6">
-
-                        <div *ngIf="category.is_highlighted"
-                             class="ls-list-column-header ls-list-column-header-special">
-                            {{ category.name }}
-                        </div>
-                        <div *ngIf="!category.is_highlighted" class="ls-list-column-header">
-                            {{ category.name }}
-                        </div>
-                        <div class="row ls-ingredient-block">
-                            <ng-container *ngFor="let item of category.items; let itemIndex = index">
-                                <div class="col-sm-12 col-md-12 col-lg-6 position-relative"
-                                     [class.second-column]="itemIndex % 2 === 1"
-                                     (click)="toggleItemSelected(item, category)"
-                                     (contextmenu)="toggleItemDetail($event, item)">
-                                    <div>
+  <div class="container">
+    <div class="row">
+      <!-- shopping list starts -->
+      <div class="col-sm-12 col-md-8 col-lg-9">
+        @if (shoppingList) {
+          <div class="row">
+            @if (shoppingList.categories.length == 0) {
+              <div
+                class="ls-flat-card empty-list">This list is (currently) empty.
+              </div>
+            }
+            <!-- start category loop -->
+            @for (category of shoppingList.categories; track category; let i = $index) {
+              <div
+                class="col-sm-12 col-md-6 col-lg-6">
+                @if (category.is_highlighted) {
+                  <div
+                    class="ls-list-column-header ls-list-column-header-special">
+                    {{ category.name }}
+                  </div>
+                }
+                @if (!category.is_highlighted) {
+                  <div class="ls-list-column-header">
+                    {{ category.name }}
+                  </div>
+                }
+                <div class="row ls-ingredient-block">
+                  @for (item of category.items; track item; let itemIndex = $index) {
+                    <div class="col-sm-12 col-md-12 col-lg-6 position-relative"
+                      [class.second-column]="itemIndex % 2 === 1"
+                      (click)="toggleItemSelected(item, category)"
+                      (contextmenu)="toggleItemDetail($event, item)">
+                      <div>
                                     <span class="{{item.crossed_off ? 'itemCrossedOff': ''}}
                                                 {{item.is_selected ? 'itemSelected': ''}}">
-                                        {{ item.tag.name }}</span>
-                                        <ng-container *ngIf="!(category.is_frequent)">
-                                        <span *ngIf="item.used_count > 1 && !showItemLegends">({{ item.used_count }}
-                                            )</span>
-                                            <span *ngIf="showLegends(item)" class="legend-combined-box">
-                                        <ng-container *ngFor="let detail of item.details">
-                                            <span *ngIf="iconSourceForDetail(detail, false)" class="legend-box">
-                                            <img [src]="iconSourceForDetail(detail, false)" width="15"
-                                                 height="15"/></span>
-                                        </ng-container>
-
-                                    </span>
-
-                                        </ng-container>
-                                    </div>
-
-                                    <!-- Detail Popup -->
-                                    <div *ngIf="displayInfoId === item.item_id" class="item-detail-popup" (click)="$event.stopPropagation()" (contextmenu)="$event.stopPropagation(); $event.preventDefault()">
-                                        <div class="popup-content">
-                                            <div class="popup-title">{{item.tag.name}}<span *ngIf="item.amount && item.amount.display" > - {{item.amount.display}}</span></div>
-                                            <ng-container *ngFor="let detail of item.details">
-                                                <div class="detail-row">
-                                                <img *ngIf="detail.key" [src]="detail.key" width="15" height="15"/>
-                                                {{detail.display}}
-                                                </div>
-                                                <div *ngIf="detail.amount" class="detail-amount">{{detailAmountDisplay(detail,item)}}</div>
-                                            </ng-container>
-                                            <hr *ngIf="item.details && item.details.length > 0">
-                                            <div class="popup-actions">
-                                                <span class="selected-actions" (click)="crossOffItem(item)">Cross Off</span>
-                                                <span class="selected-actions" (click)="removeItem(item)">Remove</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                        {{ item.tag.name }}</span>
+                        @if (!(category.is_frequent)) {
+                          @if (item.used_count > 1 && !showItemLegends) {
+                            <span>({{ item.used_count }}
+                            )</span>
+                          }
+                          @if (showLegends(item)) {
+                            <span class="legend-combined-box">
+                              @for (detail of item.details; track detail) {
+                                @if (iconSourceForDetail(detail, false)) {
+                                  <span class="legend-box">
+                                    <img [src]="iconSourceForDetail(detail, false)" width="15"
+                                    height="15"/></span>
+                                  }
+                                }
+                              </span>
+                            }
+                          }
+                        </div>
+                        <!-- Detail Popup -->
+                        @if (displayInfoId === item.item_id) {
+                          <div class="item-detail-popup" (click)="$event.stopPropagation()" (contextmenu)="$event.stopPropagation(); $event.preventDefault()">
+                            <div class="popup-content">
+                              <div class="popup-title">{{item.tag.name}}@if (item.amount && item.amount.display) {
+                                <span > - {{item.amount.display}}</span>
+                              }</div>
+                              @for (detail of item.details; track detail) {
+                                <div class="detail-row">
+                                  @if (detail.key) {
+                                    <img [src]="detail.key" width="15" height="15"/>
+                                  }
+                                  {{detail.display}}
                                 </div>
-                            </ng-container>
-                            <!-- item loop end -->
-                            <div *ngIf="category.has_selected" class="ls-selected-actions">
-                                <span class="selected-label">Selected Items:</span>
-                                <span class="selected-actions"
-                                      (click)="toggleCrossedOffInCategory(category)">Cross Off</span>
-                                <span class="selected-actions"
-                                      (click)="removeSelectedInCategory(category)">Remove</span>
+                                @if (detail.amount) {
+                                  <div class="detail-amount">{{detailAmountDisplay(detail,item)}}</div>
+                                }
+                              }
+                              @if (item.details && item.details.length > 0) {
+                                <hr>
+                                }
+                                <div class="popup-actions">
+                                  <span class="selected-actions" (click)="crossOffItem(item)">Cross Off</span>
+                                  <span class="selected-actions" (click)="removeItem(item)">Remove</span>
+                                </div>
+                              </div>
                             </div>
+                          }
                         </div>
+                      }
+                      <!-- item loop end -->
+                      @if (category.has_selected) {
+                        <div class="ls-selected-actions">
+                          <span class="selected-label">Selected Items:</span>
+                          <span class="selected-actions"
+                          (click)="toggleCrossedOffInCategory(category)">Cross Off</span>
+                          <span class="selected-actions"
+                          (click)="removeSelectedInCategory(category)">Remove</span>
+                        </div>
+                      }
                     </div>
-                    <!-- end category loop -->
-
+                  </div>
+                }
+                <!-- end category loop -->
+              </div>
+            }
+          </div>
+          <!-- shopping list ends -->
+          <!-- sidebar starts -->
+          <div class="col-md-4 col-lg-3 order-md-last">
+            <!-- actions -->
+            <div class="ls-flat-card ls-card-contents">
+              @if (showActions) {
+                @if (frequentToggleAvailable) {
+                  <table class="display-frequent">
+                    <tr>
+                      <td class="display-frequent">Display Frequent</td>
+                      <td class="display-frequent">
+                        <p-toggleswitch [(ngModel)]="showFrequent"
+                        (onChange)="toggleShowFrequent()"></p-toggleswitch>
+                      </td>
+                    </tr>
+                  </table>
+                }
+                @if (crossedOffExist) {
+                  <table class="display-frequent">
+                    <tr>
+                      <td class="display-frequent">Show Crossed Off</td>
+                      <td class="display-frequent">
+                        <p-toggleswitch [(ngModel)]="showCrossedOff"
+                        (onChange)="toggleShowCrossedOff()"></p-toggleswitch>
+                      </td>
+                    </tr>
+                  </table>
+                }
+                @if (!showAddList) {
+                  <div (click)="toggleAddList()">
+                    <span class="action-link">
+                      <i class="fa fa-angle-right" aria-hidden="true"></i>Add List
+                    </span>
+                  </div>
+                }
+                @if (showAddList) {
+                  <div>
+                    <app-list-select class="at-tag-select-style"
+                      [currentListId]="shoppingList.list_id"
+                      (listSelected)="addListToList($event)"
+                    (cancelSelectList)="toggleAddList()"></app-list-select>
+                  </div>
+                }
+                @if (!showAddItem) {
+                  <div (click)="toggleAddItem()">
+                    <span class="action-link">
+                      <i class="fa fa-angle-right" aria-hidden="true"></i>Add Item
+                    </span>
+                  </div>
+                }
+                @if (showAddItem) {
+                  <div>
+                    <app-tag-select class="at-tag-select-style"
+                      [tagTypes]="'Ingredient,NonEdible'"
+                      [groupType]="groupTypeNoGroups"
+                      [allowAdd]="true"
+                      [showCancelButton]="true"
+                      [placeholderText]="'Add Item'"
+                      (createTag)="createTag($event)"
+                      (tagSelected)="addTagToList($event)"
+                    (cancelAddTag)="toggleAddItem()"></app-tag-select>
+                  </div>
+                }
+                @if (!showAddDish) {
+                  <div (click)="toggleAddDish()">
+                    <span class="action-link">
+                      <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
+                    </span>
+                  </div>
+                }
+                @if (showAddDish) {
+                  <div>
+                    <app-dish-select class="at-tag-select-style"
+                      [showCancelButton]="true"
+                      [showText]="'Select Dish'"
+                      [dishList]="allDishes"
+                      (dishSelected)="addDishToList($event)"
+                    (cancelSelectDish)="toggleAddDish()"></app-dish-select>
+                  </div>
+                }
+                <div>
+                  <span class="action-link" (click)="toggleShowChangeName()">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
+                  </span>
                 </div>
+                @if (!shoppingListIsStarter) {
+                  <div>
+                    <span class="action-link" (click)="makeStarterList();">
+                      <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
+                    </span>
+                  </div>
+                }
+                <div>
+                  <span class="action-link" (click)="clearList()">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>Clear List
+                  </span>
+                </div>
+              }
+              <div class="action-button-right">
+                <a (click)="toggleShowActions()">
+                  @if (showActions) {
+                    <img class="sm-button"
+                      src="../../../assets/images/listshop/icons/orangeround/chevronsup.png"
+                      alt="add">
+                  }
+                  @if (!showActions) {
+                    <img class="sm-button"
+                      src="../../../assets/images/listshop/icons/orangeround/chevronsdown.png"
+                      alt="add">
+                  }
+                </a>
+              </div>
             </div>
-            <!-- shopping list ends -->
-            <!-- sidebar starts -->
-            <div class="col-md-4 col-lg-3 order-md-last">
-                <!-- actions -->
-                <div class="ls-flat-card ls-card-contents">
-                    <ng-container *ngIf="showActions">
-
-                        <table *ngIf="frequentToggleAvailable" class="display-frequent">
-                            <tr>
-                                <td class="display-frequent">Display Frequent</td>
-                                <td class="display-frequent">
-                                    <p-toggleswitch [(ngModel)]="showFrequent"
-                                                   (onChange)="toggleShowFrequent()"></p-toggleswitch>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <table *ngIf="crossedOffExist" class="display-frequent">
-                            <tr>
-                                <td class="display-frequent">Show Crossed Off</td>
-                                <td class="display-frequent">
-                                    <p-toggleswitch [(ngModel)]="showCrossedOff"
-                                                   (onChange)="toggleShowCrossedOff()"></p-toggleswitch>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <div *ngIf="!showAddList" (click)="toggleAddList()">
-                            <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add List
-                            </span>
-                        </div>
-                        <div *ngIf="showAddList">
-                            <app-list-select class="at-tag-select-style"
-                                             [currentListId]="shoppingList.list_id"
-                                             (listSelected)="addListToList($event)"
-                                             (cancelSelectList)="toggleAddList()"></app-list-select>
-                        </div>
-                        <div *ngIf="!showAddItem" (click)="toggleAddItem()">
-                            <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add Item
-                            </span>
-                        </div>
-                        <div *ngIf="showAddItem">
-                            <app-tag-select class="at-tag-select-style"
-                                            [tagTypes]="'Ingredient,NonEdible'"
-                                            [groupType]="groupTypeNoGroups"
-                                            [allowAdd]="true"
-                                            [showCancelButton]="true"
-                                            [placeholderText]="'Add Item'"
-                                            (createTag)="createTag($event)"
-                                            (tagSelected)="addTagToList($event)"
-                                            (cancelAddTag)="toggleAddItem()"></app-tag-select>
-                        </div>
-                        <div *ngIf="!showAddDish" (click)="toggleAddDish()">
-                            <span class="action-link">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Add Dish
-                            </span>
-                        </div>
-
-
-                        <div *ngIf="showAddDish">
-                            <app-dish-select class="at-tag-select-style"
-                                             [showCancelButton]="true"
-                                             [showText]="'Select Dish'"
-                                             [dishList]="allDishes"
-
-                                             (dishSelected)="addDishToList($event)"
-                                             (cancelSelectDish)="toggleAddDish()"></app-dish-select>
-                        </div>
-                        <div>
-                            <span class="action-link" (click)="toggleShowChangeName()">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Change Name
-                            </span>
-                        </div>
-                        <div *ngIf="!shoppingListIsStarter">
-                            <span class="action-link" (click)="makeStarterList();">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Make Starter List
-                            </span>
-                        </div>
-
-                        <div>
-                            <span class="action-link" (click)="clearList()">
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>Clear List
-                            </span>
-                        </div>
-                    </ng-container>
-                    <div class="action-button-right">
-                        <a (click)="toggleShowActions()">
-                            <img *ngIf="showActions" class="sm-button"
-                                 src="../../../assets/images/listshop/icons/orangeround/chevronsup.png"
-                                 alt="add">
-                            <img *ngIf="!showActions" class="sm-button"
-                                 src="../../../assets/images/listshop/icons/orangeround/chevronsdown.png"
-                                 alt="add">
-                        </a>
-                    </div>
-                </div>
-                <!-- end actions -->
-                <!-- legend -->
-                <div *ngIf="!shoppingListIsStarter && legendList.length > 0" class="ls-legend">
-                    <ul>
-                        <li *ngFor="let source of legendList">
-                            <table class="legend-table">
-                                <tr>
-                                    <td (click)="highlightSource(source.key)"><img
-                                            [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
-                                    <td (click)="highlightSource(source.key)">{{ source.display }}</td>
-                                    <td (click)="removeDishOrList(source.key);"><span class="fa-trash fa"></span></td>
-                                </tr>
-                            </table>
-                        </li>
-                    </ul>
-                </div>
-                <!-- end legend -->
-                <!-- removed -->
-                <div *ngIf="removedItems.length > 0" class="ls-flat-card">
-                    <h3>Removed Items</h3>
-                    <ul>
-                        <li *ngFor="let item of removedItems" (dblclick)="reAddItem(item)">
-                            {{
-                                item.tag.name
-                            }}
-
-                        </li>
-                    </ul>
-                    <div class="ls-card-link" (click)="clearRemoved()">clear</div>
-                </div>
-                <!-- end removed -->
-            </div>
-            <!-- sidebar end -->
+            <!-- end actions -->
+            <!-- legend -->
+            @if (!shoppingListIsStarter && legendList.length > 0) {
+              <div class="ls-legend">
+                <ul>
+                  @for (source of legendList; track source) {
+                    <li>
+                      <table class="legend-table">
+                        <tr>
+                          <td (click)="highlightSource(source.key)"><img
+                          [src]="iconSourceForKey(source.key, true)" width="20" height="20"/></td>
+                          <td (click)="highlightSource(source.key)">{{ source.display }}</td>
+                          <td (click)="removeDishOrList(source.key);"><span class="fa-trash fa"></span></td>
+                        </tr>
+                      </table>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+            <!-- end legend -->
+            <!-- removed -->
+            @if (removedItems.length > 0) {
+              <div class="ls-flat-card">
+                <h3>Removed Items</h3>
+                <ul>
+                  @for (item of removedItems; track item) {
+                    <li (dblclick)="reAddItem(item)">
+                      {{
+                      item.tag.name
+                      }}
+                    </li>
+                  }
+                </ul>
+                <div class="ls-card-link" (click)="clearRemoved()">clear</div>
+              </div>
+            }
+            <!-- end removed -->
+          </div>
+          <!-- sidebar end -->
         </div>
-    </div>
-</section>
-<!-- list Section End -->
+      </div>
+    </section>
+    <!-- list Section End -->
 
-<app-modal #addtag>
-    <div class="app-modal-body">
+    <app-modal #addtag>
+      <div class="app-modal-body">
         <app-create-tag-dialog
-                [tagName]="tagNameToCreate"
-                [addTargetString]="'list'"
-                [tagType]="tagTypeToCreate"
-                (createdTagId)="addTagToListById($event)">
+          [tagName]="tagNameToCreate"
+          [addTargetString]="'list'"
+          [tagType]="tagTypeToCreate"
+          (createdTagId)="addTagToListById($event)">
         </app-create-tag-dialog>
-    </div>
-</app-modal>
+      </div>
+    </app-modal>

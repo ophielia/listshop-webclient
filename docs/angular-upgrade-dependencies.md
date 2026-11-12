@@ -156,3 +156,25 @@ this fix; output entity and clearing assertions remain unchanged.
 Official references: [Angular compatibility](https://angular.dev/reference/versions),
 [Angular 20 update recommendations](https://github.com/angular/angular/blob/20.3.x/adev/src/app/features/update/recommendations.ts),
 [PrimeNG 20 migration](https://v20.primeng.org/migration/v20).
+
+## Angular 21 selected versions
+
+Rechecked npm registry metadata on 2026-11-12: core 21.2.26, CLI/build
+21.2.30, CDK 21.2.14, angular-eslint 21.4.0, PrimeNG 21.1.10,
+@primeuix/themes 2.0.3, ng-bootstrap 20.0.0, carousel 21.0.3 and
+page-scroll/core 16.0.0. The candidate table is not the selected set:
+page-scroll/core 16 publishes the Angular 21 packages. Retained spinner
+19.0.0 (peers >=19), logger 5.0.12, Bootstrap 5.3.3, Popper 2.11.8,
+RxJS 6, Zone 0.15.1, TypeScript 5.9.3 and ESLint 8.57.0.
+Node 24.15.0 and npm 11.21.2 remain pinned.
+
+Official compatibility: https://angular.dev/reference/versions
+Adjacent update recommendations: https://angular.dev/update-guide?v=20.0-21.0&l=3
+Source recommendations (the public guide is client-rendered):
+https://github.com/angular/angular/blob/main/adev/src/app/features/update/recommendations.ts
+
+The Angular 21 core migration now automatically converts structural
+directives to block control flow. This checkpoint includes that official
+migration, plus explicit Zone change detection at bootstrap and in tests.
+The optional application builder and router-current-navigation migrations
+remain deferred, as do signals/standalone/RxJS conversion.
