@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 
-import { Router, Event, NavigationStart, RoutesRecognized,
+import { Router, type Event, NavigationStart, RoutesRecognized,
   RouteConfigLoadStart, RouteConfigLoadEnd,
   NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 

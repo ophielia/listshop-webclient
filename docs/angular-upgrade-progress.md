@@ -1,6 +1,39 @@
 # Angular upgrade progress
 
-## Current checkpoint — Angular 19
+## Current checkpoint — Angular 20
+
+**Angular 20 implementation and automated validation complete. Stop for review before Angular 21.**
+
+- Branch `chore/angular-upgrade`, starting from Angular 19 commit `2e1035f`. User explicitly authorized Angular 20. No Angular 21 work started.
+- Core 20.3.35, CLI/build 20.3.42, CDK 20.2.14, angular-eslint 20.7.0, TypeScript 5.9.3, TypeScript ESLint parser/plugin/types/utils 8.72.2 and @types/node 24.19.2. PrimeNG 20.4.0, @primeuix/themes 1.2.5, ng-bootstrap 19.0.1, carousel 20.1.1, page-scroll/core 15.0.1. Retained spinner 19.0.0 (peers >=19), logger 5.0.12, Bootstrap 5.3.3, RxJS 6, Zone 0.15.1, ESLint 8.57.0 and Karma 6.4.4.
+- Moved to the agreed existing Node 24.15.0 runtime; pinned npm 11.21.2 in package engines, Docker and CI. `.nvmrc` now selects Node 24.15.0. Docker build base is `node:24.15.0-bookworm`. Local npm isolated at `/private/tmp/listshop-angular20-tools/node_modules/npm/bin/npm-cli.js`; commands use Node 24 via PATH. Existing nvm installations/default alias unchanged. Playwright remains in its separate `e2e/` tree on Node 24.15.0.
+- Initial npm 10.9.4 strict resolution failed around the Vite/SSL plugin dependencies. npm 11 resolved the lockfile, but full tree inspection exposed legacy Node 12 type definitions as invalid for Vite 7's optional peer. Aligned @types/node with Node 24 and repeated clean install/tree verification. No force or legacy-peer flags.
+- Official installed CLI/core/CDK adjacent migrations completed with explicit previous/target versions, `--migrate-only --allow-dirty`, `CI=true` and `NG_DISABLE_VERSION_CHECK=true`. CLI preserved prior generated-file naming via schematics defaults and set TypeScript moduleResolution to `bundler`. Core moved DOCUMENT imports to @angular/core in three files. Other core/CDK migrations needed no edits. Deferred optional builder, block-control-flow and router-signal migrations; NgModules/browser builder/RxJS retained.
+- Production compilation exposed interface/type imports emitted as runtime exports with the updated toolchain. Added explicit `type` modifiers for router Event, HttpEvent, IDish, ClassProvider and FactoryProvider in the six affected files. No runtime logic changes.
+- Moved the Lara preset from the deprecated @primeng/themes wrapper to matching @primeuix/themes; blue fields/orange switches/light-only configuration retained. Tests/build caught PrimeNG 20's removal of autocomplete `field` (including a dish label rendered as `[object Object]`). Replaced with `optionLabel="name"` in all three shared autocompletes and removed duplicate dynamic bindings; kept entity outputs and clearing behavior.
+- Reviewed Angular 20 guidance for removed APIs, template operators/parentheses, date formats, guard types, scheduling and error handling. No additional application changes required. Existing integration/browser tests exercise affected controls, animation dialogs, navigation and auth contracts. Full legacy generated suite remains outside the maintained gate.
+
+### Angular 20 validation
+
+- Final clean `npm ci --strict-peer-deps`: **passed**, no engine warnings. `npm ls --all --json`: **passed**, no dependency problems. Manifest/lockfile engines/dependencies match.
+- Correctness lint: **passed**. Maintained unit tests: **15/15 passed** after compatibility fixes, including autocomplete labels/entity outputs/clearing, switches/forms/disabled state, runtime config, generation, ingredient parsing and logger/error handling.
+- Final production build: **passed**, initial 1.79 MB / estimated transfer 396.25 kB. Known Sass @import/division and invalid CSS diagnostics remain deferred. Existing component budgets warn at edit-dish 18.06 kB and ingredient-input 15.96 kB. Optional application-builder/Sass conversion remains separate.
+- Development server: **compiled successfully** on 127.0.0.1:4202; root HTTP 200 and both contact assets returned exact source bytes. Verification server stopped.
+- Browser suite: **16/16 passed** in 1.1 minutes; original desktop/mobile login/list baselines untouched and matching. Includes auth headers/session/reload/logout/expiry, navigation/carousel/scrolling/dropdowns/dialogs and themed switch/dish autocomplete. Disabled animations for control review capture to avoid a transient mobile overlay artifact; repeated the two affected checks: **2/2 passed**. Both desktop/mobile control images are byte-for-byte identical to Angular 19 after animations settle. Review images remain under ignored `e2e/test-results/`.
+- Docker build stage: **passed**, including clean strict-peer install and production build. Local image `listshop-angular20-checkpoint:local`, ID `ef6d1a557e217efd03e0a5aeafd6cd3907f4e9dd540be63c323fa5f34c1a1d01`.
+- Logs: `/private/tmp/listshop-angular20-{resolution,resolution-final,resolution-types,ci-final,cli-migrations,core-migrations,cdk-migrations,lint-final,tests-final,build-final,serve,browser,theme-review,docker-final}.log`; dependency tree `...-tree-final.json` / `...-tree-errors-final.log`. Initial failures/cancelled builds are not passing gates; final logs supersede them.
+
+### Review / next action
+
+Stop before Angular 21 for user review. Broader manual/real-backend acceptance remains outstanding: full dish/ingredient and meal-plan workflows, password-reset submission, beta feedback and other forms/menus/alerts. Browser checks use mocked APIs. Nginx runtime validation, remote CI and deployment remain later checkpoints. Nothing pushed or deployed.
+
+Before Angular 21, retain Node 24.15.0 and recheck TypeScript/Zone/UI peers and change-detection defaults. Keep standalone/signals/RxJS and application-builder conversions separate.
+
+Unrelated `.junie/`, API configuration and original screenshot baselines untouched. Graphify launcher remains broken; no graph rebuild attempted. Angular 19 modules/lockfile preserved at `/private/tmp/listshop-angular19-node_modules-before20` and `/private/tmp/listshop-angular19-lock-before20.json`; Git `2e1035f` is the durable fallback.
+
+---
+
+## Previous Angular 19 checkpoint
 
 **Angular 19 implementation and automated validation complete. Stop for review before Angular 20.**
 

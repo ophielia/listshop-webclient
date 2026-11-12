@@ -5,7 +5,7 @@
             <p-autoComplete [(ngModel)]="autoSelectedDish"
                             [suggestions]="filteredDishList"
                             (completeMethod)="filterDishes($event)"
-                            field="name"
+                            optionLabel="name"
                             inputStyleClass="autocomplete-input"
                             panelStyleClass="autocomplete-panel"
                             styleClass="ls-autocomplete"

@@ -124,3 +124,35 @@ Official references: [Angular compatibility](https://angular.dev/reference/versi
 [Angular 19 update recommendations](https://github.com/angular/angular/blob/19.2.x/adev/src/app/features/update/recommendations.ts),
 [PrimeNG migration](https://v19.primeng.org/guides/migration),
 [PrimeNG theming](https://v19.primeng.org/theming).
+
+## Angular 20 selected versions
+
+Registry peers and official update guidance rechecked: core 20.3.35,
+CLI/build 20.3.42, CDK 20.2.14, angular-eslint 20.7.0,
+TypeScript 5.9.3 and TypeScript ESLint parser/plugin/types/utils 8.72.2.
+PrimeNG 20.4.0, ng-bootstrap 19.0.1, carousel 20.1.1 and page-scroll/core
+15.0.1. Retained spinner 19.0.0 (peers >=19), logger 5.0.12, Bootstrap
+5.3.3, RxJS 6, Zone 0.15.1, ESLint 8.57.0 and Karma 6.4.4.
+
+Node moves to the planned 24.15.0 runtime. npm 11.21.2 is isolated locally
+and pinned in package engines, Docker and CI; no changes to installed nvm
+runtimes/default alias. Initial npm 10 strict resolution failed around the
+build tool's Vite/SSL plugin graph. npm 11 resolved a lockfile, but the full
+tree check then exposed the old Node 12 type definitions as invalid for
+Vite 7's optional peer. Aligned @types/node to 24.19.2 before repeating clean
+installation/tree checks. No force or legacy-peer flags.
+
+PrimeNG 20's shared theme implementation supports the existing Lara preset.
+Replaced the deprecated @primeng/themes wrapper with @primeuix/themes 1.2.5
+(the version required by the matching wrapper), updating only preset imports.
+Retain blue fields, orange switches and light-only configuration. Existing
+actual-control tests and desktop/mobile checks validate selection, filtering,
+disabled state and overlay placement. PrimeNG 20 removed the autocomplete
+`field` input; replaced it with `optionLabel="name"` in all three shared
+controls and removed the duplicate dynamic bindings. The build/tests caught
+unknown bindings and dish suggestions rendered as `[object Object]` before
+this fix; output entity and clearing assertions remain unchanged.
+
+Official references: [Angular compatibility](https://angular.dev/reference/versions),
+[Angular 20 update recommendations](https://github.com/angular/angular/blob/20.3.x/adev/src/app/features/update/recommendations.ts),
+[PrimeNG 20 migration](https://v20.primeng.org/migration/v20).

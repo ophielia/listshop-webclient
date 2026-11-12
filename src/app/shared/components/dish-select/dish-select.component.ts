@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Dish, IDish} from "../../../model/dish";
+import {Dish, type IDish} from "../../../model/dish";
 import {NGXLogger} from "ngx-logger";
 
 @Component({

@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, HostListener, Inject} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import {AfterViewInit, Component, HostListener, Inject, DOCUMENT} from '@angular/core';
+
 import {WINDOW} from '../services/windows.service';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {AuthenticationService} from "../services/authentication.service";

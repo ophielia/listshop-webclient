@@ -1,5 +1,5 @@
-import {definePreset} from '@primeng/themes';
-import Lara from '@primeng/themes/lara';
+import {definePreset} from '@primeuix/themes';
+import Lara from '@primeuix/themes/lara';
 
 // Keep the former Saga light theme's blue fields and orange list/plan switches.
 // Dark mode is disabled at the provider to preserve the app's light-only design.

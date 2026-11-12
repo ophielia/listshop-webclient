@@ -168,7 +168,7 @@ test('themed list switch and dish autocomplete preserve selection behavior', asy
   expect(bounds.x).toBeGreaterThanOrEqual(0);
   expect(bounds.x + bounds.width).toBeLessThanOrEqual(page.viewportSize().width);
   const screenshotPath = testInfo.outputPath('primeng-list-controls.png');
-  await page.screenshot({path: screenshotPath, fullPage: true});
+  await page.screenshot({path: screenshotPath, fullPage: true, animations: 'disabled'});
   await testInfo.attach('primeng-list-controls', {path: screenshotPath, contentType: 'image/png'});
   await option.click();
   await expect.poll(() => selectedDish).toBe(true);
