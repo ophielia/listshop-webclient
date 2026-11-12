@@ -4,7 +4,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 @Component({
     selector: 'app-generate-list',
     templateUrl: './generate-list.component.html',
-    styleUrls: ['./generate-list.component.scss']
+    styleUrls: ['./generate-list.component.scss'],
+    standalone: false
 })
 export class GenerateListComponent implements OnInit, OnDestroy {
     @Output() optionsSelected: EventEmitter<Map<string, boolean>> = new EventEmitter<Map<string, boolean>>();

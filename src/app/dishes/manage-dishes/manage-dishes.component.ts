@@ -21,7 +21,8 @@ import {ShoppingList} from "../../model/shoppingList";
 @Component({
     selector: 'app-manage-dishes',
     templateUrl: './manage-dishes.component.html',
-    styleUrls: ['./manage-dishes.component.scss']
+    styleUrls: ['./manage-dishes.component.scss'],
+    standalone: false
 })
 export class ManageDishesComponent implements OnInit, OnDestroy {
     @ViewChild('dishesaddedtolist') addToListModal;

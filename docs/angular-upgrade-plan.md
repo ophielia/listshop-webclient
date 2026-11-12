@@ -11,7 +11,7 @@ Upgrade Angular 11 through each major to Angular 22, selecting stable patch rele
 3. Explicit visual review at Bootstrap 5 and PrimeNG theme migrations; pause for product decisions if a replacement materially changes behavior.
 4. Final staging acceptance: actual Docker image, runtime configuration, routing, assets, and backend integration. Production deployment requires explicit authorization; retain the old image for rollback.
 
-Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is committed as bb34f66. The user authorized upgrading through Angular 17 to Angular 18 in one request. Validate and commit each adjacent major, then stop for review before Angular 19. PrimeNG 17 supports both Angular targets; defer its separate v18 theme migration until that library major is adopted.
+Within an authorized checkpoint, resolve routine compatibility problems autonomously. Never mark a failed checkpoint complete. Preparation is committed as bb34f66. The user has now authorized Angular 19 from the validated Angular 18 checkpoint. Validate and commit Angular 19, then stop for review before Angular 20. This checkpoint includes the required PrimeNG theme migration; retain an explicit desktop/mobile visual review before the next major.
 
 ## Implementation constraints
 

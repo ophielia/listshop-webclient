@@ -7,9 +7,9 @@ This project is a client for a REST service designed to access a shopping list a
 - Support beta testing campaigns.
 
 ### Technology Stack
-- **Frontend Framework**: Angular 18.2.14
+- **Frontend Framework**: Angular 19.2.25
 - **State Management**: RxJS based services.
-- **UI Components**: PrimeNG 17, Ng-bootstrap 17, Bootstrap 5.3.
+- **UI Components**: PrimeNG 19, Ng-bootstrap 18, Bootstrap 5.3.
 - **Styling**: SASS / SCSS.
 - **Rendering**: Browser app served by Nginx; unused Angular Universal support removed during upgrade preparation.
 - **Logging**: ngx-logger.
@@ -34,7 +34,7 @@ This project is a client for a REST service designed to access a shopping list a
 - **Environment**: Backend API typically runs on `http://localhost:8182/` in development.
 
 ### Development Workflow
-- **Node Version**: Node 18.19.1 / npm 10.9.4 for the Angular 18 checkpoint (see `.nvmrc`); isolated Playwright checks use Node 24.15.0 in `e2e/`.
+- **Node Version**: Node 18.19.1 / npm 10.9.4 for the Angular 19 checkpoint (see `.nvmrc`); isolated Playwright checks use Node 24.15.0 in `e2e/`.
 - **Build Commands**:
   - `ng serve`: Development server.
   - `ng build`: Production build.

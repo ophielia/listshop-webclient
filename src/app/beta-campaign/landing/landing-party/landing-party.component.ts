@@ -3,9 +3,10 @@ import {CelebrationService} from "../../../shared/services/celebration.service";
 import {AuthenticationService} from "../../../shared/services/authentication.service";
 
 @Component({
-  selector: 'app-landing-party',
-  templateUrl: './landing-party.component.html',
-  styleUrls: ['./landing-party.component.scss']
+    selector: 'app-landing-party',
+    templateUrl: './landing-party.component.html',
+    styleUrls: ['./landing-party.component.scss'],
+    standalone: false
 })
 export class LandingPartyComponent implements OnInit {
   public partyTitle: string = "";

@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-xlmodal',
-  template: `
+    selector: 'app-xlmodal',
+    template: `
     <div (click)="onContainerClicked($event)" class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}"
          [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
       <div class="modal-dialog modal-dialog-centered modal-xl" style="margin-top:100px;">
@@ -15,11 +15,12 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .modal {
       background: rgba(0, 0, 0, 0.2);
     }
-  `]
+  `],
+    standalone: false
 })
 export class XLModalComponent implements OnInit {
 

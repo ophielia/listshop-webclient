@@ -4,9 +4,10 @@ import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-home-two',
-  templateUrl: './home-two.component.html',
-  styleUrls: ['./home-two.component.scss']
+    selector: 'app-home-two',
+    templateUrl: './home-two.component.html',
+    styleUrls: ['./home-two.component.scss'],
+    standalone: false
 })
 export class HomeTwoComponent implements OnInit, OnDestroy {
 

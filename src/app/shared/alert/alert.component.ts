@@ -4,9 +4,10 @@ import {AlertService} from "../services/alert.service";
 import {NGXLogger} from "ngx-logger";
 
 @Component({
-  selector: 'app-alert',
-  templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.css']
+    selector: 'app-alert',
+    templateUrl: './alert.component.html',
+    styleUrls: ['./alert.component.css'],
+    standalone: false
 })
 export class AlertComponent {
 

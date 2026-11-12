@@ -6,9 +6,10 @@ import {NGXLogger} from "ngx-logger";
 
 
 @Component({
-  selector: 'app-intro-two',
-  templateUrl: './intro-two.component.html',
-  styleUrls: ['./intro-two.component.scss']
+    selector: 'app-intro-two',
+    templateUrl: './intro-two.component.html',
+    styleUrls: ['./intro-two.component.scss'],
+    standalone: false
 })
 export class IntroTwoComponent implements OnInit {
 

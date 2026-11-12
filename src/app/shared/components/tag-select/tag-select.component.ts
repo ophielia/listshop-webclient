@@ -12,7 +12,8 @@ import {NGXLogger} from "ngx-logger";
 @Component({
     selector: 'app-tag-select',
     templateUrl: './tag-select.component.html',
-    styleUrls: ['./tag-select.component.scss']
+    styleUrls: ['./tag-select.component.scss'],
+    standalone: false
 })
 export class TagSelectComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];

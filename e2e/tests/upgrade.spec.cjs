@@ -125,3 +125,52 @@ test('shopping-list confirmation cancels and confirms deletion', async ({page}) 
   await expect(dialog).toHaveCount(0);
   expect(deleted).toBe(true);
 });
+
+test('themed list switch and dish autocomplete preserve selection behavior', async ({page}, testInfo) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const dish = {dish_id: '42', name: 'Carrot soup', tags: [], ingredients: [], ratings: []};
+  const item = (id, name, crossed_off) => ({item_id: id, tag: {tag_id: id, name}, crossed_off,
+    sources: [], details: [], used_count: 1});
+  await page.route('**/test-api/v2/tag', route => route.fulfill({json: {tag_list: []}}));
+  await page.route('**/test-api/v2/dish', route => route.fulfill({json: {dish_list: [dish]}}));
+  await page.route('**/test-api/v2/shoppinglist/101', route => route.fulfill({json: {
+    list_id: '101', name: 'Upgrade groceries', legend: [], is_starter_list: false,
+    categories: [{name: 'Produce', items: [item('1', 'Carrot', false), item('2', 'Apple', true)]}]
+  }}));
+  let selectedDish = false;
+  await page.route('**/test-api/v2/shoppinglist/101/dish/42', route => {
+    expect(route.request().method()).toBe('POST');
+    selectedDish = true;
+    return route.fulfill({json: {}});
+  });
+  await page.goto('/user/login');
+  await page.locator('[formControlName="email"]').fill('upgrade@example.com');
+  await page.getByPlaceholder('password', {exact: true}).fill('UpgradePassword123');
+  await page.getByRole('button', {name: 'Login', exact: true}).click();
+  await page.goto('/lists/edit/101');
+  await expect(page.getByText('Apple', {exact: true})).toBeVisible();
+  const toggle = page.getByRole('switch');
+  await expect(toggle).toBeChecked();
+  await expect(page.locator('.p-toggleswitch-slider')).toHaveCSS('background-color', 'rgb(230, 125, 33)');
+  await toggle.focus();
+  await page.keyboard.press('Space');
+  await expect(toggle).not.toBeChecked();
+  await expect(page.getByText('Apple', {exact: true})).toHaveCount(0);
+  await toggle.click();
+  await expect(page.getByText('Apple', {exact: true})).toBeVisible();
+  await page.getByText('Add Dish', {exact: true}).click();
+  const input = page.locator('app-dish-select input');
+  await input.fill('soup');
+  const option = page.getByRole('option', {name: 'Carrot soup'});
+  await expect(option).toBeVisible();
+  const bounds = await option.boundingBox();
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(page.viewportSize().width);
+  const screenshotPath = testInfo.outputPath('primeng-list-controls.png');
+  await page.screenshot({path: screenshotPath, fullPage: true});
+  await testInfo.attach('primeng-list-controls', {path: screenshotPath, contentType: 'image/png'});
+  await option.click();
+  await expect.poll(() => selectedDish).toBe(true);
+  expect(errors).toEqual([]);
+});

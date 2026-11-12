@@ -9,7 +9,8 @@ import {TokenType} from "../../model/token-request";
 @Component({
     selector: 'app-token-gateway',
     templateUrl: './token-gateway.component.html',
-    styleUrls: ['./token-gateway.component.scss']
+    styleUrls: ['./token-gateway.component.scss'],
+    standalone: false
 })
 export class TokenGatewayComponent implements OnInit {
 

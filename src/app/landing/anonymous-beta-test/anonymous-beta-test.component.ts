@@ -3,9 +3,10 @@ import {AuthenticationService} from "../../shared/services/authentication.servic
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-anonymous-beta-test',
-  templateUrl: './anonymous-beta-test.component.html',
-  styleUrls: ['./anonymous-beta-test.component.scss']
+    selector: 'app-anonymous-beta-test',
+    templateUrl: './anonymous-beta-test.component.html',
+    styleUrls: ['./anonymous-beta-test.component.scss'],
+    standalone: false
 })
 export class AnonymousBetaTestComponent implements OnInit {
   public isLoggedIn: boolean;

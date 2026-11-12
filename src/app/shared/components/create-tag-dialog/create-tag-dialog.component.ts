@@ -7,9 +7,10 @@ import TagType from "../../../model/tag-type";
 import {TagService} from "../../services/tag.service";
 
 @Component({
-  selector: 'app-create-tag-dialog',
-  templateUrl: './create-tag-dialog.component.html',
-  styleUrls: ['./create-tag-dialog.component.scss']
+    selector: 'app-create-tag-dialog',
+    templateUrl: './create-tag-dialog.component.html',
+    styleUrls: ['./create-tag-dialog.component.scss'],
+    standalone: false
 })
 export class CreateTagDialogComponent implements OnInit {
   @Output() createdTagId: EventEmitter<string> = new EventEmitter<string>();

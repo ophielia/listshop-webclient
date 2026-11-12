@@ -43,9 +43,9 @@ describe(component.name + ' autocomplete integration', () => {
     fixture.detectChanges();
     tick();
     fixture.detectChanges();
-    const suggestion: HTMLElement = fixture.nativeElement.querySelector('.p-autocomplete-item');
+    const suggestion: HTMLElement = fixture.nativeElement.querySelector('.p-autocomplete-option');
     expect(suggestion.textContent).toContain('Carrot');
-    suggestion.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    suggestion.click();
     fixture.detectChanges();
     tick();
     fixture.detectChanges();
@@ -121,9 +121,9 @@ describe('Shared dish autocomplete integration', () => {
     fixture.detectChanges();
     tick();
     fixture.detectChanges();
-    const suggestion: HTMLElement = fixture.nativeElement.querySelector('.p-autocomplete-item');
+    const suggestion: HTMLElement = fixture.nativeElement.querySelector('.p-autocomplete-option');
     expect(suggestion.textContent).toContain('Carrot soup');
-    suggestion.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    suggestion.click();
     fixture.detectChanges();
     tick();
     fixture.detectChanges();

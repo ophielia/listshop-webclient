@@ -9,7 +9,8 @@ import {ErrorType} from "../../model/error-type";
 @Component({
     selector: 'app-password-token',
     templateUrl: './password-token.component.html',
-    styleUrls: ['./password-token.component.scss']
+    styleUrls: ['./password-token.component.scss'],
+    standalone: false
 })
 export class PasswordTokenComponent implements OnInit {
 

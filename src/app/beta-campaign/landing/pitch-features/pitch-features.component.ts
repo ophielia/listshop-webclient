@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-pitch-features',
-  templateUrl: './pitch-features.component.html',
-  styleUrls: ['./pitch-features.component.scss']
+    selector: 'app-pitch-features',
+    templateUrl: './pitch-features.component.html',
+    styleUrls: ['./pitch-features.component.scss'],
+    standalone: false
 })
 export class PitchFeaturesComponent implements OnInit {
 

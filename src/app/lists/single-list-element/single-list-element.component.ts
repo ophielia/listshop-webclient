@@ -6,7 +6,8 @@ import {Title} from "@angular/platform-browser";
 @Component({
     selector: 'app-single-list-element',
     templateUrl: './single-list-element.component.html',
-    styleUrls: ['./single-list-element.component.css']
+    styleUrls: ['./single-list-element.component.css'],
+    standalone: false
 })
 export class SingleListElementComponent implements OnInit {
 

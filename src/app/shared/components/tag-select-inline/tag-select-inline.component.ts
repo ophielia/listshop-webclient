@@ -12,7 +12,8 @@ import {NGXLogger} from "ngx-logger";
 @Component({
     selector: 'app-tag-select-inline',
     templateUrl: './tag-select-inline.component.html',
-    styleUrls: ['./tag-select-inline.component.scss']
+    styleUrls: ['./tag-select-inline.component.scss'],
+    standalone: false
 })
 export class TagSelectInlineComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];

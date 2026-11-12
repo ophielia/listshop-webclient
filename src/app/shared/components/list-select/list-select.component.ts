@@ -6,7 +6,8 @@ import {INestedShoppingList, IShoppingList} from "../../../model/shoppingList";
 @Component({
     selector: 'app-list-select',
     templateUrl: './list-select.component.html',
-    styleUrls: ['./list-select.component.scss']
+    styleUrls: ['./list-select.component.scss'],
+    standalone: false
 })
 export class ListSelectComponent implements OnInit, OnDestroy {
     @Output() listSelected: EventEmitter<IShoppingList> = new EventEmitter<IShoppingList>();

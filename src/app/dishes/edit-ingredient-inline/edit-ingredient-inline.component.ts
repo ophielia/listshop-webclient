@@ -14,7 +14,8 @@ import {IIngredient, Ingredient} from "../../model/Ingredient";
 @Component({
     selector: 'app-edit-ingredient-inline',
     templateUrl: './edit-ingredient-inline.component.html',
-    styleUrls: ['./edit-ingredient-inline.component.scss']
+    styleUrls: ['./edit-ingredient-inline.component.scss'],
+    standalone: false
 })
 export class EditIngredientInlineComponent implements OnInit, OnDestroy {
     private allSuggestions: ISuggestion[] = [];

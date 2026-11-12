@@ -1,9 +1,12 @@
 import {Component} from '@angular/core';
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {InputSwitchModule} from 'primeng/inputswitch';
+import {ToggleSwitchModule} from 'primeng/toggleswitch';
 
-@Component({template: '<p-inputSwitch [(ngModel)]="enabled" [disabled]="disabled" (onChange)="selected = $event.checked"></p-inputSwitch>'})
+@Component({
+    template: '<p-toggleswitch [(ngModel)]="enabled" [disabled]="disabled" (onChange)="selected = $event.checked"></p-toggleswitch>',
+    standalone: false
+})
 class SwitchHostComponent {
   enabled = false;
   disabled = false;
@@ -13,7 +16,7 @@ class SwitchHostComponent {
 describe('List and meal-plan switch integration', () => {
   it('updates the form model and event value, and respects disabled state', fakeAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [SwitchHostComponent], imports: [FormsModule, InputSwitchModule]
+      declarations: [SwitchHostComponent], imports: [FormsModule, ToggleSwitchModule]
     });
     const fixture = TestBed.createComponent(SwitchHostComponent);
     fixture.detectChanges();

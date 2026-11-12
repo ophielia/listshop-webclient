@@ -99,3 +99,28 @@ Retaining PrimeNG 17 is deliberate: Angular 18 does not require PrimeNG 18,
 and 17.18.15 declares compatible peers. Its separate theme migration remains
 pending for a later library checkpoint. The browser builder remains in use;
 the Angular CLI 18 optional application-builder migration is deferred.
+
+## Angular 19 selected versions
+
+Registry metadata rechecked for the requested Angular 19 checkpoint: core
+19.2.25, CLI/build 19.2.27, CDK 19.2.19, angular-eslint 19.8.1,
+ng-bootstrap 18.0.0, carousel 19.0.2, page-scroll/core 14.0.1,
+spinner 19.0.0, PrimeNG/themes 19.1.4, TypeScript 5.7.3 and Zone 0.15.1.
+TypeScript ESLint parser/plugin/types/utils are pinned together at 8.18.0
+(Node 18 compatible). Karma 6.4.4 satisfies the new builder's ^6.4 peer.
+Node 18.19.1/npm 10.9.4, ESLint 8.57.0, Bootstrap 5.3.3, RxJS 6 and
+ngx-logger 5.0.12 retained. Clean strict-peer resolution/install and full
+npm tree checks validate the selected set without bypass flags.
+
+PrimeNG 17's peers stop at Angular 18. Adopted PrimeNG 19 and its matching
+theme package together. Removed legacy resource CSS imports, configured a
+light-only Lara-based preset with blue inputs and orange switches, migrated
+InputSwitch to ToggleSwitch, and updated autocomplete/checked-option CSS
+selectors. PrimeNG 19 selects autocomplete options on click; actual-control
+tests keep their entity and clearing assertions. The application builder,
+RxJS migration and standalone conversion remain separate work.
+
+Official references: [Angular compatibility](https://angular.dev/reference/versions),
+[Angular 19 update recommendations](https://github.com/angular/angular/blob/19.2.x/adev/src/app/features/update/recommendations.ts),
+[PrimeNG migration](https://v19.primeng.org/guides/migration),
+[PrimeNG theming](https://v19.primeng.org/theming).

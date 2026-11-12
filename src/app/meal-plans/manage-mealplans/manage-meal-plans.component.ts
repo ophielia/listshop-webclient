@@ -11,7 +11,8 @@ import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service
 @Component({
     selector: 'app-manage-meal-plans',
     templateUrl: './manage-meal-plans.component.html',
-    styleUrls: ['./manage-meal-plans.component.scss']
+    styleUrls: ['./manage-meal-plans.component.scss'],
+    standalone: false
 })
 export class ManageMealPlansComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];

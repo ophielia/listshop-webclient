@@ -15,7 +15,8 @@ import {Dish} from "../../model/dish";
 @Component({
     selector: 'app-add-dish',
     templateUrl: './add-dish.component.html',
-    styleUrls: ['./add-dish.component.scss']
+    styleUrls: ['./add-dish.component.scss'],
+    standalone: false
 })
 export class AddDishComponent implements OnInit, OnDestroy {
     @ViewChild('dishesaddedtolist') addToListModal;

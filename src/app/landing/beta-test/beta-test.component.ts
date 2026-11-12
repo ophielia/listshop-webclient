@@ -5,9 +5,10 @@ import {UserProperty} from "../../model/userproperty";
 import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
-  selector: 'app-beta-test',
-  templateUrl: './beta-test.component.html',
-  styleUrls: ['./beta-test.component.scss']
+    selector: 'app-beta-test',
+    templateUrl: './beta-test.component.html',
+    styleUrls: ['./beta-test.component.scss'],
+    standalone: false
 })
 export class BetaTestComponent implements OnInit {
   @ViewChild('notification') notificationConfirmModal;

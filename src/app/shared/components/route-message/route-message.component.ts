@@ -6,7 +6,8 @@ import {AlertService} from "../../services/alert.service";
 
 @Component({
     selector: 'route-message',
-    templateUrl: './route-message.component.html'
+    templateUrl: './route-message.component.html',
+    standalone: false
 })
 export class RouteMessageComponent implements OnInit {
 

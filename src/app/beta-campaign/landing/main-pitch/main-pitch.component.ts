@@ -12,9 +12,10 @@ import {Router} from "@angular/router";
 import {CelebrationService} from "../../../shared/services/celebration.service";
 
 @Component({
-  selector: 'app-main-pitch',
-  templateUrl: './main-pitch.component.html',
-  styleUrls: ['./main-pitch.component.scss']
+    selector: 'app-main-pitch',
+    templateUrl: './main-pitch.component.html',
+    styleUrls: ['./main-pitch.component.scss'],
+    standalone: false
 })
 export class MainPitchComponent implements OnInit, OnDestroy {
 

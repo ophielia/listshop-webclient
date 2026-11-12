@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {MealPlansRoutingModule} from './meal-plans-routing.module';
 import {SharedModule} from "../shared/shared.module";
-import {InputSwitchModule} from "primeng/inputswitch";
+import {ToggleSwitchModule} from "primeng/toggleswitch";
 import {FormsModule} from "@angular/forms";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {MealPlansComponent} from "./meal-plans.component";
@@ -27,7 +27,7 @@ import {PlanContext} from "./plan-context/plan-context";
         CommonModule,
         MealPlansRoutingModule,
         SharedModule,
-        InputSwitchModule,
+        ToggleSwitchModule,
         FormsModule,
         NgbRatingModule
     ],

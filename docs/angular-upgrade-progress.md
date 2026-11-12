@@ -1,6 +1,39 @@
 # Angular upgrade progress
 
-## Current checkpoint — Angular 18
+## Current checkpoint — Angular 19
+
+**Angular 19 implementation and automated validation complete. Stop for review before Angular 20.**
+
+- Branch `chore/angular-upgrade`, starting from validated Angular 18 commit `72eafe6`. User explicitly authorized Angular 19, including its necessary dependency/theme changes. No Angular 20 work started.
+- Core 19.2.25, CLI/build 19.2.27, CDK 19.2.19, angular-eslint 19.8.1, TypeScript 5.7.3, Zone 0.15.1, TypeScript ESLint parser/plugin/types/utils 8.18.0 and Karma 6.4.4. PrimeNG/themes 19.1.4, ng-bootstrap 18.0.0, carousel 19.0.2, page-scroll/core 14.0.1 and spinner 19.0.0. Bootstrap 5.3.3, ESLint 8.57.0, RxJS 6 and ngx-logger 5.0.12 retained.
+- Node 18.19.1/npm 10.9.4 retained in package engines, `.nvmrc`, Docker and CI. Local npm isolated at `/private/tmp/listshop-angular19-tools/node_modules/npm/bin/npm-cli.js`; run with Node 18. Playwright remains isolated on Node 24.15.0. Existing nvm installations/default alias unchanged.
+- Rechecked official Angular compatibility/update recommendations and registry peer metadata. Stale Angular 18 builder resolution failed; resolved a fresh lockfile with the old installation preserved. Angular 19 builder requires Karma ^6.4; aligned to 6.4.4. No force or legacy-peer flags.
+- Official installed CLI/core/CDK migrations completed using explicit adjacent versions, `--migrate-only --allow-dirty`, `CI=true` and `NG_DISABLE_VERSION_CHECK=true`. Core added `standalone: false` to existing NgModule declarations, including the integration-test host. CLI/CDK and other core migrations needed no edits. Kept the browser builder, NgModules, existing initializer and RxJS; optional builder/initializer migrations deferred. Reviewed removed router/differ/pending-task/server APIs; no additional application changes needed.
+- PrimeNG 17 cannot support Angular 19. Adopted PrimeNG 19 and migrated the removed legacy Saga resource imports to `providePrimeNG` with a light-only Lara-based preset (blue fields/orange switches). Replaced InputSwitch imports/tags with ToggleSwitch; migrated autocomplete root/option/selection and switch CSS selectors. Preserved existing form models/change handlers and autocomplete entity outputs. PrimeNG 19 selects options on click; updated actual-control tests from mousedown while preserving selection/clearing assertions.
+- Added a real desktop/mobile browser journey for list switches and dish autocomplete: checked state, keyboard/pointer toggles, crossed-off filtering, orange theme color, overlay bounds and selected-dish POST. Saves review screenshots; existing login/list baselines untouched. Inspected both new screenshots: controls/overlay remain within the desktop sidebar and mobile viewport. Product visual acceptance remains outstanding.
+
+### Angular 19 validation
+
+- Clean `npm ci --strict-peer-deps`: **passed**, no engine warnings. `npm ls --all --json`: **passed**, no dependency problems. Manifest/lockfile engines and dependencies match.
+- Correctness lint: **passed**. Maintained tests: **15/15 passed**, including all three autocompletes, ToggleSwitch/forms/disabled state, runtime config, list generation, ingredient parsing and logging/error handling. Initial pointer simulations failed on the changed PrimeNG event; final tests use click. Legacy generated fixture failures remain an accepted baseline; full suite not claimed passing.
+- Production build: **passed**, initial 1.71 MB / estimated transfer 371.24 kB. Existing component budget warnings remain (edit-dish 18.02 kB, ingredient-input 15.92 kB), along with invalid CSS/division diagnostics. CLI 19 also reports deprecated Sass `@import`; deferred with the separate Sass/builder work. Critical CSS skips four Bootstrap selectors (`.form-floating>~label` and `.btn-group>+.btn`).
+- Development server: **compiled successfully** on 127.0.0.1:4202; root HTTP 200 and both contact assets returned exact source bytes. Verification server stopped.
+- Browser suite: **16/16 passed** in 58.1s, including original desktop/mobile screenshots without baseline updates and HTTP auth/session contracts. Repeated only the two affected-control tests after adding screenshot file output: **2/2 passed** in 11.3s.
+- Theme review images: `e2e/test-results/upgrade-themed-list-switch-3618a-preserve-selection-behavior-{desktop,mobile}/primeng-list-controls.png` (ignored output, recreated by `npm test -- --grep 'themed list switch'` in `e2e/`).
+- Docker build stage: **passed**, including clean strict-peer installation and production build. Local image `listshop-angular19-checkpoint:local`, ID `c325420d91e708c8bcc2cf06d66cda58559ca61e1cfa68e90746c209d21f4f03`.
+- Logs: `/private/tmp/listshop-angular19-{resolution-final,ci,cli-migrations,core-migrations,cdk-migrations,lint,tests-final,build,serve,browser,theme-review,docker}.log`; dependency tree `...-tree.json` / `...-tree-errors.log`.
+
+### Review / next action
+
+Stop before Angular 20 for user review, including the new PrimeNG desktop/mobile appearance. Broader real-backend/manual acceptance remains outstanding: full dish/ingredient and meal-plan workflows, password-reset submission, beta feedback and other forms/menus/alerts. The new browser journey uses mocked APIs; it does not certify backend integration. Nginx runtime validation, remote CI and deployment remain later checkpoints. Nothing pushed or deployed.
+
+Before Angular 20, move to the agreed Node 24.15.0 runtime and recheck TypeScript, Zone and UI peers. Keep standalone/signals/RxJS and application-builder migrations separate.
+
+Unrelated `.junie/`, runtime API configuration and original screenshot baselines untouched. Graphify launcher still references a deleted interpreter; used existing graph node/source metadata and source inspection without rebuilding it. Angular 18 modules/lockfile preserved at `/private/tmp/listshop-angular18-node_modules-before19` and `/private/tmp/listshop-angular18-lock-before19.json`; Git `72eafe6` is the durable fallback.
+
+---
+
+## Previous Angular 18 checkpoint
 
 **Angular 18 implementation and automated validation complete; stop for review before Angular 19.**
 

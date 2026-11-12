@@ -3,9 +3,10 @@ import {TagTreeService} from "../../shared/services/tag-tree.service";
 import {CampaignFeedback} from "../../model/campaignfeedback";
 
 @Component({
-  selector: 'app-campaign-feedback-dialog',
-  templateUrl: './campaign-feedback-dialog.component.html',
-  styleUrls: ['./campaign-feedback-dialog.component.scss']
+    selector: 'app-campaign-feedback-dialog',
+    templateUrl: './campaign-feedback-dialog.component.html',
+    styleUrls: ['./campaign-feedback-dialog.component.scss'],
+    standalone: false
 })
 export class CampaignFeedbackDialogComponent implements OnInit {
   @Output() feedbackInfo: EventEmitter<CampaignFeedback> = new EventEmitter<CampaignFeedback>();

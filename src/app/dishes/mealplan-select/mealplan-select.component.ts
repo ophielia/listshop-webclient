@@ -7,7 +7,8 @@ import {ConfirmDialogService} from "../../shared/services/confirm-dialog.service
 @Component({
     selector: 'app-mealplan-select',
     templateUrl: './mealplan-select.component.html',
-    styleUrls: ['./mealplan-select.component.scss']
+    styleUrls: ['./mealplan-select.component.scss'],
+    standalone: false
 })
 export class MealplanSelectComponent implements OnInit, OnDestroy {
     @Output() mealplanSelected: EventEmitter<string> = new EventEmitter<string>();

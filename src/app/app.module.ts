@@ -1,4 +1,6 @@
 import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
+import {providePrimeNG} from 'primeng/config';
+import {listshopTheme} from './shared/listshop-theme';
 import {Router, RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -48,6 +50,7 @@ const initAppConfig = (envService: EnvironmentLoaderService) => {
             enableTracing: false,
             initialNavigation: 'enabledBlocking'
         })], providers: [
+        providePrimeNG({theme: {preset: listshopTheme, options: {darkModeSelector: false}}}),
         AlertService,
         { provide: HTTP_INTERCEPTORS, useClass: ListShopTokenInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },

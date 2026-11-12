@@ -5,7 +5,8 @@ import {NGXLogger} from "ngx-logger";
 @Component({
     selector: 'app-dish-select',
     templateUrl: './dish-select.component.html',
-    styleUrls: ['./dish-select.component.scss']
+    styleUrls: ['./dish-select.component.scss'],
+    standalone: false
 })
 export class DishSelectComponent implements OnInit, OnDestroy {
     @Output() dishSelected: EventEmitter<IDish> = new EventEmitter<IDish>();

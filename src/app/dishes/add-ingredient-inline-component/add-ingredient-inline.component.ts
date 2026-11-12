@@ -8,7 +8,8 @@ import {Ingredient} from "../../model/Ingredient";
 @Component({
     selector: 'app-add-ingredient-inline',
     templateUrl: './add-ingredient-inline.component.html',
-    styleUrls: ['./add-ingredient-inline.component.scss']
+    styleUrls: ['./add-ingredient-inline.component.scss'],
+    standalone: false
 })
 export class AddIngredientInlineComponent extends EditIngredientInlineComponent {
     doneText: string = "add";

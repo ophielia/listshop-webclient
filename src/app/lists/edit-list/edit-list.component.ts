@@ -21,7 +21,8 @@ import {ItemDetails} from "../../model/Itemdetails";
 @Component({
     selector: 'app-edit-list',
     templateUrl: './edit-list.component.html',
-    styleUrls: ['./edit-list.component.scss']
+    styleUrls: ['./edit-list.component.scss'],
+    standalone: false
 })
 export class EditListComponent implements OnInit, OnDestroy {
     @ViewChild('addtag') addTagModel;

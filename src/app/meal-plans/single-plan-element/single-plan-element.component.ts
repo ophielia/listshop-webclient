@@ -6,7 +6,8 @@ import {Title} from "@angular/platform-browser";
 @Component({
     selector: 'app-single-plan-element',
     templateUrl: './single-plan-element.component.html',
-    styleUrls: ['./single-plan-element.component.css']
+    styleUrls: ['./single-plan-element.component.css'],
+    standalone: false
 })
 export class SinglePlanElementComponent implements OnInit {
 

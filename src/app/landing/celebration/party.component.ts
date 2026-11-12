@@ -3,9 +3,10 @@ import {AuthenticationService} from "../../shared/services/authentication.servic
 import {CelebrationService} from "../../shared/services/celebration.service";
 
 @Component({
-  selector: 'app-party',
-  templateUrl: './party.component.html',
-  styleUrls: ['./party.component.scss']
+    selector: 'app-party',
+    templateUrl: './party.component.html',
+    styleUrls: ['./party.component.scss'],
+    standalone: false
 })
 export class PartyComponent implements OnInit {
 public isLoggedIn : boolean = false;

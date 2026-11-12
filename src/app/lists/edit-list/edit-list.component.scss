@@ -1,12 +1,12 @@
 @import '../../../assets/scss/variable';
 
 
-:host ::ng-deep .p-inputswitch-checked {
-  .p-inputswitch-slider {
+:host ::ng-deep .p-toggleswitch-checked {
+  .p-toggleswitch-slider {
     background: $color_basic_orange;
   }
 
-  &:not(.p-disabled):hover .p-inputswitch-slider {
+  &:not(.p-disabled):hover .p-toggleswitch-slider {
     background: $color_basic_orange;
   }
 
@@ -35,13 +35,13 @@
 
 
 :host ::ng-deep .p-focus {
-  &:hover .p-inputswitch-slider {
+  &:hover .p-toggleswitch-slider {
     outline: 0 none;
     outline-offset: 0;
     box-shadow: unset;
   }
 
-  &:active .p-inputswitch-slider {
+  &:active .p-toggleswitch-slider {
     outline: 0 none;
     outline-offset: 0;
     box-shadow: unset;

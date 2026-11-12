@@ -10,7 +10,8 @@ import {NestedShoppingList} from "../../model/shoppingList";
 @Component({
     selector: 'app-manage-lists',
     templateUrl: './manage-lists.component.html',
-    styleUrls: ['./manage-lists.component.css']
+    styleUrls: ['./manage-lists.component.css'],
+    standalone: false
 })
 export class ManageListsComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];

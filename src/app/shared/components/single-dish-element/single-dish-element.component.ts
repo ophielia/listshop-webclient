@@ -7,7 +7,8 @@ import {Dish, IDish} from "../../../model/dish";
 @Component({
     selector: 'app-single-dish-element',
     templateUrl: './single-dish-element.component.html',
-    styleUrls: ['./single-dish-element.component.scss']
+    styleUrls: ['./single-dish-element.component.scss'],
+    standalone: false
 })
 export class SingleDishElementComponent implements OnInit {
 

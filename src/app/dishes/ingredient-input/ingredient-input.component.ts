@@ -17,7 +17,8 @@ import {TextAndSelection} from "./text-and-selection";
 @Component({
     selector: 'app-ingredient-input',
     templateUrl: './ingredient-input.component.html',
-    styleUrls: ['./ingredient-input.component.scss']
+    styleUrls: ['./ingredient-input.component.scss'],
+    standalone: false
 })
 export class IngredientInputComponent implements OnInit, OnDestroy {
     @ViewChild("ingredientInput") ingredientInput: ElementRef;

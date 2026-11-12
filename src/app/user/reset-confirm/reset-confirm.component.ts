@@ -5,7 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 @Component({
     selector: 'app-reset-confirm',
     templateUrl: './reset-confirm.component.html',
-    styleUrls: ['./reset-confirm.component.scss']
+    styleUrls: ['./reset-confirm.component.scss'],
+    standalone: false
 })
 export class ResetConfirmComponent implements OnInit {
 

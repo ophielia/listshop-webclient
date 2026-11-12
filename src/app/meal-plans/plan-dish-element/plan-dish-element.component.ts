@@ -7,7 +7,8 @@ import {Dish} from "../../model/dish";
 @Component({
     selector: 'app-plan-dish-element',
     templateUrl: './plan-dish-element.component.html',
-    styleUrls: ['./plan-dish-element.component.css']
+    styleUrls: ['./plan-dish-element.component.css'],
+    standalone: false
 })
 export class PlanDishElementComponent implements OnInit {
 

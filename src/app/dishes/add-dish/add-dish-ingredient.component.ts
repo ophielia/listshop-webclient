@@ -17,7 +17,8 @@ import {IIngredient, Ingredient} from "../../model/Ingredient";
 @Component({
     selector: 'app-add-dish-ingredient',
     templateUrl: './add-dish-ingredient.component.html',
-    styleUrls: ['./add-dish-ingredient.component.scss']
+    styleUrls: ['./add-dish-ingredient.component.scss'],
+    standalone: false
 })
 export class AddDishIngredientComponent implements OnInit, OnDestroy {
     @ViewChild('addtag') addTagModel;

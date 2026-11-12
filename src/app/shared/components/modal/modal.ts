@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 
 @Component({
-  selector: 'app-modal',
-  template: `
+    selector: 'app-modal',
+    template: `
     <div (click)="onContainerClicked($event)" class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}"
          [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
       <div class="modal-dialog modal-dialog-centered" style="margin-top:100px;">
@@ -16,11 +16,12 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .modal {
       background: rgba(0, 0, 0, 0.2);
     }
-  `]
+  `],
+    standalone: false
 })
 export class ModalComponent {
 

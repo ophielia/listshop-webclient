@@ -1,6 +1,6 @@
 @import 'src/assets/scss/variable';
 
-:host ::ng-deep span.p-autocomplete {
+:host ::ng-deep .p-autocomplete {
   display: block;
 }
 
@@ -28,11 +28,11 @@
 }
 
 
-  :host ::ng-deep .p-autocomplete-item {
+  :host ::ng-deep .p-autocomplete-option {
     white-space: normal;
   }
 
-  :host ::ng-deep .p-highlight {
+  :host ::ng-deep .p-autocomplete-option-selected {
     background-color: #777777;
     color: white;
   }

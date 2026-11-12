@@ -6,7 +6,8 @@ import {Event, NavigationEnd, NavigationStart, Router} from '@angular/router';
 @Component({
     selector: 'app-meal-plans',
     templateUrl: './meal-plans.component.html',
-    styleUrls: ['./meal-plans.component.scss']
+    styleUrls: ['./meal-plans.component.scss'],
+    standalone: false
 })
 export class MealPlansComponent implements OnInit {
     ngOnInit(): void {

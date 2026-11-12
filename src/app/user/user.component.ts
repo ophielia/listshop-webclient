@@ -5,9 +5,10 @@ import { Router, Event, NavigationStart, RoutesRecognized,
   NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+    selector: 'app-user',
+    templateUrl: './user.component.html',
+    styleUrls: ['./user.component.scss'],
+    standalone: false
 })
 export class UserComponent implements OnInit {
     ngOnInit(): void {

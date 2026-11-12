@@ -5,7 +5,8 @@ import {AuthenticationService} from "../../services/authentication.service";
 @Component({
     selector: 'user-header',
     templateUrl: './user-header.component.html',
-    styleUrls: ['./user-header.component.scss']
+    styleUrls: ['./user-header.component.scss'],
+    standalone: false
 })
 export class UserHeaderComponent implements OnInit {
 

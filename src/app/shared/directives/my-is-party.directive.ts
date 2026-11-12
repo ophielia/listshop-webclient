@@ -2,7 +2,8 @@ import {Directive, TemplateRef, ViewContainerRef} from '@angular/core';
 import {CelebrationService} from "../services/celebration.service";
 
 @Directive({
-  selector: '[appMyIsParty]'
+    selector: '[appMyIsParty]',
+    standalone: false
 })
 export class MyIsPartyDirective {
   private hasView = false;

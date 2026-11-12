@@ -6,7 +6,8 @@ import {WINDOW} from "../../services/windows.service";
 @Component({
     selector: 'app-list-shop-header',
     templateUrl: './list-shop-header.component.html',
-    styleUrls: ['./list-shop-header.component.scss']
+    styleUrls: ['./list-shop-header.component.scss'],
+    standalone: false
 })
 export class ListShopHeaderComponent implements OnInit {
 

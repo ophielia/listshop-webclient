@@ -18,7 +18,8 @@ import {IIngredient, Ingredient} from "../../model/Ingredient";
 @Component({
     selector: 'app-edit-dish',
     templateUrl: './edit-dish.component.html',
-    styleUrls: ['./edit-dish.component.scss']
+    styleUrls: ['./edit-dish.component.scss'],
+    standalone: false
 })
 export class EditDishComponent implements OnInit, OnDestroy {
     @ViewChild('addtag') addTagModel;

@@ -9,7 +9,8 @@ class CelebrateService {
 @Component({
     selector: 'app-celebration',
     templateUrl: './celebration.component.html',
-    styleUrls: ['./celebration.component.scss']
+    styleUrls: ['./celebration.component.scss'],
+    standalone: false
 })
 export class CelebrationComponent implements OnInit {
     @ViewChild('hostess') hostess;

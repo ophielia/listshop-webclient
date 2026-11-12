@@ -4,9 +4,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-privacy',
-  templateUrl: './privacy.component.html',
-  styleUrls: ['./privacy.component.scss']
+    selector: 'app-privacy',
+    templateUrl: './privacy.component.html',
+    styleUrls: ['./privacy.component.scss'],
+    standalone: false
 })
 export class PrivacyComponent {
 

@@ -7,7 +7,7 @@ import {ListsComponent} from "./lists.component";
 import {SharedModule} from "../shared/shared.module";
 import {SingleListElementComponent} from "./single-list-element/single-list-element.component";
 import {EditListComponent} from './edit-list/edit-list.component';
-import {InputSwitchModule} from "primeng/inputswitch";
+import {ToggleSwitchModule} from "primeng/toggleswitch";
 import {FormsModule} from "@angular/forms";
 
 
@@ -20,7 +20,7 @@ import {FormsModule} from "@angular/forms";
         CommonModule,
         ListsRoutingModule,
         SharedModule,
-        InputSwitchModule,
+        ToggleSwitchModule,
         FormsModule
     ]
 })

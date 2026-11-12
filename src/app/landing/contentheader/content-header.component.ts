@@ -7,7 +7,8 @@ import {AuthenticationService} from "../../shared/services/authentication.servic
 @Component({
     selector: 'app-content-header',
     templateUrl: './content-header.component.html',
-    styleUrls: ['./content-header.component.scss']
+    styleUrls: ['./content-header.component.scss'],
+    standalone: false
 })
 export class ContentHeaderComponent implements AfterViewInit  {
   public activeClass = 'home';

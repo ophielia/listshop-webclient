@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {DishesRoutingModule} from './dishes-routing.module';
 import {SharedModule} from "../shared/shared.module";
-import {InputSwitchModule} from "primeng/inputswitch";
+import {ToggleSwitchModule} from "primeng/toggleswitch";
 import {FormsModule} from "@angular/forms";
 import {ManageDishesComponent} from "./manage-dishes/manage-dishes.component";
 import {DishesComponent} from "./dishes.component";
@@ -32,7 +32,7 @@ import {AddIngredientInlineComponent} from './add-ingredient-inline-component/ad
         CommonModule,
         DishesRoutingModule,
         SharedModule,
-        InputSwitchModule,
+        ToggleSwitchModule,
         FormsModule,
         NgbRatingModule
     ],

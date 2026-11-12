@@ -18,7 +18,8 @@ import {Dish} from "../../model/dish";
 @Component({
     selector: 'app-add-dish-to-plan',
     templateUrl: './add-dish-to-plan.component.html',
-    styleUrls: ['./add-dish-to-plan.component.scss']
+    styleUrls: ['./add-dish-to-plan.component.scss'],
+    standalone: false
 })
 export class AddDishToPlanComponent implements OnInit, OnDestroy {
 

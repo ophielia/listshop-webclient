@@ -10,7 +10,8 @@ import {NgxSpinnerService} from "ngx-spinner";
 @Component({
     selector: 'app-delete-user',
     templateUrl: './delete-user.component.html',
-    styleUrls: ['./delete-user.component.scss']
+    styleUrls: ['./delete-user.component.scss'],
+    standalone: false
 })
 export class DeleteUserComponent implements OnInit {
 

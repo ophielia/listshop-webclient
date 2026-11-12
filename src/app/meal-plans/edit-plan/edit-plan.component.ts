@@ -15,7 +15,8 @@ import {IShoppingList} from "../../model/shoppingList";
 @Component({
     selector: 'app-edit-plan',
     templateUrl: './edit-plan.component.html',
-    styleUrls: ['./edit-plan.component.scss']
+    styleUrls: ['./edit-plan.component.scss'],
+    standalone: false
 })
 export class EditPlanComponent implements OnInit, OnDestroy {
     @ViewChild('mealplancopied') copiedMealPlanModal;
