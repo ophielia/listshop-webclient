@@ -221,6 +221,7 @@ export class ListService implements OnDestroy {
 
         shoppingListPut.name = ListShopUtils.cleanInputForServer(shoppingList.name);
         shoppingListPut.is_starter_list = shoppingList.is_starter_list;
+        shoppingListPut.list_id = shoppingList.list_id;
         return this.updateShoppingList(shoppingList.list_id, shoppingListPut);
     }
 

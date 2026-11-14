@@ -103,7 +103,7 @@ describe('Shared dish autocomplete integration', () => {
     fixture = TestBed.createComponent(DishSelectComponent);
     fixture.componentInstance.dishList = [{
       dish_id: '42', name: 'Carrot soup', user_id: '1', description: '',
-      last_added: 0, reference: '', tags: [], ingredients: [], ratings: []
+      last_used: 0, reference: '', tags: [], ingredients: [], ratings: []
     }];
     fixture.detectChanges();
     await fixture.whenStable();

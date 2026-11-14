@@ -202,8 +202,8 @@ export class AddDishToPlanComponent implements OnInit, OnDestroy {
 
     private sortByLastUsed(dishList: Dish[]) {
         dishList.sort((a, b) => {
-            let aDate = !a.last_added ? new Date('1970-10-01') : new Date(a.last_added);
-            let bDate = !b.last_added ? new Date('1970-10-01') : new Date(b.last_added);
+            let aDate = !a.last_used ? new Date('1970-10-01') : new Date(a.last_used);
+            let bDate = !b.last_used ? new Date('1970-10-01') : new Date(b.last_used);
             if (aDate < bDate) return -1 * this.sortDirection;
             else if (aDate > bDate) return 1 * this.sortDirection;
             else return 0;

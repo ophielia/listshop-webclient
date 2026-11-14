@@ -8,7 +8,7 @@ export interface IDish {
     name: string;
     user_id: string;
     description: string;
-    last_added: number;
+    last_used: number;
     reference: string;
 
 
@@ -39,7 +39,7 @@ export class Dish implements IDish {
     name: string;
     description: string;
     reference: string;
-    last_added: number;
+    last_used: number;
     user_id: string;
     tags: INestedTag[];
     ingredients: IIngredient[];

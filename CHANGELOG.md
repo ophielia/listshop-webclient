@@ -12,6 +12,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
  - show spinner as list is generated from meal plan
 
+### Fixed
+ - sort by dish last used
+ - change list name now possible
+
 ## [2.7.0] September 2026
 ### Added
 - show amounts in list
