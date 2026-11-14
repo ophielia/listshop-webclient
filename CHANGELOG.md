@@ -8,6 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [3.0.0] November 2026
 ### Changed
  - upgrade to angular 21
+ - create new meal plan immediately opens the meal plan for editing
 
 ### Added
  - show spinner as list is generated from meal plan
