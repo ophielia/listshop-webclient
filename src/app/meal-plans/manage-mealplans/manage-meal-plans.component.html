@@ -6,8 +6,9 @@
         <h2 class="title"><span>Meal Plans</span></h2>
       </div>
       <div class="col-md-6 col-sm-6 col-text-end">
-        <a (click)="createMealPlan()">
-          <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt="add"></a>
+        <button type="button" class="create-meal-plan" (click)="createMealPlan()"
+          [disabled]="isCreatingMealPlan" [attr.aria-busy]="isCreatingMealPlan" aria-label="Create meal plan">
+          <img src="../../../assets/images/listshop/icons/orangeround/orangeadd.png" alt=""></button>
         </div>
       </div>
     </div>
@@ -16,6 +17,9 @@
   <!--content start-->
   <section>
     <div class="container">
+      @if (creationError) {
+        <div class="alert alert-danger" role="alert">{{ creationError }}</div>
+      }
       @if (isLoading) {
         <div class="col-md-12 " class="loading-box">
           <div class="loading-text">loading meal plans...</div>
