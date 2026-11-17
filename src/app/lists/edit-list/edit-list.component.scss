@@ -216,6 +216,12 @@ table.display-frequent {
   }
 }
 
+.item-amount {
+  text-transform: none;
+  font-style: oblique;
+  color: $color_tapa;
+}
+
 .second-column .item-detail-popup {
   @media (min-width: 992px) {
     left: auto;
