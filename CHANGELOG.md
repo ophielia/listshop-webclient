@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
  - upgrade to angular 21
  - create new meal plan immediately opens the meal plan for editing
+ - list items now shown in category in one column
 
 ### Added
  - show spinner as list is generated from meal plan

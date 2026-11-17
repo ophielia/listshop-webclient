@@ -77,7 +77,8 @@
                                                 {{item.is_selected ? 'itemSelected': ''}}">
                                         {{ item.tag.name }}
                         @if (item.amount && item.amount.display) {
-                           - <span class="item-amount">{{ item.amount.display }}
+                           - <span class="item-amount" (click)="toggleItemDetail($event, item)">
+                            {{ item.amount.display }}
                             @if (item.amount_type == 'MIXED') {
                                 (+)
                             }
@@ -121,6 +122,9 @@
                                                             </div>
                                                             @if (detail.amount) {
                                                                 <div class="detail-amount">{{ detailAmountDisplay(detail, item) }}</div>
+                                                            }
+                                                            @if (!detail.amount) {
+                                                            <div class="detail-amount">no amount</div>
                                                             }
                                                         }
                                                         @if (item.details && item.details.length > 0) {

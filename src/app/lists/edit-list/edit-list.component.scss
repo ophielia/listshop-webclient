@@ -163,10 +163,6 @@ table.display-frequent {
   width: 100%;
   margin-top: 5px;
 
-  @media (min-width: 992px) {
-    width: 200%;
-  }
-
   .popup-title {
     margin-bottom: 5px;
     text-transform: capitalize;
@@ -222,11 +218,5 @@ table.display-frequent {
   color: $color_tapa;
 }
 
-.second-column .item-detail-popup {
-  @media (min-width: 992px) {
-    left: auto;
-    right: 0;
-  }
-}
 
 
