@@ -9,5 +9,6 @@ export class ShoppingListPut implements IShoppingListPut {
 
   name: string;
   is_starter_list: boolean;
+  list_id: string;
 }
 

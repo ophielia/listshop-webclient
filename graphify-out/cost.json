@@ -1,0 +1,14 @@
+{
+  "runs": [
+    {
+      "date": "2026-11-13T04:43:50.957614+00:00",
+      "scope": "src/app",
+      "files": 188,
+      "input_tokens": null,
+      "output_tokens": null,
+      "note": "Agent token usage unavailable; no measured cost"
+    }
+  ],
+  "total_input_tokens": 0,
+  "total_output_tokens": 0
+}

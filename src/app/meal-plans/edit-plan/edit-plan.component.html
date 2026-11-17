@@ -1,3 +1,14 @@
+<dialog #generationDialog class="generation-dialog" aria-labelledby="generation-message"
+  aria-busy="true" (cancel)="$event.preventDefault()">
+  <div role="status" aria-live="polite" tabindex="-1" autofocus>
+    <div class="generation-spinner" aria-hidden="true"></div>
+    <p id="generation-message">Generating shopping list…</p>
+  </div>
+</dialog>
+@if (generationError) {
+  <div class="alert alert-danger" role="alert">{{ generationError }}</div>
+}
+
 <!-- title start -->
 <div class="titlebar-bg">
   <div class="container">

@@ -3,6 +3,7 @@ import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Meta, Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
+import {finalize} from "rxjs/operators";
 import {MealPlan} from "../../model/mealplan";
 import {MealPlanService} from "../../shared/services/meal-plan.service";
 import {PlanContext} from "../plan-context/plan-context";
@@ -18,6 +19,8 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
     unsubscribe: Subscription[] = [];
 
     isLoading: boolean = true;
+    isCreatingMealPlan = false;
+    creationError: string = null;
     mealPlans: MealPlan[];
     private mealPlanIdToDelete: string;
 
@@ -90,9 +93,28 @@ export class ManageMealPlansComponent implements OnInit, OnDestroy {
     }
 
     createMealPlan() {
+        if (this.isCreatingMealPlan) {
+            return;
+        }
+        this.isCreatingMealPlan = true;
+        this.creationError = null;
         let sub$ = this.mealPlanService
             .addMealPlan("")
-            .subscribe(l => this.getMealPlans());
+            .pipe(finalize(() => this.isCreatingMealPlan = false))
+            .subscribe({
+                next: response => {
+                    const location = response.headers.get('Location');
+                    const id = location?.split(/[?#]/)[0].split('/').filter(Boolean).pop();
+                    if (!id) {
+                        this.creationError = 'The meal plan was created, but could not be opened. Please refresh the list to find it.';
+                        return;
+                    }
+                    this.editMealPlan(id);
+                },
+                error: () => {
+                    this.creationError = 'Could not create the meal plan. Please try again.';
+                }
+            });
         this.unsubscribe.push(sub$);
     }
 

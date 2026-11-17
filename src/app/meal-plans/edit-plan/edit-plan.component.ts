@@ -1,9 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LandingFixService} from "../../shared/services/landing-fix.service";
 import {ListService} from "../../shared/services/list.service";
 import {Subscription} from "rxjs";
+import {finalize} from "rxjs/operators";
 import {NGXLogger} from "ngx-logger";
 import {Dish, IDish} from "../../model/dish";
 import {DishService} from "../../shared/services/dish.service";
@@ -20,6 +21,10 @@ import {IShoppingList} from "../../model/shoppingList";
 })
 export class EditPlanComponent implements OnInit, OnDestroy {
     @ViewChild('mealplancopied') copiedMealPlanModal;
+    @ViewChild('generationDialog', {static: true}) generationDialog: ElementRef<HTMLDialogElement>;
+
+    isGeneratingList = false;
+    generationError: string = null;
 
     private unsubscribe: Subscription[] = [];
 
@@ -198,7 +203,17 @@ export class EditPlanComponent implements OnInit, OnDestroy {
     }
 
     generateList() {
+        if (this.isGeneratingList) {
+            return;
+        }
+        this.generationError = null;
+        this.isGeneratingList = true;
+        this.generationDialog.nativeElement.showModal();
         let $sub = this.listService.createListFromMealPlan(this.mealPlan.meal_plan_id, this.includeStarter)
+            .pipe(finalize(() => {
+                this.isGeneratingList = false;
+                this.generationDialog.nativeElement.close();
+            }))
             .subscribe(r => {
                 var headers = r.headers;
                 var location = headers.get("Location");
@@ -206,6 +221,8 @@ export class EditPlanComponent implements OnInit, OnDestroy {
                 var id = splitlocation[splitlocation.length - 1];
                 var url = "lists/edit/" + id;
                 this.router.navigateByUrl(url);
+            }, () => {
+                this.generationError = "Unable to generate the shopping list. Please try again.";
             });
         this.unsubscribe.push($sub);
     }
