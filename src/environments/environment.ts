@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  //napiUrl: 'https://nastyvarmits.fr/api/',
+  apiUrl: 'https://nastyvarmits.fr/api/',
   celebrationUrl: 'https://nastyvarmits.fr/api/static/celebrations.json',
   //apiUrl: 'http://localhost:8182/',
-  apiUrl: 'http://localhost:8888/',
+  //apiUrl: 'http://localhost:8888/',
   //celebrationUrl: 'http://localhost:4200/assets/static/test_celebrations.json',
   celebrationRefreshMinutes: 60
 
